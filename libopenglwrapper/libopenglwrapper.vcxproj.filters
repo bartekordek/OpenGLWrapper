@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Primitives">
+      <UniqueIdentifier>{e501a0e6-877c-4868-a1b9-d2e3a3a7fe60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GenericShaders">
+      <UniqueIdentifier>{6061d913-ac18-4f3b-a88b-d55ce1358639}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\libopenglwrapper\IOpenGLWrapper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpenGLWrapperConcrete.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImportFreeglut.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IRenderable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IMovable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IShader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IShaderFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpenGLShaderFactory.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderConcrete.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IObjectFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\Import.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpenGL_3_Utils.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IMPORT_glew.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IVertexBuffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IVertexArray.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IProgram.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProgramConcrete.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\Primitives\ITriangle.hpp">
+      <Filter>Header Files\Primitives</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\IOpenGLWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGLWrapperConcrete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IShaderFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGLShaderFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderConcrete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IObjectFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGL_3_Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProgramConcrete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragmentShader.frag">
+      <Filter>GenericShaders</Filter>
+    </None>
+    <None Include="shaders\vertexShader.vert">
+      <Filter>GenericShaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,6 @@
+[submodule "deps/imgui"]
+	path = deps/imgui
+	url = git@github.com:ocornut/imgui.git
+[submodule "deps/SDL2Wrapper"]
+	path = deps/SDL2Wrapper
+	url = git@github.com:bartekordek/SDL2Wrapper.git
