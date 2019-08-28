@@ -103,7 +103,6 @@ void OpenGLWrapperConcrete::renderFrame()
         OGLUTILS::clearColorAndDepthBuffer();
     }
     setBackgroundColor( m_backgroundColor );
-    OGLUTILS::createQuad();
 
     renderObjects();
 }
