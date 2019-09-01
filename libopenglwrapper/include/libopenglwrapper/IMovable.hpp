@@ -1,11 +1,15 @@
 #pragma once
 
 #include "libopenglwrapper/IRenderable.hpp"
+
 #include "CUL/Graphics/IPosition3DD.hpp"
+#include "CUL/Graphics/SimplePos3D.hpp"
+#include "CUL/Math/Vector3D.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-using IPosition3DD = CUL::Graphics::IPosition3DD;
+using Pos = CUL::Graphics::SimplePos3D<float>;
+using TranslationVector = CUL::Math::Vector3D<float>;
 
 class LIBOPENGLWRAPPER_API IMovable
 {
@@ -13,9 +17,9 @@ public:
     IMovable() = default;
     virtual ~IMovable() = default;
 
-    virtual const IPosition3DD& getPos()const = 0;
-    virtual void setPosition( const IPosition3DD& pos ) = 0;
-    virtual void move( const IPosition3DD& moveVect ) = 0;
+    virtual const Pos& getPos()const = 0;
+    virtual void setPosition( const Pos& pos ) = 0;
+    virtual void translate( const TranslationVector& moveVect ) = 0;
     virtual void returnToOrigin() = 0;
 
 protected:
