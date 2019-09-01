@@ -1,8 +1,10 @@
 #pragma once
 
 #include "libopenglwrapper/Import.hpp"
+
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Filesystem/Path.hpp"
+#include "CUL/GenericUtils/DumbPtr.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -15,7 +17,7 @@ public:
     IShader( const IFile& shaderCode );
     virtual ~IShader() = default;
 
-    virtual cunt getId()const = 0;
+    virtual cunt getId() const = 0;
 
 protected:
 private:
@@ -25,6 +27,6 @@ private:
 
 };
 
-using ShaderPtr = std::shared_ptr<IShader>;
+using ShaderPtr = CUL::GUTILS::DumbPtr<IShader>;
 
 NAMESPACE_END( LOGLW )
