@@ -40,8 +40,7 @@ void afterInit()
     vertexShaderFile->load( true );
     fragmentShaderFile->load( true );
 
-    sf->createShader( *vertexShaderFile );
-    sf->createShader( *fragmentShaderFile );
+
 }
 
 int main( int argc, char** argv )

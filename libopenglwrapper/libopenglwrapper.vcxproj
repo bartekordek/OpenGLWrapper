@@ -237,7 +237,8 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="include\libopenglwrapper\IShaderFactory.hpp" />
     <ClInclude Include="include\libopenglwrapper\IVertexArray.hpp" />
     <ClInclude Include="include\libopenglwrapper\IVertexBuffer.hpp" />
-    <ClInclude Include="include\libopenglwrapper\Primitives\ITriangle.hpp" />
+    <ClInclude Include="include\libopenglwrapper\Primitives\Rect.hpp" />
+    <ClInclude Include="include\libopenglwrapper\Primitives\Triangle.hpp" />
     <ClInclude Include="src\ImportFreeglut.hpp" />
     <ClInclude Include="src\IMPORT_glew.hpp" />
     <ClInclude Include="src\OpenGLShaderFactory.hpp" />
@@ -245,6 +246,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="src\OpenGL_3_Utils.hpp" />
     <ClInclude Include="src\ProgramConcrete.hpp" />
     <ClInclude Include="src\ShaderConcrete.hpp" />
+    <ClInclude Include="src\ShaderRegister.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IObjectFactory.cpp" />
@@ -254,8 +256,11 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClCompile Include="src\OpenGLShaderFactory.cpp" />
     <ClCompile Include="src\OpenGLWrapperConcrete.cpp" />
     <ClCompile Include="src\OpenGL_3_Utils.cpp" />
+    <ClCompile Include="src\Primitives\Rect.cpp" />
+    <ClCompile Include="src\Primitives\Triangle.cpp" />
     <ClCompile Include="src\ProgramConcrete.cpp" />
     <ClCompile Include="src\ShaderConcrete.cpp" />
+    <ClCompile Include="src\ShaderRegister.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.frag" />

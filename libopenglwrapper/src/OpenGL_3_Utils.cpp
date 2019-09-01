@@ -1,6 +1,6 @@
 #include "OpenGL_3_Utils.hpp"
 
-#include "CUL/SimpleAssert.hpp"
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "IMPORT_SDL_opengl.hpp"
 
 #include "ImportFreeglut.hpp"
