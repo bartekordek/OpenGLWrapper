@@ -244,6 +244,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="src\OpenGLShaderFactory.hpp" />
     <ClInclude Include="src\OpenGLWrapperConcrete.hpp" />
     <ClInclude Include="src\OpenGL_3_Utils.hpp" />
+    <ClInclude Include="src\Primitives\TriangleImpl.hpp" />
     <ClInclude Include="src\ProgramConcrete.hpp" />
     <ClInclude Include="src\ShaderConcrete.hpp" />
     <ClInclude Include="src\ShaderRegister.hpp" />
@@ -258,6 +259,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClCompile Include="src\OpenGL_3_Utils.cpp" />
     <ClCompile Include="src\Primitives\Rect.cpp" />
     <ClCompile Include="src\Primitives\Triangle.cpp" />
+    <ClCompile Include="src\Primitives\TriangleImpl.cpp" />
     <ClCompile Include="src\ProgramConcrete.cpp" />
     <ClCompile Include="src\ShaderConcrete.cpp" />
     <ClCompile Include="src\ShaderRegister.cpp" />

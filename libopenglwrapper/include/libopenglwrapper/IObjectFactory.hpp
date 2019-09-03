@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libopenglwrapper/Primitives/ITriangle.hpp"
+#include "libopenglwrapper/Primitives/Triangle.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 

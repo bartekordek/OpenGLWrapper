@@ -20,7 +20,6 @@ public:
     virtual const Pos& getPos()const = 0;
     virtual void setPosition( const Pos& pos ) = 0;
     virtual void translate( const TranslationVector& moveVect ) = 0;
-    virtual void returnToOrigin() = 0;
 
 protected:
 private:

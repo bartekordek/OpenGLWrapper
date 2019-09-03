@@ -1,4 +1,5 @@
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
+#include "libopenglwrapper/Primitives/Triangle.hpp"
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 
@@ -27,6 +28,7 @@ SDL2W::ISDL2Wrapper* g_sdlw = nullptr;
 
 ShaderFile vertexShaderFile;
 ShaderFile fragmentShaderFile;
+LOGLW::Triangle triangle;
 
 CUL::FS::IFile* getFile( const CUL::FS::Path& filePath );
 

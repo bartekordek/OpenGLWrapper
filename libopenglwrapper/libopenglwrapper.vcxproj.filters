@@ -87,6 +87,9 @@
     <ClInclude Include="src\ShaderRegister.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Primitives\TriangleImpl.hpp">
+      <Filter>Source Files\Primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IOpenGLWrapper.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="src\ShaderRegister.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primitives\TriangleImpl.cpp">
+      <Filter>Source Files\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
