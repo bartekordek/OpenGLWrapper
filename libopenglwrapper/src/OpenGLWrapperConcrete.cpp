@@ -146,8 +146,3 @@ void OpenGLWrapperConcrete::setBackgroundColor(
 {
     OGLUTILS::clearColorTo( color );
 }
-
-void OpenGLWrapperConcrete::test()
-{
-
-}

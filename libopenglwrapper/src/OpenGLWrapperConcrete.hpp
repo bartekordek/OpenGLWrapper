@@ -31,7 +31,6 @@ public:
     void renderObjects();
     void refreshBuffers();
     void setBackgroundColor( const ColorS& color ) override;
-    void test() override;
     void startRenderingLoop() override;
     void stopRenderingLoop() override;
     void onInitialize( const std::function<void()>& callback ) override;

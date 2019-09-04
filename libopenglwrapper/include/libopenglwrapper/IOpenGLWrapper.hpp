@@ -31,7 +31,6 @@ public:
 
     virtual void renderFrame() = 0;
     virtual void setBackgroundColor( const ColorS& color ) = 0;
-    virtual void test() = 0;
     virtual void startRenderingLoop() = 0;
     virtual void stopRenderingLoop() = 0;
     virtual void onInitialize( const std::function<void()>& callback ) = 0;
