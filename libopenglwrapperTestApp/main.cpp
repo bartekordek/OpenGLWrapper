@@ -47,7 +47,6 @@ void afterInit()
 
     triangle->addShader( *vertexShaderFile.get(), sf );
     triangle->addShader( *fragmentShaderFile.get(), sf );
-
 }
 
 int main( int argc, char** argv )
