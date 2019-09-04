@@ -28,6 +28,16 @@ void TriangleImpl::addShader( const IFile& shaderFile, IShaderFactory* sf )
 
 void TriangleImpl::render()
 {
+    applyShaders();
+
+}
+
+void TriangleImpl::applyShaders()
+{
+    for( auto& shader: m_shaders )
+    {
+        shader->useShader();
+    }
 }
 
 const Pos& TriangleImpl::getPos() const

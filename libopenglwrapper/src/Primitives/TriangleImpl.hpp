@@ -26,6 +26,8 @@ public:
 
 protected:
 private:
+    void applyShaders();
+
     Triangle3DF m_triangle;
     std::vector<IShader*> m_shaders;
 
