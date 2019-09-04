@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libopenglwrapper/IOpenGLWrapper.hpp"
+#include "libopenglwrapper/Import.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 

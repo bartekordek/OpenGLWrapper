@@ -78,17 +78,17 @@
     <ClInclude Include="src\ProgramConcrete.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\libopenglwrapper\Primitives\Triangle.hpp">
-      <Filter>Header Files\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="include\libopenglwrapper\Primitives\Rect.hpp">
-      <Filter>Header Files\Primitives</Filter>
-    </ClInclude>
     <ClInclude Include="src\ShaderRegister.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Primitives\TriangleImpl.hpp">
       <Filter>Source Files\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\Primitives\ITriangle.hpp">
+      <Filter>Header Files\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp">
+      <Filter>Header Files\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

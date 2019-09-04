@@ -1,16 +1,13 @@
 #pragma once
 
-#include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/IRenderable.hpp"
 #include "libopenglwrapper/IMovable.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
 
-#include "CUL/Graphics/ISize3DD.hpp"
 #include "CUL/Filesystem/IFile.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-using ISize3DD = CUL::Graphics::ISize3DD;
 using IFile = CUL::FS::IFile;
 
 class LIBOPENGLWRAPPER_API IObject:
