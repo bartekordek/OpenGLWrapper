@@ -3,6 +3,7 @@
 #include "libopenglwrapper/IShader.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
+
 class LIBOPENGLWRAPPER_API IShaderFactory
 {
 public:

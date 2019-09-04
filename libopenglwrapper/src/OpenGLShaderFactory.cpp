@@ -30,7 +30,7 @@ IShader* OpenGLShaderFactory::createShader( const IFile& shaderCode )
 const bool OpenGLShaderFactory::shaderExist( const IFile & shaderCode ) const
 {
     ShaderMap::iterator it = m_shaders.find( shaderCode.getPath().getPath() );
-    return m_shaders.end() == it;
+    return m_shaders.end() != it;
 }
 
 IShader* OpenGLShaderFactory::getShader( const IFile& shaderCode )
