@@ -1,14 +1,19 @@
 #pragma once
 
-#include "libopenglwrapper/Primitives/Triangle.hpp"
+#include "libopenglwrapper/Import.hpp"
+#include "libopenglwrapper/Primitives/ITriangle.hpp"
+#include "libopenglwrapper/Primitives/IRect.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
 class LIBOPENGLWRAPPER_API IObjectFactory
 {
 public:
-    IObjectFactory();
-    virtual ~IObjectFactory();
+    IObjectFactory() = default;
+    virtual ~IObjectFactory() = default;
+
+    virtual IRect* createRect() = 0;
+    virtual ITriangle* createTriangle() = 0;
 
 protected:
 private:

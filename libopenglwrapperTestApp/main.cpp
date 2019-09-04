@@ -1,5 +1,5 @@
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
-#include "libopenglwrapper/Primitives/Triangle.hpp"
+#include "libopenglwrapper/Primitives/ITriangle.hpp"
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 
@@ -28,13 +28,14 @@ SDL2W::ISDL2Wrapper* g_sdlw = nullptr;
 
 ShaderFile vertexShaderFile;
 ShaderFile fragmentShaderFile;
-LOGLW::Triangle triangle;
+LOGLW::ITriangle* triangle = nullptr;
 
 CUL::FS::IFile* getFile( const CUL::FS::Path& filePath );
 
 void afterInit()
 {
     auto sf = g_oglw->getShaderFactory();
+    auto of = g_oglw->getObjectFactory();
     CUL::FS::Path shadersDir( "../libopenglwrapper/shaders/" );
     vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "vertexShader.vert" );
     fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "fragmentShader.frag" );
@@ -42,6 +43,10 @@ void afterInit()
     vertexShaderFile->load( true );
     fragmentShaderFile->load( true );
 
+    triangle = of->createTriangle();
+
+    triangle->addShader( *vertexShaderFile.get(), sf );
+    triangle->addShader( *fragmentShaderFile.get(), sf );
 
 }
 

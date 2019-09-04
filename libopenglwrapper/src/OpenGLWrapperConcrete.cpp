@@ -1,5 +1,6 @@
 #include "OpenGLWrapperConcrete.hpp"
 #include "OpenGLShaderFactory.hpp"
+#include "Primitives/TriangleImpl.hpp"
 #include "CUL/ConsoleUtilities.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
@@ -49,6 +50,23 @@ void OpenGLWrapperConcrete::onInitialize( const std::function<void()>& callback 
 IShaderFactory* OpenGLWrapperConcrete::getShaderFactory()
 {
     return &*m_shaderFactory;
+}
+
+IObjectFactory* OpenGLWrapperConcrete::getObjectFactory()
+{
+    return this;
+}
+
+IRect* OpenGLWrapperConcrete::createRect()
+{
+    return nullptr;
+}
+
+ITriangle* OpenGLWrapperConcrete::createTriangle()
+{
+    auto result = new TriangleImpl();
+    m_objectsToRender.insert( result );
+    return result;
 }
 
 void OpenGLWrapperConcrete::renderLoop()

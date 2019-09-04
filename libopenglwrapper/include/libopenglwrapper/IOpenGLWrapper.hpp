@@ -1,8 +1,10 @@
 #pragma once
 
-#include "libopenglwrapper/IObject.hpp"
+#include "libopenglwrapper/IObjectFactory.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
+
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
+
 #include "CUL/Pos2D.hpp"
 #include "CUL/Size2D.hpp"
 #include "CUL/MyString.hpp"
@@ -35,6 +37,7 @@ public:
     virtual void onInitialize( const std::function<void()>& callback ) = 0;
 
     virtual IShaderFactory* getShaderFactory() = 0;
+    virtual IObjectFactory* getObjectFactory() = 0;
 
 protected:
 private:

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "libopenglwrapper/Primitives/Triangle.hpp"
+#include "libopenglwrapper/Primitives/ITriangle.hpp"
 #include "libopenglwrapper/IShader.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-class TriangleImpl final
+class TriangleImpl final:
+    public ITriangle
 {
 public:
     TriangleImpl();
@@ -14,12 +15,12 @@ public:
 
     TriangleImpl& operator=( const TriangleImpl& rhv );
 
-    void addShader( const IFile& shaderFile, IShaderFactory* sf );
+    void addShader( const IFile& shaderFile, IShaderFactory* sf ) override;
     void render();
 
-    const Pos& getPos() const;
-    void setPosition( const Pos& pos );
-    void translate( const TranslationVector& moveVect );
+    const Pos& getPos() const override;
+    void setPosition( const Pos& pos ) override;
+    void translate( const TranslationVector& moveVect ) override;
 
     ~TriangleImpl();
 

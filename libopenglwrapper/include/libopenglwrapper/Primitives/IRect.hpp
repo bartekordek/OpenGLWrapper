@@ -9,7 +9,7 @@ NAMESPACE_BEGIN( LOGLW )
 
 using Size = CUL::Graphics::SimpleSize3D<float>;
 
-struct RectDimension
+struct LIBOPENGLWRAPPER_API RectDimension
 {
     Size size;
     Pos pos;
@@ -35,27 +35,25 @@ struct RectDimension
 
 };
 
-class LIBOPENGLWRAPPER_API Rect:
+class LIBOPENGLWRAPPER_API IRect:
     public IObject
 {
 public:
-    Rect();
-    Rect( const Rect& arg );
-    Rect( const RectDimension& rectDimension );
+    IRect() = default;
 
-    Rect& operator=( const Rect& rhv );
+    virtual void addShader( const IFile& shaderFile, IShaderFactory* sf ) override = 0;
+    virtual const Size& getSize() const = 0;
+    virtual const Pos& getPos() const = 0;
 
-    void addShader( const IFile& shaderFile, IShaderFactory* sf ) override;
-
-    const Size& getSize() const;
-    const Pos& getPos() const override;
-
-    virtual ~Rect();
+    virtual ~IRect() = default;
 
 protected:
 private:
-    RectDimension m_rectDimension;
-    IShader* m_shader = nullptr;
+    IRect( const IRect& arg ) = delete;
+    IRect& operator=( const IRect& rhv ) = delete;
+
+   /* RectDimension m_rectDimension;
+    IShader* m_shader = nullptr;*/
 
 };
 

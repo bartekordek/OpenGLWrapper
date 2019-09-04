@@ -18,7 +18,8 @@ using ITask = CUL::GUTILS::ITask;
 using SafeBool = CUL::LckPrim<bool>;
 
 class OpenGLWrapperConcrete final:
-    public IOpenGLWrapper
+    public IOpenGLWrapper,
+    private IObjectFactory
 {
 public:
     OpenGLWrapperConcrete(
@@ -36,9 +37,13 @@ public:
     void onInitialize( const std::function<void()>& callback ) override;
 
     IShaderFactory* getShaderFactory() override;
+    IObjectFactory* getObjectFactory() override;
 
 protected:
 private:
+    IRect* createRect() override;
+    ITriangle* createTriangle() override;
+
     OpenGLWrapperConcrete() = delete;
     OpenGLWrapperConcrete(
         const OpenGLWrapperConcrete& val) = delete;
