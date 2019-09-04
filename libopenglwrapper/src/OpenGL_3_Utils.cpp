@@ -31,6 +31,11 @@ void OGLUTILS::removeProgram( cunt programId )
     //TODO: error handling when deleting.
 }
 
+void OGLUTILS::useProgram( cunt programId )
+{
+    glUseProgram( static_cast<GLuint>( programId ) );
+}
+
 cunt OGLUTILS::createShader( const IFile& shaderCode )
 {
     auto shaderType = OGLUTILS::getShaderType( shaderCode.getPath().getExtension() );
