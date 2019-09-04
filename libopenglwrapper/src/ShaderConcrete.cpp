@@ -24,4 +24,9 @@ cunt ShaderConcrete::getId() const
     return m_id;
 }
 
+void ShaderConcrete::useShader() const
+{
+    OGLUTILS::useProgram( m_id );
+}
+
 NAMESPACE_END( LOGLW )

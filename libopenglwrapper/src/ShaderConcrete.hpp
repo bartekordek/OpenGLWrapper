@@ -12,6 +12,7 @@ public:
     ~ShaderConcrete();
 
     cunt getId() const override;
+    void useShader() const override;
 
 protected:
 private:

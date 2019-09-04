@@ -18,6 +18,7 @@ public:
     virtual ~IShader() = default;
 
     virtual cunt getId() const = 0;
+    virtual void useShader() const = 0;
 
 protected:
 private:
