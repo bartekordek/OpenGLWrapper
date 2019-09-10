@@ -124,12 +124,12 @@ void OGLUTILS::initContextVersion( cunt major, cunt minor )
     }
 }
 
-void OGLUTILS::setViewport( cunt x, cunt y, cunt width, cunt height )
+void OGLUTILS::setViewport( const DispRect& rect )
 {
-    glViewport( static_cast<GLint>( x ),
-                static_cast<GLint>( y ),
-                static_cast<GLsizei>( width ),
-                static_cast<GLsizei>( height ) );
+    glViewport( static_cast<GLint>( rect.x ),
+                static_cast<GLint>( rect.y ),
+                static_cast<GLsizei>( rect.width ),
+                static_cast<GLsizei>( rect.height ) );
 }
 
 void OGLUTILS::setProjectionAndModelToIdentity()

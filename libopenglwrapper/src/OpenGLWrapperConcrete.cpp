@@ -91,7 +91,8 @@ void OpenGLWrapperConcrete::initialize()
     m_shaderFactory = new OpenGLShaderFactory();
 
     const auto& winSize = m_activeWindow->getSize();
-    OGLUTILS::setViewport( 0, 0, winSize.getX(), winSize.getY() );
+    const OGLUTILS::DispRect rect( winSize.getX(), winSize.getY(), 0 ,0  );
+    OGLUTILS::setViewport( rect );
     OGLUTILS::setProjectionAndModelToIdentity();
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
 
