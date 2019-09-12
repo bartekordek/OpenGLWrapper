@@ -14,8 +14,8 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     m_sdlW( sdl2w ),
     m_activeWindow( window )
 {
-    CUL::Assert::simple( sdl2w, "NO SDL WRAPPER." );
-    CUL::Assert::simple( window, "NO WINDOW." );
+    CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
+    CUL::Assert::simple( nullptr != window, "NO WINDOW." );
 }
 
 OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
@@ -107,7 +107,7 @@ void OpenGLWrapperConcrete::initialize()
 
 void OpenGLWrapperConcrete::executeTasks()
 {
-    while( m_preRenderTasks.size() > 0 )
+    while( false == m_preRenderTasks.empty() )
     {
         auto task = m_preRenderTasks.front();
         task->execute();

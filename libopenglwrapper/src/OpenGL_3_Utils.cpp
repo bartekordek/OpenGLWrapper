@@ -17,7 +17,7 @@ cunt OGLUTILS::createProgram()
     {
         GLenum err = glGetError();
         CUL::Assert::simple(
-            programId,
+            GL_NO_ERROR == programId,
             "Error creating program, error numer: " + CUL::MyString( err ) );
         return 0;
     }
@@ -120,7 +120,11 @@ void OGLUTILS::initContextVersion( cunt major, cunt minor )
     if( major >= 3 )
     {
         auto error = glewInit();
-        CUL::Assert::simple( GLEW_OK == error, "GLEW error: " + CUL::MyString( glewGetErrorString( error ) + CUL::MyString( glVersion ) ) );
+        CUL::Assert::simple(
+            GLEW_OK == error,
+            "GLEW error: " +
+            CUL::MyString( reinterpret_cast<const char*>( glewGetErrorString( error ) ) +
+            CUL::MyString( reinterpret_cast<const char*>( glVersion ) ) ) );
     }
 }
 
