@@ -12,7 +12,7 @@ cunt OGLUTILS::createProgram()
 {
     const auto programId = static_cast<const unsigned int>(
         glCreateProgram() );
-    
+
     if( 0 == programId )
     {
         GLenum err = glGetError();
@@ -55,6 +55,7 @@ cunt OGLUTILS::createShader( const IFile& shaderCode )
         auto errorAsString = std::string( eLog );
         CUL::MyString shaderCompilationErrorMessage = "Error compiling shader: " +
             errorAsString + "\n";
+        shaderCompilationErrorMessage += "Shader Path: " + shaderCode.getPath().getPath() + "\n";
         CUL::Assert::simple( false, shaderCompilationErrorMessage );
     }
 
@@ -97,7 +98,7 @@ void OGLUTILS::attachShader(
 
 void OGLUTILS::removeShader( cunt shaderId )
 {
-    glDeleteShader( 
+    glDeleteShader(
         toGluint( shaderId ) );
 }
 
