@@ -25,7 +25,7 @@ struct LIBOPENGLWRAPPER_API RectDimension
 
     RectDimension& operator=( const RectDimension& rhv )
     {
-        if( this != & rhv )
+        if( this != &rhv )
         {
             size = rhv.size;
             pos = rhv.pos;
@@ -43,7 +43,7 @@ public:
 
     virtual void addShader( const IFile& shaderFile, IShaderFactory* sf ) override = 0;
     virtual const Size& getSize() const = 0;
-    virtual const Pos& getPos() const = 0;
+    virtual const Pos& getPos() const override = 0;
 
     virtual ~IRect() = default;
 
@@ -52,7 +52,7 @@ private:
     IRect( const IRect& arg ) = delete;
     IRect& operator=( const IRect& rhv ) = delete;
 
-   /* RectDimension m_rectDimension;
+    /* RectDimension m_rectDimension;
     IShader* m_shader = nullptr;*/
 
 };
