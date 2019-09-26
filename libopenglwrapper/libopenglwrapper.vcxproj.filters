@@ -90,6 +90,9 @@
     <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp">
       <Filter>Header Files\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\ITexture.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IOpenGLWrapper.cpp">

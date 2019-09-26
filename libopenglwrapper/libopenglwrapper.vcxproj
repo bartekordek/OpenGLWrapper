@@ -235,6 +235,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="include\libopenglwrapper\IRenderable.hpp" />
     <ClInclude Include="include\libopenglwrapper\IShader.hpp" />
     <ClInclude Include="include\libopenglwrapper\IShaderFactory.hpp" />
+    <ClInclude Include="include\libopenglwrapper\ITexture.hpp" />
     <ClInclude Include="include\libopenglwrapper\IVertexArray.hpp" />
     <ClInclude Include="include\libopenglwrapper\IVertexBuffer.hpp" />
     <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp" />
