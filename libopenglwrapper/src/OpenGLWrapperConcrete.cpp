@@ -12,7 +12,8 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     SDL2W::IWindow* window,
     SDL2W::ISDL2Wrapper* sdl2w ):
     m_sdlW( sdl2w ),
-    m_activeWindow( window )
+    m_activeWindow( window ),
+    m_logger( CUL::LOG::LOG_CONTAINER::getLogger() )
 {
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
     CUL::Assert::simple( nullptr != window, "NO WINDOW." );
@@ -20,25 +21,31 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
 
 OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
 {
+    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete()..." );
     if( m_oglContext )
     {
         SDL_GL_DeleteContext( m_oglContext );
         m_oglContext = nullptr; // This is basically void* !
     }
+    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete() Done." );
 }
 
 void OpenGLWrapperConcrete::startRenderingLoop()
 {
+    m_logger->log( "OpenGLWrapperConcrete::startRenderingLoop()..." );
     m_renderingLoopThread = std::thread( &OpenGLWrapperConcrete::renderLoop, this );
+    m_logger->log( "OpenGLWrapperConcrete::startRenderingLoop() Done." );
 }
 
 void OpenGLWrapperConcrete::stopRenderingLoop()
 {
+    m_logger->log( "OpenGLWrapperConcrete::stopRenderingLoop()..." );
     m_runRenderLoop = false;
     if( m_renderingLoopThread.joinable() )
     {
         m_renderingLoopThread.join();
     }
+    m_logger->log( "OpenGLWrapperConcrete::stopRenderingLoop() Done." );
 }
 
 void OpenGLWrapperConcrete::onInitialize( const std::function<void()>& callback )
@@ -55,6 +62,11 @@ IShaderFactory* OpenGLWrapperConcrete::getShaderFactory()
 IObjectFactory* OpenGLWrapperConcrete::getObjectFactory()
 {
     return this;
+}
+
+CUL::LOG::ILogger* OpenGLWrapperConcrete::getLoger()
+{
+    return m_logger;
 }
 
 IRect* OpenGLWrapperConcrete::createRect()
@@ -84,6 +96,7 @@ void OpenGLWrapperConcrete::renderLoop()
 
 void OpenGLWrapperConcrete::initialize()
 {
+    m_logger->log( "OpenGLWrapperConcrete::initialize()..." );
     m_oglContext = SDL_GL_CreateContext( m_activeWindow->getSDLWindow() );
 
     OGLUTILS::initContextVersion( 3, 1 );
@@ -102,6 +115,7 @@ void OpenGLWrapperConcrete::initialize()
     }
 
     m_hasBeenInitialized = true;
+    m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
 }
 
 

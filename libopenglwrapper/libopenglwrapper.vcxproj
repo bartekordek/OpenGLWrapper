@@ -71,22 +71,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)intermediate\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)intermediate\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)intermediate\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)intermediate\$(Platform)_$(Configuration)\</IntDir>
+    <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -106,7 +106,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-v142.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
@@ -138,7 +138,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-v142.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
@@ -174,7 +174,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-v142.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
@@ -210,7 +210,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-v142.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y

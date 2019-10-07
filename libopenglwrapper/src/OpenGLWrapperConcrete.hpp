@@ -38,6 +38,8 @@ public:
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
 
+    CUL::LOG::ILogger* getLoger() override;
+
 protected:
 private:
     IRect* createRect() override;
@@ -73,6 +75,8 @@ private:
     std::function<void()> m_onInitializeCallback;
 
     bool m_hasBeenInitialized = false;
+
+    CUL::LOG::ILogger* m_logger = nullptr;
 
 };
 

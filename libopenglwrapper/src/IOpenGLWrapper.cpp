@@ -3,11 +3,15 @@
 
 using namespace LOGLW;
 
-IOpenGLWrapper::IOpenGLWrapper( void )
+IOpenGLWrapper* s_instance = nullptr;
+
+IOpenGLWrapper* getInstance();
+
+IOpenGLWrapper::IOpenGLWrapper()
 {
 }
 
-IOpenGLWrapper::~IOpenGLWrapper( void )
+IOpenGLWrapper::~IOpenGLWrapper()
 {
 }
 
@@ -15,5 +19,11 @@ IOpenGLWrapper* LOGLW::createOpenGLWrapper(
     SDL2W::IWindow* window,
     SDL2W::ISDL2Wrapper* sdl2w )
 {
-    return new OpenGLWrapperConcrete( window, sdl2w );
+    s_instance = new OpenGLWrapperConcrete( window, sdl2w );
+    return s_instance;
+}
+
+IOpenGLWrapper* getInstance()
+{
+    return s_instance;
 }

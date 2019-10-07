@@ -2,7 +2,7 @@
 
 #include "libopenglwrapper/IProgram.hpp"
 
-#include "CUL/Color.hpp"
+#include "CUL/Graphics/Color.hpp"
 #include "CUL/Graphics/Rect2D.hpp"
 
 #include "IMPORT_glew.hpp"
@@ -14,8 +14,8 @@ NAMESPACE_BEGIN( OGLUTILS )
 using DispRect = CUL::Graphics::Rect2D<unsigned int>;
 
 using cunt = const unsigned int;
-using ColorS = CUL::ColorS;
-using ColorE = CUL::ColorE;
+using ColorS = CUL::Graphics::ColorS;
+using ColorE = CUL::Graphics::ColorE;
 
 const GLuint toGluint( cunt value );
 const GLenum getShaderType( CUL::CnstMyStr& fileExtension );

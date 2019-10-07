@@ -23,7 +23,7 @@ CC_LINK := g++ $(CPP_VERSION) $(ARCH_FLAG) $(DIAG_FLAG) -shared
 
 DEBUG_FLAGS = -ggdb
 RELEASE_FLAGS = -Ofast
-PROJECT_NAME = libOpenglWrapper
+PROJECT_NAME = libopenglwrapper
 IMP_LIB_NAME = $(PROJECT_NAME).a
 DLL_NAME = $(PROJECT_NAME)$(DYN_LIB_EXT)
 OUTPUT_DIR := ../$(BUILD_ROOT)

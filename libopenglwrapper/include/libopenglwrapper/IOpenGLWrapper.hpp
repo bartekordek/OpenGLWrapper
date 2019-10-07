@@ -8,7 +8,8 @@
 #include "CUL/Pos2D.hpp"
 #include "CUL/Size2D.hpp"
 #include "CUL/MyString.hpp"
-#include "CUL/Color.hpp"
+#include "CUL/Graphics/Color.hpp"
+#include "CUL/Log/ILogContainer.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -16,8 +17,8 @@ using Size2Du = CUL::Size2Du;
 using Pos2Di = CUL::Pos2Di;
 using MString = CUL::MyString;
 
-using ColorS = CUL::ColorS;
-using ColorE = CUL::ColorE;
+using ColorS = CUL::Graphics::ColorS;
+using ColorE = CUL::Graphics::ColorE;
 
 using CSize2Du = const Size2Du;
 using CPos2Di = const Pos2Di;
@@ -38,6 +39,8 @@ public:
     virtual IShaderFactory* getShaderFactory() = 0;
     virtual IObjectFactory* getObjectFactory() = 0;
 
+    virtual CUL::LOG::ILogger* getLoger() = 0;
+
 protected:
 private:
     IOpenGLWrapper( const IOpenGLWrapper& val ) = delete;
@@ -48,5 +51,7 @@ private:
 LIBOPENGLWRAPPER_API IOpenGLWrapper* createOpenGLWrapper(
     SDL2W::IWindow* window,
     SDL2W::ISDL2Wrapper* sdl2w );
+
+LIBOPENGLWRAPPER_API IOpenGLWrapper* getInstance();
 
 NAMESPACE_END( LOGLW )
