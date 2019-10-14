@@ -93,6 +93,9 @@
     <ClInclude Include="include\libopenglwrapper\ITexture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MatrixStack.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IOpenGLWrapper.cpp">

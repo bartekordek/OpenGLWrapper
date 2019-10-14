@@ -65,6 +65,7 @@ private:
 
     SafeBool m_runRenderLoop = true;
     SafeBool m_clearEveryFrame = true;
+    SafeBool m_clearModelView = true;
     SafeBool m_updateBuffers = true;
 
     ColorS m_backgroundColor;

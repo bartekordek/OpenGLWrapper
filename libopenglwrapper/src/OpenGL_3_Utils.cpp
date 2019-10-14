@@ -8,6 +8,16 @@
 using namespace LOGLW;
 using namespace OGLUTILS;
 
+
+void OGLUTILS::setViewPort( const ViewPortRect& rect )
+{
+    glViewport( 
+        static_cast<GLint>( rect.pos.getX() ),
+        static_cast<GLint>( rect.pos.getY() ),
+        static_cast<GLsizei>( rect.size.getWidth() ),
+        static_cast<GLsizei>( rect.size.getHeight() ) );
+}
+
 cunt OGLUTILS::createProgram()
 {
     const auto programId = static_cast<const unsigned int>(
@@ -129,19 +139,15 @@ void OGLUTILS::initContextVersion( cunt major, cunt minor )
     }
 }
 
-void OGLUTILS::setViewport( const DispRect& rect )
-{
-    glViewport( static_cast<GLint>( rect.x ),
-                static_cast<GLint>( rect.y ),
-                static_cast<GLsizei>( rect.width ),
-                static_cast<GLsizei>( rect.height ) );
-}
-
 void OGLUTILS::setProjectionAndModelToIdentity()
 {
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    glMatrixMode( GL_MODELVIEW );
+    resetMatrixToIdentity( GL_PROJECTION );
+    resetMatrixToIdentity( GL_MODELVIEW );
+}
+
+void OGLUTILS::resetMatrixToIdentity( const GLenum matrix )
+{
+    glMatrixMode( matrix );
     glLoadIdentity();
 }
 

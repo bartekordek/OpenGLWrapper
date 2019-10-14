@@ -104,9 +104,15 @@ void OpenGLWrapperConcrete::initialize()
     m_shaderFactory = new OpenGLShaderFactory();
 
     const auto& winSize = m_activeWindow->getSize();
-    const OGLUTILS::DispRect rect( winSize.getX(), winSize.getY(), 0 ,0  );
-    OGLUTILS::setViewport( rect );
+
     OGLUTILS::setProjectionAndModelToIdentity();
+
+    OGLUTILS::ViewPortRect rect;
+    rect.pos.setXY( 0, 0 );
+    rect.size.setWidth( winSize.getX() );
+    rect.size.setHeight( winSize.getY() );
+    OGLUTILS::setViewPort( rect );
+
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
 
     if( m_onInitializeCallback )
@@ -117,7 +123,6 @@ void OpenGLWrapperConcrete::initialize()
     m_hasBeenInitialized = true;
     m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
 }
-
 
 void OpenGLWrapperConcrete::executeTasks()
 {
@@ -131,10 +136,16 @@ void OpenGLWrapperConcrete::executeTasks()
 
 void OpenGLWrapperConcrete::renderFrame()
 {
-    if( this->m_clearEveryFrame )
+    if( m_clearEveryFrame )
     {
         OGLUTILS::clearColorAndDepthBuffer();
     }
+
+    if( m_clearModelView )
+    {
+        OGLUTILS::resetMatrixToIdentity( GL_MODELVIEW );
+    }
+
     setBackgroundColor( m_backgroundColor );
 
     renderObjects();
@@ -142,10 +153,12 @@ void OpenGLWrapperConcrete::renderFrame()
 
 void OpenGLWrapperConcrete::renderObjects()
 {
-    for( auto& renderableObject : m_objectsToRender )
+    for( auto& renderableObject: m_objectsToRender )
     {
         renderableObject->render();
     }
+
+    OGLUTILS::createQuad();
 }
 
 void OpenGLWrapperConcrete::refreshBuffers()

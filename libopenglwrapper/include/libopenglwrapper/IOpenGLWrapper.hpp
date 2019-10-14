@@ -5,16 +5,16 @@
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 
-#include "CUL/Pos2D.hpp"
-#include "CUL/Size2D.hpp"
+#include "CUL/Graphics/Pos2D.hpp"
+#include "CUL/Graphics//Size2D.hpp"
 #include "CUL/MyString.hpp"
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-using Size2Du = CUL::Size2Du;
-using Pos2Di = CUL::Pos2Di;
+using Size2Du = CUL::Graphics::Size2Du;
+using Pos2Di = CUL::Graphics::Pos2Di;
 using MString = CUL::MyString;
 
 using ColorS = CUL::Graphics::ColorS;
