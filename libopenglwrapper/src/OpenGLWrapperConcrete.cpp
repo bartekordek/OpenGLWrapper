@@ -54,6 +54,11 @@ void OpenGLWrapperConcrete::onInitialize( const std::function<void()>& callback 
     m_onInitializeCallback = callback;
 }
 
+void OpenGLWrapperConcrete::beforeFrame( const std::function<void()>& callback )
+{
+    m_onBeforeFrame = callback;
+}
+
 IShaderFactory* OpenGLWrapperConcrete::getShaderFactory()
 {
     return &*m_shaderFactory;
@@ -88,6 +93,10 @@ void OpenGLWrapperConcrete::renderLoop()
     CUL::ThreadUtils::setCurrentThreadName( "OpenGL render thread." );
     while( m_runRenderLoop )
     {
+        if( m_onBeforeFrame )
+        {
+            m_onBeforeFrame();
+        }
         executeTasks();
         renderFrame();
         refreshBuffers();

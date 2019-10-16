@@ -41,6 +41,9 @@ public:
 
     virtual CUL::LOG::ILogger* getLoger() = 0;
 
+    virtual void beforeFrame( const std::function<void()>& callback ) = 0;
+
+
 protected:
 private:
     IOpenGLWrapper( const IOpenGLWrapper& val ) = delete;

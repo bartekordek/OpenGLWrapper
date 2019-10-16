@@ -34,6 +34,7 @@ public:
     void startRenderingLoop() override;
     void stopRenderingLoop() override;
     void onInitialize( const std::function<void()>& callback ) override;
+    void beforeFrame( const std::function<void()>& callback ) override;
 
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
@@ -74,6 +75,7 @@ private:
     std::set<IRenderable*> m_objectsToRender;
 
     std::function<void()> m_onInitializeCallback;
+    std::function<void()> m_onBeforeFrame;
 
     bool m_hasBeenInitialized = false;
 
