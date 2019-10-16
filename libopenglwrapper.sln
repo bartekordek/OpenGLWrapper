@@ -24,14 +24,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsdl2wrapperTestApp-v141"
 		{946707F5-BE49-4A7F-9CD9-0BFF983CE298} = {946707F5-BE49-4A7F-9CD9-0BFF983CE298}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libculTests-v142", "deps\SDL2Wrapper\deps\CUL\libculTests\libculTests.vcxproj", "{6B7FF520-98CF-4132-813C-0F205C22152F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A44B1777-B335-4580-AE9E-89CB3779F81E} = {A44B1777-B335-4580-AE9E-89CB3779F81E}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcul-v141", "deps\SDL2Wrapper\deps\CUL\libcul\libcul-v141.vcxproj", "{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libopenglwrapperPlaygroundApp", "libopenglwrapperPlaygroundApp\libopenglwrapperPlaygroundApp.vcxproj", "{D140819A-A939-4EEE-96A4-44E60831F93E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8A83731D-8F5C-4AE8-8CCF-74B7B18609DB} = {8A83731D-8F5C-4AE8-8CCF-74B7B18609DB}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libculTests-v141", "deps\SDL2Wrapper\deps\CUL\libculTests\libculTests-v141.vcxproj", "{6B7FF520-98CF-4132-813C-0F205C22152F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA} = {243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,14 +84,6 @@ Global
 		{D43D15FF-25E5-47DF-A66C-7F16B4D54971}.Release|Win32.Build.0 = Release|Win32
 		{D43D15FF-25E5-47DF-A66C-7F16B4D54971}.Release|x64.ActiveCfg = Release|x64
 		{D43D15FF-25E5-47DF-A66C-7F16B4D54971}.Release|x64.Build.0 = Release|x64
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|Win32.Build.0 = Debug|Win32
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|x64.ActiveCfg = Debug|x64
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|x64.Build.0 = Debug|x64
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|Win32.ActiveCfg = Release|Win32
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|Win32.Build.0 = Release|Win32
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|x64.ActiveCfg = Release|x64
-		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|x64.Build.0 = Release|x64
 		{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}.Debug|Win32.ActiveCfg = Debug|Win32
 		{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}.Debug|Win32.Build.0 = Debug|Win32
 		{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}.Debug|x64.ActiveCfg = Debug|x64
@@ -105,6 +100,14 @@ Global
 		{D140819A-A939-4EEE-96A4-44E60831F93E}.Release|Win32.Build.0 = Release|Win32
 		{D140819A-A939-4EEE-96A4-44E60831F93E}.Release|x64.ActiveCfg = Release|x64
 		{D140819A-A939-4EEE-96A4-44E60831F93E}.Release|x64.Build.0 = Release|x64
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|Win32.Build.0 = Debug|Win32
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|x64.ActiveCfg = Debug|x64
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Debug|x64.Build.0 = Debug|x64
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|Win32.ActiveCfg = Release|Win32
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|Win32.Build.0 = Release|Win32
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|x64.ActiveCfg = Release|x64
+		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

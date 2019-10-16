@@ -1,7 +1,8 @@
 #include "OpenGLWrapperConcrete.hpp"
 #include "OpenGLShaderFactory.hpp"
 #include "Primitives/TriangleImpl.hpp"
-#include "CUL/ConsoleUtilities.hpp"
+#include "CUL/GenericUtils/ConsoleUtilities.hpp"
+#include "CUL/ITimer.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "OpenGL_3_Utils.hpp"
@@ -93,13 +94,10 @@ void OpenGLWrapperConcrete::renderLoop()
     CUL::ThreadUtils::setCurrentThreadName( "OpenGL render thread." );
     while( m_runRenderLoop )
     {
-        if( m_onBeforeFrame )
-        {
-            m_onBeforeFrame();
-        }
         executeTasks();
         renderFrame();
         refreshBuffers();
+        CUL::ITimer::sleepMiliSeconds( 55 );
     }
 }
 
@@ -129,6 +127,8 @@ void OpenGLWrapperConcrete::initialize()
         m_onInitializeCallback();
     }
 
+    OGLUTILS::listExtensions();
+
     m_hasBeenInitialized = true;
     m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
 }
@@ -145,6 +145,7 @@ void OpenGLWrapperConcrete::executeTasks()
 
 void OpenGLWrapperConcrete::renderFrame()
 {
+    setBackgroundColor( m_backgroundColor );
     if( m_clearEveryFrame )
     {
         OGLUTILS::clearColorAndDepthBuffer();
@@ -155,8 +156,10 @@ void OpenGLWrapperConcrete::renderFrame()
         OGLUTILS::resetMatrixToIdentity( GL_MODELVIEW );
     }
 
-    setBackgroundColor( m_backgroundColor );
-
+    if( m_onBeforeFrame )
+    {
+        m_onBeforeFrame();
+    }
     renderObjects();
 }
 
@@ -166,7 +169,8 @@ void OpenGLWrapperConcrete::renderObjects()
     {
         renderableObject->render();
     }
-
+    glTranslatef( 2.0f, 2.0f, 0.0f );
+    glScalef( 0.2f, 0.2f, 0.2f );
     OGLUTILS::createQuad();
 }
 

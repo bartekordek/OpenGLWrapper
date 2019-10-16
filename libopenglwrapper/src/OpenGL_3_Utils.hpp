@@ -50,5 +50,7 @@ void clearColorAndDepthBuffer();
 void createQuad();
 void clearColorTo( const ColorS color );
 
+void listExtensions();
+
 NAMESPACE_END( OGLUTILS )
 NAMESPACE_END( LOGLW )

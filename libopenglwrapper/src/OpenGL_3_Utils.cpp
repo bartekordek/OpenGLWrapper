@@ -5,6 +5,10 @@
 
 #include "ImportFreeglut.hpp"
 
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_sstream.hpp"
+
 using namespace LOGLW;
 using namespace OGLUTILS;
 
@@ -174,4 +178,32 @@ void OGLUTILS::clearColorTo( const ColorS color )
         static_cast<GLclampf>( color.getGF() ),
         static_cast<GLclampf>( color.getBF() ),
         static_cast<GLclampf>( color.getAF() ) );
+}
+
+template <typename Out>
+void split( const std::string &s, char delim, Out result ) {
+    std::istringstream iss( s );
+    std::string item;
+    while( std::getline( iss, item, delim ) ) {
+        *result++ = item;
+    }
+}
+
+std::vector<std::string> split( const std::string &s, char delim ) {
+    std::vector<std::string> elems;
+    split( s, delim, std::back_inserter( elems ) );
+    return elems;
+}
+
+void OGLUTILS::listExtensions()
+{
+    GLint extensionsCount = 0;
+    glGetIntegerv( GL_NUM_EXTENSIONS, &extensionsCount );
+    const GLubyte* extensions = glGetString( GL_EXTENSIONS );
+    CUL::MyString wat = static_cast<const unsigned char*>( extensions );
+    std::vector<std::string> extensionsVec = split( wat.string(), ' ' );
+    for( const auto& extension: extensionsVec )
+    {
+        std::cout << extension << "\n";
+    }
 }

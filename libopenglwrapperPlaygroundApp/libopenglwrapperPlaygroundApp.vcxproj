@@ -101,13 +101,12 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libcul-v142.lib;libsdl2wrapper.lib;libopenglwrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -132,13 +131,12 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libcul-v142.lib;libsdl2wrapper.lib;libopenglwrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -163,8 +161,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
       <SupportJustMyCode>false</SupportJustMyCode>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
@@ -173,7 +170,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-v142.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -206,8 +203,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
       <SupportJustMyCode>false</SupportJustMyCode>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
@@ -216,7 +212,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-v142.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
