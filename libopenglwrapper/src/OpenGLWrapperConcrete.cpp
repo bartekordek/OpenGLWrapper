@@ -106,7 +106,9 @@ void OpenGLWrapperConcrete::initialize()
     m_logger->log( "OpenGLWrapperConcrete::initialize()..." );
     m_oglContext = SDL_GL_CreateContext( m_activeWindow->getSDLWindow() );
 
-    OGLUTILS::initContextVersion( 3, 1 );
+    auto versionString = OGLUTILS::initContextVersion( 3, 1 );
+    m_logger->log( "OpenGLWrapperConcrete::initialize(), OpenGL version:" );
+    m_logger->log( versionString );
 
     m_shaderFactory = new OpenGLShaderFactory();
 

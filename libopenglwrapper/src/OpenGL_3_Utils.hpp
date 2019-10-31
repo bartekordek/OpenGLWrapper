@@ -7,6 +7,7 @@
 #include "CUL/Graphics/Pos2D.hpp"
 #include "CUL/Graphics/Size2D.hpp"
 #include "CUL/Math/Angle.hpp"
+#include "CUL/MyString.hpp"
 
 #include "IMPORT_glew.hpp"
 
@@ -44,7 +45,7 @@ cunt createShader( const IFile& shaderCode );
 void attachShader( cunt programId, cunt shaderId );
 void removeShader( cunt shaderId );
 
-void initContextVersion( cunt major, cunt minor );
+CUL::MyString initContextVersion( cunt major, cunt minor );
 void setProjectionAndModelToIdentity();
 void clearColorAndDepthBuffer();
 void createQuad();
