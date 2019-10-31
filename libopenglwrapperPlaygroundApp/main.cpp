@@ -1,8 +1,3 @@
-//#include "CUL/Filesystem/FileFactory.hpp"
-//#include "CUL/GenericUtils/DumbPtr.hpp"
-//#include "CUL/Graphics/Color.hpp"
-
-
 #include "MatrixStack.hpp"
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
