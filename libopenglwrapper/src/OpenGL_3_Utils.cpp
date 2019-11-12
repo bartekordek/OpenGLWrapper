@@ -12,6 +12,13 @@
 using namespace LOGLW;
 using namespace OGLUTILS;
 
+void assertOnProgramError( cunt programId, const GLenum val );
+const CUL::MyString enumToString( const GLenum val );
+
+void Assert( const bool value, const CUL::MyString& message )
+{
+    CUL::Assert::simple( value, message );
+}
 
 void OGLUTILS::setViewPort( const ViewPortRect& rect )
 {
@@ -30,24 +37,36 @@ cunt OGLUTILS::createProgram()
     if( 0 == programId )
     {
         GLenum err = glGetError();
-        CUL::Assert::simple(
+        Assert(
             GL_NO_ERROR == programId,
             "Error creating program, error numer: " + CUL::MyString( err ) );
         return 0;
     }
 
-    return cunt();
+    return programId;
 }
 
 void OGLUTILS::removeProgram( cunt programId )
 {
     glDeleteProgram( toGluint( programId ) );
-    //TODO: error handling when deleting.
+    assertOnProgramError( programId, GL_DELETE_STATUS );
 }
 
 void OGLUTILS::useProgram( cunt programId )
 {
     glUseProgram( static_cast<GLuint>( programId ) );
+}
+
+void OGLUTILS::linkProgram( cunt programId )
+{
+    glLinkProgram( static_cast<GLuint>( programId ) );
+    assertOnProgramError( programId, GL_LINK_STATUS );
+}
+
+void OGLUTILS::validateProgram( cunt programId )
+{
+    glValidateProgram( programId );
+    assertOnProgramError( programId, GL_VALIDATE_STATUS );
 }
 
 cunt OGLUTILS::createShader( const IFile& shaderCode )
@@ -70,10 +89,35 @@ cunt OGLUTILS::createShader( const IFile& shaderCode )
         CUL::MyString shaderCompilationErrorMessage = "Error compiling shader: " +
             errorAsString + "\n";
         shaderCompilationErrorMessage += "Shader Path: " + shaderCode.getPath().getPath() + "\n";
-        CUL::Assert::simple( false, shaderCompilationErrorMessage );
+        Assert( false, shaderCompilationErrorMessage );
     }
 
     return id;
+}
+
+void assertOnProgramError( cunt programId, const GLenum val )
+{
+    GLint result = 0;
+    glGetProgramiv( programId, val, &result );
+    if( GL_FALSE == result )
+    {
+        GLchar eLog[1024] = { 0 };
+        glGetProgramInfoLog( programId, sizeof( eLog ), nullptr, eLog );
+        CUL::MyString message = "Error on " + enumToString( val ) + std::string( eLog );
+        Assert( false, message );
+    }
+}
+
+const CUL::MyString enumToString( const GLenum val )
+{
+    switch( val )
+    {
+    case GL_COMPILE_STATUS: return "compile";
+    case GL_LINK_STATUS: return "link";
+    case GL_VALIDATE_STATUS: return "validate";
+    default:
+        return "";
+    }
 }
 
 const GLenum OGLUTILS::getShaderType( CUL::CnstMyStr& fileExtension )

@@ -40,6 +40,8 @@ const GLenum getShaderType( CUL::CnstMyStr& fileExtension );
 cunt createProgram();
 void removeProgram( cunt programId );
 void useProgram( cunt programId );
+void linkProgram( cunt programId );
+void validateProgram( cunt programId );
 
 cunt createShader( const IFile& shaderCode );
 void attachShader( cunt programId, cunt shaderId );
