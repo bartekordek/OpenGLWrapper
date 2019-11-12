@@ -6,7 +6,7 @@ using namespace LOGLW;
 ProgramConcrete::ProgramConcrete():
     m_id( OGLUTILS::createProgram() )
 {
-    
+
 }
 
 ProgramConcrete::~ProgramConcrete()
@@ -34,17 +34,25 @@ CnstMyStr ProgramConcrete::getAttribute( CnstMyStr& )
     return CnstMyStr();
 }
 
-void ProgramConcrete::attachShader( const IShader& )
+void ProgramConcrete::attachShader( const IShader* shader )
 {
-    //TODO
+    auto shaderId = shader->getId();
+    OGLUTILS::attachShader( m_id, shaderId );
 }
 
 void ProgramConcrete::link()
 {
+    OGLUTILS::linkProgram( m_id );
 }
 
 void ProgramConcrete::userProgram()
 {
+    OGLUTILS::useProgram( m_id );
+}
+
+void ProgramConcrete::validate()
+{
+    OGLUTILS::validateProgram( m_id );
 }
 
 cunt ProgramConcrete::getProgramId() const

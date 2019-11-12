@@ -1,6 +1,7 @@
 #pragma once
 
 #include "libopenglwrapper/IProgram.hpp"
+#include "CUL/GenericUtils/DumbPtr.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -15,9 +16,10 @@ public:
     CnstMyStr getUniform( CnstMyStr& name ) override;
     CnstMyStr getAttribute( CnstMyStr& name ) override;
 
-    void attachShader( const IShader& shader ) override;
+    void attachShader( const IShader* shader ) override;
     void link() override;
     void userProgram() override;
+    void validate() override;
 
     virtual cunt getProgramId()const override;
 

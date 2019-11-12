@@ -18,9 +18,10 @@ public:
     virtual CnstMyStr getUniform( CnstMyStr& name ) = 0;
     virtual CnstMyStr getAttribute( CnstMyStr& name ) = 0;
 
-    virtual void attachShader( const IShader& shader ) = 0;
+    virtual void attachShader( const IShader* shader ) = 0;
     virtual void link() = 0;
     virtual void userProgram() = 0;
+    virtual void validate() = 0;
 
     virtual cunt getProgramId()const = 0;
 
