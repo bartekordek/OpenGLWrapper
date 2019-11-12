@@ -233,6 +233,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="include\libopenglwrapper\IOpenGLWrapper.hpp" />
     <ClInclude Include="include\libopenglwrapper\Import.hpp" />
     <ClInclude Include="include\libopenglwrapper\IProgram.hpp" />
+    <ClInclude Include="include\libopenglwrapper\IProgramFactory.hpp" />
     <ClInclude Include="include\libopenglwrapper\IRenderable.hpp" />
     <ClInclude Include="include\libopenglwrapper\IShader.hpp" />
     <ClInclude Include="include\libopenglwrapper\IShaderFactory.hpp" />
