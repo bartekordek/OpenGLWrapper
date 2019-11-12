@@ -1,5 +1,4 @@
 #include "OpenGLWrapperConcrete.hpp"
-#include "OpenGLShaderFactory.hpp"
 #include "Primitives/TriangleImpl.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/ITimer.hpp"
@@ -70,6 +69,11 @@ IObjectFactory* OpenGLWrapperConcrete::getObjectFactory()
     return this;
 }
 
+IProgramFactory* OpenGLWrapperConcrete::getProgramFactory()
+{
+    return &*m_shaderFactory;
+}
+
 CUL::LOG::ILogger* OpenGLWrapperConcrete::getLoger()
 {
     return m_logger;
@@ -118,8 +122,7 @@ void OpenGLWrapperConcrete::initialize()
 
     OGLUTILS::ViewPortRect rect;
     rect.pos.setXY( 0, 0 );
-    rect.size.setWidth( winSize.getX() );
-    rect.size.setHeight( winSize.getY() );
+    rect.size = winSize;
     OGLUTILS::setViewPort( rect );
 
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );

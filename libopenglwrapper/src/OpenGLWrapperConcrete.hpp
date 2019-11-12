@@ -1,11 +1,12 @@
 #pragma once
 
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
+#include "OpenGLShaderFactory.hpp"
 
 #include "SDL2Wrapper/IMPORT_SDL_video.hpp"
 
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
-#include "CUL/LckPrim.hpp"
+#include "CUL/GenericUtils/LckPrim.hpp"
 #include "CUL/ThreadUtils.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_queue.hpp"
@@ -15,7 +16,7 @@
 NAMESPACE_BEGIN( LOGLW )
 
 using ITask = CUL::GUTILS::ITask;
-using SafeBool = CUL::LckPrim<bool>;
+using SafeBool = CUL::GUTILS::LckPrim<bool>;
 
 class OpenGLWrapperConcrete final:
     public IOpenGLWrapper,
@@ -38,6 +39,7 @@ public:
 
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
+    IProgramFactory* getProgramFactory() override;
 
     CUL::LOG::ILogger* getLoger() override;
 
@@ -56,7 +58,7 @@ private:
     void initialize();
     void executeTasks();
 
-    CUL::GUTILS::DumbPtr<IShaderFactory> m_shaderFactory;
+    CUL::GUTILS::DumbPtr<OpenGLShaderFactory> m_shaderFactory;
 
     SDL2W::ISDL2Wrapper* m_sdlW = nullptr;
     SDL2W::IWindow* m_activeWindow = nullptr;
