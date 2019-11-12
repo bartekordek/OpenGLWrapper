@@ -2,6 +2,7 @@
 
 #include "libopenglwrapper/IObjectFactory.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
+#include "libopenglwrapper/IProgramFactory.hpp"
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 
@@ -38,6 +39,7 @@ public:
 
     virtual IShaderFactory* getShaderFactory() = 0;
     virtual IObjectFactory* getObjectFactory() = 0;
+    virtual IProgramFactory* getProgramFactory() = 0;
 
     virtual CUL::LOG::ILogger* getLoger() = 0;
 
