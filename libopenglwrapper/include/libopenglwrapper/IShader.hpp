@@ -28,6 +28,4 @@ private:
 
 };
 
-using ShaderPtr = CUL::GUTILS::DumbPtr<IShader>;
-
 NAMESPACE_END( LOGLW )
