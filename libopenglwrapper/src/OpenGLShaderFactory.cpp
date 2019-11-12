@@ -2,11 +2,13 @@
 #include "OpenGLShaderFactory.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "ShaderConcrete.hpp"
+#include "ProgramConcrete.hpp"
 
 using OpenGLShaderFactory = LOGLW::OpenGLShaderFactory;
 using ShaderPtr = LOGLW::ShaderPtr;
 using IFile = LOGLW::IFile;
 using IShader = LOGLW::IShader;
+using IProgram = LOGLW::IProgram;
 
 auto logger = CUL::LOG::LOG_CONTAINER::getLogger();
 
@@ -31,6 +33,16 @@ IShader* OpenGLShaderFactory::createShader( const IFile& shaderCode )
         logger->log( "OpenGLShaderFactory::createShader: shader does not exist." );
         return addShader( shaderCode );
     }
+}
+
+IProgram* OpenGLShaderFactory::createProgram()
+{
+    logger->log( "OpenGLShaderFactory::createProgram()" );
+
+    auto result = new ProgramConcrete();
+    m_programs[result->getProgramId()] = result;
+
+    return result;
 }
 
 const bool OpenGLShaderFactory::shaderExist( const IFile & shaderCode ) const
