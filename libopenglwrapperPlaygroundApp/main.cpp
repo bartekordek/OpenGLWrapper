@@ -3,72 +3,105 @@
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 #include "CUL/Math/Axis.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/Graphics/Rect2D.hpp"
 
 using SDLWrap = CUL::GUTILS::DumbPtr<SDL2W::ISDL2Wrapper>;
 using GLWrap = CUL::GUTILS::DumbPtr<LOGLW::IOpenGLWrapper>;
 using Color = CUL::Graphics::ColorS;
+using WinEventType = SDL2W::WindowEvent::Type;
+using ShaderFile = CUL::GUTILS::DumbPtr<CUL::FS::IFile>;
+template <typename TYPE> using DumbPtr = CUL::GUTILS::DumbPtr<TYPE>;
+using FF = CUL::FS::FileFactory;
+using Rect = CUL::Graphics::Rect3Di;
 
-SDL2W::ISDL2Wrapper* g_sdlw = nullptr;
+DumbPtr<SDL2W::ISDL2Wrapper> g_sdlw;
 GLWrap g_oglw;
 LOGLW::MatrixStack matrixStack;
 Color red( 1.0f, 0.0f, 0.0f, 1.0f );
 Color blue( 0.0f, 0.0f, 1.0f, 1.0f );
 GLfloat angle = 0.0f;
+DumbPtr<LOGLW::ITriangle> triangle;
+ShaderFile vertexShaderFile;
+ShaderFile fragmentShaderFile;
 
 void afterInit();
 void renderScene( void );
+void onKeyBoardEvent( const SDL2W::IKey& key );
+void onWindowEvent( const WinEventType type );
+void closeApp();
 
 int main( int argc, char** argv )
 {
     auto& argsInstance = CUL::GUTILS::ConsoleUtilities::getInstance();
     argsInstance.setArgs( argc, argv );
 
-    SDLWrap sdlW = SDL2W::createSDL2Wrapper(
+    g_sdlw = SDL2W::createSDL2Wrapper(
         SDL2W::Vector3Di( 256, 256, 0 ),
         SDL2W::Vector3Du( 640, 480, 0 ), "Test", true );
-    g_sdlw = sdlW.get();
-    auto window = sdlW->getMainWindow();
+    auto window = g_sdlw->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
 
-    g_oglw = LOGLW::createOpenGLWrapper( window, sdlW.get() );
+    g_oglw = LOGLW::createOpenGLWrapper( window, g_sdlw );
 
     g_oglw->onInitialize( afterInit );
     g_oglw->beforeFrame( renderScene );
 
-  //  sdlW->addKeyboardEventCallback( &onKeyBoardEvent );
-  //  sdlW->registerWindowEventCallback( &onWindowEvent );
+    g_sdlw->addKeyboardEventCallback( &onKeyBoardEvent );
+    g_sdlw->registerWindowEventCallback( &onWindowEvent );
 
     g_oglw->startRenderingLoop();
 
-    sdlW->runEventLoop();
+    g_sdlw->runEventLoop();
 
     return 0;
 }
 
+void setPerspectiveProjection( const Rect& viewPortRect, const double fovAngle = 90.0 );
 void afterInit()
 {
-    //auto sf = g_oglw->getShaderFactory();
+    auto sf = g_oglw->getShaderFactory();
     //auto of = g_oglw->getObjectFactory();
-    //CUL::FS::Path shadersDir( "../libopenglwrapper/shaders/" );
-    //vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "vertexShader.vert" );
-    //fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "fragmentShader.frag" );
+    auto pf = g_oglw->getProgramFactory();
 
-    //vertexShaderFile->load( true );
-    //fragmentShaderFile->load( true );
+    CUL::FS::Path shadersDir( "../libopenglwrapper/shaders/" );
+    vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "vertexShader.vert" );
+    fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "fragmentShader.frag" );
 
-    //triangle = of->createTriangle();
+    vertexShaderFile->load( true );
+    fragmentShaderFile->load( true );
 
-    //triangle->addShader( *vertexShaderFile.get(), sf );
-    //triangle->addShader( *fragmentShaderFile.get(), sf );
+    /*triangle = of->createTriangle();
+
+    triangle->addShader( *vertexShaderFile.get(), sf );
+    triangle->addShader( *fragmentShaderFile.get(), sf );*/
+
+    auto vs = sf->createShader( *vertexShaderFile.get() );
+    auto fs = sf->createShader( *fragmentShaderFile.get() );
+
+    auto program = pf->createProgram();
+
+    program->attachShader( vs );
+    program->attachShader( fs );
+    program->link();
+    program->validate();
 
     auto w = static_cast<GLsizei>( g_sdlw->getMainWindow()->getSize().getX() );
     auto h = static_cast<GLsizei>( g_sdlw->getMainWindow()->getSize().getY() );
+    Rect rect;
+    rect.width = w;
+    rect.height = h;
 
-    GLfloat ratio = (GLfloat) ( w * 1.0 / h );
+    setPerspectiveProjection( rect );
+}
+
+void setPerspectiveProjection( const Rect& viewPortRect, const double fovAngle )
+{
+    GLfloat ratio = (GLfloat) ( viewPortRect.width * 1.0 / viewPortRect.height );
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    glViewport( 0, 0, w, h );
-    gluPerspective( 90, ratio, 1, 100 );
+    glViewport( viewPortRect.x, viewPortRect.y, viewPortRect.width, viewPortRect.height );
+    gluPerspective( fovAngle, ratio, 1, 100 );
 }
 
 void resetTransformations();
@@ -81,28 +114,20 @@ void renderScene( void )
         0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f );
     matrixStack.push();
-        //glTranslatef( 2.0f, 2.0f, 0.0f );
         glRotatef( angle, 0.0f, 0.0f, 1.0f );
         glTranslatef( 2.0f, 2.0f, 0.0f );
         drawTriangle( red );
         glRotatef( 180, 0.0f, 0.0f, 1.0f );
         drawTriangle( blue );
     matrixStack.pop();
-    //ms.push();
-    //auto z = 4.0f;
-    //glTranslatef( 4.0f, 0.0f, z );
-    //glRotatef( angle, 0.0f, 1.0f, 0.0f );
-    //drawTriangle();
-    //ms.pop();
 
-    angle += 0.2f;
+    angle += 0.8f;
 }
 
 void resetTransformations()
 {
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
-
     gluLookAt(
         0.0f, 0.0f, 10.0f,
         0.0f, 0.0f, 0.0f,
@@ -119,106 +144,24 @@ void drawTriangle( const Color& color )
     glEnd();
 }
 
-//
-//using WinEventType = SDL2W::WindowEvent::Type;
-//using ShaderFile = CUL::GUTILS::DumbPtr<CUL::FS::IFile>;
-//
-//
-//using FF = CUL::FS::FileFactory;
-//
-//void onKeyBoardEvent( const SDL2W::IKey& key );
-//void onWindowEvent( const WinEventType type );
-//
-//
-//
-//void closeApp();
-//
+void onKeyBoardEvent( const SDL2W::IKey& key )
+{
+    if( key.getKeyName() == "q" || key.getKeyName() == "Q" )
+    {
+        closeApp();
+    }
+}
 
-//ShaderFile vertexShaderFile;
-//ShaderFile fragmentShaderFile;
-//LOGLW::ITriangle* triangle = nullptr;
-//
-//CUL::FS::IFile* getFile( const CUL::FS::Path& filePath );
-//
-//
-//void changeSize( int w, int h );
-//
-//
-//
-//
-//
-//
+void onWindowEvent( const WinEventType type )
+{
+    if( WinEventType::CLOSE == type )
+    {
+        closeApp();
+    }
+}
 
-//
-//LOGLW::MatrixStack ms;
-//
-//int main( int argc, char** argv )
-//{
-
-//
-//    
-
-//    return 0;
-//}
-
-////int main( int argc, char** argv )
-////{
-////    glutInit( &argc, argv );
-////    glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA );
-////    glutInitWindowPosition( 800, 400 );
-////    glutInitWindowSize( 320, 320 );
-////    glutCreateWindow( "Generic Window name." );
-////    glutDisplayFunc( renderScene );
-////    // glutReshapeFunc( changeSize );
-////    glutIdleFunc( renderScene );
-////    changeSize( 320, 240 );
-////    glutMainLoop();
-////    return 0;
-////}
-//
-//void changeSize( int w, int h )
-//{
-//    if( h == 0 )
-//    {
-//        h = 1;
-//    }
-//
-//    if( w == 0 )
-//    {
-//        w = 1;
-//    }
-//
-//    GLfloat ratio = (GLfloat) ( w * 1.0 / h );
-//    glMatrixMode( GL_PROJECTION );
-//    glLoadIdentity();
-//    glViewport( 0, 0, w, h );
-//    gluPerspective( 90, ratio, 1, 100 );
-//}
-//
-
-//
-
-//
-
-//
-//void onKeyBoardEvent( const SDL2W::IKey& key )
-//{
-//    if( key.getKeyName() == "q" || key.getKeyName() == "Q" )
-//    {
-//        closeApp();
-//    }
-//}
-//
-//void onWindowEvent( const WinEventType type )
-//{
-//    if( WinEventType::CLOSE == type )
-//    {
-//        closeApp();
-//    }
-//}
-//
-//void closeApp()
-//{
-//    g_oglw->stopRenderingLoop();
-//    g_sdlw->stopEventLoop();
-//}
+void closeApp()
+{
+    g_oglw->stopRenderingLoop();
+    g_sdlw->stopEventLoop();
+}
