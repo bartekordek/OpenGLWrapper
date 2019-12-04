@@ -10,7 +10,7 @@ using SDLWrap = CUL::GUTILS::DumbPtr<SDL2W::ISDL2Wrapper>;
 using GLWrap = CUL::GUTILS::DumbPtr<LOGLW::IOpenGLWrapper>;
 using Color = CUL::Graphics::ColorS;
 using WinEventType = SDL2W::WindowEvent::Type;
-using ShaderFile = CUL::GUTILS::DumbPtr<CUL::FS::IFile>;
+using ShaderFile = CUL::FS::IFile;
 template <typename TYPE> using DumbPtr = CUL::GUTILS::DumbPtr<TYPE>;
 using FF = CUL::FS::FileFactory;
 using Rect = CUL::Graphics::Rect3Di;
@@ -19,11 +19,11 @@ DumbPtr<SDL2W::ISDL2Wrapper> g_sdlw;
 GLWrap g_oglw;
 LOGLW::MatrixStack matrixStack;
 Color red( 1.0f, 0.0f, 0.0f, 1.0f );
-Color blue( 0.0f, 0.0f, 1.0f, 1.0f );
+Color yellow( 1.0f, 1.0f, 0.0f, 1.0f );
 GLfloat angle = 0.0f;
 DumbPtr<LOGLW::ITriangle> triangle;
-ShaderFile vertexShaderFile;
-ShaderFile fragmentShaderFile;
+ShaderFile* vertexShaderFile = nullptr;
+ShaderFile* fragmentShaderFile = nullptr;
 SDL2W::WindowData windowData;
 
 void afterInit();
@@ -47,7 +47,7 @@ int main( int argc, char** argv )
     auto window = g_sdlw->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
 
-    g_oglw = LOGLW::createOpenGLWrapper( window, g_sdlw );
+    g_oglw = LOGLW::createOpenGLWrapper( g_sdlw );
 
     g_oglw->onInitialize( afterInit );
     g_oglw->beforeFrame( renderScene );
@@ -76,13 +76,8 @@ void afterInit()
     vertexShaderFile->load( true );
     fragmentShaderFile->load( true );
 
-    /*triangle = of->createTriangle();
-
-    triangle->addShader( *vertexShaderFile.get(), sf );
-    triangle->addShader( *fragmentShaderFile.get(), sf );*/
-
-    auto vs = sf->createShader( *vertexShaderFile.get() );
-    auto fs = sf->createShader( *fragmentShaderFile.get() );
+    auto vs = sf->createShader( *vertexShaderFile );
+    auto fs = sf->createShader( *fragmentShaderFile );
 
     auto program = pf->createProgram();
 
@@ -125,7 +120,7 @@ void renderScene( void )
         glTranslatef( 2.0f, 2.0f, 0.0f );
         drawTriangle( red );
         glRotatef( 180, 0.0f, 0.0f, 1.0f );
-        drawTriangle( blue );
+        drawTriangle( yellow );
     matrixStack.pop();
 
     angle += 0.8f;
