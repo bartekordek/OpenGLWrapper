@@ -3,12 +3,14 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "ShaderConcrete.hpp"
 #include "ProgramConcrete.hpp"
+#include "OpenGL_3_Utils.hpp"
 
 using OpenGLShaderFactory = LOGLW::OpenGLShaderFactory;
 using ShaderPtr = LOGLW::ShaderPtr;
 using IFile = LOGLW::IFile;
 using IShader = LOGLW::IShader;
 using IProgram = LOGLW::IProgram;
+namespace UTILS = LOGLW::OGLUTILS;
 
 auto logger = CUL::LOG::LOG_CONTAINER::getLogger();
 
@@ -18,6 +20,9 @@ OpenGLShaderFactory::OpenGLShaderFactory()
 
 OpenGLShaderFactory::~OpenGLShaderFactory()
 {
+    UTILS::useProgram( 0 );
+    m_shaders.clear();
+    m_programs.clear();
 }
 
 IShader* OpenGLShaderFactory::createShader( const IFile& shaderCode )
