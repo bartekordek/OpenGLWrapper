@@ -16,7 +16,8 @@
                 "${workspaceFolder}/deps/SDL2Wrapper/SDL2-2.0.8/include",
                 "${workspaceFolder}/deps/SDL2Wrapper/SDL2_image-2.0.3/include",
                 "${workspaceFolder}/deps/SDL2Wrapper/SDL2_ttf-2.0.14/include",
-                "${workspaceFolder}/deps/SDL2Wrapper/deps/CUL/libcul/inc"
+                "${workspaceFolder}/deps/SDL2Wrapper/deps/CUL/libcul/inc",
+                "${workspaceFolder}/deps/SDL2Wrapper/deps/CUL/deps/glm"
             ],
             "defines": [
                 "_DEBUG",

@@ -24,6 +24,7 @@ GLfloat angle = 0.0f;
 DumbPtr<LOGLW::ITriangle> triangle;
 ShaderFile vertexShaderFile;
 ShaderFile fragmentShaderFile;
+SDL2W::WindowData windowData;
 
 void afterInit();
 void renderScene( void );
@@ -36,9 +37,13 @@ int main( int argc, char** argv )
     auto& argsInstance = CUL::GUTILS::ConsoleUtilities::getInstance();
     argsInstance.setArgs( argc, argv );
 
-    g_sdlw = SDL2W::createSDL2Wrapper(
-        SDL2W::Vector3Di( 256, 256, 0 ),
-        SDL2W::Vector3Du( 640, 480, 0 ), "Test", true );
+    windowData.name = "Test";
+    windowData.pos = SDL2W::Vector3Di( 256, 256, 0 );
+    windowData.size.setSize( 640, 480 );
+    windowData.withOpenGL = true;
+
+    g_sdlw = SDL2W::createSDL2Wrapper( windowData );
+
     auto window = g_sdlw->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
 
@@ -47,7 +52,7 @@ int main( int argc, char** argv )
     g_oglw->onInitialize( afterInit );
     g_oglw->beforeFrame( renderScene );
 
-    g_sdlw->addKeyboardEventCallback( &onKeyBoardEvent );
+    g_sdlw->registerKeyboardEventCallback( &onKeyBoardEvent );
     g_sdlw->registerWindowEventCallback( &onWindowEvent );
 
     g_oglw->startRenderingLoop();
@@ -86,8 +91,10 @@ void afterInit()
     program->link();
     program->validate();
 
-    auto w = static_cast<GLsizei>( g_sdlw->getMainWindow()->getSize().getX() );
-    auto h = static_cast<GLsizei>( g_sdlw->getMainWindow()->getSize().getY() );
+    auto& winSize = g_sdlw->getMainWindow()->getSize();
+
+    auto w = static_cast<GLsizei>( winSize.getWidth() );
+    auto h = static_cast<GLsizei>( winSize.getHeight() );
     Rect rect;
     rect.width = w;
     rect.height = h;
