@@ -49,7 +49,8 @@ cunt OGLUTILS::createProgram()
 void OGLUTILS::removeProgram( cunt programId )
 {
     glDeleteProgram( toGluint( programId ) );
-    assertOnProgramError( programId, GL_DELETE_STATUS );
+    // TODO: find a correct way to check whether program was deleted.
+    //assertOnProgramError( programId, GL_DELETE_STATUS );
 }
 
 void OGLUTILS::useProgram( cunt programId )
@@ -115,6 +116,7 @@ const CUL::MyString enumToString( const GLenum val )
     case GL_COMPILE_STATUS: return "compile";
     case GL_LINK_STATUS: return "link";
     case GL_VALIDATE_STATUS: return "validate";
+    case GL_DELETE_STATUS: return "delete";
     default:
         return "";
     }
