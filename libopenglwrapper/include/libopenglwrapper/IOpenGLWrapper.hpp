@@ -31,7 +31,9 @@ public:
     IOpenGLWrapper();
     virtual ~IOpenGLWrapper();
 
+    virtual void initialize() = 0;
     virtual void renderFrame() = 0;
+
     virtual void setBackgroundColor( const ColorS& color ) = 0;
     virtual void startRenderingLoop() = 0;
     virtual void stopRenderingLoop() = 0;
@@ -53,9 +55,7 @@ private:
 
 };
 
-LIBOPENGLWRAPPER_API IOpenGLWrapper* createOpenGLWrapper(
-    SDL2W::IWindow* window,
-    SDL2W::ISDL2Wrapper* sdl2w );
+LIBOPENGLWRAPPER_API IOpenGLWrapper* createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w );
 
 LIBOPENGLWRAPPER_API IOpenGLWrapper* getInstance();
 

@@ -23,40 +23,37 @@ class OpenGLWrapperConcrete final:
     private IObjectFactory
 {
 public:
-    OpenGLWrapperConcrete(
-        SDL2W::IWindow* window,
-        SDL2W::ISDL2Wrapper* sdl2w );
+    OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w );
     ~OpenGLWrapperConcrete();
-    
-    void renderFrame() override;
-    void renderObjects();
+
+protected:
+private:
+    void initialize() override;
+
     void refreshBuffers();
+
+    IRect* createRect() override;
+    ITriangle* createTriangle() override;
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;
     void stopRenderingLoop() override;
     void onInitialize( const std::function<void()>& callback ) override;
     void beforeFrame( const std::function<void()>& callback ) override;
-
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
     IProgramFactory* getProgramFactory() override;
 
     CUL::LOG::ILogger* getLoger() override;
 
-protected:
-private:
-    IRect* createRect() override;
-    ITriangle* createTriangle() override;
 
-    OpenGLWrapperConcrete() = delete;
-    OpenGLWrapperConcrete(
-        const OpenGLWrapperConcrete& val) = delete;
-    OpenGLWrapperConcrete& operator=(
-        const OpenGLWrapperConcrete& rhv) = delete;
 
     void renderLoop();
-    void initialize();
+    void renderFrame() override;
+    void renderObjects();
+
     void executeTasks();
+
+    void release();
 
     CUL::GUTILS::DumbPtr<OpenGLShaderFactory> m_shaderFactory;
 
@@ -82,6 +79,11 @@ private:
     bool m_hasBeenInitialized = false;
 
     CUL::LOG::ILogger* m_logger = nullptr;
+
+private: // Deleted
+    OpenGLWrapperConcrete() = delete;
+    OpenGLWrapperConcrete( const OpenGLWrapperConcrete& val ) = delete;
+    OpenGLWrapperConcrete& operator=( const OpenGLWrapperConcrete& rhv ) = delete;
 
 };
 

@@ -9,25 +9,13 @@
 using namespace LOGLW;
 
 OpenGLWrapperConcrete::OpenGLWrapperConcrete(
-    SDL2W::IWindow* window,
     SDL2W::ISDL2Wrapper* sdl2w ):
     m_sdlW( sdl2w ),
-    m_activeWindow( window ),
+    m_activeWindow( sdl2w->getMainWindow() ),
     m_logger( CUL::LOG::LOG_CONTAINER::getLogger() )
 {
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
-    CUL::Assert::simple( nullptr != window, "NO WINDOW." );
-}
-
-OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
-{
-    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete()..." );
-    if( m_oglContext )
-    {
-        SDL_GL_DeleteContext( m_oglContext );
-        m_oglContext = nullptr; // This is basically void* !
-    }
-    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete() Done." );
+    CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
 }
 
 void OpenGLWrapperConcrete::startRenderingLoop()
@@ -93,16 +81,14 @@ ITriangle* OpenGLWrapperConcrete::createTriangle()
 
 void OpenGLWrapperConcrete::renderLoop()
 {
-    initialize();
-
     CUL::ThreadUtils::setCurrentThreadName( "OpenGL render thread." );
+
+    initialize();
     while( m_runRenderLoop )
     {
-        executeTasks();
         renderFrame();
-        refreshBuffers();
-        CUL::ITimer::sleepMiliSeconds( 55 );
     }
+    release();
 }
 
 void OpenGLWrapperConcrete::initialize()
@@ -127,24 +113,14 @@ void OpenGLWrapperConcrete::initialize()
 
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
 
-    if( m_onInitializeCallback )
-    {
-        m_onInitializeCallback();
-    }
-
     OGLUTILS::listExtensions();
 
     m_hasBeenInitialized = true;
     m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
-}
 
-void OpenGLWrapperConcrete::executeTasks()
-{
-    while( false == m_preRenderTasks.empty() )
+    if( m_onInitializeCallback )
     {
-        auto task = m_preRenderTasks.front();
-        task->execute();
-        m_preRenderTasks.pop();
+        m_onInitializeCallback();
     }
 }
 
@@ -165,7 +141,22 @@ void OpenGLWrapperConcrete::renderFrame()
     {
         m_onBeforeFrame();
     }
+
+    executeTasks();
     renderObjects();
+
+    refreshBuffers();
+    CUL::ITimer::sleepMiliSeconds( 55 );
+}
+
+void OpenGLWrapperConcrete::executeTasks()
+{
+    while( false == m_preRenderTasks.empty() )
+    {
+        auto task = m_preRenderTasks.front();
+        task->execute();
+        m_preRenderTasks.pop();
+    }
 }
 
 void OpenGLWrapperConcrete::renderObjects()
@@ -191,4 +182,21 @@ void OpenGLWrapperConcrete::setBackgroundColor(
     const ColorS& color )
 {
     OGLUTILS::clearColorTo( color );
+}
+
+OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
+{
+    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete()..." );
+    release();
+    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete() Done." );
+}
+
+void OpenGLWrapperConcrete::release()
+{
+    if( m_oglContext )
+    {
+        m_shaderFactory.release();
+        SDL_GL_DeleteContext( m_oglContext );
+        m_oglContext = nullptr; // This is basically void* !
+    }
 }
