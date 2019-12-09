@@ -51,17 +51,21 @@ void afterInit()
 
 int main( int argc, char** argv )
 {
-    SDLWrap sdlW = SDL2W::createSDL2Wrapper(
-        SDL2W::Vector3Di( 256, 256, 0 ),
-        SDL2W::Vector3Du( 640, 480, 0 ), "Test", true );
+    SDL2W::WindowData windowData;
+    windowData.name = "Test";
+    windowData.pos = SDL2W::Vector3Di( 256, 256, 0 );
+    windowData.size.setSize( 640, 480 );
+    windowData.withOpenGL = true;
+
+    SDLWrap sdlW = SDL2W::createSDL2Wrapper (windowData );
     g_sdlw = sdlW.get();
     auto window = sdlW->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ));
 
-    g_oglw = LOGLW::createOpenGLWrapper( window, sdlW.get() );
+    g_oglw = LOGLW::createOpenGLWrapper( sdlW );
     g_oglw->onInitialize( afterInit );
 
-    sdlW->addKeyboardEventCallback( &onKeyBoardEvent );
+    sdlW->registerKeyboardEventCallback( &onKeyBoardEvent );
     sdlW->registerWindowEventCallback( &onWindowEvent );
 
     g_oglw->startRenderingLoop();
