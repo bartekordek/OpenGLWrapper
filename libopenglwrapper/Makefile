@@ -7,15 +7,9 @@ DYN_LIB_EXT := .so
 BUILD_ROOT := Build-Linux
 endif
 
-ARCH_FLAG := -m32
-PLATFORM := x86
-ifeq ($(ARCH),64)
-ARCH_FLAG := -m64
-PLATFORM := x64
-endif
-
 DIAG_FLAG := -fdiagnostics-color=always
-COMPILER := clang++-6.0
+#COMPILER := clang++-6.0
+COMPILER := g++
 CPP_VERSION := -std=c++17
 CC := g++ $(CPP_VERSION) $(ARCH_FLAG) $(DIAG_FLAG) \
 -fPIC -pedantic -Wall -Wno-ignored-attributes
@@ -65,7 +59,6 @@ HEADERS_INC += -I $(SDL2W_INC)
 HEADERS_INC += -I $(SDL2_INC)
 
 IMPORT_FILES := $(SDL_LIB_FILES)
-#IMPORT_FILES +=
 
 OUTPUT_DEBUG = $(OUTPUT_DIR_DEBUG)/$(DLL_NAME)
 OUTPUT_RELEASE = $(OUTPUT_DIR_RELEASE)/$(DLL_NAME)
@@ -85,23 +78,13 @@ OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
 OBJ_RELEASE_DIR := obj/release/
 OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
 
-debug: $(CUL_LIB_DEBUG) $(SDL2W_LIB_DEBUG)
+debug:
+	@make -C $(SDL2W_LIB_HOME) debug
 	@make $(OUTPUT_DEBUG)
 
-release: $(CUL_LIB_RELEASE) $(SDL2W_LIB_RELEASE)
-	@make $(OUTPUT_RELEASE)
-
-$(SDL2W_LIB_DEBUG):
-	@make -C $(SDL2W_LIB_HOME) debug
-
-$(SDL2W_LIB_RELEASE):
+release:
 	@make -C $(SDL2W_LIB_HOME) release
-
-$(CUL_LIB_DEBUG):
-	make -C $(CUL_HOME)/libcul debug
-
-$(CUL_LIB_RELEASE):
-	make -C $(CUL_HOME)/libcul release
+	@make $(OUTPUT_RELEASE)
 
 $(OUTPUT_DEBUG): $(OBJ_DEBUG_FILES)
 	@mkdir -p $(dir $@)
@@ -122,16 +105,9 @@ $(OBJ_RELEASE_DIR)%.o: %.cpp
 
 clean:
 	make -C $(SDL2W_LIB_HOME) clean
-	rm -f $(OBJ_DEBUG_FILES)
-	rm -f $(OBJ_RELEASE_FILES)
-	rm -f $(OUTPUT_DEBUG)
-	rm -f $(OUTPUT_RELEASE)
-	find . -name '*.o' | xargs rm -fv
+	rm -rf $(OUTPUT_DIR)
 
 test:
 	@echo "All .o files: $(OBJ_DEBUG_FILES)"
 	@echo "All .cpp files: $(CPP_FILES)"
 	@echo "SDL2: $(HOME_SDL2_LINUX)/"
-
-help:
-	echo "If run first time, please run \"make first_run\" it will create necessary dirs."
