@@ -106,7 +106,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(TargetDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper-$(DefaultPlatformToolset).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -136,7 +136,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(TargetDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper-$(DefaultPlatformToolset).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -169,7 +169,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(TargetDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper-$(DefaultPlatformToolset).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -202,7 +202,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(TargetDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcul-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;libopenglwrapper-$(DefaultPlatformToolset).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>

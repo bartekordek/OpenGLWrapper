@@ -57,7 +57,8 @@ int main( int argc, char** argv )
     windowData.size.setSize( 640, 480 );
     windowData.withOpenGL = true;
 
-    SDLWrap sdlW = SDL2W::createSDL2Wrapper (windowData );
+    SDLWrap sdlW = SDL2W::createSDL2Wrapper();
+    sdlW->init( windowData );
     g_sdlw = sdlW.get();
     auto window = sdlW->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ));

@@ -110,17 +110,17 @@
       <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreLinkEvent>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -142,17 +142,17 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreLinkEvent>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -178,17 +178,17 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreLinkEvent>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -214,17 +214,17 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
-
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreLinkEvent>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\libopenglwrapper\IMovable.hpp" />
