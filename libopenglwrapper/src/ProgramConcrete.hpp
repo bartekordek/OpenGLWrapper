@@ -12,16 +12,16 @@ public:
     ProgramConcrete();
     ~ProgramConcrete();
 
-    void setUniform( CnstMyStr& name, const char* value ) override;
-    CnstMyStr getUniform( CnstMyStr& name ) override;
-    CnstMyStr getAttribute( CnstMyStr& name ) override;
+    void setUniform( CsStr& name, const char* value ) override;
+    CsStr getUniform( CsStr& name ) override;
+    CsStr getAttribute( CsStr& name ) override;
 
     void attachShader( const IShader* shader ) override;
     void link() override;
     void userProgram() override;
     void validate() override;
 
-    virtual cunt getProgramId()const override;
+    Cunt getProgramId() const override;
 
 protected:
 private:

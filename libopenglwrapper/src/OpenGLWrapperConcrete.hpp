@@ -31,6 +31,7 @@ private:
     void initialize() override;
 
     void refreshBuffers();
+    void setRenderLoopLatency( Cunt uS ) override;
 
     IRect* createRect() override;
     ITriangle* createTriangle() override;
@@ -42,10 +43,9 @@ private:
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
     IProgramFactory* getProgramFactory() override;
+    IImageLoader* getImageLoader() override;
 
     CUL::LOG::ILogger* getLoger() override;
-
-
 
     void renderLoop();
     void renderFrame() override;
@@ -61,12 +61,15 @@ private:
     SDL2W::IWindow* m_activeWindow = nullptr;
     SDL_GLContext m_oglContext = nullptr;
 
+    CUL::GUTILS::DumbPtr<IImageLoader> m_imageLoader;
+
     std::thread m_renderingLoopThread;
 
     SafeBool m_runRenderLoop = true;
     SafeBool m_clearEveryFrame = true;
     SafeBool m_clearModelView = true;
     SafeBool m_updateBuffers = true;
+    CUL::GUTILS::LckPrim<unsigned> m_renderLoopLatencyUs = 44;
 
     ColorS m_backgroundColor;
 

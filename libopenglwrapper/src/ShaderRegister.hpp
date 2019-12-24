@@ -16,13 +16,12 @@ public:
 
     ~ShaderRegister();
 
-
 protected:
 private:
     ShaderRegister( const ShaderRegister& arg ) = delete;
     ShaderRegister& operator=( const ShaderRegister& rhv ) = delete;
 
-    std::map<CUL::MyString, CUL::GUTILS::DumbPtr<IShader>> m_shaders;
+    std::map<CUL::String, CUL::GUTILS::DumbPtr<IShader>> m_shaders;
 
 };
 

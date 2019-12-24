@@ -9,7 +9,7 @@
 NAMESPACE_BEGIN( LOGLW )
 
 using IFile = CUL::FS::IFile;
-using MString = CUL::MyString;
+using String = CUL::String;
 
 class LIBOPENGLWRAPPER_API IShader
 {
@@ -17,8 +17,8 @@ public:
     IShader( const IFile& shaderCode );
     virtual ~IShader() = default;
 
-    virtual cunt getId() const = 0;
-    virtual void useShader() const = 0;
+    virtual Cunt getId() const  = 0;
+    virtual void useShader() const  = 0;
 
 protected:
 private:

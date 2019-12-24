@@ -12,10 +12,10 @@
 using namespace LOGLW;
 using namespace OGLUTILS;
 
-void assertOnProgramError( cunt programId, const GLenum val );
-const CUL::MyString enumToString( const GLenum val );
+void assertOnProgramError( Cunt programId, const GLenum val );
+const CUL::String enumToString( const GLenum val );
 
-void Assert( const bool value, const CUL::MyString& message )
+void Assert( const bool value, const CUL::String& message )
 {
     CUL::Assert::simple( value, message );
 }
@@ -29,7 +29,7 @@ void OGLUTILS::setViewPort( const ViewPortRect& rect )
         static_cast<GLsizei>( rect.size.getHeight() ) );
 }
 
-cunt OGLUTILS::createProgram()
+Cunt OGLUTILS::createProgram()
 {
     const auto programId = static_cast<const unsigned int>(
         glCreateProgram() );
@@ -39,41 +39,41 @@ cunt OGLUTILS::createProgram()
         GLenum err = glGetError();
         Assert(
             GL_NO_ERROR == programId,
-            "Error creating program, error numer: " + CUL::MyString( err ) );
+            "Error creating program, error numer: " + CUL::String( err ) );
         return 0;
     }
 
     return programId;
 }
 
-void OGLUTILS::removeProgram( cunt programId )
+void OGLUTILS::removeProgram( Cunt programId )
 {
     glDeleteProgram( toGluint( programId ) );
     // TODO: find a correct way to check whether program was deleted.
     //assertOnProgramError( programId, GL_DELETE_STATUS );
 }
 
-void OGLUTILS::useProgram( cunt programId )
+void OGLUTILS::useProgram( Cunt programId )
 {
     glUseProgram( static_cast<GLuint>( programId ) );
 }
 
-void OGLUTILS::linkProgram( cunt programId )
+void OGLUTILS::linkProgram( Cunt programId )
 {
     glLinkProgram( static_cast<GLuint>( programId ) );
     assertOnProgramError( programId, GL_LINK_STATUS );
 }
 
-void OGLUTILS::validateProgram( cunt programId )
+void OGLUTILS::validateProgram( Cunt programId )
 {
     glValidateProgram( programId );
     assertOnProgramError( programId, GL_VALIDATE_STATUS );
 }
 
-cunt OGLUTILS::createShader( const IFile& shaderCode )
+Cunt OGLUTILS::createShader( const IFile& shaderCode )
 {
     auto shaderType = OGLUTILS::getShaderType( shaderCode.getPath().getExtension() );
-    auto id = static_cast< cunt >( glCreateShader( shaderType ) );
+    auto id = static_cast< Cunt >( glCreateShader( shaderType ) );
 
     auto codeLength = static_cast< GLint >(
         shaderCode.getLinesCount() );
@@ -87,7 +87,7 @@ cunt OGLUTILS::createShader( const IFile& shaderCode )
         GLchar eLog[ 1024 ] = { 0 };
         glGetShaderInfoLog( id, sizeof( eLog ), nullptr, eLog );
         auto errorAsString = std::string( eLog );
-        CUL::MyString shaderCompilationErrorMessage = "Error compiling shader: " +
+        CUL::String shaderCompilationErrorMessage = "Error compiling shader: " +
             errorAsString + "\n";
         shaderCompilationErrorMessage += "Shader Path: " + shaderCode.getPath().getPath() + "\n";
         Assert( false, shaderCompilationErrorMessage );
@@ -96,7 +96,7 @@ cunt OGLUTILS::createShader( const IFile& shaderCode )
     return id;
 }
 
-void assertOnProgramError( cunt programId, const GLenum val )
+void assertOnProgramError( Cunt programId, const GLenum val )
 {
     GLint result = 0;
     glGetProgramiv( programId, val, &result );
@@ -104,12 +104,12 @@ void assertOnProgramError( cunt programId, const GLenum val )
     {
         GLchar eLog[1024] = { 0 };
         glGetProgramInfoLog( programId, sizeof( eLog ), nullptr, eLog );
-        CUL::MyString message = "Error on " + enumToString( val ) + std::string( eLog );
+        CUL::String message = "Error on " + enumToString( val ) + std::string( eLog );
         Assert( false, message );
     }
 }
 
-const CUL::MyString enumToString( const GLenum val )
+const CUL::String enumToString( const GLenum val )
 {
     switch( val )
     {
@@ -122,7 +122,7 @@ const CUL::MyString enumToString( const GLenum val )
     }
 }
 
-const GLenum OGLUTILS::getShaderType( CUL::CnstMyStr& fileExtension )
+const GLenum OGLUTILS::getShaderType( CUL::CsStr& fileExtension )
 {
     /*
     .vert - a vertex shader
@@ -148,28 +148,28 @@ const GLenum OGLUTILS::getShaderType( CUL::CnstMyStr& fileExtension )
 }
 
 void OGLUTILS::attachShader(
-    cunt programId,
-    cunt shaderId )
+    Cunt programId,
+    Cunt shaderId )
 {
     glAttachShader(
         toGluint( programId ),
         toGluint( shaderId ) );
 }
 
-void OGLUTILS::removeShader( cunt shaderId )
+void OGLUTILS::removeShader( Cunt shaderId )
 {
     glDeleteShader(
         toGluint( shaderId ) );
 }
 
-const GLuint OGLUTILS::toGluint( cunt value )
+const GLuint OGLUTILS::toGluint( Cunt value )
 {
     return static_cast< GLuint >( value );
 }
 
-CUL::MyString OGLUTILS::initContextVersion( cunt major, cunt minor )
+CUL::String OGLUTILS::initContextVersion( Cunt major, Cunt minor )
 {
-    CUL::MyString contextInfo;
+    CUL::String contextInfo;
     //glutInitContextVersion( static_cast<int>( major ), static_cast<int>( minor ) );
     /*
     Context version can be only set after context creation.
@@ -194,7 +194,7 @@ CUL::MyString OGLUTILS::initContextVersion( cunt major, cunt minor )
         CUL::Assert::simple(
             GLEW_OK == error,
             "GLEW error: " +
-            CUL::MyString( reinterpret_cast<const char*>( glewGetErrorString( error ) ) +
+            CUL::String( reinterpret_cast<const char*>( glewGetErrorString( error ) ) +
                 contextInfo ) );
     }
     return contextInfo;
@@ -257,7 +257,7 @@ void OGLUTILS::listExtensions()
     GLint extensionsCount = 0;
     glGetIntegerv( GL_NUM_EXTENSIONS, &extensionsCount );
     const GLubyte* extensions = glGetString( GL_EXTENSIONS );
-    CUL::MyString wat = static_cast<const unsigned char*>( extensions );
+    CUL::String wat = static_cast<const unsigned char*>( extensions );
     std::vector<std::string> extensionsVec = split( wat.string(), ' ' );
     for( const auto& extension: extensionsVec )
     {

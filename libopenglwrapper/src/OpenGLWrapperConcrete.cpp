@@ -62,6 +62,11 @@ IProgramFactory* OpenGLWrapperConcrete::getProgramFactory()
     return &*m_shaderFactory;
 }
 
+IImageLoader* OpenGLWrapperConcrete::getImageLoader()
+{
+    return m_imageLoader;
+}
+
 CUL::LOG::ILogger* OpenGLWrapperConcrete::getLoger()
 {
     return m_logger;
@@ -115,6 +120,8 @@ void OpenGLWrapperConcrete::initialize()
 
     OGLUTILS::listExtensions();
 
+    m_imageLoader = IImageLoader::createConcrete();
+
     m_hasBeenInitialized = true;
     m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
 
@@ -146,7 +153,7 @@ void OpenGLWrapperConcrete::renderFrame()
     renderObjects();
 
     refreshBuffers();
-    CUL::ITimer::sleepMiliSeconds( 55 );
+    CUL::ITimer::sleepMicroSeconds( m_renderLoopLatencyUs );
 }
 
 void OpenGLWrapperConcrete::executeTasks()
@@ -176,6 +183,11 @@ void OpenGLWrapperConcrete::refreshBuffers()
     {
         m_activeWindow->updateScreenBuffers();
     }
+}
+
+void OpenGLWrapperConcrete::setRenderLoopLatency( Cunt uS )
+{
+    m_renderLoopLatencyUs = uS;
 }
 
 void OpenGLWrapperConcrete::setBackgroundColor(

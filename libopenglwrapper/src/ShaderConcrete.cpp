@@ -20,7 +20,7 @@ ShaderConcrete::~ShaderConcrete()
     }
 }
 
-cunt ShaderConcrete::getId() const
+Cunt ShaderConcrete::getId() const
 {
     return m_id;
 }

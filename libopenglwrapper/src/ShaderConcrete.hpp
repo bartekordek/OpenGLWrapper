@@ -11,7 +11,7 @@ public:
     ShaderConcrete( const IFile& shaderCode );
     ~ShaderConcrete();
 
-    cunt getId() const override;
+    Cunt getId() const override;
     void useShader() const override;
 
 protected:

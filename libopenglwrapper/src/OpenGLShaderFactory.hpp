@@ -10,7 +10,7 @@ NAMESPACE_BEGIN( LOGLW )
 using ShaderPtr = CUL::GUTILS::DumbPtr<IShader>;
 using ProgramPtr = CUL::GUTILS::DumbPtr<IProgram>;
 
-using MyString = CUL::MyString;
+using MyString = CUL::String;
 using ShaderMap = std::map<MyString, ShaderPtr>;
 using ProgramMap = std::map<unsigned int, ProgramPtr>;
 

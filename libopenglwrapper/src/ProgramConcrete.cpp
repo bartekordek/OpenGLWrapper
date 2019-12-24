@@ -16,22 +16,22 @@ ProgramConcrete::~ProgramConcrete()
 }
 
 void ProgramConcrete::setUniform(
-    CnstMyStr&,
+    CsStr&,
     const char* )
 {
     //TODO
 }
 
-CnstMyStr ProgramConcrete::getUniform( CnstMyStr& )
+CsStr ProgramConcrete::getUniform( CsStr& )
 {
     //TODO
-    return CnstMyStr();
+    return CsStr();
 }
 
-CnstMyStr ProgramConcrete::getAttribute( CnstMyStr& )
+CsStr ProgramConcrete::getAttribute( CsStr& )
 {
     //TODO
-    return CnstMyStr();
+    return CsStr();
 }
 
 void ProgramConcrete::attachShader( const IShader* shader )
@@ -55,7 +55,7 @@ void ProgramConcrete::validate()
     OGLUTILS::validateProgram( m_id );
 }
 
-cunt ProgramConcrete::getProgramId() const
+Cunt ProgramConcrete::getProgramId() const 
 {
     return m_id;
 }

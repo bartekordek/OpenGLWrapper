@@ -7,7 +7,7 @@
 #include "CUL/Graphics/Pos2D.hpp"
 #include "CUL/Graphics/Size2D.hpp"
 #include "CUL/Math/Angle.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 #include "IMPORT_glew.hpp"
 
@@ -17,6 +17,7 @@ NAMESPACE_BEGIN( OGLUTILS )
 using CDouble = const double;
 
 using Angle = CUL::Math::Angle;
+using String = CUL::String;
 
 struct ViewPortRect
 {
@@ -26,7 +27,7 @@ struct ViewPortRect
 
 using DispRect = CUL::Graphics::Rect2D<unsigned int>;
 
-using cunt = const unsigned int;
+using Cunt = const unsigned int;
 using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
 
@@ -34,20 +35,20 @@ void resetMatrixToIdentity( const GLenum matrix );
 void setViewPort( const ViewPortRect& rect );
 void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble zNear, CDouble zFar );
 
-const GLuint toGluint( cunt value );
-const GLenum getShaderType( CUL::CnstMyStr& fileExtension );
+const GLuint toGluint( Cunt value );
+const GLenum getShaderType( CUL::CsStr& fileExtension );
 
-cunt createProgram();
-void removeProgram( cunt programId );
-void useProgram( cunt programId );
-void linkProgram( cunt programId );
-void validateProgram( cunt programId );
+Cunt createProgram();
+void removeProgram( Cunt programId );
+void useProgram( Cunt programId );
+void linkProgram( Cunt programId );
+void validateProgram( Cunt programId );
 
-cunt createShader( const IFile& shaderCode );
-void attachShader( cunt programId, cunt shaderId );
-void removeShader( cunt shaderId );
+Cunt createShader( const IFile& shaderCode );
+void attachShader( Cunt programId, Cunt shaderId );
+void removeShader( Cunt shaderId );
 
-CUL::MyString initContextVersion( cunt major, cunt minor );
+String initContextVersion( Cunt major, Cunt minor );
 void setProjectionAndModelToIdentity();
 void clearColorAndDepthBuffer();
 void createQuad();

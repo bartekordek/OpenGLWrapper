@@ -17,7 +17,7 @@ public:
     IMovable() = default;
     virtual ~IMovable() = default;
 
-    virtual const Pos& getPos()const = 0;
+    virtual const Pos& getPos() const = 0;
     virtual void setPosition( const Pos& pos ) = 0;
     virtual void translate( const TranslationVector& moveVect ) = 0;
 
