@@ -114,13 +114,18 @@
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreBuildEvent>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -146,13 +151,18 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreBuildEvent>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -182,13 +192,18 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreBuildEvent>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -218,13 +233,18 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration)\*.pdb" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\glew\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
 </Command>
-    </PreBuildEvent>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\libopenglwrapper\IMovable.hpp" />
@@ -242,6 +262,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="include\libopenglwrapper\IVertexBuffer.hpp" />
     <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp" />
     <ClInclude Include="include\libopenglwrapper\Primitives\ITriangle.hpp" />
+    <ClInclude Include="include\libopenglwrapper\ViewPort.hpp" />
     <ClInclude Include="src\ImportFreeglut.hpp" />
     <ClInclude Include="src\IMPORT_glew.hpp" />
     <ClInclude Include="src\MatrixStack.hpp" />
@@ -267,6 +288,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClCompile Include="src\ProgramConcrete.cpp" />
     <ClCompile Include="src\ShaderConcrete.cpp" />
     <ClCompile Include="src\ShaderRegister.cpp" />
+    <ClCompile Include="src\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.frag" />

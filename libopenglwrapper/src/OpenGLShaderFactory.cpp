@@ -10,7 +10,7 @@ using ShaderPtr = LOGLW::ShaderPtr;
 using IFile = LOGLW::IFile;
 using IShader = LOGLW::IShader;
 using IProgram = LOGLW::IProgram;
-namespace UTILS = LOGLW::OGLUTILS;
+using UTILS = LOGLW::OGLUTILS;
 
 auto logger = CUL::LOG::LOG_CONTAINER::getLogger();
 

@@ -2,6 +2,7 @@
 
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "OpenGLShaderFactory.hpp"
+#include "OpenGL_3_Utils.hpp"
 
 #include "SDL2Wrapper/IMPORT_SDL_video.hpp"
 
@@ -12,11 +13,13 @@
 #include "CUL/STL_IMPORTS/STD_queue.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 #include "CUL/GenericUtils/ITask.hpp"
+#include "CUL/STL_IMPORTS/STD_array.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
 using ITask = CUL::GUTILS::ITask;
 using SafeBool = CUL::GUTILS::LckPrim<bool>;
+template <typename Type> using DumbPtr = CUL::GUTILS::DumbPtr<Type>;
 
 class OpenGLWrapperConcrete final:
     public IOpenGLWrapper,
@@ -29,17 +32,18 @@ public:
 protected:
 private:
     void initialize() override;
-
     void refreshBuffers();
     void setRenderLoopLatency( Cunt uS ) override;
+    void setViewPort( const Viewport& rect ) override;
 
     IRect* createRect() override;
     ITriangle* createTriangle() override;
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;
     void stopRenderingLoop() override;
-    void onInitialize( const std::function<void()>& callback ) override;
-    void beforeFrame( const std::function<void()>& callback ) override;
+    void onInitialize( const EmptyFunctionCallback& callback ) override;
+    void beforeFrame( const EmptyFunctionCallback& callback ) override;
+
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
     IProgramFactory* getProgramFactory() override;
@@ -49,19 +53,23 @@ private:
 
     void renderLoop();
     void renderFrame() override;
+    void setProjectionType( const ProjectionType type ) override;
     void renderObjects();
 
     void executeTasks();
 
     void release();
 
-    CUL::GUTILS::DumbPtr<OpenGLShaderFactory> m_shaderFactory;
+    DumbPtr<OpenGLShaderFactory> m_shaderFactory;
 
     SDL2W::ISDL2Wrapper* m_sdlW = nullptr;
     SDL2W::IWindow* m_activeWindow = nullptr;
     SDL_GLContext m_oglContext = nullptr;
 
-    CUL::GUTILS::DumbPtr<IImageLoader> m_imageLoader;
+    Viewport m_viewport;
+    std::array<Pos3Dd, 3> m_lookAt = { Pos3Dd( 0.0, 0.0, 10.0 ), Pos3Dd( 0.0, 0.0, 0.0 ), Pos3Dd( 0.0, 1.0, 0.0 ) };
+
+    DumbPtr<IImageLoader> m_imageLoader;
 
     std::thread m_renderingLoopThread;
 
@@ -70,14 +78,15 @@ private:
     SafeBool m_clearModelView = true;
     SafeBool m_updateBuffers = true;
     CUL::GUTILS::LckPrim<unsigned> m_renderLoopLatencyUs = 44;
+    CUL::GUTILS::LckPrim<ProjectionType> m_currentProjection = ProjectionType::ORTO;
 
     ColorS m_backgroundColor;
 
     std::queue<ITask*> m_preRenderTasks;
     std::set<IRenderable*> m_objectsToRender;
 
-    std::function<void()> m_onInitializeCallback;
-    std::function<void()> m_onBeforeFrame;
+    EmptyFunctionCallback m_onInitializeCallback;
+    EmptyFunctionCallback m_onBeforeFrame;
 
     bool m_hasBeenInitialized = false;
 
@@ -86,7 +95,9 @@ private:
 private: // Deleted
     OpenGLWrapperConcrete() = delete;
     OpenGLWrapperConcrete( const OpenGLWrapperConcrete& val ) = delete;
+    OpenGLWrapperConcrete( OpenGLWrapperConcrete&& val ) = delete;
     OpenGLWrapperConcrete& operator=( const OpenGLWrapperConcrete& rhv ) = delete;
+    OpenGLWrapperConcrete& operator=( OpenGLWrapperConcrete&& rhv ) = delete;
 
 };
 

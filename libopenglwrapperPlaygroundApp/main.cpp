@@ -25,9 +25,10 @@ DumbPtr<LOGLW::ITriangle> triangle;
 ShaderFile* vertexShaderFile = nullptr;
 ShaderFile* fragmentShaderFile = nullptr;
 SDL2W::WindowData windowData;
+float objectZ = 0.0f;
 
 void afterInit();
-void renderScene( void );
+void renderScene();
 void onKeyBoardEvent( const SDL2W::IKey& key );
 void onWindowEvent( const WinEventType type );
 void closeApp();
@@ -63,11 +64,9 @@ int main( int argc, char** argv )
     return 0;
 }
 
-void setPerspectiveProjection( const Rect& viewPortRect, const double fovAngle = 90.0 );
 void afterInit()
 {
     auto sf = g_oglw->getShaderFactory();
-    //auto of = g_oglw->getObjectFactory();
     auto pf = g_oglw->getProgramFactory();
 
     CUL::FS::Path shadersDir( "../libopenglwrapper/shaders/" );
@@ -86,55 +85,23 @@ void afterInit()
     program->attachShader( fs );
     program->link();
     program->validate();
-
-    auto& winSize = g_sdlw->getMainWindow()->getSize();
-
-    auto w = static_cast<GLsizei>( winSize.getWidth() );
-    auto h = static_cast<GLsizei>( winSize.getHeight() );
-    Rect rect;
-    rect.width = w;
-    rect.height = h;
-
-    setPerspectiveProjection( rect );
+    g_oglw->setProjectionType( LOGLW::ProjectionType::PERSPECTIVE );
 }
 
-void setPerspectiveProjection( const Rect& viewPortRect, const double fovAngle )
-{
-    GLfloat ratio = (GLfloat) ( viewPortRect.width * 1.0 / viewPortRect.height );
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    glViewport( viewPortRect.x, viewPortRect.y, viewPortRect.width, viewPortRect.height );
-    gluPerspective( fovAngle, ratio, 1, 100 );
-}
-
-void resetTransformations();
 void drawTriangle( const Color& color );
 
-void renderScene( void )
+void renderScene()
 {
-    gluLookAt(
-        0.0f, 0.0f, 10.0f,
-        0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f );
+    const float z = 0.0f;
     matrixStack.push();
         glRotatef( angle, 0.0f, 0.0f, 1.0f );
-        glTranslatef( 2.0f, 2.0f, 0.0f );
+        glTranslatef( 2.0f, 2.0f, objectZ );
         drawTriangle( red );
         glRotatef( 180, 0.0f, 0.0f, 1.0f );
         drawTriangle( yellow );
     matrixStack.pop();
 
     angle += 0.8f;
-}
-
-void resetTransformations()
-{
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-    gluLookAt(
-        0.0f, 0.0f, 10.0f,
-        0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f );
 }
 
 void drawTriangle( const Color& color )
@@ -149,9 +116,18 @@ void drawTriangle( const Color& color )
 
 void onKeyBoardEvent( const SDL2W::IKey& key )
 {
-    if( key.getKeyName() == "q" || key.getKeyName() == "Q" )
+    const float deltaZ = 2.0f;
+    if( key.getKeyName() == "Q" )
     {
         closeApp();
+    }
+    else if( key.getKeyName() == "W" )
+    {
+        objectZ -= deltaZ;
+    }
+    else if( key.getKeyName() == "S" )
+    {
+        objectZ += deltaZ;
     }
 }
 

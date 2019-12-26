@@ -99,6 +99,9 @@
     <ClInclude Include="include\libopenglwrapper\IProgramFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\ViewPort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IOpenGLWrapper.cpp">
@@ -139,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="src\Primitives\TriangleImpl.cpp">
       <Filter>Source Files\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Viewport.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

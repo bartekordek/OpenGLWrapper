@@ -10,7 +10,6 @@
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 
 using namespace LOGLW;
-using namespace OGLUTILS;
 
 void assertOnProgramError( Cunt programId, const GLenum val );
 const CUL::String enumToString( const GLenum val );
@@ -20,13 +19,45 @@ void Assert( const bool value, const CUL::String& message )
     CUL::Assert::simple( value, message );
 }
 
-void OGLUTILS::setViewPort( const ViewPortRect& rect )
+void OGLUTILS::setViewPort( const Viewport& rect )
 {
+    const auto& pos = rect.pos;
+    const auto& size = rect.size;
     glViewport( 
-        static_cast<GLint>( rect.pos.getX() ),
-        static_cast<GLint>( rect.pos.getY() ),
-        static_cast<GLsizei>( rect.size.getWidth() ),
-        static_cast<GLsizei>( rect.size.getHeight() ) );
+        static_cast<GLint>( pos.getX() ),
+        static_cast<GLint>( pos.getY() ),
+        static_cast<GLsizei>( size.getWidth() ),
+        static_cast<GLsizei>( size.getHeight() ) );
+}
+
+void OGLUTILS::setPerspective(
+    const Angle& angle,
+    CDouble widthToHeightRatio,
+    CDouble zNear,
+    CDouble zFar )
+{
+    gluPerspective(
+        angle.getValueD( CUL::Math::Angle::Type::DEGREE ),
+        widthToHeightRatio,
+        zNear,
+        zFar );
+}
+
+void OGLUTILS::lookAt( const std::array<Pos3Dd, 3>& vec )
+{
+    lookAt(
+        vec[0],
+        vec[1],
+        vec[2]
+    );
+}
+
+void OGLUTILS::lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up )
+{
+    gluLookAt(
+        eye.x, eye.y, eye.z,
+        center.x, center.y, center.z,
+        up.x, up.y, up.z );
 }
 
 Cunt OGLUTILS::createProgram()
@@ -36,7 +67,7 @@ Cunt OGLUTILS::createProgram()
 
     if( 0 == programId )
     {
-        GLenum err = glGetError();
+        const GLenum err = glGetError();
         Assert(
             GL_NO_ERROR == programId,
             "Error creating program, error numer: " + CUL::String( err ) );
@@ -72,8 +103,8 @@ void OGLUTILS::validateProgram( Cunt programId )
 
 Cunt OGLUTILS::createShader( const IFile& shaderCode )
 {
-    auto shaderType = OGLUTILS::getShaderType( shaderCode.getPath().getExtension() );
-    auto id = static_cast< Cunt >( glCreateShader( shaderType ) );
+    const auto shaderType = OGLUTILS::getShaderType( shaderCode.getPath().getExtension() );
+    const auto id = static_cast< Cunt >( glCreateShader( shaderType ) );
 
     auto codeLength = static_cast< GLint >(
         shaderCode.getLinesCount() );
@@ -252,15 +283,12 @@ std::vector<std::string> split( const std::string &s, char delim ) {
     return elems;
 }
 
-void OGLUTILS::listExtensions()
+std::vector<std::string> OGLUTILS::listExtensions()
 {
     GLint extensionsCount = 0;
     glGetIntegerv( GL_NUM_EXTENSIONS, &extensionsCount );
     const GLubyte* extensions = glGetString( GL_EXTENSIONS );
     CUL::String wat = static_cast<const unsigned char*>( extensions );
     std::vector<std::string> extensionsVec = split( wat.string(), ' ' );
-    for( const auto& extension: extensionsVec )
-    {
-        std::cout << extension << "\n";
-    }
+    return extensionsVec;
 }

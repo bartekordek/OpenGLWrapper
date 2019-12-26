@@ -3,11 +3,10 @@
 #include "libopenglwrapper/IObjectFactory.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IProgramFactory.hpp"
+#include "libopenglwrapper/ViewPort.hpp"
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 
-#include "CUL/Graphics/Pos2D.hpp"
-#include "CUL/Graphics//Size2D.hpp"
 #include "CUL/String.hpp"
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/Log/ILogContainer.hpp"
@@ -15,8 +14,6 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-using Size2Du = CUL::Graphics::Size2Du;
-using Pos2Di = CUL::Graphics::Pos2Di;
 using String = CUL::String;
 
 using ColorS = CUL::Graphics::ColorS;
@@ -26,6 +23,13 @@ using CSize2Du = const Size2Du;
 using CPos2Di = const Pos2Di;
 using CMString = const String;
 using IImageLoader = CUL::Graphics::IImageLoader;
+using EmptyFunctionCallback = std::function<void()>;
+
+enum class ProjectionType: char
+{
+    ORTO = 0,
+    PERSPECTIVE
+};
 
 class LIBOPENGLWRAPPER_API IOpenGLWrapper
 {
@@ -39,7 +43,7 @@ public:
     virtual void setBackgroundColor( const ColorS& color ) = 0;
     virtual void startRenderingLoop() = 0;
     virtual void stopRenderingLoop() = 0;
-    virtual void onInitialize( const std::function<void()>& callback ) = 0;
+    virtual void onInitialize( const EmptyFunctionCallback& callback ) = 0;
 
     virtual IShaderFactory* getShaderFactory() = 0;
     virtual IObjectFactory* getObjectFactory() = 0;
@@ -48,9 +52,12 @@ public:
 
     virtual CUL::LOG::ILogger* getLoger() = 0;
 
-    virtual void beforeFrame( const std::function<void()>& callback ) = 0;
+    virtual void beforeFrame( const EmptyFunctionCallback& callback ) = 0;
 
     virtual void setRenderLoopLatency( Cunt uS ) = 0;
+
+    virtual void setViewPort( const Viewport& rect ) = 0;
+    virtual void setProjectionType( const ProjectionType type ) = 0;
 
 protected:
 private:

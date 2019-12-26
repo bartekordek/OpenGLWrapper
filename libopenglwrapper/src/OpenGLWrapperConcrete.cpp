@@ -36,13 +36,13 @@ void OpenGLWrapperConcrete::stopRenderingLoop()
     m_logger->log( "OpenGLWrapperConcrete::stopRenderingLoop() Done." );
 }
 
-void OpenGLWrapperConcrete::onInitialize( const std::function<void()>& callback )
+void OpenGLWrapperConcrete::onInitialize( const EmptyFunctionCallback& callback )
 {
     CUL::Assert::simple( m_hasBeenInitialized == false, "Wrapper already initialized, no need in defining " );
     m_onInitializeCallback = callback;
 }
 
-void OpenGLWrapperConcrete::beforeFrame( const std::function<void()>& callback )
+void OpenGLWrapperConcrete::beforeFrame( const EmptyFunctionCallback& callback )
 {
     m_onBeforeFrame = callback;
 }
@@ -111,14 +111,17 @@ void OpenGLWrapperConcrete::initialize()
 
     OGLUTILS::setProjectionAndModelToIdentity();
 
-    OGLUTILS::ViewPortRect rect;
-    rect.pos.setXY( 0, 0 );
-    rect.size = winSize;
-    OGLUTILS::setViewPort( rect );
+    Viewport vp;
+    vp.size = winSize;
+    setViewPort( vp );
 
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
 
-    OGLUTILS::listExtensions();
+    auto extensionList = OGLUTILS::listExtensions();
+    for( const auto& extension : extensionList )
+    {
+        std::cout << extension << "\n";
+    }
 
     m_imageLoader = IImageLoader::createConcrete();
 
@@ -141,7 +144,8 @@ void OpenGLWrapperConcrete::renderFrame()
 
     if( m_clearModelView )
     {
-        OGLUTILS::resetMatrixToIdentity( GL_MODELVIEW );
+        //OGLUTILS::resetMatrixToIdentity( GL_MODELVIEW );
+        setProjectionType( m_currentProjection );
     }
 
     if( m_onBeforeFrame )
@@ -154,6 +158,48 @@ void OpenGLWrapperConcrete::renderFrame()
 
     refreshBuffers();
     CUL::ITimer::sleepMicroSeconds( m_renderLoopLatencyUs );
+}
+
+void OpenGLWrapperConcrete::setProjectionType( const ProjectionType type )
+{
+    if( ProjectionType::ORTO == type )
+    {
+        glMatrixMode( GL_PROJECTION );
+        glLoadIdentity();
+
+        /*
+https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
+          Parameters
+            left, right
+            Specify the coordinates for the left and right vertical clipping planes.
+
+            bottom, top
+            Specify the coordinates for the bottom and top horizontal clipping planes.
+
+            nearVal, farVal
+            Specify the distances to the nearer and farther depth clipping planes.These values are negative if the plane is to be behind the viewer.*/
+
+        glOrtho(
+            m_viewport.left, // left
+            static_cast<double>( m_viewport.size.getWidth() ), // right
+            static_cast<double>( m_viewport.size.getHeight() ), // bottom
+            m_viewport.top, // top
+            m_viewport.zNear, // near
+            m_viewport.zFar // far
+        );
+
+        glMatrixMode( GL_MODELVIEW ); //Initialize Modelview Matrix
+        glLoadIdentity();
+    }
+    else if( ProjectionType::PERSPECTIVE == type )
+    {
+        glMatrixMode( GL_PROJECTION );
+        glLoadIdentity();
+        gluPerspective( m_viewport.fov, m_viewport.getAspectRatio(), 1, 100 );
+
+        OGLUTILS::lookAt( m_lookAt );
+    }
+    m_currentProjection = type;
 }
 
 void OpenGLWrapperConcrete::executeTasks()
@@ -172,7 +218,7 @@ void OpenGLWrapperConcrete::renderObjects()
     {
         renderableObject->render();
     }
-    glTranslatef( 2.0f, 2.0f, 0.0f );
+    //glTranslatef( 2.0f, 2.0f, 0.0f );
     glScalef( 0.2f, 0.2f, 0.2f );
     OGLUTILS::createQuad();
 }
@@ -190,8 +236,13 @@ void OpenGLWrapperConcrete::setRenderLoopLatency( Cunt uS )
     m_renderLoopLatencyUs = uS;
 }
 
-void OpenGLWrapperConcrete::setBackgroundColor(
-    const ColorS& color )
+void OpenGLWrapperConcrete::setViewPort( const Viewport& rect )
+{
+    OGLUTILS::setViewPort( rect );
+    m_viewport = rect;
+}
+
+void OpenGLWrapperConcrete::setBackgroundColor( const ColorS& color )
 {
     OGLUTILS::clearColorTo( color );
 }

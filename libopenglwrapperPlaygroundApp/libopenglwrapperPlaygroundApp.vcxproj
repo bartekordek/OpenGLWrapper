@@ -115,9 +115,16 @@
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(TargetDir)*.dll" /y "$(LocalDebuggerWorkingDirectory)"
 xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
-    </PreLinkEvent>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -145,9 +152,16 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(TargetDir)*.dll" /y "$(LocalDebuggerWorkingDirectory)"
 xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
-    </PreLinkEvent>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -179,9 +193,16 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(TargetDir)*.dll" /y "$(LocalDebuggerWorkingDirectory)"
 xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
-    </PreLinkEvent>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -213,9 +234,16 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       </Command>
     </PostBuildEvent>
     <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <CustomBuildStep>
       <Command>xcopy "$(TargetDir)*.dll" /y "$(LocalDebuggerWorkingDirectory)"
 xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
-    </PreLinkEvent>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
