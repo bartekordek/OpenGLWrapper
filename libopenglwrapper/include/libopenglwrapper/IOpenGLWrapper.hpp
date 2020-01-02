@@ -57,6 +57,7 @@ public:
     virtual void setRenderLoopLatency( Cunt uS ) = 0;
 
     virtual void setViewPort( const Viewport& rect ) = 0;
+    virtual void setEyePos( const Pos3Df& pos ) = 0;
     virtual void setProjectionType( const ProjectionType type ) = 0;
 
 protected:

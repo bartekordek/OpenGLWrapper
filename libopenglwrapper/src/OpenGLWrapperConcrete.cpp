@@ -112,7 +112,11 @@ void OpenGLWrapperConcrete::initialize()
     OGLUTILS::setProjectionAndModelToIdentity();
 
     Viewport vp;
-    vp.size = winSize;
+    vp.setSize( winSize );
+    vp.setEyePos( Pos3Df( 0.0f, 0.0f, 10.0f ) );
+    vp.setCenter( Pos3Df( 0.0f, 0.0f,  0.0f ) );
+    vp.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
+
     setViewPort( vp );
 
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
@@ -144,7 +148,6 @@ void OpenGLWrapperConcrete::renderFrame()
 
     if( m_clearModelView )
     {
-        //OGLUTILS::resetMatrixToIdentity( GL_MODELVIEW );
         setProjectionType( m_currentProjection );
     }
 
@@ -162,11 +165,9 @@ void OpenGLWrapperConcrete::renderFrame()
 
 void OpenGLWrapperConcrete::setProjectionType( const ProjectionType type )
 {
+    OGLUTILS::resetMatrixToIdentity( GL_PROJECTION );
     if( ProjectionType::ORTO == type )
     {
-        glMatrixMode( GL_PROJECTION );
-        glLoadIdentity();
-
         /*
 https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
           Parameters
@@ -178,28 +179,35 @@ https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
 
             nearVal, farVal
             Specify the distances to the nearer and farther depth clipping planes.These values are negative if the plane is to be behind the viewer.*/
+        const auto left = m_viewport.getLeft();
+        const auto right = m_viewport.getRight();
+        const auto bottom = m_viewport.getBottom();
+        const auto top = m_viewport.getTop();
+        const auto zNear = m_viewport.getZnear();
+        const auto zFar = m_viewport.getZfar();
 
         glOrtho(
-            m_viewport.left, // left
-            static_cast<double>( m_viewport.size.getWidth() ), // right
-            static_cast<double>( m_viewport.size.getHeight() ), // bottom
-            m_viewport.top, // top
-            m_viewport.zNear, // near
-            m_viewport.zFar // far
+            left, // left
+            right, // right
+            bottom, // bottom
+            top, // top
+            zNear, // near
+            zFar // far
         );
-
-        glMatrixMode( GL_MODELVIEW ); //Initialize Modelview Matrix
-        glLoadIdentity();
     }
     else if( ProjectionType::PERSPECTIVE == type )
     {
-        glMatrixMode( GL_PROJECTION );
-        glLoadIdentity();
-        gluPerspective( m_viewport.fov, m_viewport.getAspectRatio(), 1, 100 );
+        gluPerspective( m_viewport.getFov(), m_viewport.getAspectRatio(), m_viewport.getZnear(), m_viewport.getZfar() );
 
-        OGLUTILS::lookAt( m_lookAt );
+        OGLUTILS::lookAt( m_viewport );
     }
+    OGLUTILS::resetMatrixToIdentity( GL_MODELVIEW );
     m_currentProjection = type;
+}
+
+void OpenGLWrapperConcrete::setEyePos( const Pos3Df& pos )
+{
+    m_viewport.setEyePos( pos );
 }
 
 void OpenGLWrapperConcrete::executeTasks()
@@ -219,7 +227,7 @@ void OpenGLWrapperConcrete::renderObjects()
         renderableObject->render();
     }
     //glTranslatef( 2.0f, 2.0f, 0.0f );
-    glScalef( 0.2f, 0.2f, 0.2f );
+    //glScalef( 0.2f, 0.2f, 0.2f );
     OGLUTILS::createQuad();
 }
 

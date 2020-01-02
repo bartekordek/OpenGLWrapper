@@ -34,7 +34,8 @@ public:
 
     static void resetMatrixToIdentity( const GLenum matrix );
     static void setViewPort( const Viewport& rect );
-    static void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble zNear, CDouble zFar );
+    static void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble m_zNear, CDouble m_zFar );
+    static void lookAt( const Viewport& vp );
     static void lookAt( const std::array< Pos3Dd, 3>& lookAtVec );
     static void lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up );
 

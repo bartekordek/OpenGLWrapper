@@ -54,6 +54,7 @@ private:
     void renderLoop();
     void renderFrame() override;
     void setProjectionType( const ProjectionType type ) override;
+    void setEyePos( const Pos3Df& pos ) override;
     void renderObjects();
 
     void executeTasks();
@@ -67,7 +68,6 @@ private:
     SDL_GLContext m_oglContext = nullptr;
 
     Viewport m_viewport;
-    std::array<Pos3Dd, 3> m_lookAt = { Pos3Dd( 0.0, 0.0, 10.0 ), Pos3Dd( 0.0, 0.0, 0.0 ), Pos3Dd( 0.0, 1.0, 0.0 ) };
 
     DumbPtr<IImageLoader> m_imageLoader;
 

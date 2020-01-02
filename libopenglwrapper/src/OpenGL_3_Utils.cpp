@@ -21,8 +21,8 @@ void Assert( const bool value, const CUL::String& message )
 
 void OGLUTILS::setViewPort( const Viewport& rect )
 {
-    const auto& pos = rect.pos;
-    const auto& size = rect.size;
+    const auto& pos = rect.getCenter();
+    const auto& size = rect.getSize();
     glViewport( 
         static_cast<GLint>( pos.getX() ),
         static_cast<GLint>( pos.getY() ),
@@ -33,14 +33,25 @@ void OGLUTILS::setViewPort( const Viewport& rect )
 void OGLUTILS::setPerspective(
     const Angle& angle,
     CDouble widthToHeightRatio,
-    CDouble zNear,
-    CDouble zFar )
+    CDouble m_zNear,
+    CDouble m_zFar )
 {
     gluPerspective(
         angle.getValueD( CUL::Math::Angle::Type::DEGREE ),
         widthToHeightRatio,
-        zNear,
-        zFar );
+        m_zNear,
+        m_zFar );
+}
+
+void OGLUTILS::lookAt( const Viewport& vp )
+{
+    const auto& eye = vp.getEye();
+    const auto& center = vp.getCenter();
+    const auto& up = vp.getUp();
+    gluLookAt(
+        eye.getX(), eye.getY(), eye.getZ(),
+        center.getX(), center.getY(), center.getZ(),
+        up.getX(), up.getY(), up.getZ() );
 }
 
 void OGLUTILS::lookAt( const std::array<Pos3Dd, 3>& vec )
