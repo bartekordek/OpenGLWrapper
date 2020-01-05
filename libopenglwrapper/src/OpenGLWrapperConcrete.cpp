@@ -226,8 +226,6 @@ void OpenGLWrapperConcrete::renderObjects()
     {
         renderableObject->render();
     }
-    //glTranslatef( 2.0f, 2.0f, 0.0f );
-    //glScalef( 0.2f, 0.2f, 0.2f );
     OGLUTILS::createQuad();
 }
 

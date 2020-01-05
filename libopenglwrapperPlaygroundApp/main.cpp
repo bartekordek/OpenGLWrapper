@@ -95,7 +95,7 @@ void afterInit()
     window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
     const auto& winSize = window->getSize();
     viewport.setSize( winSize );
-    eyePos.z = 50.0f;
+    eyePos.z = 70.0f;
     viewport.setEyePos( eyePos );
     viewport.setCenter( Pos3Df( 0.0f, 0.0f, 0.0f ) );
     viewport.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
@@ -115,7 +115,6 @@ void renderScene()
         glRotatef( 180, 0.0f, 0.0f, 1.0f );
         drawTriangle( yellow, size );
     matrixStack.pop();
-    //glTranslatef( -1.0f, -1.0f, objectZ ); // Center.
 
     angle += 0.8f;
 }

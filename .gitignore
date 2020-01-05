@@ -23,7 +23,6 @@
 *.sdf
 *.suo
 *.tlog
-*.user
 *cache
 *~ml
 build/*
