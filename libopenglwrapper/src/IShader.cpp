@@ -4,5 +4,4 @@ using namespace LOGLW;
 
 IShader::IShader( const IFile& )
 {
-
 }

@@ -25,7 +25,6 @@ protected:
 private:
     ITexture( const ITexture& arg ) = delete;
     ITexture& operator=( const ITexture& rhv ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

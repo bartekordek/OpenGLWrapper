@@ -24,7 +24,6 @@ protected:
 private:
     IObject( const IObject& value ) = delete;
     IObject& operator=( const IObject& value ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

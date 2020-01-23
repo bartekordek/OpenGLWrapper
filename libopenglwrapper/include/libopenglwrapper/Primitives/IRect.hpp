@@ -14,13 +14,14 @@ struct LIBOPENGLWRAPPER_API RectDimension
     Size size;
     Pos pos;
 
-    RectDimension(){}
+    RectDimension()
+    {
+    }
 
     RectDimension( const RectDimension& arg ):
         size( arg.size ),
         pos( arg.pos )
     {
-
     }
 
     RectDimension& operator=( const RectDimension& rhv )
@@ -32,7 +33,6 @@ struct LIBOPENGLWRAPPER_API RectDimension
         }
         return *this;
     }
-
 };
 
 class LIBOPENGLWRAPPER_API IRect:
@@ -54,7 +54,6 @@ private:
 
     /* RectDimension m_rectDimension;
     IShader* m_shader = nullptr;*/
-
 };
 
 NAMESPACE_END( LOGLW )

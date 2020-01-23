@@ -16,7 +16,6 @@ protected:
 private:
     IRenderable( const IRenderable& value ) = delete;
     IRenderable& operator=( const IRenderable& value ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

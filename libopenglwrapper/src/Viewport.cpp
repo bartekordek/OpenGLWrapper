@@ -19,10 +19,10 @@ Viewport::Viewport( const Viewport& val ):
 }
 
 Viewport::Viewport( Viewport&& val ):
-    m_center( std::move(  val.m_center ) ),
-    m_eye( std::move(  val.m_eye ) ),
-    m_up( std::move(  val.m_up ) ),
-    m_size( std::move(  val.m_size ) ),
+    m_center( std::move( val.m_center ) ),
+    m_eye( std::move( val.m_eye ) ),
+    m_up( std::move( val.m_up ) ),
+    m_size( std::move( val.m_size ) ),
     m_fov( val.m_fov ),
     m_zNear( val.m_zNear ),
     m_zFar( val.m_zFar )
@@ -36,7 +36,7 @@ Cfloat Viewport::getAspectRatio() const
 
 Viewport& Viewport::operator=( const Viewport& rhv )
 {
-    if( this != & rhv )
+    if( this != &rhv )
     {
         m_center = rhv.m_center;
         m_eye = rhv.m_eye;

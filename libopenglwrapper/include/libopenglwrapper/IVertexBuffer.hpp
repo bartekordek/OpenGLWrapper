@@ -16,7 +16,6 @@ protected:
 private:
     IVertexBuffer( const IVertexBuffer& arg ) = delete;
     IVertexBuffer& operator=( const IVertexBuffer& rhv ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

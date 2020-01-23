@@ -35,7 +35,6 @@ class LIBOPENGLWRAPPER_API IOpenGLWrapper
 {
 public:
     IOpenGLWrapper();
-    virtual ~IOpenGLWrapper();
 
     virtual void initialize() = 0;
     virtual void renderFrame() = 0;
@@ -60,11 +59,14 @@ public:
     virtual void setEyePos( const Pos3Df& pos ) = 0;
     virtual void setProjectionType( const ProjectionType type ) = 0;
 
+    virtual ~IOpenGLWrapper();
+
 protected:
 private:
     IOpenGLWrapper( const IOpenGLWrapper& val ) = delete;
+    IOpenGLWrapper( IOpenGLWrapper&& val ) = delete;
     IOpenGLWrapper& operator=( const IOpenGLWrapper& rhv ) = delete;
-
+    IOpenGLWrapper& operator=( IOpenGLWrapper&& rhv ) = delete;
 };
 
 LIBOPENGLWRAPPER_API IOpenGLWrapper* createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w );

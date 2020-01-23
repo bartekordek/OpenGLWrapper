@@ -16,7 +16,6 @@ protected:
 private:
     IProgramFactory( const IProgramFactory& arg ) = delete;
     IProgramFactory& operator=( const IProgramFactory& rhv ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

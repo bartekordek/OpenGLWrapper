@@ -4,7 +4,6 @@
 #include "libopenglwrapper/IProgramFactory.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 
-
 NAMESPACE_BEGIN( LOGLW )
 
 using ShaderPtr = CUL::GUTILS::DumbPtr<IShader>;
@@ -36,7 +35,6 @@ private:
 
     mutable ShaderMap m_shaders;
     ProgramMap m_programs;
-
 };
 
 NAMESPACE_END( LOGLW )

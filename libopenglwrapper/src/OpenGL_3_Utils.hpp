@@ -68,7 +68,6 @@ private:
     OGLUTILS& operator=( const OGLUTILS& rhv ) = delete;
     OGLUTILS& operator=( OGLUTILS&& rhv ) = delete;
     ~OGLUTILS() = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

@@ -19,7 +19,7 @@ using GLWrap = CUL::GUTILS::DumbPtr<LOGLW::IOpenGLWrapper>;
 using FF = CUL::FS::FileFactory;
 
 void onKeyBoardEvent( const SDL2W::IKey& key );
-void onWindowEvent( const WinEventType type);
+void onWindowEvent( const WinEventType type );
 
 void closeApp();
 
@@ -61,7 +61,7 @@ int main( int argc, char** argv )
     sdlW->init( windowData );
     g_sdlw = sdlW.get();
     auto window = sdlW->getMainWindow();
-    window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ));
+    window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
 
     g_oglw = LOGLW::createOpenGLWrapper( sdlW );
     g_oglw->onInitialize( afterInit );
@@ -90,7 +90,7 @@ void onKeyBoardEvent( const SDL2W::IKey& key )
 
 void onWindowEvent( const WinEventType type )
 {
-    if(  WinEventType::CLOSE == type )
+    if( WinEventType::CLOSE == type )
     {
         closeApp();
     }

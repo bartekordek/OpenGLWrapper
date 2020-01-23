@@ -6,7 +6,6 @@ using namespace LOGLW;
 ProgramConcrete::ProgramConcrete():
     m_id( OGLUTILS::createProgram() )
 {
-
 }
 
 ProgramConcrete::~ProgramConcrete()
@@ -55,7 +54,7 @@ void ProgramConcrete::validate()
     OGLUTILS::validateProgram( m_id );
 }
 
-Cunt ProgramConcrete::getProgramId() const 
+Cunt ProgramConcrete::getProgramId() const
 {
     return m_id;
 }

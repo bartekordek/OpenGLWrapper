@@ -2,6 +2,9 @@
 #include "Primitives/TriangleImpl.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/ITimer.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/JSON/INode.hpp"
+#include "Primitives/TriangleImpl.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "OpenGL_3_Utils.hpp"
@@ -84,6 +87,59 @@ ITriangle* OpenGLWrapperConcrete::createTriangle()
     return result;
 }
 
+IObject* OpenGLWrapperConcrete::createFromFile( const CsStr& path )
+{
+    const CUL::FS::Path filePath( path );
+    if( ".json" == filePath.getExtension() )
+    {
+        const auto file = CUL::FS::FileFactory::createJSONFileRawPtr( path );
+        file->load();
+        return createFromFile( file );
+    }
+    return nullptr;
+}
+
+IObject* OpenGLWrapperConcrete::createFromFile( CUL::JSON::IJSONFile* file )
+{
+    auto root = file->getRoot();
+    const auto type = root->getName();
+    if( "default triangle" == type )
+    {
+        //TriangleData td;
+        const auto vertices = root->getArray();
+        for( const auto& vertex: vertices )
+        {
+            const auto typeVal = vertex->getType();
+            std::cout << "WTF?" << (int) typeVal << "\n";
+        }
+        //const auto p1 = static_cast<const CUL::JSON::DataPair*>( vertices.at( 0 ) );
+        //const auto p2 = static_cast<const CUL::JSON::DataPair*>( vertices.at( 1 ) );
+        //const auto p3 = static_cast<const CUL::JSON::DataPair*>( vertices.at( 2 ) );
+
+        //const auto p1Val = std::stof( p1->getVal() );
+        //const auto p2Val = std::stof( p2->getVal() );
+        //const auto p3Val = std::stof( p3->getVal() );
+
+    }
+    return nullptr;
+}
+
+IObject* OpenGLWrapperConcrete::createFromFile( IFile* file )
+{
+    const auto& fileExtension = file->getPath().getExtension();
+    if( ".json" == fileExtension )
+    {
+        const auto jsonFile = static_cast<const CUL::JSON::IJSONFile*>( file );
+        const auto root = jsonFile->getRoot();
+        const auto name = root->findChild( "name" );
+        const auto valueType = name->getType();
+        CUL::Assert::simple( valueType == CUL::JSON::ElementType::STRING );
+
+        auto nameVal = name->getString();
+    }
+    return nullptr;
+}
+
 void OpenGLWrapperConcrete::renderLoop()
 {
     CUL::ThreadUtils::setCurrentThreadName( "OpenGL render thread." );
@@ -114,7 +170,7 @@ void OpenGLWrapperConcrete::initialize()
     Viewport vp;
     vp.setSize( winSize );
     vp.setEyePos( Pos3Df( 0.0f, 0.0f, 10.0f ) );
-    vp.setCenter( Pos3Df( 0.0f, 0.0f,  0.0f ) );
+    vp.setCenter( Pos3Df( 0.0f, 0.0f, 0.0f ) );
     vp.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
 
     setViewPort( vp );
@@ -222,7 +278,7 @@ void OpenGLWrapperConcrete::executeTasks()
 
 void OpenGLWrapperConcrete::renderObjects()
 {
-    for( auto& renderableObject: m_objectsToRender )
+    for( auto& renderableObject : m_objectsToRender )
     {
         renderableObject->render();
     }

@@ -60,7 +60,6 @@ private:
     float m_fov = 90.0f;
     double m_zNear = 1.0;
     double m_zFar = -1.0;
-
 };
 
 NAMESPACE_END( LOGLW )

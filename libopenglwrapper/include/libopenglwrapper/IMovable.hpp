@@ -25,7 +25,6 @@ protected:
 private:
     IMovable( const IMovable& value ) = delete;
     IMovable& operator=( const IMovable& value ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

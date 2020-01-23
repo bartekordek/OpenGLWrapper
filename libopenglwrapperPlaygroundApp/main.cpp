@@ -25,6 +25,7 @@ Color red( 1.0f, 0.0f, 0.0f, 1.0f );
 Color yellow( 1.0f, 1.0f, 0.0f, 1.0f );
 GLfloat angle = 0.0f;
 DumbPtr<LOGLW::ITriangle> triangle;
+LOGLW::IObjectFactory* of = nullptr;
 ShaderFile* vertexShaderFile = nullptr;
 ShaderFile* fragmentShaderFile = nullptr;
 SDL2W::WindowData windowData;
@@ -55,8 +56,7 @@ int main( int argc, char** argv )
 
     g_oglw->onInitialize( afterInit );
     g_oglw->beforeFrame( renderScene );
-    g_oglw->setRenderLoopLatency( 8192 ); 
-
+    g_oglw->setRenderLoopLatency( 8192 );
 
     g_sdlw->registerKeyboardEventCallback( &onKeyBoardEvent );
     g_sdlw->registerWindowEventCallback( &onWindowEvent );
@@ -73,7 +73,8 @@ void afterInit()
     auto sf = g_oglw->getShaderFactory();
     auto pf = g_oglw->getProgramFactory();
 
-    CUL::FS::Path shadersDir( "../libopenglwrapper/shaders/" );
+    const CUL::String wrapperDir = "../libopenglwrapper";
+    const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
     vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "vertexShader.vert" );
     fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "fragmentShader.frag" );
 
@@ -100,6 +101,12 @@ void afterInit()
     viewport.setCenter( Pos3Df( 0.0f, 0.0f, 0.0f ) );
     viewport.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
     g_oglw->setViewPort( viewport );
+
+    of = g_oglw->getObjectFactory();
+
+    const CUL::FS::Path defDir( wrapperDir + "/basic_definitions/" );
+
+    of->createFromFile( defDir + "default_triangle.json" );
 }
 
 void drawTriangle( const Color& color, Cfloat size = 2.0f );
@@ -109,11 +116,11 @@ void renderScene()
     const float z = 0.0f;
     const float size = 64.0f;
     matrixStack.push();
-        glRotatef( angle, 0.0f, 0.0f, 1.0f );
-        glTranslatef( 0.0f, 32.0f, objectZ );
-        drawTriangle( red, size );
-        glRotatef( 180, 0.0f, 0.0f, 1.0f );
-        drawTriangle( yellow, size );
+    glRotatef( angle, 0.0f, 0.0f, 1.0f );
+    glTranslatef( 0.0f, 32.0f, objectZ );
+    drawTriangle( red, size );
+    glRotatef( 180, 0.0f, 0.0f, 1.0f );
+    drawTriangle( yellow, size );
     matrixStack.pop();
 
     angle += 0.8f;
@@ -123,9 +130,9 @@ void drawTriangle( const Color& color, Cfloat size )
 {
     glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
     glBegin( GL_TRIANGLES );
-        glVertex3f(  size, -size, 0.0f );
-        glVertex3f( -size, -size, 0.0f );
-        glVertex3f( -size,  size, 0.0f );
+    glVertex3f( size, -size, 0.0f );
+    glVertex3f( -size, -size, 0.0f );
+    glVertex3f( -size, size, 0.0f );
     glEnd();
 
     //glBegin( GL_QUADS );

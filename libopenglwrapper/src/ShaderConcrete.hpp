@@ -21,7 +21,6 @@ private:
     ShaderConcrete& operator=( const ShaderConcrete& arg ) = delete;
 
     unsigned int m_id = 0;
-
 };
 
 NAMESPACE_END( LOGLW )

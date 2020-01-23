@@ -30,7 +30,7 @@ IShader* OpenGLShaderFactory::createShader( const IFile& shaderCode )
     logger->log( "OpenGLShaderFactory::createShader: " + shaderCode.getPath() );
     if( shaderExist( shaderCode ) )
     {
-        logger->log( "OpenGLShaderFactory::createShader: shader exist.");
+        logger->log( "OpenGLShaderFactory::createShader: shader exist." );
         return getShader( shaderCode );
     }
     else
@@ -58,13 +58,13 @@ const bool OpenGLShaderFactory::shaderExist( const IFile & shaderCode ) const
 
 IShader* OpenGLShaderFactory::getShader( const IFile& shaderCode )
 {
-    return m_shaders[ shaderCode.getPath().getPath() ].get();
+    return m_shaders[shaderCode.getPath().getPath()].get();
 }
 
 IShader* OpenGLShaderFactory::addShader( const IFile& shaderCode )
 {
     logger->log( "OpenGLShaderFactory::addShader: creating: " + shaderCode.getPath() );
     auto shader = new ShaderConcrete( shaderCode );
-    m_shaders[ shaderCode.getPath().getPath() ] = shader;
+    m_shaders[shaderCode.getPath().getPath()] = shader;
     return shader;
 }

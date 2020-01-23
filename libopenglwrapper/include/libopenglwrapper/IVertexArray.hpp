@@ -12,7 +12,6 @@ protected:
 private:
     IVertexArray( const IVertexArray& arg ) = delete;
     IVertexArray& operator=( const IVertexArray& rhv ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

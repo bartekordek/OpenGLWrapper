@@ -11,7 +11,6 @@ class MatrixStack
 public:
     MatrixStack()
     {
-
     }
 
     ~MatrixStack()
@@ -36,7 +35,6 @@ public:
 protected:
 private:
     unsigned int m_currentMatrix = 0;
-
 };
 
 NAMESPACE_END( LOGLW )

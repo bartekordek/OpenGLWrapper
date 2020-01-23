@@ -23,7 +23,7 @@ void OGLUTILS::setViewPort( const Viewport& rect )
 {
     const auto& pos = rect.getCenter();
     const auto& size = rect.getSize();
-    glViewport( 
+    glViewport(
         static_cast<GLint>( pos.getX() ),
         static_cast<GLint>( pos.getY() ),
         static_cast<GLsizei>( size.getWidth() ),
@@ -115,9 +115,9 @@ void OGLUTILS::validateProgram( Cunt programId )
 Cunt OGLUTILS::createShader( const IFile& shaderCode )
 {
     const auto shaderType = OGLUTILS::getShaderType( shaderCode.getPath().getExtension() );
-    const auto id = static_cast< Cunt >( glCreateShader( shaderType ) );
+    const auto id = static_cast<Cunt>( glCreateShader( shaderType ) );
 
-    auto codeLength = static_cast< GLint >(
+    auto codeLength = static_cast<GLint>(
         shaderCode.getLinesCount() );
     glShaderSource( id, codeLength, shaderCode.getContent(), nullptr );
     glCompileShader( id );
@@ -126,7 +126,7 @@ Cunt OGLUTILS::createShader( const IFile& shaderCode )
     glGetShaderiv( id, GL_COMPILE_STATUS, &compilationResult );
     if( GL_FALSE == compilationResult )
     {
-        GLchar eLog[ 1024 ] = { 0 };
+        GLchar eLog[1024] = { 0 };
         glGetShaderInfoLog( id, sizeof( eLog ), nullptr, eLog );
         auto errorAsString = std::string( eLog );
         CUL::String shaderCompilationErrorMessage = "Error compiling shader: " +
@@ -206,7 +206,7 @@ void OGLUTILS::removeShader( Cunt shaderId )
 
 const GLuint OGLUTILS::toGluint( Cunt value )
 {
-    return static_cast< GLuint >( value );
+    return static_cast<GLuint>( value );
 }
 
 CUL::String OGLUTILS::initContextVersion( Cunt major, Cunt minor )
@@ -237,7 +237,7 @@ CUL::String OGLUTILS::initContextVersion( Cunt major, Cunt minor )
             GLEW_OK == error,
             "GLEW error: " +
             CUL::String( reinterpret_cast<const char*>( glewGetErrorString( error ) ) +
-                contextInfo ) );
+            contextInfo ) );
     }
     return contextInfo;
 }
@@ -262,11 +262,11 @@ void OGLUTILS::clearColorAndDepthBuffer()
 void OGLUTILS::createQuad()
 {
     glBegin( GL_QUADS );
-        glColor3f( 1.f, 1.f, 1.f );
-        glVertex2f( -0.5f, -0.5f );
-        glVertex2f( 0.5f, -0.5f );
-        glVertex2f( 0.5f, 0.5f );
-        glVertex2f( -0.5f, 0.5f );
+    glColor3f( 1.f, 1.f, 1.f );
+    glVertex2f( -0.5f, -0.5f );
+    glVertex2f( 0.5f, -0.5f );
+    glVertex2f( 0.5f, 0.5f );
+    glVertex2f( -0.5f, 0.5f );
     glEnd();
 }
 
@@ -280,15 +280,18 @@ void OGLUTILS::clearColorTo( const ColorS color )
 }
 
 template <typename Out>
-void split( const std::string &s, char delim, Out result ) {
+void split( const std::string &s, char delim, Out result )
+{
     std::istringstream iss( s );
     std::string item;
-    while( std::getline( iss, item, delim ) ) {
+    while( std::getline( iss, item, delim ) )
+    {
         *result++ = item;
     }
 }
 
-std::vector<std::string> split( const std::string &s, char delim ) {
+std::vector<std::string> split( const std::string &s, char delim )
+{
     std::vector<std::string> elems;
     split( s, delim, std::back_inserter( elems ) );
     return elems;

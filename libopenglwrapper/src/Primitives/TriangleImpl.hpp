@@ -6,31 +6,37 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
+using TriangleData = Triangle3DF;
+
 class TriangleImpl final:
     public ITriangle
 {
 public:
     TriangleImpl();
-    TriangleImpl( const TriangleImpl& args );
-
-    TriangleImpl& operator=( const TriangleImpl& rhv );
 
     void addShader( const IFile& shaderFile, IShaderFactory* sf ) override;
-    void render();
+    void render() override;
 
-    const Pos& getPos() const override;
-    void setPosition( const Pos& pos ) override;
-    void translate( const TranslationVector& moveVect ) override;
+    void setData( const TriangleData& triangleData );
 
     ~TriangleImpl();
 
 protected:
 private:
+    const Pos& getPos() const override;
+    void setPosition( const Pos& pos ) override;
+    void translate( const TranslationVector& moveVect ) override;
+
     void applyShaders();
 
-    Triangle3DF m_triangle;
+    TriangleData m_triangle;
     std::vector<IShader*> m_shaders;
 
+private: // Deleted:
+    TriangleImpl( const TriangleImpl& args ) = delete;
+    TriangleImpl( TriangleImpl&& args ) = delete;
+    TriangleImpl& operator=( const TriangleImpl& rhv ) = delete;
+    TriangleImpl& operator=( TriangleImpl&& rhv ) = delete;
 };
 
 NAMESPACE_END( LOGLW )

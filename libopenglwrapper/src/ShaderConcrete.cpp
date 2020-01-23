@@ -6,8 +6,8 @@ NAMESPACE_BEGIN( LOGLW )
 
 ShaderConcrete::ShaderConcrete(
     const IFile& shaderCode ):
-        IShader( shaderCode ),
-        m_id( OGLUTILS::createShader( shaderCode ) )
+    IShader( shaderCode ),
+    m_id( OGLUTILS::createShader( shaderCode ) )
 {
 }
 

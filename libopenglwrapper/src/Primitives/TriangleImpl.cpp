@@ -6,20 +6,6 @@ TriangleImpl::TriangleImpl()
 {
 }
 
-TriangleImpl::TriangleImpl( const TriangleImpl& args ):
-    m_triangle( args.m_triangle ),
-    m_shaders( args.m_shaders )
-{
-}
-
-TriangleImpl& TriangleImpl::operator=( const TriangleImpl& rhv )
-{
-    if( this != &rhv )
-    {
-        m_triangle = rhv.m_triangle;
-    }
-    return *this;
-}
 
 void TriangleImpl::addShader( const IFile& shaderFile, IShaderFactory* sf )
 {
@@ -29,7 +15,11 @@ void TriangleImpl::addShader( const IFile& shaderFile, IShaderFactory* sf )
 void TriangleImpl::render()
 {
     applyShaders();
+}
 
+void TriangleImpl::setData( const TriangleData& triangleData )
+{
+    m_triangle = triangleData;
 }
 
 void TriangleImpl::applyShaders()
@@ -40,6 +30,7 @@ void TriangleImpl::applyShaders()
     }
 }
 
+// TODO
 const Pos& TriangleImpl::getPos() const
 {
     static Pos pos;

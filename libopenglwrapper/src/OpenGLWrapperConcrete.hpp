@@ -14,6 +14,8 @@
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 #include "CUL/GenericUtils/ITask.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
+#include "CUL/JSON/IJSONFile.hpp"
+
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -38,6 +40,10 @@ private:
 
     IRect* createRect() override;
     ITriangle* createTriangle() override;
+    IObject* createFromFile( const CsStr& path ) override;
+    IObject* createFromFile( CUL::JSON::IJSONFile* file );
+    IObject* createFromFile( IFile* file ) override;
+
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;
     void stopRenderingLoop() override;
@@ -98,7 +104,6 @@ private: // Deleted
     OpenGLWrapperConcrete( OpenGLWrapperConcrete&& val ) = delete;
     OpenGLWrapperConcrete& operator=( const OpenGLWrapperConcrete& rhv ) = delete;
     OpenGLWrapperConcrete& operator=( OpenGLWrapperConcrete&& rhv ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

@@ -16,7 +16,6 @@ protected:
 private:
     IShaderFactory( const IShaderFactory& arg ) = delete;
     IShaderFactory& operator=( const IShaderFactory& rhv ) = delete;
-
 };
 
 NAMESPACE_END( LOGLW )

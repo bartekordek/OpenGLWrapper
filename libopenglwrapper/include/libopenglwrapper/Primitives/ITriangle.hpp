@@ -7,6 +7,7 @@
 NAMESPACE_BEGIN( LOGLW )
 
 using Triangle3DF = CUL::Math::Triangle3DF;
+using IFile = CUL::FS::IFile;
 
 class LIBOPENGLWRAPPER_API ITriangle:
     public IObject
@@ -15,7 +16,7 @@ public:
     ITriangle() = default;
 
     virtual void addShader(
-        const CUL::FS::IFile& shaderFile,
+        const IFile& shaderFile,
         IShaderFactory* sf ) = 0;
     virtual void render() = 0;
 
@@ -28,8 +29,9 @@ public:
 protected:
 private:
     ITriangle( const ITriangle& args ) = delete;
+    ITriangle( ITriangle&& args ) = delete;
     ITriangle& operator=( const ITriangle& rhv ) = delete;
-
+    ITriangle& operator=( ITriangle&& rhv ) = delete;
 };
 
 NAMESPACE_END( LOGLW )

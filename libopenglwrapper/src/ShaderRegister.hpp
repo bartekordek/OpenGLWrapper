@@ -11,7 +11,7 @@ class ShaderRegister
 public:
     ShaderRegister();
 
-    //const 
+    //const
     IShader* getShader( const IFile& shaderPath );
 
     ~ShaderRegister();
@@ -22,7 +22,6 @@ private:
     ShaderRegister& operator=( const ShaderRegister& rhv ) = delete;
 
     std::map<CUL::String, CUL::GUTILS::DumbPtr<IShader>> m_shaders;
-
 };
 
 NAMESPACE_END( LOGLW )
