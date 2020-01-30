@@ -1,35 +1,40 @@
 #pragma once
 
-#include "libopenglwrapper/Primitives/ITriangle.hpp"
+#include "libopenglwrapper/Primitives/Triangle.hpp"
 #include "libopenglwrapper/IShader.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/Math/Triangle.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-using TriangleData = Triangle3DF;
-
-class TriangleImpl final:
-    public ITriangle
+class TriangleImpl final
 {
 public:
     TriangleImpl();
 
-    void addShader( const IFile& shaderFile, IShaderFactory* sf ) override;
-    void render() override;
+    void addShader( const IFile& shaderFile, IShaderFactory* sf );
+    void render();
 
-    void setData( const TriangleData& triangleData );
+    const Point& getPos() const;
+    void setPosition( const Pos& pos );
+    void translate( const TranslationVector& moveVect );
+
+    void setP1( const Point& val );
+    void setP2( const Point& val );
+    void setP3( const Point& val );
+
+    const Point& getP1() const;
+    const Point& getP2() const;
+    const Point& getP3() const;
+
+    void applyShaders();
+
 
     ~TriangleImpl();
 
 protected:
 private:
-    const Pos& getPos() const override;
-    void setPosition( const Pos& pos ) override;
-    void translate( const TranslationVector& moveVect ) override;
-
-    void applyShaders();
-
-    TriangleData m_triangle;
+    CUL::MATH::Triangle3DF m_triangle;
     std::vector<IShader*> m_shaders;
 
 private: // Deleted:

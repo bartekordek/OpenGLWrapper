@@ -3,13 +3,12 @@
 #include "libopenglwrapper/IRenderable.hpp"
 
 #include "CUL/Graphics/IPosition3DD.hpp"
-#include "CUL/Graphics/SimplePos3D.hpp"
-#include "CUL/Math/Vector3D.hpp"
+#include "CUL/Math/Point.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-using Pos = CUL::Graphics::SimplePos3D<float>;
-using TranslationVector = CUL::Math::Vector3D<float>;
+using Pos = CUL::MATH::PointF;
+using TranslationVector = CUL::MATH::PointF;
 
 class LIBOPENGLWRAPPER_API IMovable
 {

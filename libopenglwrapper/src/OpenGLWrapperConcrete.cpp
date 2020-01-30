@@ -1,10 +1,9 @@
 #include "OpenGLWrapperConcrete.hpp"
-#include "Primitives/TriangleImpl.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/ITimer.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/JSON/INode.hpp"
-#include "Primitives/TriangleImpl.hpp"
+#include "libopenglwrapper/Primitives/Triangle.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "OpenGL_3_Utils.hpp"
@@ -80,12 +79,14 @@ IRect* OpenGLWrapperConcrete::createRect()
     return nullptr;
 }
 
-ITriangle* OpenGLWrapperConcrete::createTriangle()
+Triangle* OpenGLWrapperConcrete::createTriangle()
 {
+    /*
     auto result = new TriangleImpl();
     m_objectsToRender.insert( result );
-    return result;
-}
+    */
+    return nullptr;
+}   
 
 IObject* OpenGLWrapperConcrete::createFromFile( const CsStr& path )
 {
@@ -102,24 +103,11 @@ IObject* OpenGLWrapperConcrete::createFromFile( const CsStr& path )
 IObject* OpenGLWrapperConcrete::createFromFile( CUL::JSON::IJSONFile* file )
 {
     auto root = file->getRoot();
-    const auto type = root->getName();
-    if( "default triangle" == type )
+    const auto nameNode = root->findChild( "name" );
+    CUL::Assert::simple( nameNode->getType() == CUL::JSON::ElementType::STRING, "Wrong JSON definition: type of name value." );
+    if( "default triangle" == nameNode->getString() )
     {
-        //TriangleData td;
-        const auto vertices = root->getArray();
-        for( const auto& vertex: vertices )
-        {
-            const auto typeVal = vertex->getType();
-            std::cout << "WTF?" << (int) typeVal << "\n";
-        }
-        //const auto p1 = static_cast<const CUL::JSON::DataPair*>( vertices.at( 0 ) );
-        //const auto p2 = static_cast<const CUL::JSON::DataPair*>( vertices.at( 1 ) );
-        //const auto p3 = static_cast<const CUL::JSON::DataPair*>( vertices.at( 2 ) );
-
-        //const auto p1Val = std::stof( p1->getVal() );
-        //const auto p2Val = std::stof( p2->getVal() );
-        //const auto p3Val = std::stof( p3->getVal() );
-
+        return createTriangle( root->findChild( "vertices" ) );
     }
     return nullptr;
 }
@@ -138,6 +126,39 @@ IObject* OpenGLWrapperConcrete::createFromFile( IFile* file )
         auto nameVal = name->getString();
     }
     return nullptr;
+}
+
+IObject* OpenGLWrapperConcrete::createTriangle( CUL::JSON::INode* jNode )
+{
+    CUL::Assert::simple( CUL::JSON::ElementType::ARRAY == jNode->getType(), "Different types." );
+    CUL::Assert::simple( 3 == jNode->getArray().size(), "Defined triangle vertices count mismatch." );
+
+    auto triangle = new Triangle();
+
+    auto jsonToPoint = []( CUL::JSON::INode* node ) -> Point
+    {
+        CUL::Assert::simple( node->getType() == CUL::JSON::ElementType::ARRAY, "Vertice data type mismatch." );
+
+        auto px = node->findChild( "x" );
+        auto py = node->findChild( "y" );
+        auto pz = node->findChild( "z" );
+
+        Point point;
+        point.x = px->getDouble();
+        point.y = py->getDouble();
+        point.z = pz->getDouble();
+        return point;
+    };
+
+    const auto vertex1 = jNode->getArray()[0];
+    const auto vertex2 = jNode->getArray()[1];
+    const auto vertex3 = jNode->getArray()[2];
+
+    triangle->setP1( jsonToPoint( vertex1 ) );
+    triangle->setP2( jsonToPoint( vertex2 ) );
+    triangle->setP3( jsonToPoint( vertex3 ) );
+
+    return triangle;
 }
 
 void OpenGLWrapperConcrete::renderLoop()

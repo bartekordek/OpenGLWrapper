@@ -24,7 +24,7 @@ LOGLW::MatrixStack matrixStack;
 Color red( 1.0f, 0.0f, 0.0f, 1.0f );
 Color yellow( 1.0f, 1.0f, 0.0f, 1.0f );
 GLfloat angle = 0.0f;
-DumbPtr<LOGLW::ITriangle> triangle;
+DumbPtr<LOGLW::Triangle> triangle;
 LOGLW::IObjectFactory* of = nullptr;
 ShaderFile* vertexShaderFile = nullptr;
 ShaderFile* fragmentShaderFile = nullptr;

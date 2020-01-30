@@ -37,7 +37,7 @@ void OGLUTILS::setPerspective(
     CDouble m_zFar )
 {
     gluPerspective(
-        angle.getValueD( CUL::Math::Angle::Type::DEGREE ),
+        angle.getValueD( CUL::MATH::Angle::Type::DEGREE ),
         widthToHeightRatio,
         m_zNear,
         m_zFar );

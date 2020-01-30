@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libopenglwrapper/Import.hpp"
-#include "libopenglwrapper/Primitives/ITriangle.hpp"
+#include "libopenglwrapper/Primitives/Triangle.hpp"
 #include "libopenglwrapper/Primitives/IRect.hpp"
 
 #include "CUL/Filesystem/IFile.hpp"
@@ -17,7 +17,7 @@ public:
     virtual ~IObjectFactory() = default;
 
     virtual IRect* createRect() = 0;
-    virtual ITriangle* createTriangle() = 0;
+    virtual Triangle* createTriangle() = 0;
     virtual IObject* createFromFile( IFile* file ) = 0;
     virtual IObject* createFromFile( const CsStr& path ) = 0;
 

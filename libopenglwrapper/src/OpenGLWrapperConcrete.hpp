@@ -39,10 +39,11 @@ private:
     void setViewPort( const Viewport& rect ) override;
 
     IRect* createRect() override;
-    ITriangle* createTriangle() override;
+    Triangle* createTriangle() override;
     IObject* createFromFile( const CsStr& path ) override;
     IObject* createFromFile( CUL::JSON::IJSONFile* file );
     IObject* createFromFile( IFile* file ) override;
+    IObject* createTriangle( CUL::JSON::INode* jNode );
 
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;

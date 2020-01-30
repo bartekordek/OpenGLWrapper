@@ -21,7 +21,7 @@ NAMESPACE_BEGIN( LOGLW )
 using CDouble = const double;
 using Cunt = const unsigned int;
 
-using Angle = CUL::Math::Angle;
+using Angle = CUL::MATH::Angle;
 using String = CUL::String;
 using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;

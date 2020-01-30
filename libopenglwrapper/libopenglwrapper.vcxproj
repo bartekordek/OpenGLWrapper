@@ -265,7 +265,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="include\libopenglwrapper\IVertexArray.hpp" />
     <ClInclude Include="include\libopenglwrapper\IVertexBuffer.hpp" />
     <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp" />
-    <ClInclude Include="include\libopenglwrapper\Primitives\ITriangle.hpp" />
+    <ClInclude Include="include\libopenglwrapper\Primitives\Triangle.hpp" />
     <ClInclude Include="include\libopenglwrapper\ViewPort.hpp" />
     <ClInclude Include="src\ImportFreeglut.hpp" />
     <ClInclude Include="src\IMPORT_glew.hpp" />

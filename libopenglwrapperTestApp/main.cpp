@@ -28,7 +28,7 @@ SDL2W::ISDL2Wrapper* g_sdlw = nullptr;
 
 ShaderFile vertexShaderFile;
 ShaderFile fragmentShaderFile;
-LOGLW::ITriangle* triangle = nullptr;
+LOGLW::Triangle* triangle = nullptr;
 
 CUL::FS::IFile* getFile( const CUL::FS::Path& filePath );
 

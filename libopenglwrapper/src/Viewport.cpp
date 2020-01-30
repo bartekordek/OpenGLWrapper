@@ -1,4 +1,4 @@
-#include "libopenglwrapper/Viewport.hpp"
+#include "libopenglwrapper/ViewPort.hpp"
 #include "CUL/STL_IMPORTS/STD_utility.hpp"
 
 using namespace LOGLW;

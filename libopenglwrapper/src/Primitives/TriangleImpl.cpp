@@ -6,7 +6,6 @@ TriangleImpl::TriangleImpl()
 {
 }
 
-
 void TriangleImpl::addShader( const IFile& shaderFile, IShaderFactory* sf )
 {
     m_shaders.push_back( sf->createShader( shaderFile ) );
@@ -15,11 +14,6 @@ void TriangleImpl::addShader( const IFile& shaderFile, IShaderFactory* sf )
 void TriangleImpl::render()
 {
     applyShaders();
-}
-
-void TriangleImpl::setData( const TriangleData& triangleData )
-{
-    m_triangle = triangleData;
 }
 
 void TriangleImpl::applyShaders()
@@ -31,18 +25,47 @@ void TriangleImpl::applyShaders()
 }
 
 // TODO
-const Pos& TriangleImpl::getPos() const
+const Point& TriangleImpl::getPos() const
 {
-    static Pos pos;
-    return pos;
+    return m_triangle.getCentralPosition();
 }
 
 void TriangleImpl::setPosition( const Pos& )
 {
 }
 
-void TriangleImpl::translate( const TranslationVector& )
+void TriangleImpl::translate( const TranslationVector& tv )
 {
+    m_triangle += tv;
+}
+
+void TriangleImpl::setP1( const Point& val )
+{
+    m_triangle.setP1( val );
+}
+
+void TriangleImpl::setP2( const Point& val )
+{
+    m_triangle.setP2( val );
+}
+void TriangleImpl::setP3( const Point& val )
+{
+    m_triangle.setP3( val );
+}
+
+const Point& TriangleImpl::getP1() const
+{
+    return m_triangle.getP1();
+}
+
+const Point& TriangleImpl::getP2() const
+{
+    return m_triangle.getP2();
+}
+
+const Point& TriangleImpl::getP3() const
+{
+    return m_triangle.getP3();
 }
 
 TriangleImpl::~TriangleImpl()
