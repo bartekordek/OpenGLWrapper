@@ -9,7 +9,11 @@
 NAMESPACE_BEGIN( LOGLW )
 
 using IFile = CUL::FS::IFile;
+<<<<<<< Updated upstream
 using String = CUL::String;
+=======
+using MString = CUL::String;
+>>>>>>> Stashed changes
 
 class LIBOPENGLWRAPPER_API IShader
 {

@@ -44,13 +44,13 @@ IProgram* OpenGLShaderFactory::createProgram()
 {
     logger->log( "OpenGLShaderFactory::createProgram()" );
 
-    auto result = new ProgramConcrete();
+    IProgram* result = new ProgramConcrete();
     m_programs[result->getProgramId()] = result;
 
     return result;
 }
 
-const bool OpenGLShaderFactory::shaderExist( const IFile & shaderCode ) const
+const bool OpenGLShaderFactory::shaderExist( const IFile& shaderCode ) const
 {
     ShaderMap::iterator it = m_shaders.find( shaderCode.getPath().getPath() );
     return m_shaders.end() != it;

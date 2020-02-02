@@ -28,6 +28,7 @@ DumbPtr<LOGLW::Triangle> triangle;
 LOGLW::IObjectFactory* of = nullptr;
 ShaderFile* vertexShaderFile = nullptr;
 ShaderFile* fragmentShaderFile = nullptr;
+LOGLW::IProgram* program = nullptr;
 SDL2W::WindowData windowData;
 float objectZ = 0.0f;
 LOGLW::Viewport viewport;
@@ -75,8 +76,8 @@ void afterInit()
 
     const CUL::String wrapperDir = "../libopenglwrapper";
     const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
-    vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "vertexShader.vert" );
-    fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "fragmentShader.frag" );
+    vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "simpleVertex.vert" );
+    fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "simpleFrag.frag" );
 
     vertexShaderFile->load( true );
     fragmentShaderFile->load( true );
@@ -84,7 +85,7 @@ void afterInit()
     auto vs = sf->createShader( *vertexShaderFile );
     auto fs = sf->createShader( *fragmentShaderFile );
 
-    auto program = pf->createProgram();
+    program = pf->createProgram();
 
     program->attachShader( vs );
     program->attachShader( fs );
@@ -124,6 +125,9 @@ void renderScene()
     matrixStack.pop();
 
     angle += 0.8f;
+
+    program->enable();
+    program->disable();
 }
 
 void drawTriangle( const Color& color, Cfloat size )

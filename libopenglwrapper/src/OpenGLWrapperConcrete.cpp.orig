@@ -236,6 +236,7 @@ void OpenGLWrapperConcrete::renderFrame()
     executeTasks();
     renderObjects();
 
+<<<<<<< Updated upstream
     refreshBuffers();
     CUL::ITimer::sleepMicroSeconds( m_renderLoopLatencyUs );
 }
@@ -285,6 +286,10 @@ https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
 void OpenGLWrapperConcrete::setEyePos( const Pos3Df& pos )
 {
     m_viewport.setEyePos( pos );
+=======
+    swapBuffers();
+    CUL::ITimer::sleepMiliSeconds( 55 );
+>>>>>>> Stashed changes
 }
 
 void OpenGLWrapperConcrete::executeTasks()
@@ -306,7 +311,7 @@ void OpenGLWrapperConcrete::renderObjects()
     OGLUTILS::createQuad();
 }
 
-void OpenGLWrapperConcrete::refreshBuffers()
+void OpenGLWrapperConcrete::swapBuffers()
 {
     if( m_updateBuffers )
     {

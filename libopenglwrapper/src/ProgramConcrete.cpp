@@ -14,23 +14,43 @@ ProgramConcrete::~ProgramConcrete()
     m_id = 0;
 }
 
-void ProgramConcrete::setUniform(
+void ProgramConcrete::setAttrib(
     CsStr&,
     const char* )
 {
     //TODO
 }
 
-CsStr ProgramConcrete::getUniform( CsStr& )
+void ProgramConcrete::setAttrib( CsStr & , Cfloat  )
 {
-    //TODO
+}
+
+void ProgramConcrete::setAttrib( CsStr & , Cunt  )
+{
+}
+
+void ProgramConcrete::setAttrib( CsStr & , Cint  )
+{
+}
+
+CsStr ProgramConcrete::getAttributeStr( CsStr &  )
+{
     return CsStr();
 }
 
-CsStr ProgramConcrete::getAttribute( CsStr& )
+Cfloat ProgramConcrete::getAttributeF( CsStr &  )
 {
-    //TODO
-    return CsStr();
+    return Cfloat();
+}
+
+Cunt ProgramConcrete::getAttributeUi( CsStr &  )
+{
+    return Cunt();
+}
+
+Cint ProgramConcrete::getAttributeI( CsStr &  )
+{
+    return Cint();
 }
 
 void ProgramConcrete::attachShader( const IShader* shader )
@@ -44,14 +64,36 @@ void ProgramConcrete::link()
     OGLUTILS::linkProgram( m_id );
 }
 
-void ProgramConcrete::userProgram()
+void ProgramConcrete::enable()
 {
     OGLUTILS::useProgram( m_id );
+}
+
+void ProgramConcrete::disable()
+{
+    OGLUTILS::useProgram( 0 );
 }
 
 void ProgramConcrete::validate()
 {
     OGLUTILS::validateProgram( m_id );
+}
+
+const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( CsStr & name ) const
+{
+    ProgramConcrete::AttribKey result;
+
+    auto it = m_attribMap.find( name );
+    if( it == m_attribMap.end() )
+    {
+        result = OGLUTILS::getAttributeLocation( m_id, name );
+    }
+    else
+    {
+        result = it->second;
+    }
+
+    return result;
 }
 
 Cunt ProgramConcrete::getProgramId() const

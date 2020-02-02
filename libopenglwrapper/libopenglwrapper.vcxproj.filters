@@ -1,29 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{5f8d1b40-7b81-4181-81bf-3959596e5ffe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Primitives">
-      <UniqueIdentifier>{26d145f4-8d5b-4f2a-a9cb-5afa5b624ebe}</UniqueIdentifier>
+      <UniqueIdentifier>{dc166da3-eb0b-4778-86c3-023a2022a5c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\libopenglwrapper">
-      <UniqueIdentifier>{105a00f0-c968-4954-b0f9-ed6ea494d083}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{d360ab31-8193-4374-933d-58bef5933ca9}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{ecae640f-c939-44d6-ad2a-46b8f7ada3ba}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\libopenglwrapper\Primitives">
-      <UniqueIdentifier>{815306c3-a856-4388-a60c-af317e706827}</UniqueIdentifier>
+      <UniqueIdentifier>{031ad1a3-6c9a-416e-a77b-19633669e739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\libopenglwrapper">
+      <UniqueIdentifier>{13c17f75-6956-4cb1-8cc7-5b5a1acb4ed1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{4b89c0ea-0052-4c60-8cc1-41e68d7d466c}</UniqueIdentifier>
     </Filter>
     <Filter Include="shaders">
-      <UniqueIdentifier>{e587b30c-c1a5-43c2-9de1-ab02e4bf3b07}</UniqueIdentifier>
+      <UniqueIdentifier>{14c9c791-dd1a-4e87-b47c-f79d48d00e9f}</UniqueIdentifier>
     </Filter>
     <Filter Include="basic_definitions">
-      <UniqueIdentifier>{80df76ad-5343-4ca4-b14f-5e9367a4b70a}</UniqueIdentifier>
+      <UniqueIdentifier>{56401a3b-30a6-4dfb-b650-9c3fe9843a1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Primitives\Rect.cpp">
+      <Filter>src\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primitives\Triangle.cpp">
+      <Filter>src\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primitives\TriangleImpl.cpp">
+      <Filter>src\Primitives</Filter>
+    </ClCompile>
     <ClCompile Include="src\IObjectFactory.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -57,17 +66,17 @@
     <ClCompile Include="src\Viewport.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primitives\Rect.cpp">
-      <Filter>src\Primitives</Filter>
+    <ClCompile Include="src\VBOConcrete.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primitives\Triangle.cpp">
-      <Filter>src\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Primitives\TriangleImpl.cpp">
-      <Filter>src\Primitives</Filter>
+    <ClCompile Include="src\IVBO.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Primitives\TriangleImpl.hpp">
+      <Filter>src\Primitives</Filter>
+    </ClInclude>
     <ClInclude Include="src\ImportFreeglut.hpp">
       <Filter>src</Filter>
     </ClInclude>
@@ -95,8 +104,11 @@
     <ClInclude Include="src\ShaderRegister.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primitives\TriangleImpl.hpp">
-      <Filter>src\Primitives</Filter>
+    <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp">
+      <Filter>include\libopenglwrapper\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\Primitives\Triangle.hpp">
+      <Filter>include\libopenglwrapper\Primitives</Filter>
     </ClInclude>
     <ClInclude Include="include\libopenglwrapper\IMovable.hpp">
       <Filter>include\libopenglwrapper</Filter>
@@ -131,6 +143,12 @@
     <ClInclude Include="include\libopenglwrapper\ITexture.hpp">
       <Filter>include\libopenglwrapper</Filter>
     </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IVAO.hpp">
+      <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IVBO.hpp">
+      <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
     <ClInclude Include="include\libopenglwrapper\IVertexArray.hpp">
       <Filter>include\libopenglwrapper</Filter>
     </ClInclude>
@@ -140,15 +158,18 @@
     <ClInclude Include="include\libopenglwrapper\ViewPort.hpp">
       <Filter>include\libopenglwrapper</Filter>
     </ClInclude>
-    <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp">
-      <Filter>include\libopenglwrapper\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="include\libopenglwrapper\Primitives\Triangle.hpp">
-      <Filter>include\libopenglwrapper\Primitives</Filter>
+    <ClInclude Include="src\VBOConcrete.hpp">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\simpleFrag.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\simpleVertex.vert">
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\vertexShader.vert">

@@ -22,6 +22,10 @@ private:
     ShaderRegister& operator=( const ShaderRegister& rhv ) = delete;
 
     std::map<CUL::String, CUL::GUTILS::DumbPtr<IShader>> m_shaders;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 };
 
 NAMESPACE_END( LOGLW )

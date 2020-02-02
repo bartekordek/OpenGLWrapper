@@ -9,24 +9,38 @@
 #include "CUL/Graphics/Size2D.hpp"
 #include "CUL/Math/Angle.hpp"
 #include "CUL/String.hpp"
+<<<<<<< Updated upstream
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_utility.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/Graphics/Pos3D.hpp"
+=======
+>>>>>>> Stashed changes
 
 #include "IMPORT_glew.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
 using CDouble = const double;
+<<<<<<< Updated upstream
 using Cunt = const unsigned int;
 
 using Angle = CUL::MATH::Angle;
 using String = CUL::String;
+=======
+using Angle = CUL::Math::Angle;
+using CsStr = CUL::CsStr;
+using DispRect = CUL::Graphics::Rect2D<unsigned int>;
+
+using Cunt = const unsigned int;
+using Cint = const int;
+using Cfloat = const float;
+>>>>>>> Stashed changes
 using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
 using Pos3Dd = CUL::Graphics::Pos3Dd;
 
+<<<<<<< Updated upstream
 class OGLUTILS
 {
 public:
@@ -38,6 +52,21 @@ public:
     static void lookAt( const Viewport& vp );
     static void lookAt( const std::array< Pos3Dd, 3>& lookAtVec );
     static void lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up );
+=======
+//OGLUTILS
+class OGLUTILS
+{
+public:
+    struct ViewPortRect
+    {
+        CUL::Graphics::Pos2Di pos;
+        CUL::Graphics::Size2Du size;
+    };
+
+    static void resetMatrixToIdentity( const GLenum matrix );
+    static void setViewPort( const ViewPortRect& rect );
+    static void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble zNear, CDouble zFar );
+>>>>>>> Stashed changes
 
     static const GLuint toGluint( Cunt value );
     static const GLenum getShaderType( CUL::CsStr& fileExtension );
@@ -52,27 +81,41 @@ public:
     static void attachShader( Cunt programId, Cunt shaderId );
     static void removeShader( Cunt shaderId );
 
+<<<<<<< Updated upstream
     static String initContextVersion( Cunt major, Cunt minor );
+=======
     static GLuint getAttributeLocation( Cunt programId, CsStr& attributeName );
     static void setAttribValue( Cint attributeLocation, Cfloat value );
     static void setAttribValue( Cint attributeLocation, Cint value );
     static void setAttribValue( Cint attributeLocation, Cunt value );
 
+    static CUL::String initContextVersion( Cunt major, Cunt minor );
+>>>>>>> Stashed changes
     static void setProjectionAndModelToIdentity();
     static void clearColorAndDepthBuffer();
     static void createQuad();
     static void clearColorTo( const ColorS color );
+<<<<<<< Updated upstream
 
     static std::vector<std::string> listExtensions();
+=======
+    static void listExtensions();
+>>>>>>> Stashed changes
 
 protected:
 private:
     OGLUTILS() = delete;
     OGLUTILS( const OGLUTILS& arg ) = delete;
+<<<<<<< Updated upstream
     OGLUTILS( OGLUTILS&& arg ) = delete;
     OGLUTILS& operator=( const OGLUTILS& rhv ) = delete;
     OGLUTILS& operator=( OGLUTILS&& rhv ) = delete;
     ~OGLUTILS() = delete;
+=======
+    OGLUTILS& operator=( const OGLUTILS& rhv ) = delete;
+    ~OGLUTILS() = delete;
+
+>>>>>>> Stashed changes
 };
 
 NAMESPACE_END( LOGLW )

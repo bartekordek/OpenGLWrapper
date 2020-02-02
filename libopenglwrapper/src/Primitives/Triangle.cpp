@@ -9,15 +9,15 @@ Triangle::Triangle():
 }
 
 void Triangle::addShader(
-    const IFile&,
-    IShaderFactory* )
+    const IFile& file,
+    IShaderFactory* sf )
 {
-    // TODO.
+    m_impl->addShader( file, sf );
 }
 
 void Triangle::render()
 {
-    // TODO.
+    m_impl->render();
 }
 
 const Pos& Triangle::getPos() const

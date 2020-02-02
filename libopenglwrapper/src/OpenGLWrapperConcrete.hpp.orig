@@ -34,9 +34,12 @@ public:
 protected:
 private:
     void initialize() override;
+<<<<<<< Updated upstream
     void refreshBuffers();
     void setRenderLoopLatency( Cunt uS ) override;
     void setViewPort( const Viewport& rect ) override;
+=======
+>>>>>>> Stashed changes
 
     IRect* createRect() override;
     Triangle* createTriangle() override;
@@ -48,8 +51,14 @@ private:
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;
     void stopRenderingLoop() override;
+<<<<<<< Updated upstream
     void onInitialize( const EmptyFunctionCallback& callback ) override;
     void beforeFrame( const EmptyFunctionCallback& callback ) override;
+=======
+    void onInitialize( const std::function<void()>& callback ) override;
+    void beforeFrame( const std::function<void()>& callback ) override;
+    void swapBuffers() override;
+>>>>>>> Stashed changes
 
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;

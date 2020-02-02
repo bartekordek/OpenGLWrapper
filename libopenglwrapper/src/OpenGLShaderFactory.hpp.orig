@@ -9,8 +9,13 @@ NAMESPACE_BEGIN( LOGLW )
 using ShaderPtr = CUL::GUTILS::DumbPtr<IShader>;
 using ProgramPtr = CUL::GUTILS::DumbPtr<IProgram>;
 
+<<<<<<< Updated upstream
 using MyString = CUL::String;
 using ShaderMap = std::map<MyString, ShaderPtr>;
+=======
+using String = CUL::String;
+using ShaderMap = std::map<String, ShaderPtr>;
+>>>>>>> Stashed changes
 using ProgramMap = std::map<unsigned int, ProgramPtr>;
 
 class OpenGLShaderFactory final:
