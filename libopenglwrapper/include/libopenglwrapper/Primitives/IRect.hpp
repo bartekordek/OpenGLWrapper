@@ -41,7 +41,7 @@ class LIBOPENGLWRAPPER_API IRect:
 public:
     IRect() = default;
 
-    virtual void addShader( const IFile& shaderFile, IShaderFactory* sf ) override = 0;
+    virtual void addShader( IFile* shaderFile, IShaderFactory* sf ) override = 0;
     virtual const Size& getSize() const = 0;
     virtual const Pos& getPos() const override = 0;
 

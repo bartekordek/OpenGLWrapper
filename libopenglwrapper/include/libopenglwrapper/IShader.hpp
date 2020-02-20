@@ -14,17 +14,21 @@ using String = CUL::String;
 class LIBOPENGLWRAPPER_API IShader
 {
 public:
-    IShader( const IFile& shaderCode );
-    virtual ~IShader() = default;
+    IShader();
 
     virtual Cunt getId() const = 0;
     virtual void useShader() const = 0;
+    virtual void reload() = 0;
+    virtual const String& getPath() const = 0;
+
+    virtual ~IShader();
 
 protected:
 private:
-    IShader() = delete;
     IShader( const IShader& arg ) = delete;
+    IShader( IShader&& arg ) = delete;
     IShader& operator=( const IShader& rhv ) = delete;
+    IShader& operator=( IShader&& rhv ) = delete;
 };
 
 NAMESPACE_END( LOGLW )

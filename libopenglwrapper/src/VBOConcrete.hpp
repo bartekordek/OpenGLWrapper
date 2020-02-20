@@ -2,7 +2,8 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-class VBOConcrete final: public IVBO
+class VBOConcrete final:
+    public IVBO
 {
 public:
     VBOConcrete();
@@ -13,6 +14,7 @@ public:
 protected:
 private:
     FloatData m_data;
+    unsigned int m_bufferId = 0;
     // Delted:
     VBOConcrete( const VBOConcrete& value ) = delete;
     VBOConcrete( VBOConcrete&& value ) = delete;

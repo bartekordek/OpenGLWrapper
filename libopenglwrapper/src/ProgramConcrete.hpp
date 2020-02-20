@@ -1,8 +1,10 @@
 #pragma once
 
 #include "libopenglwrapper/IProgram.hpp"
+#include "libopenglwrapper/IUtilityUser.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
+#include "CUL/STL_IMPORTS/STD_thread.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -10,7 +12,7 @@ class ProgramConcrete final:
     public IProgram
 {
 public:
-    ProgramConcrete();
+    ProgramConcrete( IUtility* utility );
     ~ProgramConcrete();
 
 protected:
@@ -28,18 +30,24 @@ private:
     Cunt getAttributeUi( CsStr& name ) override;
     Cint getAttributeI( CsStr& name ) override;
 
-    void attachShader( const IShader* shader ) override;
+    void attachShader( IShader* shader ) override;
+    void dettachShader( IShader* shader = nullptr ) override;
+
     void link() override;
     void enable() override;
     void disable() override;
     void validate() override;
 
     const AttribKey getAttribLocation( CsStr& name ) const;
+    const ShaderList& getShaderList() const override;
 
     Cunt getProgramId() const override;
 
+    IUtility* m_utility = nullptr;
     unsigned int m_id = 0;
     AttribMap m_attribMap;
+    ShaderList m_attachedShaders;
+    std::mutex m_operationMutex;
 
 private: // Deleted
     ProgramConcrete( const ProgramConcrete& arg ) = delete;

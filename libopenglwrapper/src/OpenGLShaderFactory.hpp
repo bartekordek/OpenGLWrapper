@@ -3,6 +3,7 @@
 #include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IProgramFactory.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
+#include "libopenglwrapper/IUtility.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -21,7 +22,7 @@ public:
     OpenGLShaderFactory();
     ~OpenGLShaderFactory();
 
-    IShader* createShader( const IFile& shaderCode ) override;
+    IShader* createShader( IFile* shaderCode ) override;
     IProgram* createProgram() override;
 
 protected:
@@ -31,7 +32,7 @@ private:
 
     const bool shaderExist( const IFile& shaderCode ) const;
     IShader* getShader( const IFile& shaderCode );
-    IShader* addShader( const IFile& shaderCode );
+    IShader* addShader( IFile* shaderCode );
 
     mutable ShaderMap m_shaders;
     ProgramMap m_programs;

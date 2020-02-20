@@ -6,7 +6,7 @@ TriangleImpl::TriangleImpl()
 {
 }
 
-void TriangleImpl::addShader( const IFile& shaderFile, IShaderFactory* sf )
+void TriangleImpl::addShader( IFile* shaderFile, IShaderFactory* sf )
 {
     m_shaders.push_back( sf->createShader( shaderFile ) );
 }

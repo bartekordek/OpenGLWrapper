@@ -2,6 +2,10 @@
 
 using namespace LOGLW;
 
-IShader::IShader( const IFile& )
+IShader::IShader()
+{
+}
+
+IShader::~IShader()
 {
 }

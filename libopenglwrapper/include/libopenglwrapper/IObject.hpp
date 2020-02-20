@@ -18,7 +18,7 @@ public:
     IObject() = default;
     virtual ~IObject() = default;
 
-    virtual void addShader( const IFile& shaderFile, IShaderFactory* sf ) = 0;
+    virtual void addShader( IFile* shaderFile, IShaderFactory* sf ) = 0;
 
 protected:
 private:

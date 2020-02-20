@@ -1,8 +1,9 @@
-#include "OpenGL_3_Utils.hpp"
+#include "UtilConcrete.hpp"
 
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "IMPORT_SDL_opengl.hpp"
 
+#include "IMPORT_glew.hpp"
+#include "IMPORT_SDL_opengl.hpp"
 #include "ImportFreeglut.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
@@ -13,13 +14,18 @@ using namespace LOGLW;
 
 void assertOnProgramError( Cunt programId, const GLenum val );
 const CUL::String enumToString( const GLenum val );
+const GLuint toGluint( Cunt value );
 
 void Assert( const bool value, const CUL::String& message )
 {
     CUL::Assert::simple( value, message );
 }
 
-void OGLUTILS::setViewPort( const Viewport& rect )
+UtilConcrete::UtilConcrete()
+{
+}
+
+void UtilConcrete::setViewPort( const Viewport& rect ) const
 {
     const auto& pos = rect.getCenter();
     const auto& size = rect.getSize();
@@ -30,11 +36,11 @@ void OGLUTILS::setViewPort( const Viewport& rect )
         static_cast<GLsizei>( size.getHeight() ) );
 }
 
-void OGLUTILS::setPerspective(
+void UtilConcrete::setPerspective(
     const Angle& angle,
     CDouble widthToHeightRatio,
     CDouble m_zNear,
-    CDouble m_zFar )
+    CDouble m_zFar ) const
 {
     gluPerspective(
         angle.getValueD( CUL::MATH::Angle::Type::DEGREE ),
@@ -43,7 +49,31 @@ void OGLUTILS::setPerspective(
         m_zFar );
 }
 
-void OGLUTILS::lookAt( const Viewport& vp )
+void UtilConcrete::setOrthogonalPerspective( const Viewport& vp ) const
+{
+    const auto left = vp.getLeft();
+    const auto right = vp.getRight();
+    const auto bottom = vp.getBottom();
+    const auto top = vp.getTop();
+    const auto zNear = vp.getZnear();
+    const auto zFar = vp.getZfar();
+
+    glOrtho(
+        left, // left
+        right, // right
+        bottom, // bottom
+        top, // top
+        zNear, // near
+        zFar // far
+    );
+}
+
+void UtilConcrete::setPerspectiveProjection( const Viewport& vp ) const
+{
+    gluPerspective( vp.getFov(), vp.getAspectRatio(), vp.getZnear(), vp.getZfar() );
+}
+
+void UtilConcrete::lookAt( const Viewport& vp ) const
 {
     const auto& eye = vp.getEye();
     const auto& center = vp.getCenter();
@@ -54,7 +84,7 @@ void OGLUTILS::lookAt( const Viewport& vp )
         up.getX(), up.getY(), up.getZ() );
 }
 
-void OGLUTILS::lookAt( const std::array<Pos3Dd, 3>& vec )
+void UtilConcrete::lookAt( const std::array<Pos3Dd, 3>& vec ) const
 {
     lookAt(
         vec[0],
@@ -63,7 +93,7 @@ void OGLUTILS::lookAt( const std::array<Pos3Dd, 3>& vec )
     );
 }
 
-void OGLUTILS::lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up )
+void UtilConcrete::lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up ) const
 {
     gluLookAt(
         eye.x, eye.y, eye.z,
@@ -71,7 +101,7 @@ void OGLUTILS::lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up
         up.x, up.y, up.z );
 }
 
-Cunt OGLUTILS::createProgram()
+Cunt UtilConcrete::createProgram() const
 {
     const auto programId = static_cast<const unsigned int>(
         glCreateProgram() );
@@ -88,34 +118,34 @@ Cunt OGLUTILS::createProgram()
     return programId;
 }
 
-void OGLUTILS::removeProgram( Cunt programId )
+void UtilConcrete::removeProgram( Cunt programId ) const
 {
     glDeleteProgram( toGluint( programId ) );
     // TODO: find a correct way to check whether program was deleted.
     //assertOnProgramError( programId, GL_DELETE_STATUS );
 }
 
-void OGLUTILS::useProgram( Cunt programId )
+void UtilConcrete::useProgram( Cunt programId ) const
 {
     glUseProgram( static_cast<GLuint>( programId ) );
 }
 
-void OGLUTILS::linkProgram( Cunt programId )
+void UtilConcrete::linkProgram( Cunt programId ) const
 {
     glLinkProgram( static_cast<GLuint>( programId ) );
     assertOnProgramError( programId, GL_LINK_STATUS );
 }
 
-void OGLUTILS::validateProgram( Cunt programId )
+void UtilConcrete::validateProgram( Cunt programId ) const
 {
     glValidateProgram( programId );
     assertOnProgramError( programId, GL_VALIDATE_STATUS );
 }
 
-Cunt OGLUTILS::createShader( const IFile& shaderCode )
+Cunt UtilConcrete::createShader( const IFile& shaderCode ) const
 {
-    const auto shaderType = OGLUTILS::getShaderType( shaderCode.getPath().getExtension() );
-    const auto id = static_cast<Cunt>( glCreateShader( shaderType ) );
+    const auto shaderType = UtilConcrete::getShaderType( shaderCode.getPath().getExtension() );
+    const auto id = static_cast<Cunt>( glCreateShader( static_cast<GLenum>( shaderType ) ) );
 
     auto codeLength = static_cast<GLint>(
         shaderCode.getLinesCount() );
@@ -164,7 +194,7 @@ const CUL::String enumToString( const GLenum val )
     }
 }
 
-const GLenum OGLUTILS::getShaderType( CUL::CsStr& fileExtension )
+const ShaderTypes UtilConcrete::getShaderType( CUL::CsStr& fileExtension ) const
 {
     /*
     .vert - a vertex shader
@@ -176,43 +206,50 @@ const GLenum OGLUTILS::getShaderType( CUL::CsStr& fileExtension )
     */
     if( fileExtension == "frag" || fileExtension == ".frag" )
     {
-        return GL_FRAGMENT_SHADER;
+        return static_cast<ShaderTypes>( GL_FRAGMENT_SHADER );
     }
     else if( fileExtension == "vert" || fileExtension == ".vert" )
     {
-        return GL_VERTEX_SHADER;
+        return static_cast<ShaderTypes>( GL_VERTEX_SHADER );
     }
     else if( fileExtension == "geom" || fileExtension == ".geom" )
     {
-        return GL_GEOMETRY_SHADER;
+        return static_cast<ShaderTypes>( GL_GEOMETRY_SHADER );
     }
-    return GL_INVALID_ENUM;
+
+    return static_cast<ShaderTypes>( GL_INVALID_ENUM );
 }
 
-void OGLUTILS::attachShader(
+void UtilConcrete::attachShader(
     Cunt programId,
-    Cunt shaderId )
+    Cunt shaderId ) const
 {
     glAttachShader(
         toGluint( programId ),
         toGluint( shaderId ) );
 }
 
-void OGLUTILS::removeShader( Cunt shaderId )
+void UtilConcrete::dettachShader( Cunt programId, Cunt shaderId ) const
+{
+    glDetachShader(
+        toGluint( programId ),
+        toGluint( shaderId )
+    );
+}
+
+void UtilConcrete::removeShader( Cunt shaderId ) const
 {
     glDeleteShader(
         toGluint( shaderId ) );
 }
 
-const GLuint OGLUTILS::toGluint( Cunt value )
+const GLuint toGluint( Cunt value )
 {
     return static_cast<GLuint>( value );
 }
 
-CUL::String OGLUTILS::initContextVersion( Cunt major, Cunt minor )
+CUL::String UtilConcrete::initContextVersion( Cunt major, Cunt minor ) const
 {
-    CUL::String contextInfo;
-    //glutInitContextVersion( static_cast<int>( major ), static_cast<int>( minor ) );
     /*
     Context version can be only set after context creation.
     I.e. SDL: SDL_GL_DeleteContext call.
@@ -228,7 +265,7 @@ CUL::String OGLUTILS::initContextVersion( Cunt major, Cunt minor )
     //    SDL_GL_CONTEXT_PROFILE_ES = 0x0004 /**< GLX_CONTEXT_ES2_PROFILE_BIT_EXT */
     //} SDL_GLprofile;
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG );
-    contextInfo = glGetString( GL_VERSION );
+    const CUL::String contextInfo = glGetString( GL_VERSION );
 
     if( major >= 3 )
     {
@@ -242,47 +279,112 @@ CUL::String OGLUTILS::initContextVersion( Cunt major, Cunt minor )
     return contextInfo;
 }
 
-GLuint OGLUTILS::getAttributeLocation( Cunt programId, CsStr& attributeName )
+void UtilConcrete::setAttribValue( Cint attributeLocation, Cfloat value ) const
 {
-    GLuint result = static_cast<GLuint>( glGetAttribLocation( programId, attributeName.cStr() ) );
-    return result;
+    glUniform1f( static_cast<GLint>( attributeLocation ), value );
 }
 
-void OGLUTILS::setProjectionAndModelToIdentity()
+void UtilConcrete::setAttribValue( Cint attributeLocation, Cint value ) const
 {
-    resetMatrixToIdentity( GL_PROJECTION );
-    resetMatrixToIdentity( GL_MODELVIEW );
+    glUniform1i( static_cast<GLint>( attributeLocation ), value );
 }
 
-void OGLUTILS::resetMatrixToIdentity( const GLenum matrix )
+void UtilConcrete::setAttribValue( Cint attributeLocation, Cunt value ) const
 {
-    glMatrixMode( matrix );
+    glUniform1i( static_cast<GLint>( attributeLocation ), static_cast<int>( value ) );
+}
+
+void UtilConcrete::setProjectionAndModelToIdentity() const
+{
+    resetMatrixToIdentity( MatrixTypes::PROJECTION );
+    resetMatrixToIdentity( MatrixTypes::MODELVIEW );
+}
+
+void UtilConcrete::resetMatrixToIdentity( const MatrixTypes matrix ) const
+{
+    glMatrixMode( static_cast<GLenum>( matrix ) );
     glLoadIdentity();
 }
 
-void OGLUTILS::clearColorAndDepthBuffer()
+void UtilConcrete::clearColorAndDepthBuffer() const
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
-void OGLUTILS::createQuad()
+void UtilConcrete::createQuad( Cfloat scale ) const
 {
     glBegin( GL_QUADS );
         glColor3f( 1.f, 1.f, 1.f );
-        glVertex2f( -0.5f, -0.5f );
-        glVertex2f( 0.5f, -0.5f );
-        glVertex2f( 0.5f, 0.5f );
-        glVertex2f( -0.5f, 0.5f );
+        glVertex2f( -0.5f * scale, -0.5f * scale );
+        glVertex2f(  0.5f * scale, -0.5f * scale );
+        glVertex2f(  0.5f * scale,  0.5f * scale );
+        glVertex2f( -0.5f * scale,  0.5f * scale );
     glEnd();
 }
 
-void OGLUTILS::clearColorTo( const ColorS color )
+void UtilConcrete::clearColorTo( const ColorS color ) const
 {
     glClearColor(
         static_cast<GLclampf>( color.getRF() ),
         static_cast<GLclampf>( color.getGF() ),
         static_cast<GLclampf>( color.getBF() ),
         static_cast<GLclampf>( color.getAF() ) );
+}
+
+Cunt UtilConcrete::generateArrayBuffer( const int size ) const
+{
+    /*
+    glGenBuffers returns n buffer object names in buffers. There is no guarantee that the names form a contiguous set of integers; however, it is guaranteed that none of the returned names was in use immediately before the call to glGenBuffers.
+
+    Buffer object names returned by a call to glGenBuffers are not returned by subsequent calls, unless they are first deleted with glDeleteBuffers.
+
+    No buffer objects are associated with the returned buffer object names until they are first bound by calling glBindBuffer.
+    */
+    GLuint verticesBuf = 0;
+    glGenBuffers( size, &verticesBuf );
+    glBindBuffer( GL_ARRAY_BUFFER, verticesBuf );
+    return verticesBuf;
+}
+
+void UtilConcrete::bufferData( const std::vector<float>& data ) const
+{
+    /*
+   creates and initializes a buffer object's data store
+   */
+    const auto dataSize = static_cast<GLsizeiptr>( data.size() * sizeof( float ) );
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        dataSize,
+        data.data(),
+        GL_STATIC_DRAW );
+}
+
+void UtilConcrete::enableVertexAttribiute(
+    Cunt programId,
+    const String& attribName ) const
+{
+    const auto attributeLocation = UtilConcrete::getAttribLocation( programId, attribName );
+    glEnableVertexAttribArray( attributeLocation );
+}
+
+void UtilConcrete::disableVertexAttribiute(
+    Cunt programId,
+    const String& attribName ) const
+{
+    const auto attributeLocation = UtilConcrete::getAttribLocation( programId, attribName );
+    glDisableVertexAttribArray( attributeLocation );
+}
+
+Cunt UtilConcrete::getAttribLocation(
+    Cunt programId,
+    const String& attribName ) const
+{
+    auto attribLocation = static_cast<const unsigned int>(
+        glGetAttribLocation(
+        programId,
+        attribName.cStr() ) );
+
+    return attribLocation;
 }
 
 template <typename Out>
@@ -303,7 +405,7 @@ std::vector<std::string> split( const std::string &s, char delim )
     return elems;
 }
 
-std::vector<std::string> OGLUTILS::listExtensions()
+std::vector<std::string> UtilConcrete::listExtensions()
 {
     GLint extensionsCount = 0;
     glGetIntegerv( GL_NUM_EXTENSIONS, &extensionsCount );
@@ -311,4 +413,9 @@ std::vector<std::string> OGLUTILS::listExtensions()
     CUL::String wat = static_cast<const unsigned char*>( extensions );
     std::vector<std::string> extensionsVec = split( wat.string(), ' ' );
     return extensionsVec;
+}
+
+
+UtilConcrete::~UtilConcrete()
+{
 }

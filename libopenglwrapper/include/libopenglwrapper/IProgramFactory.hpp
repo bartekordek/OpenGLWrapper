@@ -1,5 +1,6 @@
 #pragma once
 
+#include "libopenglwrapper/IUtilityUser.hpp"
 #include "libopenglwrapper/IProgram.hpp"
 
 NAMESPACE_BEGIN( LOGLW )

@@ -3,6 +3,28 @@
 #include "libopenglwrapper/Import.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
+/*
+A Vertex Buffer Object (VBO) is the common term for
+a normal Buffer Object when it is used as a
+source for vertex array data.
+It is no different from any other buffer object,
+and a buffer object used for Transform Feedback
+or asynchronous pixel transfers can be used as
+source values for vertex arrays.
+*/
+
+/*
+A Vertex Buffer Object (VBO) is a memory buffer
+in the high speed memory of your video card designed
+to hold information about vertices.
+In our example we have two VBOs, one that
+describes the coordinates of our vertices and
+another that describes the color
+associated with each vertex.
+VBOs can also store information such as normals,
+texcoords, indicies, etc.
+*/
+
 NAMESPACE_BEGIN( LOGLW )
 
 using Cfloat = const float;

@@ -19,8 +19,8 @@ public:
     Triangle();
 
     void addShader(
-        const IFile& shaderFile,
-        IShaderFactory* sf );
+        IFile* shaderFile,
+        IShaderFactory* sf ) override;
     void render();
 
     const Pos& getPos() const;

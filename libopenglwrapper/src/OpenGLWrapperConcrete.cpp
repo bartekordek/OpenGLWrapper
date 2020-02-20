@@ -6,7 +6,7 @@
 #include "libopenglwrapper/Primitives/Triangle.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
-#include "OpenGL_3_Utils.hpp"
+#include "UtilConcrete.hpp"
 
 using namespace LOGLW;
 
@@ -14,7 +14,8 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     SDL2W::ISDL2Wrapper* sdl2w ):
     m_sdlW( sdl2w ),
     m_activeWindow( sdl2w->getMainWindow() ),
-    m_logger( CUL::LOG::LOG_CONTAINER::getLogger() )
+    m_logger( CUL::LOG::LOG_CONTAINER::getLogger() ),
+    m_oglUtility( new UtilConcrete() )
 {
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
     CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
@@ -72,6 +73,11 @@ IImageLoader* OpenGLWrapperConcrete::getImageLoader()
 CUL::LOG::ILogger* OpenGLWrapperConcrete::getLoger()
 {
     return m_logger;
+}
+
+IUtility* OpenGLWrapperConcrete::getUtility()
+{
+    return m_oglUtility;
 }
 
 IRect* OpenGLWrapperConcrete::createRect()
@@ -178,15 +184,16 @@ void OpenGLWrapperConcrete::initialize()
     m_logger->log( "OpenGLWrapperConcrete::initialize()..." );
     m_oglContext = SDL_GL_CreateContext( *m_activeWindow );
 
-    auto versionString = OGLUTILS::initContextVersion( 3, 1 );
+    auto versionString = m_oglUtility->initContextVersion( 3, 1 );
     m_logger->log( "OpenGLWrapperConcrete::initialize(), OpenGL version:" );
     m_logger->log( versionString );
 
     m_shaderFactory = new OpenGLShaderFactory();
+    m_shaderFactory->useUtility( m_oglUtility );
 
     const auto& winSize = m_activeWindow->getSize();
 
-    OGLUTILS::setProjectionAndModelToIdentity();
+    m_oglUtility->setProjectionAndModelToIdentity();
 
     Viewport vp;
     vp.setSize( winSize );
@@ -198,7 +205,7 @@ void OpenGLWrapperConcrete::initialize()
 
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
 
-    auto extensionList = OGLUTILS::listExtensions();
+    auto extensionList = m_oglUtility->listExtensions();
     for( const auto& extension : extensionList )
     {
         std::cout << extension << "\n";
@@ -220,7 +227,7 @@ void OpenGLWrapperConcrete::renderFrame()
     setBackgroundColor( m_backgroundColor );
     if( m_clearEveryFrame )
     {
-        OGLUTILS::clearColorAndDepthBuffer();
+        m_oglUtility->clearColorAndDepthBuffer();
     }
 
     if( m_clearModelView )
@@ -242,7 +249,7 @@ void OpenGLWrapperConcrete::renderFrame()
 
 void OpenGLWrapperConcrete::setProjectionType( const ProjectionType type )
 {
-    OGLUTILS::resetMatrixToIdentity( GL_PROJECTION );
+    m_oglUtility->resetMatrixToIdentity( MatrixTypes::PROJECTION );
     if( ProjectionType::ORTO == type )
     {
         /*
@@ -256,29 +263,14 @@ https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
 
             nearVal, farVal
             Specify the distances to the nearer and farther depth clipping planes.These values are negative if the plane is to be behind the viewer.*/
-        const auto left = m_viewport.getLeft();
-        const auto right = m_viewport.getRight();
-        const auto bottom = m_viewport.getBottom();
-        const auto top = m_viewport.getTop();
-        const auto zNear = m_viewport.getZnear();
-        const auto zFar = m_viewport.getZfar();
-
-        glOrtho(
-            left, // left
-            right, // right
-            bottom, // bottom
-            top, // top
-            zNear, // near
-            zFar // far
-        );
+        m_oglUtility->setOrthogonalPerspective( m_viewport );
     }
     else if( ProjectionType::PERSPECTIVE == type )
     {
-        gluPerspective( m_viewport.getFov(), m_viewport.getAspectRatio(), m_viewport.getZnear(), m_viewport.getZfar() );
-
-        OGLUTILS::lookAt( m_viewport );
+        m_oglUtility->setPerspectiveProjection( m_viewport );
+        m_oglUtility->lookAt( m_viewport );
     }
-    OGLUTILS::resetMatrixToIdentity( GL_MODELVIEW );
+    m_oglUtility->resetMatrixToIdentity( MatrixTypes::MODELVIEW );
     m_currentProjection = type;
 }
 
@@ -303,7 +295,7 @@ void OpenGLWrapperConcrete::renderObjects()
     {
         renderableObject->render();
     }
-    OGLUTILS::createQuad();
+    m_oglUtility->createQuad();
 }
 
 void OpenGLWrapperConcrete::refreshBuffers()
@@ -321,13 +313,13 @@ void OpenGLWrapperConcrete::setRenderLoopLatency( Cunt uS )
 
 void OpenGLWrapperConcrete::setViewPort( const Viewport& rect )
 {
-    OGLUTILS::setViewPort( rect );
+    m_oglUtility->setViewPort( rect );
     m_viewport = rect;
 }
 
 void OpenGLWrapperConcrete::setBackgroundColor( const ColorS& color )
 {
-    OGLUTILS::clearColorTo( color );
+    m_oglUtility->clearColorTo( color );
 }
 
 OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
@@ -344,5 +336,7 @@ void OpenGLWrapperConcrete::release()
         m_shaderFactory.release();
         SDL_GL_DeleteContext( m_oglContext );
         m_oglContext = nullptr; // This is basically void* !
+        delete m_oglUtility;
+        m_oglUtility = nullptr;
     }
 }

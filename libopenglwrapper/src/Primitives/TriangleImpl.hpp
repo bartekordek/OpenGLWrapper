@@ -12,7 +12,7 @@ class TriangleImpl final
 public:
     TriangleImpl();
 
-    void addShader( const IFile& shaderFile, IShaderFactory* sf );
+    void addShader( IFile* shaderFile, IShaderFactory* sf );
     void render();
 
     const Point& getPos() const;

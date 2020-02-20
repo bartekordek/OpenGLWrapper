@@ -1,16 +1,16 @@
 #include "ProgramConcrete.hpp"
-#include "OpenGL_3_Utils.hpp"
 
 using namespace LOGLW;
 
-ProgramConcrete::ProgramConcrete():
-    m_id( OGLUTILS::createProgram() )
+ProgramConcrete::ProgramConcrete( IUtility* utility ):
+    m_utility( utility ),
+    m_id( utility->createProgram() )
 {
 }
 
 ProgramConcrete::~ProgramConcrete()
 {
-    OGLUTILS::removeProgram( m_id );
+    m_utility->removeProgram( m_id );
     m_id = 0;
 }
 
@@ -21,72 +21,85 @@ void ProgramConcrete::setAttrib(
     //TODO
 }
 
-void ProgramConcrete::setAttrib( CsStr & , Cfloat  )
+void ProgramConcrete::setAttrib( CsStr& , Cfloat  )
 {
 }
 
-void ProgramConcrete::setAttrib( CsStr & , Cunt  )
+void ProgramConcrete::setAttrib( CsStr& , Cunt  )
 {
 }
 
-void ProgramConcrete::setAttrib( CsStr & , Cint  )
+void ProgramConcrete::setAttrib( CsStr& , Cint  )
 {
 }
 
-CsStr ProgramConcrete::getAttributeStr( CsStr &  )
+CsStr ProgramConcrete::getAttributeStr( CsStr&  )
 {
     return CsStr();
 }
 
-Cfloat ProgramConcrete::getAttributeF( CsStr &  )
+Cfloat ProgramConcrete::getAttributeF( CsStr&  )
 {
     return Cfloat();
 }
 
-Cunt ProgramConcrete::getAttributeUi( CsStr &  )
+Cunt ProgramConcrete::getAttributeUi( CsStr&  )
 {
     return Cunt();
 }
 
-Cint ProgramConcrete::getAttributeI( CsStr &  )
+Cint ProgramConcrete::getAttributeI( CsStr&  )
 {
     return Cint();
 }
 
-void ProgramConcrete::attachShader( const IShader* shader )
+void ProgramConcrete::attachShader( IShader* shader )
 {
+    std::lock_guard<std::mutex> lock( m_operationMutex );
     auto shaderId = shader->getId();
-    OGLUTILS::attachShader( m_id, shaderId );
+    m_utility->attachShader( m_id, shaderId );
+    m_attachedShaders[shader->getPath()] = shader;
+}
+
+void ProgramConcrete::dettachShader( IShader* shader )
+{
+    std::lock_guard<std::mutex> lock( m_operationMutex );
+    auto shaderId = shader->getId();
+    m_utility->dettachShader( m_id, shaderId );
+    m_attachedShaders[shader->getPath()] = nullptr;
 }
 
 void ProgramConcrete::link()
 {
-    OGLUTILS::linkProgram( m_id );
+    std::lock_guard<std::mutex> lock( m_operationMutex );
+    m_utility->linkProgram( m_id );
 }
 
 void ProgramConcrete::enable()
 {
-    OGLUTILS::useProgram( m_id );
+    std::lock_guard<std::mutex> lock( m_operationMutex );
+    m_utility->useProgram( m_id );
 }
 
 void ProgramConcrete::disable()
 {
-    OGLUTILS::useProgram( 0 );
+    m_utility->useProgram( 0 );
 }
 
 void ProgramConcrete::validate()
 {
-    OGLUTILS::validateProgram( m_id );
+    std::lock_guard<std::mutex> lock( m_operationMutex );
+    m_utility->validateProgram( m_id );
 }
 
-const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( CsStr & name ) const
+const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( CsStr& name ) const
 {
     ProgramConcrete::AttribKey result;
 
     auto it = m_attribMap.find( name );
     if( it == m_attribMap.end() )
     {
-        result = OGLUTILS::getAttributeLocation( m_id, name );
+        result = m_utility->getAttribLocation( m_id, name );
     }
     else
     {
@@ -94,6 +107,11 @@ const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( CsStr & nam
     }
 
     return result;
+}
+
+const ShaderList& ProgramConcrete::getShaderList() const
+{
+    return m_attachedShaders;
 }
 
 Cunt ProgramConcrete::getProgramId() const

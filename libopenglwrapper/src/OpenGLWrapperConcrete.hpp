@@ -2,7 +2,6 @@
 
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "OpenGLShaderFactory.hpp"
-#include "OpenGL_3_Utils.hpp"
 
 #include "SDL2Wrapper/IMPORT_SDL_video.hpp"
 
@@ -55,8 +54,8 @@ private:
     IObjectFactory* getObjectFactory() override;
     IProgramFactory* getProgramFactory() override;
     IImageLoader* getImageLoader() override;
-
     CUL::LOG::ILogger* getLoger() override;
+    IUtility* getUtility() override;
 
     void renderLoop();
     void renderFrame() override;
@@ -73,6 +72,8 @@ private:
     SDL2W::ISDL2Wrapper* m_sdlW = nullptr;
     SDL2W::IWindow* m_activeWindow = nullptr;
     SDL_GLContext m_oglContext = nullptr;
+    CUL::LOG::ILogger* m_logger = nullptr;
+    IUtility* m_oglUtility = nullptr;
 
     Viewport m_viewport;
 
@@ -96,8 +97,6 @@ private:
     EmptyFunctionCallback m_onBeforeFrame;
 
     bool m_hasBeenInitialized = false;
-
-    CUL::LOG::ILogger* m_logger = nullptr;
 
 private: // Deleted
     OpenGLWrapperConcrete() = delete;

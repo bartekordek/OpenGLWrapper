@@ -82,8 +82,8 @@ void afterInit()
     vertexShaderFile->load( true );
     fragmentShaderFile->load( true );
 
-    auto vs = sf->createShader( *vertexShaderFile );
-    auto fs = sf->createShader( *fragmentShaderFile );
+    auto vs = sf->createShader( vertexShaderFile );
+    auto fs = sf->createShader( fragmentShaderFile );
 
     program = pf->createProgram();
 

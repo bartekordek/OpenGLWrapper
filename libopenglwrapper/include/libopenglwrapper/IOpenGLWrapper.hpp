@@ -4,6 +4,7 @@
 #include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IProgramFactory.hpp"
 #include "libopenglwrapper/ViewPort.hpp"
+#include "libopenglwrapper/IUtility.hpp"
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 
@@ -48,6 +49,7 @@ public:
     virtual IObjectFactory* getObjectFactory() = 0;
     virtual IProgramFactory* getProgramFactory() = 0;
     virtual IImageLoader* getImageLoader() = 0;
+    virtual IUtility* getUtility() = 0;
 
     virtual CUL::LOG::ILogger* getLoger() = 0;
 

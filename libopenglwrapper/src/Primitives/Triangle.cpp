@@ -9,7 +9,7 @@ Triangle::Triangle():
 }
 
 void Triangle::addShader(
-    const IFile& file,
+    IFile* file,
     IShaderFactory* sf )
 {
     m_impl->addShader( file, sf );

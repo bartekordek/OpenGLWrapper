@@ -51,9 +51,6 @@
     <ClCompile Include="src\OpenGLWrapperConcrete.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpenGL_3_Utils.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ProgramConcrete.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -70,6 +67,18 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\IVBO.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IVAO.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IUtility.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UtilConcrete.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IUtilityUser.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -90,9 +99,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\OpenGLWrapperConcrete.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpenGL_3_Utils.hpp">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ProgramConcrete.hpp">
@@ -160,6 +166,15 @@
     </ClInclude>
     <ClInclude Include="src\VBOConcrete.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IUtility.hpp">
+      <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UtilConcrete.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IUtilityUser.hpp">
+      <Filter>include\libopenglwrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
