@@ -29,3 +29,6 @@
 #pragma warning( disable: 4820 )
 #endif
 #endif
+
+using Cunt = const unsigned int;
+using Cbool = const bool;
