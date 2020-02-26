@@ -14,9 +14,7 @@ ProgramConcrete::~ProgramConcrete()
     m_id = 0;
 }
 
-void ProgramConcrete::setAttrib(
-    CsStr&,
-    const char* )
+void ProgramConcrete::setAttrib( CsStr&, const char* )
 {
     //TODO
 }
@@ -112,6 +110,12 @@ const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( CsStr& name
 const ShaderList& ProgramConcrete::getShaderList() const
 {
     return m_attachedShaders;
+}
+
+void ProgramConcrete::bufferData( const std::vector<float>& data )
+{
+    m_dataBufferId = m_utility->generateArrayBuffer( 1 );
+    m_utility->bufferArrayData( data );
 }
 
 Cunt ProgramConcrete::getProgramId() const

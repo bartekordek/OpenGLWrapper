@@ -21,6 +21,7 @@ protected:
 private:
     void createShader();
     void removeShader();
+
     ShaderConcrete() = delete;
     ShaderConcrete( const ShaderConcrete& arg ) = delete;
     ShaderConcrete& operator=( const ShaderConcrete& arg ) = delete;

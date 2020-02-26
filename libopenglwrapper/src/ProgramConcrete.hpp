@@ -41,9 +41,12 @@ private:
     const AttribKey getAttribLocation( CsStr& name ) const;
     const ShaderList& getShaderList() const override;
 
+    void bufferData( const std::vector<float>& data ) override;
+
     Cunt getProgramId() const override;
 
     IUtility* m_utility = nullptr;
+    unsigned int m_dataBufferId = 0;
     unsigned int m_id = 0;
     AttribMap m_attribMap;
     ShaderList m_attachedShaders;

@@ -3,6 +3,7 @@
 #include "libopenglwrapper/IShader.hpp"
 #include "CUL/String.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -35,6 +36,8 @@ public:
     virtual void enable() = 0;
     virtual void disable() = 0;
     virtual void validate() = 0;
+
+    virtual void bufferData( const std::vector<float>& data ) = 0;
 
     virtual Cunt getProgramId() const = 0;
     virtual const ShaderList& getShaderList() const = 0;
