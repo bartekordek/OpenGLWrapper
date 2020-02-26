@@ -331,6 +331,11 @@ void UtilConcrete::clearColorTo( const ColorS color ) const
         static_cast<GLclampf>( color.getAF() ) );
 }
 
+void UtilConcrete::clearBuffer( const ClearMasks mask ) const
+{
+    glClear( static_cast<GLbitfield>( mask ) );
+}
+
 Cunt UtilConcrete::generateArrayBuffer( const int size ) const
 {
     /*
@@ -340,13 +345,13 @@ Cunt UtilConcrete::generateArrayBuffer( const int size ) const
 
     No buffer objects are associated with the returned buffer object names until they are first bound by calling glBindBuffer.
     */
-    GLuint verticesBuf = 0;
-    glGenBuffers( size, &verticesBuf );
-    glBindBuffer( GL_ARRAY_BUFFER, verticesBuf );
-    return verticesBuf;
+    GLuint bufferId = 0;
+    glGenBuffers( size, &bufferId );
+    glBindBuffer( GL_ARRAY_BUFFER, bufferId );
+    return bufferId;
 }
 
-void UtilConcrete::bufferData( const std::vector<float>& data ) const
+void UtilConcrete::bufferArrayData( const std::vector<float>& data ) const
 {
     /*
    creates and initializes a buffer object's data store
@@ -357,6 +362,13 @@ void UtilConcrete::bufferData( const std::vector<float>& data ) const
         dataSize,
         data.data(),
         GL_STATIC_DRAW );
+}
+
+void UtilConcrete::bufferArrayData( const float vertices[] ) const
+{
+    const auto kurwa1 = sizeof( vertices );
+    const auto kurwa2 = sizeof( *vertices );
+    glBufferData( GL_ARRAY_BUFFER, sizeof( *vertices ), vertices, GL_STATIC_DRAW );
 }
 
 void UtilConcrete::enableVertexAttribiute(

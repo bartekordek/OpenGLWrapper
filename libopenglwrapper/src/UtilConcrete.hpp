@@ -40,10 +40,12 @@ public:
     void clearColorAndDepthBuffer() const override; 
     void createQuad( Cfloat scale = 1.0f ) const override;
     void clearColorTo( const ColorS color ) const override;
+    void clearBuffer( const ClearMasks mask ) const override;
 
     Cunt generateArrayBuffer( const int size = 1 ) const override;
-    void bufferData(
+    void bufferArrayData(
         const std::vector<float>& data ) const override;
+    void bufferArrayData( const float vertices[] ) const override;
 
     void enableVertexAttribiute( Cunt programId, const String& attribName ) const override;
 

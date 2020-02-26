@@ -34,6 +34,11 @@ enum class ShaderTypes: int
     INVALID = 0x0500
 };
 
+enum class ClearMasks: unsigned
+{
+    COLOR_BUFFER_BIT = 0x00004000
+};
+
 class LIBOPENGLWRAPPER_API IUtility
 {
 public:
@@ -70,9 +75,11 @@ public:
     virtual void clearColorAndDepthBuffer() const = 0;
     virtual void createQuad( Cfloat scale = 1.0f ) const = 0;
     virtual void clearColorTo( const ColorS color ) const = 0;
+    virtual void clearBuffer( const ClearMasks mask ) const = 0;
 
     virtual Cunt generateArrayBuffer( const int size = 1 ) const = 0;
-    virtual void bufferData( const std::vector<float>& data ) const = 0;
+    virtual void bufferArrayData( const std::vector<float>& data ) const = 0;
+    virtual void bufferArrayData( const float vertices[] ) const = 0;
 
     virtual void enableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
     virtual void disableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
