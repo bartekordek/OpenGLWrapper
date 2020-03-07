@@ -72,10 +72,10 @@ IMPORT_LIBS_RELEASE := -pthread $(CUL_LIB_RELEASE) $(SDL2W_LIB_RELEASE) $(IMPORT
 CPP_FILES := $(wildcard src/*.cpp)
 CPP_FILES += $(wildcard src/*/*.cpp)
 
-OBJ_DEBUG_DIR := obj/debug/
+OBJ_DEBUG_DIR := $(OUTPUT_DIR_DEBUG)/obj/
 OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
 
-OBJ_RELEASE_DIR := obj/release/
+OBJ_RELEASE_DIR := $(OUTPUT_DIR_RELEASE)/obj/
 OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
 
 debug:
