@@ -42,16 +42,20 @@ public:
     void clearColorTo( const ColorS color ) const override;
     void clearBuffer( const ClearMasks mask ) const override;
 
+    Cunt generateVertexArray (const int size = 1 ) const override;
+
+    Cunt generateArrayBuffer( const std::vector<float>& data, const int size = 1 ) const override;
     Cunt generateArrayBuffer( const int size = 1 ) const override;
-    void bufferArrayData(
-        const std::vector<float>& data ) const override;
+    void bufferArrayData( const std::vector<float>& data ) const override;
     void bufferArrayData( const float vertices[] ) const override;
 
+    Cunt generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const override;
     void enableVertexAttribiute( Cunt programId, const String& attribName ) const override;
-
     void disableVertexAttribiute( Cunt programId, const String& attribName ) const override;
-
     Cunt getAttribLocation( Cunt programId, const String& attribName ) const override;
+    void unbindBuffer( const BufferTypes bufferType ) const override;
+
+    void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const override;
 
     std::vector<std::string> listExtensions() override;
 
@@ -64,7 +68,6 @@ private:
     UtilConcrete( UtilConcrete&& arg ) = delete;
     UtilConcrete& operator=( const UtilConcrete& rhv ) = delete;
     UtilConcrete& operator=( UtilConcrete&& rhv ) = delete;
-    
 };
 
 NAMESPACE_END( LOGLW )

@@ -39,6 +39,23 @@ enum class ClearMasks: unsigned
     COLOR_BUFFER_BIT = 0x00004000
 };
 
+enum class BufferTypes: unsigned
+{
+    VERTEX_ARRAY = 1,
+    ARRAY_BUFFER = 0x8892,
+    ELEMENT_ARRAY_BUFFER = 0x8893
+};
+
+enum class PrimitiveType: unsigned
+{
+    LINE_STRIP = 0x0003,
+    TRIANGLES  = 0x0004,
+    TRIANGLE_STRIP = 0x0005,
+    TRIANGLE_FAN = 0x0006,
+    QUADS = 0x0007,
+    QUAD_STRIP = 0x0008
+};
+
 class LIBOPENGLWRAPPER_API IUtility
 {
 public:
@@ -77,13 +94,21 @@ public:
     virtual void clearColorTo( const ColorS color ) const = 0;
     virtual void clearBuffer( const ClearMasks mask ) const = 0;
 
+    virtual Cunt generateVertexArray( const int size = 1 ) const = 0;
+
+    virtual Cunt generateArrayBuffer( const std::vector<float>& data, const int size = 1 ) const = 0;
     virtual Cunt generateArrayBuffer( const int size = 1 ) const = 0;
     virtual void bufferArrayData( const std::vector<float>& data ) const = 0;
     virtual void bufferArrayData( const float vertices[] ) const = 0;
 
+    virtual Cunt generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const = 0;
+
     virtual void enableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
     virtual void disableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
     virtual Cunt getAttribLocation( Cunt programId, const String& attribName ) const = 0;
+    virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
+
+    virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;
 
     virtual std::vector<std::string> listExtensions() = 0;
 
