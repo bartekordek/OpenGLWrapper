@@ -61,6 +61,8 @@ public:
     virtual void setEyePos( const Pos3Df& pos ) = 0;
     virtual void setProjectionType( const ProjectionType type ) = 0;
 
+    virtual void drawQuad( const bool draw = true ) = 0;
+
     virtual ~IOpenGLWrapper();
 
 protected:

@@ -295,7 +295,7 @@ void OpenGLWrapperConcrete::renderObjects()
     {
         renderableObject->render();
     }
-    m_oglUtility->createQuad();
+    if( m_drawQuad ) m_oglUtility->createQuad();
 }
 
 void OpenGLWrapperConcrete::refreshBuffers()
@@ -320,6 +320,7 @@ void OpenGLWrapperConcrete::setViewPort( const Viewport& rect )
 void OpenGLWrapperConcrete::setBackgroundColor( const ColorS& color )
 {
     m_oglUtility->clearColorTo( color );
+    m_backgroundColor = color;
 }
 
 OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
@@ -339,4 +340,9 @@ void OpenGLWrapperConcrete::release()
         delete m_oglUtility;
         m_oglUtility = nullptr;
     }
+}
+
+void OpenGLWrapperConcrete::drawQuad( const bool draw )
+{
+    m_drawQuad = draw;
 }

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "libopenglwrapper/IProgram.hpp"
 #include "libopenglwrapper/ViewPort.hpp"
+#include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/Graphics/Rect2D.hpp"
@@ -10,14 +10,12 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-using CDouble = const double;
-using Cunt = const unsigned int;
-
 using Angle = CUL::MATH::Angle;
 using String = CUL::String;
 using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
 using Pos3Dd = CUL::Graphics::Pos3Dd;
+using IFile = CUL::FS::IFile;
 
 enum class MatrixTypes: int
 {
@@ -56,6 +54,18 @@ enum class PrimitiveType: unsigned
     QUAD_STRIP = 0x0008
 };
 
+enum class DataType: int
+{
+    BYTE = 0x1400,
+    UNSIGNED_BYTE = 0x1401,
+    SHORT = 0x1402,
+    UNSIGNED_SHORT = 0x1403,
+    INT = 0x1404,
+    UNSIGNED_INT = 0x1405,
+    FLOAT = 0x1406,
+    DOUBLE = 0x140A
+};
+
 class LIBOPENGLWRAPPER_API IUtility
 {
 public:
@@ -78,7 +88,9 @@ public:
     virtual void linkProgram( Cunt programId ) const = 0;
     virtual void validateProgram( Cunt programId ) const = 0;
 
-    virtual Cunt createShader( const IFile& shaderCode ) const = 0;
+    virtual Cunt createShader(
+        const IFile&
+        shaderCode ) const = 0;
     virtual void attachShader( Cunt programId, Cunt shaderId ) const = 0;
     virtual void dettachShader( Cunt programId, Cunt shaderId ) const = 0;
     virtual void removeShader( Cunt shaderId ) const = 0;
@@ -96,19 +108,25 @@ public:
 
     virtual Cunt generateVertexArray( const int size = 1 ) const = 0;
 
-    virtual Cunt generateArrayBuffer( const std::vector<float>& data, const int size = 1 ) const = 0;
     virtual Cunt generateArrayBuffer( const int size = 1 ) const = 0;
-    virtual void bufferArrayData( const std::vector<float>& data ) const = 0;
-    virtual void bufferArrayData( const float vertices[] ) const = 0;
+
+    virtual void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const = 0;
+    virtual void bufferData( const std::vector<float>& data, const BufferTypes type ) const = 0;
+    virtual void bufferData( const float vertices[] ) const = 0;
 
     virtual Cunt generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const = 0;
+    virtual Cunt generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const = 0;
 
     virtual void enableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
     virtual void disableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
     virtual Cunt getAttribLocation( Cunt programId, const String& attribName ) const = 0;
     virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
+    virtual void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const = 0;
+    virtual Cunt generateBuffer( const BufferTypes type, const int size = 0 ) const = 0;
 
     virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;
+    virtual void drawElements( const PrimitiveType type, const std::vector<float>& data ) const = 0;
+    virtual void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const = 0;
 
     virtual std::vector<std::string> listExtensions() = 0;
 

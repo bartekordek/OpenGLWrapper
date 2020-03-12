@@ -44,18 +44,23 @@ public:
 
     Cunt generateVertexArray (const int size = 1 ) const override;
 
-    Cunt generateArrayBuffer( const std::vector<float>& data, const int size = 1 ) const override;
     Cunt generateArrayBuffer( const int size = 1 ) const override;
-    void bufferArrayData( const std::vector<float>& data ) const override;
-    void bufferArrayData( const float vertices[] ) const override;
+    void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const override;
+    void bufferData( const std::vector<float>& data, const BufferTypes type ) const override;
+    void bufferData( const float vertices[] ) const override;
 
+    Cunt generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const override;
     Cunt generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const override;
     void enableVertexAttribiute( Cunt programId, const String& attribName ) const override;
     void disableVertexAttribiute( Cunt programId, const String& attribName ) const override;
     Cunt getAttribLocation( Cunt programId, const String& attribName ) const override;
     void unbindBuffer( const BufferTypes bufferType ) const override;
+    void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const;
+    Cunt generateBuffer( const BufferTypes type, const int size = 0 ) const override;
 
     void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const override;
+    void drawElements( const PrimitiveType type, const std::vector<float>& data ) const override;
+    void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const override;
 
     std::vector<std::string> listExtensions() override;
 

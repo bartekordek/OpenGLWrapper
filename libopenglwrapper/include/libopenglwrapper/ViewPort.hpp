@@ -11,9 +11,7 @@ using Size2Du = CUL::Graphics::Size2Du;
 using Pos2Di = CUL::Graphics::Pos2Di;
 using Pos3Di = CUL::Graphics::Pos3Di;
 using Pos3Df = CUL::Graphics::Pos3Df;
-using Cfloat = CUL::Cfloat;
 using Cunt = const unsigned int;
-using Cfloat = const float;
 using Cdouble = const double;
 
 class LIBOPENGLWRAPPER_API Viewport final

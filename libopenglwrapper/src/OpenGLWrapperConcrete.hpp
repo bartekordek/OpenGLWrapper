@@ -67,6 +67,8 @@ private:
 
     void release();
 
+    void drawQuad( const bool draw = true ) override;
+
     DumbPtr<OpenGLShaderFactory> m_shaderFactory;
 
     SDL2W::ISDL2Wrapper* m_sdlW = nullptr;
@@ -97,6 +99,7 @@ private:
     EmptyFunctionCallback m_onBeforeFrame;
 
     bool m_hasBeenInitialized = false;
+    SafeBool m_drawQuad = false;
 
 private: // Deleted
     OpenGLWrapperConcrete() = delete;

@@ -41,7 +41,7 @@ private:
     const AttribKey getAttribLocation( CsStr& name ) const;
     const ShaderList& getShaderList() const override;
 
-    void bufferData( const std::vector<float>& data ) override;
+    void bufferData( const std::vector<float>& data, const BufferTypes type ) override;
 
     Cunt getProgramId() const override;
 

@@ -345,13 +345,6 @@ Cunt UtilConcrete::generateVertexArray( const int size ) const
     return vao;
 }
 
-Cunt UtilConcrete::generateArrayBuffer( const std::vector<float>& data, const int size ) const
-{
-    auto bufferId = generateArrayBuffer( size );
-    bufferArrayData( data );
-    return bufferId;
-}
-
 Cunt UtilConcrete::generateArrayBuffer( const int size ) const
 {
     /*
@@ -367,24 +360,45 @@ Cunt UtilConcrete::generateArrayBuffer( const int size ) const
     return bufferId;
 }
 
-void UtilConcrete::bufferArrayData( const std::vector<float>& data ) const
+void UtilConcrete::bufferData( const std::vector<unsigned int>& data, const BufferTypes type  ) const
 {
     /*
     creates and initializes a buffer object's data store
    */
     const auto dataSize = static_cast<GLsizeiptr>( data.size() * sizeof( float ) );
     glBufferData(
-        GL_ARRAY_BUFFER,
+        static_cast<GLenum>( type ),
         dataSize,
         data.data(),
         GL_STATIC_DRAW );
 }
 
+void UtilConcrete::bufferData( const std::vector<float>& data, const BufferTypes type  ) const
+{
+    /*
+    creates and initializes a buffer object's data store
+   */
+    const auto dataSize = static_cast<GLsizeiptr>( data.size() * sizeof( float ) );
+    glBufferData(
+        static_cast<GLenum>( type ),
+        dataSize,
+        data.data(),
+        GL_STATIC_DRAW );
+}
+
+Cunt UtilConcrete::generateAndBindBuffer( const BufferTypes bufferType, const int size ) const
+{
+    const auto bufferId = generateBuffer( bufferType, size );
+    glBindBuffer( 
+        static_cast<GLenum>( bufferType ),
+        bufferId );
+    return bufferId;
+}
+
 Cunt UtilConcrete::generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size ) const
 {
-    unsigned int ebo = 0;
-    glGenBuffers( size, &ebo );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ebo );
+    const auto ebo = generateBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, size );
+    bindBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, ebo );
     glBufferData(
         GL_ELEMENT_ARRAY_BUFFER,
         static_cast<GLsizeiptr>( data.size() * sizeof( unsigned int ) ),
@@ -392,12 +406,9 @@ Cunt UtilConcrete::generateElementArrayBuffer( const std::vector<unsigned int>& 
         GL_STATIC_DRAW );
 
         /*
-    glVertexAttribPointer � define an array of generic vertex attribute data
-
+    glVertexAttribPointer - define an array of generic vertex attribute data
     index - Specifies the index of the generic vertex attribute to be modified.
-
     size - Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4. Additionally, the symbolic constant GL_BGRA is accepted by glVertexAttribPointer. The initial value is 4.
-
     type - Specifies the data type of each component in the array. The symbolic constants GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, and GL_UNSIGNED_INT are accepted by both functions. Additionally GL_HALF_FLOAT, GL_FLOAT, GL_DOUBLE, GL_INT_2_10_10_10_REV, and GL_UNSIGNED_INT_2_10_10_10_REV are accepted by glVertexAttribPointer. The initial value is GL_FLOAT.
 
     normalized - For glVertexAttribPointer, specifies whether fixed-point data values should be normalized (GL_TRUE) or converted directly as fixed-point values (GL_FALSE) when they are accessed.
@@ -416,7 +427,7 @@ Cunt UtilConcrete::generateElementArrayBuffer( const std::vector<unsigned int>& 
     return ebo;
 }
 
-void UtilConcrete::bufferArrayData( const float vertices[] ) const
+void UtilConcrete::bufferData( const float vertices[] ) const
 {
     const auto kurwa1 = sizeof( vertices );
     const auto kurwa2 = sizeof( *vertices );
@@ -453,19 +464,63 @@ Cunt UtilConcrete::getAttribLocation(
 
 void UtilConcrete::unbindBuffer( const BufferTypes bufferType ) const
 {
+    bindBuffer( bufferType, 0 );
+}
+
+void UtilConcrete::bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const
+{
     if( BufferTypes::VERTEX_ARRAY == bufferType )
     {
-        glBindVertexArray( 0 );
+        glBindVertexArray(  static_cast<GLuint>( bufferId ) );
     }
     else
     {
-        glBindBuffer( static_cast<GLenum>( bufferType ), 0 );
+        glBindBuffer( static_cast<GLenum>( bufferType ), bufferId );
     }
 }
 
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4100 )
+#endif
+//TODO: Remove type?
+
+Cunt UtilConcrete::generateBuffer( const BufferTypes type, const int size ) const
+{
+    unsigned int bufferId = 0;
+    glGenBuffers( size, &bufferId );
+    return bufferId;
+}
+
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
+
 void UtilConcrete::drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const
 {
-    glDrawElements( static_cast<GLenum>( type ) , data.size(), GL_UNSIGNED_INT, data.data() );
+    glDrawElements(
+        static_cast<GLenum>( type ) ,
+        static_cast<GLsizei>( data.size() ),
+        GL_UNSIGNED_INT,
+        data.data() );
+}
+
+void UtilConcrete::drawElements( const PrimitiveType type, const std::vector<float>& data ) const
+{
+    glDrawElements(
+        static_cast<GLenum>( type ) ,
+        static_cast<GLsizei>( data.size() ),
+        GL_FLOAT,
+        data.data() );
+}
+
+void UtilConcrete::drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const 
+{
+    glDrawElements(
+        static_cast<GLenum>( primitiveType ),
+        static_cast<GLsizei>( count ),
+        static_cast<GLenum>( dataType ),
+        nullptr );
 }
 
 template <typename Out>

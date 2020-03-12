@@ -27,8 +27,6 @@ texcoords, indicies, etc.
 
 NAMESPACE_BEGIN( LOGLW )
 
-using Cfloat = const float;
-
 using FloatData = std::vector<float>;
 
 class LIBOPENGLWRAPPER_API IVBO

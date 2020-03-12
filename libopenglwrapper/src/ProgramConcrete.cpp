@@ -112,10 +112,10 @@ const ShaderList& ProgramConcrete::getShaderList() const
     return m_attachedShaders;
 }
 
-void ProgramConcrete::bufferData( const std::vector<float>& data )
+void ProgramConcrete::bufferData( const std::vector<float>& data, const BufferTypes type )
 {
     m_dataBufferId = m_utility->generateArrayBuffer( 1 );
-    m_utility->bufferArrayData( data );
+    m_utility->bufferData( data, type );
 }
 
 Cunt ProgramConcrete::getProgramId() const

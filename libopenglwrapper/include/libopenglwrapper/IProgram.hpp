@@ -1,17 +1,13 @@
 #pragma once
 
+#include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/IShader.hpp"
-#include "CUL/String.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
-#include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
 using String = CUL::String;
 using CsStr = CUL::CsStr;
-using Cunt = const unsigned int;
-using Cint = const int;
-using Cfloat = const float;
 using ShaderList = std::map<String, IShader*>;
 
 class LIBOPENGLWRAPPER_API IProgram
@@ -37,7 +33,9 @@ public:
     virtual void disable() = 0;
     virtual void validate() = 0;
 
-    virtual void bufferData( const std::vector<float>& data ) = 0;
+    virtual void bufferData(
+        const std::vector<float>& data,
+        const BufferTypes type ) = 0;
 
     virtual Cunt getProgramId() const = 0;
     virtual const ShaderList& getShaderList() const = 0;

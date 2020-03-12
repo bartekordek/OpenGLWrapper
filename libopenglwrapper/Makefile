@@ -107,6 +107,9 @@ clean:
 	make -C $(SDL2W_LIB_HOME) clean
 	rm -rf $(OUTPUT_DIR)
 
+prepare:
+	sudo apt install libglew-dev
+
 test:
 	@echo "All .o files: $(OBJ_DEBUG_FILES)"
 	@echo "All .cpp files: $(CPP_FILES)"

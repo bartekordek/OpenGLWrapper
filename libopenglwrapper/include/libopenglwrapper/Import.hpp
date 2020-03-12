@@ -32,3 +32,7 @@
 
 using Cunt = const unsigned int;
 using Cbool = const bool;
+using CDouble = const double;
+using Cunt = const unsigned int;
+using Cint = const int;
+using Cfloat = const float;
