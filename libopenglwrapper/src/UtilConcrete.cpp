@@ -479,22 +479,14 @@ void UtilConcrete::bindBuffer( const BufferTypes bufferType, Cunt bufferId ) con
     }
 }
 
-#ifdef _MSC_VER
-#pragma warning( push )
-#pragma warning( disable: 4100 )
-#endif
-//TODO: Remove type?
 
-Cunt UtilConcrete::generateBuffer( const BufferTypes type, const int size ) const
+//TODO: Remove type?
+Cunt UtilConcrete::generateBuffer( const BufferTypes, const int size ) const
 {
     unsigned int bufferId = 0;
     glGenBuffers( size, &bufferId );
     return bufferId;
 }
-
-#ifdef _MSC_VER
-#pragma warning( pop )
-#endif
 
 void UtilConcrete::drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const
 {
@@ -521,6 +513,51 @@ void UtilConcrete::drawElementsFromLastBuffer( const PrimitiveType primitiveType
         static_cast<GLsizei>( count ),
         static_cast<GLenum>( dataType ),
         nullptr );
+}
+
+void UtilConcrete::drawArrays( const PrimitiveType primitiveType, Cunt first, Cunt count ) const
+{
+/*
+glDrawArrays - render primitives from array data.
+mode - Specifies what kind of primitives to render. Symbolic constants GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY and GL_PATCHES are accepted.
+first - Specifies the starting index in the enabled arrays.
+count - Specifies the number of indices to be rendered.
+*/
+    glDrawArrays( 
+        static_cast<GLenum>( primitiveType ),
+        static_cast<GLint>( first ),
+        static_cast<GLsizei>( count ) );
+}
+
+void UtilConcrete::vertexAttribPointer(
+    Cunt vertexAttributeId,
+    Cint componentsPerVertexAttribute,
+    const DataType dataType,
+    Cbool normalized,
+    Cint stride,
+    const void* offset ) const
+{
+    // Define an array of generic vertex attribute data
+/*
+GLuint index - specifies the index of the generic vertex attribute to be modified.
+GLint size - specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4. Additionally, the symbolic constant GL_BGRA is accepted by glVertexAttribPointer. The initial value is 4.
+GLenum type - specifies the data type of each component in the array. The symbolic constants GL_BYTE, GL_UNSIGNED_BYTE, GL_SHORT, GL_UNSIGNED_SHORT, GL_INT, and GL_UNSIGNED_INT are accepted by glVertexAttribPointer and glVertexAttribIPointer. Additionally GL_HALF_FLOAT, GL_FLOAT, GL_DOUBLE, GL_FIXED, GL_INT_2_10_10_10_REV, GL_UNSIGNED_INT_2_10_10_10_REV and GL_UNSIGNED_INT_10F_11F_11F_REV are accepted by glVertexAttribPointer. GL_DOUBLE is also accepted by glVertexAttribLPointer and is the only token accepted by the type parameter for that function. The initial value is GL_FLOAT.
+GLboolean normalized - for glVertexAttribPointer, specifies whether fixed-point data values should be normalized (GL_TRUE) or converted directly as fixed-point values (GL_FALSE) when they are accessed.
+GLsizei stride - specifies the byte offset between consecutive generic vertex attributes. If stride is 0, the generic vertex attributes are understood to be tightly packed in the array. The initial value is 0.
+const void * pointer - specifies a offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the GL_ARRAY_BUFFER target. The initial value is 0.
+*/
+    glVertexAttribPointer(
+        static_cast<GLuint>( vertexAttributeId ),
+        static_cast<GLint>( componentsPerVertexAttribute ),
+        static_cast<GLenum>( dataType ),
+        static_cast<GLboolean>( normalized ),
+        static_cast<GLsizei>( stride ),
+        offset );
+}
+
+void UtilConcrete::enableVertexAttribArray( Cunt attributeId ) const
+{
+    glEnableVertexAttribArray( static_cast<GLuint>( attributeId ) );
 }
 
 template <typename Out>

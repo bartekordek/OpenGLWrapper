@@ -127,6 +127,15 @@ public:
     virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;
     virtual void drawElements( const PrimitiveType type, const std::vector<float>& data ) const = 0;
     virtual void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const = 0;
+    virtual void drawArrays( const PrimitiveType primitiveType, Cunt first, Cunt count ) const = 0;
+    virtual void vertexAttribPointer(
+        Cunt vertexAttributeId,
+        Cint componentsPerVertexAttribute,
+        const DataType dataType,
+        Cbool normalized,
+        Cint stride,
+        const void* offset = nullptr ) const = 0;
+    virtual void enableVertexAttribArray( Cunt attributeId ) const = 0;
 
     virtual std::vector<std::string> listExtensions() = 0;
 

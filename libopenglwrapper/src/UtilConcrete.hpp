@@ -61,6 +61,15 @@ public:
     void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const override;
     void drawElements( const PrimitiveType type, const std::vector<float>& data ) const override;
     void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const override;
+    void drawArrays( const PrimitiveType primitiveType, Cunt first, Cunt count ) const override;
+    void vertexAttribPointer(
+        Cunt vertexAttributeId,
+        Cint componentsPerVertexAttribute,
+        const DataType dataType,
+        Cbool normalized,
+        Cint stride,
+        const void* offset = nullptr ) const override;
+    void enableVertexAttribArray( Cunt attributeId ) const override;
 
     std::vector<std::string> listExtensions() override;
 
