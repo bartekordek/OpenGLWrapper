@@ -24,6 +24,8 @@ In our example this is a diamond consisting of four
 vertices as well as a color for each vertex.
 */
 
+// Vertex Array Objects (VAOs) are conceptually nothing but thin state wrappers.
+
 NAMESPACE_BEGIN( LOGLW )
 
 class LIBOPENGLWRAPPER_API IVAO

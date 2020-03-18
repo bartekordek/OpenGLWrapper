@@ -25,6 +25,8 @@ VBOs can also store information such as normals,
 texcoords, indicies, etc.
 */
 
+// Vertex Buffer Objects (VBOs) store actual data.
+
 NAMESPACE_BEGIN( LOGLW )
 
 using FloatData = std::vector<float>;
