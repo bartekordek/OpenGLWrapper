@@ -56,7 +56,7 @@ public:
     Cunt getAttribLocation( Cunt programId, const String& attribName ) const override;
     void unbindBuffer( const BufferTypes bufferType ) const override;
     void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const;
-    Cunt generateBuffer( const BufferTypes type, const int size = 0 ) const override;
+    Cunt generateBuffer( const BufferTypes type, const int size = 1 ) const override;
 
     void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const override;
     void drawElements( const PrimitiveType type, const std::vector<float>& data ) const override;

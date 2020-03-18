@@ -340,8 +340,6 @@ Cunt UtilConcrete::generateVertexArray( const int size ) const
 {
     GLuint vao = 0;
     glGenVertexArrays( size, &vao );
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray( vao );
     return vao;
 }
 
@@ -506,7 +504,10 @@ void UtilConcrete::drawElements( const PrimitiveType type, const std::vector<flo
         data.data() );
 }
 
-void UtilConcrete::drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const 
+void UtilConcrete::drawElementsFromLastBuffer(
+    const PrimitiveType primitiveType,
+    const DataType dataType,
+    Cunt count ) const
 {
     glDrawElements(
         static_cast<GLenum>( primitiveType ),
@@ -515,7 +516,10 @@ void UtilConcrete::drawElementsFromLastBuffer( const PrimitiveType primitiveType
         nullptr );
 }
 
-void UtilConcrete::drawArrays( const PrimitiveType primitiveType, Cunt first, Cunt count ) const
+void UtilConcrete::drawArrays(
+    const PrimitiveType primitiveType,
+    Cunt first,
+    Cunt count ) const
 {
 /*
 glDrawArrays - render primitives from array data.

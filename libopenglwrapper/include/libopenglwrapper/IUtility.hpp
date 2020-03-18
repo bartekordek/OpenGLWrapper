@@ -39,6 +39,7 @@ enum class ClearMasks: unsigned
 
 enum class BufferTypes: unsigned
 {
+    NONE = 0,
     VERTEX_ARRAY = 1,
     ARRAY_BUFFER = 0x8892,
     ELEMENT_ARRAY_BUFFER = 0x8893
@@ -122,7 +123,7 @@ public:
     virtual Cunt getAttribLocation( Cunt programId, const String& attribName ) const = 0;
     virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
     virtual void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const = 0;
-    virtual Cunt generateBuffer( const BufferTypes type, const int size = 0 ) const = 0;
+    virtual Cunt generateBuffer( const BufferTypes type, const int size = 1 ) const = 0;
 
     virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;
     virtual void drawElements( const PrimitiveType type, const std::vector<float>& data ) const = 0;
