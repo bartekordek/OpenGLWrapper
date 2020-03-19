@@ -9,11 +9,11 @@ class LIBOPENGLWRAPPER_API IUtilityUser
 public:
     IUtilityUser();
 
-    void useUtility( IUtility* utility );
+    static void useUtility( IUtility* utility );
 
     virtual ~IUtilityUser();
 protected:
-    IUtility* getUtility() const;
+    static IUtility* getUtility();
 
 private:
     IUtilityUser( const IUtilityUser& arg ) = delete;
@@ -21,7 +21,7 @@ private:
     IUtilityUser& operator=( const IUtilityUser& arg ) = delete;
     IUtilityUser& operator=( IUtilityUser&& arg ) = delete;
 
-    IUtility* m_utility = nullptr;
+    static IUtility* s_utility;
 
 };
 

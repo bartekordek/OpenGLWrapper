@@ -28,15 +28,17 @@ vertices as well as a color for each vertex.
 
 NAMESPACE_BEGIN( LOGLW )
 
-class LIBOPENGLWRAPPER_API IVAO
+class LIBOPENGLWRAPPER_API IVAO:
+    public IUtilityUser
 {
 public:
-    IVAO() = default;
-    virtual ~IVAO() = default;
+    IVAO();
 
     virtual void addVBO( IVBO* vbo ) = 0;
 
     static IVAO* createVAO();
+
+    virtual ~IVAO();
 
 protected:
 private:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libopenglwrapper/Import.hpp"
+#include "libopenglwrapper/IUtilityUser.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 /*
@@ -31,7 +31,8 @@ NAMESPACE_BEGIN( LOGLW )
 
 using FloatData = std::vector<float>;
 
-class LIBOPENGLWRAPPER_API IVBO
+class LIBOPENGLWRAPPER_API IVBO:
+    public IUtilityUser
 {
 public:
     IVBO() = default;

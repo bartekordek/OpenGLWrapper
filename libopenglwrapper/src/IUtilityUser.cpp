@@ -2,20 +2,21 @@
 
 using namespace LOGLW;
 
+IUtility* IUtilityUser::s_utility = nullptr;
+
 IUtilityUser::IUtilityUser()
 {
 }
 
 void IUtilityUser::useUtility( IUtility* utility )
 {
-    m_utility = utility;
+    s_utility = utility;
 }
 
-IUtility* IUtilityUser::getUtility() const
+IUtility* IUtilityUser::getUtility()
 {
-    return m_utility;
+    return s_utility;
 }
-
 
 IUtilityUser::~IUtilityUser()
 {
