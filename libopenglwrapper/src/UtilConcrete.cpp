@@ -343,53 +343,121 @@ Cunt UtilConcrete::generateVertexArray( const int size ) const
     return vao;
 }
 
-Cunt UtilConcrete::generateArrayBuffer( const int size ) const
-{
-    /*
-    glGenBuffers returns n buffer object names in buffers. There is no guarantee that the names form a contiguous set of integers; however, it is guaranteed that none of the returned names was in use immediately before the call to glGenBuffers.
-
-    Buffer object names returned by a call to glGenBuffers are not returned by subsequent calls, unless they are first deleted with glDeleteBuffers.
-
-    No buffer objects are associated with the returned buffer object names until they are first bound by calling glBindBuffer.
-    */
-    GLuint bufferId = 0;
-    glGenBuffers( size, &bufferId );
-    glBindBuffer( GL_ARRAY_BUFFER, bufferId );
-    return bufferId;
-}
+void bufferDataImpl( const void* data, const GLenum type, const GLsizeiptr dataSize );
 
 void UtilConcrete::bufferData( const std::vector<unsigned int>& data, const BufferTypes type  ) const
 {
-    /*
-    creates and initializes a buffer object's data store
-   */
-    const auto dataSize = static_cast<GLsizeiptr>( data.size() * sizeof( float ) );
-    glBufferData(
-        static_cast<GLenum>( type ),
-        dataSize,
+
+    bufferDataImpl(
         data.data(),
-        GL_STATIC_DRAW );
+        static_cast<GLenum>( type ),
+        static_cast<GLsizeiptr>( data.size() * sizeof( float ) ) );
 }
 
 void UtilConcrete::bufferData( const std::vector<float>& data, const BufferTypes type  ) const
 {
-    /*
-    creates and initializes a buffer object's data store
-   */
-    const auto dataSize = static_cast<GLsizeiptr>( data.size() * sizeof( float ) );
-    glBufferData(
-        static_cast<GLenum>( type ),
-        dataSize,
+    bufferDataImpl(
         data.data(),
-        GL_STATIC_DRAW );
+        static_cast<GLenum>( type ),
+        static_cast<GLsizeiptr>( data.size() * sizeof( float ) ) );
+}
+
+void bufferDataImpl( const void* data, const GLenum target, const GLsizeiptr dataSize )
+{
+/*
+Creates and initializes a buffer object's data store
+*/
+        glBufferData(
+            target,// Specifies the target to which the buffer object is bound for glBufferData.
+            dataSize,// Specifies the size in bytes of the buffer object's new data store.
+            data,// Specifies a pointer to data that will be copied into the data store for initialization, or NULL if no data is to be copied.
+            GL_STATIC_DRAW// usage - Specifies the expected usage pattern of the data store. 
+        );
+/*
+target:
+GL_ARRAY_BUFFER - Vertex attributes
+GL_ATOMIC_COUNTER_BUFFER - Atomic counter storage
+GL_COPY_READ_BUFFER - Buffer copy source
+GL_COPY_WRITE_BUFFER - Buffer copy destination
+GL_DISPATCH_INDIRECT_BUFFER - Indirect compute dispatch commands
+GL_DRAW_INDIRECT_BUFFER - Indirect command arguments
+GL_ELEMENT_ARRAY_BUFFER - Vertex array indices
+GL_PIXEL_PACK_BUFFER - Pixel read target
+GL_PIXEL_UNPACK_BUFFER - Texture data source
+GL_QUERY_BUFFER - Query result buffer
+GL_SHADER_STORAGE_BUFFER - Read-write storage for shaders
+GL_TEXTURE_BUFFER - Texture data buffer
+GL_TRANSFORM_FEEDBACK_BUFFER - Transform feedback buffer
+GL_UNIFORM_BUFFER - Uniform block storage
+
+usage - GL_STREAM_DRAW,
+        GL_STREAM_READ,
+        GL_STREAM_COPY,
+        GL_STATIC_DRAW,
+        GL_STATIC_READ,
+        GL_STATIC_COPY,
+        GL_DYNAMIC_DRAW,
+        GL_DYNAMIC_READ, or
+        GL_DYNAMIC_COPY.
+
+https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBufferData.xhtml:
+Description
+glBufferData and glNamedBufferData create a new data store for a buffer object.
+In case of glBufferData, the buffer object currently bound to target is used.
+For glNamedBufferData, a buffer object associated with ID specified by the
+caller in buffer will be used instead.
+
+While creating the new storage, any pre-existing data store is deleted. The new data store is created with the specified size in bytes and usage. If data is not NULL, the data store is initialized with data from this pointer. In its initial state, the new data store is not mapped, it has a NULL mapped pointer, and its mapped access is GL_READ_WRITE.
+
+usage is a hint to the GL implementation as to how a buffer object's data store will be accessed. This enables the GL implementation to make more intelligent decisions that may significantly impact buffer object performance. It does not, however, constrain the actual usage of the data store. usage can be broken down into two parts: first, the frequency of access (modification and usage), and second, the nature of that access. The frequency of access may be one of these:
+
+STREAM
+The data store contents will be modified once and used at most a few times.
+
+STATIC
+The data store contents will be modified once and used many times.
+
+DYNAMIC
+The data store contents will be modified repeatedly and used many times.
+
+The nature of access may be one of these:
+
+DRAW
+The data store contents are modified by the application, and used as the source for GL drawing and image specification commands.
+
+READ
+The data store contents are modified by reading data from the GL, and used to return that data when queried by the application.
+
+COPY
+The data store contents are modified by reading data from the GL, and used as the source for GL drawing and image specification commands.
+
+Notes
+If data is NULL, a data store of the specified size is still created, but its contents remain uninitialized and thus undefined.
+
+Clients must align data elements consistently with the requirements of the client platform, with an additional base-level requirement that an offset within a buffer to a datum comprising N bytes be a multiple of N.
+
+The GL_ATOMIC_COUNTER_BUFFER target is available only if the GL version is 4.2 or greater.
+
+The GL_DISPATCH_INDIRECT_BUFFER and GL_SHADER_STORAGE_BUFFER targets are available only if the GL version is 4.3 or greater.
+
+The GL_QUERY_BUFFER target is available only if the GL version is 4.4 or greater.
+
+Errors
+GL_INVALID_ENUM is generated by glBufferData if target is not one of the accepted buffer targets.
+GL_INVALID_ENUM is generated if usage is not GL_STREAM_DRAW, GL_STREAM_READ, GL_STREAM_COPY, GL_STATIC_DRAW, GL_STATIC_READ, GL_STATIC_COPY, GL_DYNAMIC_DRAW, GL_DYNAMIC_READ, or GL_DYNAMIC_COPY.
+GL_INVALID_VALUE is generated if size is negative
+GL_INVALID_OPERATION is generated by glBufferData if the reserved buffer object name 0 is bound to target.
+GL_INVALID_OPERATION is generated by glNamedBufferData if buffer is not the name of an existing buffer object.
+GL_INVALID_OPERATION is generated if the GL_BUFFER_IMMUTABLE_STORAGE flag of the buffer object is GL_TRUE.
+GL_OUT_OF_MEMORY is generated if the GL is unable to create a data store with the specified size
+
+*/
 }
 
 Cunt UtilConcrete::generateAndBindBuffer( const BufferTypes bufferType, const int size ) const
 {
     const auto bufferId = generateBuffer( bufferType, size );
-    glBindBuffer( 
-        static_cast<GLenum>( bufferType ),
-        bufferId );
+    bindBuffer( bufferType, bufferId );
     return bufferId;
 }
 
@@ -469,20 +537,54 @@ void UtilConcrete::bindBuffer( const BufferTypes bufferType, Cunt bufferId ) con
 {
     if( BufferTypes::VERTEX_ARRAY == bufferType )
     {
+/*
+glBindVertexArray binds the vertex array object with name array. array is the
+name of a vertex array object previously returned from a call to
+glGenVertexArrays, or zero to break the existing vertex array object binding.
+
+If no vertex array object with name array exists, one is created when array is
+first bound. If the bind is successful no change is made to the state of the
+vertex array object, and any previous vertex array object binding is broken.
+*/
         glBindVertexArray(  static_cast<GLuint>( bufferId ) );
     }
     else
     {
+/*
+glBindBuffer binds a buffer object to the specified buffer binding point.
+Calling glBindBuffer with target set to one of the accepted symbolic constants
+and buffer set to the name of a buffer object binds that buffer object name to
+the target. If no buffer object with name buffer exists, one is created with
+that name. When a buffer object is bound to a target, the previous binding for
+that target is automatically broken.
+
+Buffer object names are unsigned integers. The value zero is reserved, but there
+is no default buffer object for each buffer object target. Instead, buffer set
+to zero effectively unbinds any buffer object previously bound, and restores
+client memory usage for that buffer object target (if supported for that
+target). Buffer object names and the corresponding buffer object contents are
+local to the shared object space of the current GL rendering context; two
+rendering contexts share buffer object names only if they explicitly enable
+sharing between contexts through the appropriate GL windows interfaces functions.
+*/
         glBindBuffer( static_cast<GLenum>( bufferType ), bufferId );
     }
 }
 
 
 //TODO: Remove type?
-Cunt UtilConcrete::generateBuffer( const BufferTypes, const int size ) const
+Cunt UtilConcrete::generateBuffer( const BufferTypes bufferType, const int size ) const
 {
-    unsigned int bufferId = 0;
-    glGenBuffers( size, &bufferId );
+    GLuint bufferId = 0;
+    if ( BufferTypes::VERTEX_ARRAY == bufferType )
+    {
+        glGenVertexArrays( size, &bufferId );
+    }
+    else
+    {
+        glGenBuffers( size, &bufferId );
+    }
+
     return bufferId;
 }
 
@@ -561,6 +663,13 @@ const void * pointer - specifies a offset of the first component of the first ge
 
 void UtilConcrete::enableVertexAttribArray( Cunt attributeId ) const
 {
+/*
+Enable or disable a generic vertex attribute array.
+glEnableVertexAttribArray and glEnableVertexArrayAttrib enable the generic vertex
+attribute array specified by index. glEnableVertexAttribArray uses currently bound vertex
+array object for the operation, whereas glEnableVertexArrayAttrib updates state of the
+vertex array object with ID vaobj.
+*/
     glEnableVertexAttribArray( static_cast<GLuint>( attributeId ) );
 }
 

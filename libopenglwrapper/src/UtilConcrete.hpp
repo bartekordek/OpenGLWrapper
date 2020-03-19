@@ -44,7 +44,6 @@ public:
 
     Cunt generateVertexArray (const int size = 1 ) const override;
 
-    Cunt generateArrayBuffer( const int size = 1 ) const override;
     void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const override;
     void bufferData( const std::vector<float>& data, const BufferTypes type ) const override;
     void bufferData( const float vertices[] ) const override;
