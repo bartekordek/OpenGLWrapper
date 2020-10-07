@@ -8,14 +8,17 @@ class VBOConcrete final:
 public:
     VBOConcrete();
 
+    void setId( Cunt id ) override;
+    Cunt getId() const override;
     void setData( const FloatData& data ) override;
 
     ~VBOConcrete();
 protected:
 private:
     FloatData m_data;
-    unsigned int m_bufferId = 0;
-    // Delted:
+    Uint m_bufferId = 0;
+
+    // Deleted:
     VBOConcrete( const VBOConcrete& value ) = delete;
     VBOConcrete( VBOConcrete&& value ) = delete;
     VBOConcrete& operator=( const VBOConcrete& value ) = delete;

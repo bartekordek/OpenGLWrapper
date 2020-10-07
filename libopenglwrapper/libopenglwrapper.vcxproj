@@ -22,33 +22,33 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8A83731D-8F5C-4AE8-8CCF-74B7B18609DB}</ProjectGuid>
     <RootNamespace>OpenGLWrapper</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
-    <ProjectName>libopenglwrapper-v141</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>libopenglwrapper</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -111,7 +111,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -148,7 +148,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -189,7 +189,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -230,7 +230,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -281,6 +281,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="src\ProgramConcrete.hpp" />
     <ClInclude Include="src\ShaderConcrete.hpp" />
     <ClInclude Include="src\ShaderRegister.hpp" />
+    <ClInclude Include="src\VAOOpengl.hpp" />
     <ClInclude Include="src\VBOConcrete.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +302,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClCompile Include="src\ProgramConcrete.cpp" />
     <ClCompile Include="src\ShaderConcrete.cpp" />
     <ClCompile Include="src\ShaderRegister.cpp" />
+    <ClCompile Include="src\VAOOpengl.cpp" />
     <ClCompile Include="src\VBOConcrete.cpp" />
     <ClCompile Include="src\Viewport.cpp" />
   </ItemGroup>

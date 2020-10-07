@@ -1,6 +1,7 @@
 #pragma once
 
-#include "libopenglwrapper/IVBO.hpp"
+#include "libopenglwrapper/IUtilityUser.hpp"
+
 
 /*
 
@@ -26,22 +27,29 @@ vertices as well as a color for each vertex.
 
 // Vertex Array Objects (VAOs) are conceptually nothing but thin state wrappers.
 
+// VAO - attribs?
+
 NAMESPACE_BEGIN( LOGLW )
 
+class IVBO;
 class LIBOPENGLWRAPPER_API IVAO:
     public IUtilityUser
 {
 public:
-    IVAO();
+    explicit IVAO();
 
+    virtual void setId( Cunt id ) = 0;
+    virtual Cunt getId() const = 0;
     virtual void addVBO( IVBO* vbo ) = 0;
-
-    static IVAO* createVAO();
+    virtual IVBO* createVBO() = 0;
 
     virtual ~IVAO();
 
+    static IVAO* createVAO();
 protected:
 private:
+
+
     IVAO( const IVAO& value ) = delete;
     IVAO( IVAO&& value ) = delete;
     IVAO& operator=( const IVAO& value ) = delete;

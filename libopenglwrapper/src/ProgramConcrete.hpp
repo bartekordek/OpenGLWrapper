@@ -2,6 +2,7 @@
 
 #include "libopenglwrapper/IProgram.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
+#include "libopenglwrapper/IShaderFactory.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
@@ -12,7 +13,7 @@ class ProgramConcrete final:
     public IProgram
 {
 public:
-    ProgramConcrete( IUtility* utility );
+    ProgramConcrete( IUtility* utility, IShaderFactory& sf );
     ~ProgramConcrete();
 
 protected:
@@ -37,6 +38,7 @@ private:
     void enable() override;
     void disable() override;
     void validate() override;
+    IShader* createShader( IFile* file ) override;
 
     const AttribKey getAttribLocation( CsStr& name ) const;
     const ShaderList& getShaderList() const override;
@@ -45,9 +47,15 @@ private:
 
     Cunt getProgramId() const override;
 
+    IVAO* createVao() override;
+
     IUtility* m_utility = nullptr;
+
     unsigned int m_dataBufferId = 0;
     unsigned int m_id = 0;
+
+    IShaderFactory& m_sf;
+
     AttribMap m_attribMap;
     ShaderList m_attachedShaders;
     std::mutex m_operationMutex;

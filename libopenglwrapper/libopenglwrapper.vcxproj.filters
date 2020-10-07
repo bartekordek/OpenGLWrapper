@@ -81,6 +81,9 @@
     <ClCompile Include="src\IUtilityUser.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\VAOOpengl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Primitives\TriangleImpl.hpp">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="include\libopenglwrapper\IUtilityUser.hpp">
       <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VAOOpengl.hpp">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

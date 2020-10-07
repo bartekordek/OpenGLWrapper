@@ -495,8 +495,6 @@ Cunt UtilConcrete::generateElementArrayBuffer( const std::vector<unsigned int>& 
 
 void UtilConcrete::bufferData( const float vertices[] ) const
 {
-    const auto kurwa1 = sizeof( vertices );
-    const auto kurwa2 = sizeof( *vertices );
     glBufferData( GL_ARRAY_BUFFER, sizeof( *vertices ), vertices, GL_STATIC_DRAW );
 }
 
@@ -531,6 +529,11 @@ Cunt UtilConcrete::getAttribLocation(
 void UtilConcrete::unbindBuffer( const BufferTypes bufferType ) const
 {
     bindBuffer( bufferType, 0 );
+}
+
+void UtilConcrete::bindBuffer( IVAO* vao ) const
+{
+    bindBuffer( BufferTypes::VERTEX_ARRAY, vao->getId() );
 }
 
 void UtilConcrete::bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const
@@ -570,7 +573,6 @@ sharing between contexts through the appropriate GL windows interfaces functions
         glBindBuffer( static_cast<GLenum>( bufferType ), bufferId );
     }
 }
-
 
 //TODO: Remove type?
 Cunt UtilConcrete::generateBuffer( const BufferTypes bufferType, const int size ) const

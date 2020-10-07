@@ -188,7 +188,7 @@ void OpenGLWrapperConcrete::initialize()
     m_logger->log( "OpenGLWrapperConcrete::initialize(), OpenGL version:" );
     m_logger->log( versionString );
 
-    m_shaderFactory = new OpenGLShaderFactory();
+    m_shaderFactory = new OpenGLShaderFactory( this );
     m_shaderFactory->useUtility( m_oglUtility );
 
     const auto& winSize = m_activeWindow->getSize();
@@ -206,12 +206,12 @@ void OpenGLWrapperConcrete::initialize()
     setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
 
     auto extensionList = m_oglUtility->listExtensions();
-    for( const auto& extension : extensionList )
+    for( const auto& extension: extensionList )
     {
-        std::cout << extension << "\n";
+        m_logger->log( "Extension: " + extension );
     }
 
-    m_imageLoader = IImageLoader::createConcrete();
+    m_imageLoader = IImageLoader::createConcrete( nullptr );
 
     m_hasBeenInitialized = true;
     m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );

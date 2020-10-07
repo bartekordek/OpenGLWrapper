@@ -1,6 +1,6 @@
-#include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "OpenGLShaderFactory.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/Log/ILogContainer.hpp"
 #include "ShaderConcrete.hpp"
 #include "ProgramConcrete.hpp"
 
@@ -12,7 +12,8 @@ using IProgram = LOGLW::IProgram;
 
 auto logger = CUL::LOG::LOG_CONTAINER::getLogger();
 
-OpenGLShaderFactory::OpenGLShaderFactory()
+OpenGLShaderFactory::OpenGLShaderFactory( LOGLW::IOpenGLWrapper* wrapper ):
+    m_openglWrapper( *wrapper )
 {
 }
 
@@ -42,13 +43,12 @@ IProgram* OpenGLShaderFactory::createProgram()
 {
     logger->log( "OpenGLShaderFactory::createProgram()" );
 
-    IProgram* result = new ProgramConcrete( IUtilityUser::getUtility() );
+    IProgram* result = new ProgramConcrete( IUtilityUser::getUtility(), *this );
     m_programs[result->getProgramId()] = result;
-
     return result;
 }
 
-const bool OpenGLShaderFactory::shaderExist( const IFile& shaderCode ) const
+bool OpenGLShaderFactory::shaderExist( const IFile& shaderCode ) const
 {
     ShaderMap::iterator it = m_shaders.find( shaderCode.getPath().getPath() );
     return m_shaders.end() != it;

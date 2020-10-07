@@ -21,33 +21,33 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D140819A-A939-4EEE-96A4-44E60831F93E}</ProjectGuid>
     <RootNamespace>TestApp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
-    <ProjectName>libopenglwrapperPlaygroundApp-v141</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>libopenglwrapperPlaygroundApp</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -110,7 +110,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libopenglwrapper-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -147,7 +147,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libopenglwrapper-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -188,7 +188,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libopenglwrapper-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -229,7 +229,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalDependencies>libopenglwrapper-$(DefaultPlatformToolset).lib;libsdl2wrapper-$(DefaultPlatformToolset).lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul-$(DefaultPlatformToolset).lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenglwrapper.lib;libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
@@ -256,6 +256,11 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\libopenglwrapper\basic_definitions\default_triangle.json" />
+    <None Include="..\libopenglwrapper\shaders\fragmentShader.frag" />
+    <None Include="..\libopenglwrapper\shaders\simpleFrag.frag" />
+    <None Include="..\libopenglwrapper\shaders\simpleVertex.vert" />
+    <None Include="..\libopenglwrapper\shaders\vertexShader.vert" />
     <None Include="Makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

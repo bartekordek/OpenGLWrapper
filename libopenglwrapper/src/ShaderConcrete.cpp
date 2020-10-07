@@ -1,5 +1,6 @@
 #include "ShaderConcrete.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "libopenglwrapper/IUtility.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 

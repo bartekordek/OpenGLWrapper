@@ -1,11 +1,15 @@
 #include "ProgramConcrete.hpp"
+#include "VAOOpengl.hpp"
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 
 using namespace LOGLW;
 
-ProgramConcrete::ProgramConcrete( IUtility* utility ):
+ProgramConcrete::ProgramConcrete( IUtility* utility, IShaderFactory& sf ):
     m_utility( utility ),
-    m_id( utility->createProgram() )
+    m_id( utility->createProgram() ),
+    m_sf( sf )
 {
+    CUL::Assert::simple( m_id != 0, "Cannot create program." );
 }
 
 ProgramConcrete::~ProgramConcrete()
@@ -90,6 +94,14 @@ void ProgramConcrete::validate()
     m_utility->validateProgram( m_id );
 }
 
+IShader* ProgramConcrete::createShader( IFile* file )
+{
+    auto result = m_sf.createShader( file );
+    attachShader( result );
+    link();
+    return result;
+}
+
 const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( CsStr& name ) const
 {
     ProgramConcrete::AttribKey result;
@@ -120,4 +132,11 @@ void ProgramConcrete::bufferData( const std::vector<float>&, const BufferTypes )
 Cunt ProgramConcrete::getProgramId() const
 {
     return m_id;
+}
+
+IVAO* ProgramConcrete::createVao()
+{
+    auto vao = IVAO::createVAO();
+    
+    return vao;
 }

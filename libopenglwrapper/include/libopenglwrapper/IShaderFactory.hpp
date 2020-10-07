@@ -1,11 +1,13 @@
 #pragma once
 
+#include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
 #include "libopenglwrapper/IShader.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-class LIBOPENGLWRAPPER_API IShaderFactory: public IUtilityUser
+class LIBOPENGLWRAPPER_API IShaderFactory:
+    public IUtilityUser
 {
 public:
     IShaderFactory() = default;

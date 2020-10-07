@@ -1,5 +1,7 @@
 #pragma once
 
+#include "libopenglwrapper/Import.hpp"
+#include "libopenglwrapper/IVAO.hpp"
 #include "libopenglwrapper/ViewPort.hpp"
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Math/Angle.hpp"
@@ -121,6 +123,7 @@ public:
     virtual Cunt getAttribLocation( Cunt programId, const String& attribName ) const = 0;
     virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
     virtual void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const = 0;
+    virtual void bindBuffer( IVAO* vao ) const = 0;
     virtual Cunt generateBuffer( const BufferTypes type, const int size = 1 ) const = 0;
 
     virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;

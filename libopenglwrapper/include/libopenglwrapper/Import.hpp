@@ -19,7 +19,7 @@
 #define LIBOPENGLWRAPPER_POST __cdecl
 #define LIBOPENGLWRAPPER_TEMPLATE
 #else
-#define LIBOPENGLWRAPPER __declspec(dllimport)
+#define LIBOPENGLWRAPPER_API __declspec(dllimport)
 #define LIBOPENGLWRAPPER_POST __cdecl
 #define LIBOPENGLWRAPPER_TEMPLATE extern
 #endif
@@ -30,9 +30,11 @@
 #endif
 #endif
 
-using Cunt = const unsigned int;
+using Uint = unsigned int;
+using Cunt = const Uint;
 using Cbool = const bool;
 using CDouble = const double;
-using Cunt = const unsigned int;
+using Unt = unsigned int;
+using Cunt = const Unt;
 using Cint = const int;
 using Cfloat = const float;

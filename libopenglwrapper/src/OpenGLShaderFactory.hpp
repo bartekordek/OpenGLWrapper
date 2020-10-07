@@ -14,12 +14,13 @@ using MyString = CUL::String;
 using ShaderMap = std::map<MyString, ShaderPtr>;
 using ProgramMap = std::map<unsigned int, ProgramPtr>;
 
+class IOpenGLWrapper;
 class OpenGLShaderFactory final:
     public IShaderFactory,
     public IProgramFactory
 {
 public:
-    OpenGLShaderFactory();
+    explicit OpenGLShaderFactory( IOpenGLWrapper* wrapper );
     ~OpenGLShaderFactory();
 
     IShader* createShader( IFile* shaderCode ) override;
@@ -30,12 +31,13 @@ private:
     OpenGLShaderFactory( const OpenGLShaderFactory& arg ) = delete;
     OpenGLShaderFactory& operator=( const OpenGLShaderFactory& rhv ) = delete;
 
-    const bool shaderExist( const IFile& shaderCode ) const;
+    bool shaderExist( const IFile& shaderCode ) const;
     IShader* getShader( const IFile& shaderCode );
     IShader* addShader( IFile* shaderCode );
 
     mutable ShaderMap m_shaders;
     ProgramMap m_programs;
+    IOpenGLWrapper& m_openglWrapper;
 };
 
 NAMESPACE_END( LOGLW )

@@ -31,7 +31,7 @@ Viewport::Viewport( Viewport&& val ):
 
 Cfloat Viewport::getAspectRatio() const
 {
-    return m_size.getWidth() * 1.0f / m_size.getHeight() * 1.0f;
+    return static_cast<float>(m_size.getWidth()) / static_cast<float>(m_size.getHeight());
 }
 
 Viewport& Viewport::operator=( const Viewport& rhv )

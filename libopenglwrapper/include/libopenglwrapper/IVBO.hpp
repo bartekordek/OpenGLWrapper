@@ -1,5 +1,6 @@
 #pragma once
 
+#include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
@@ -27,6 +28,8 @@ texcoords, indicies, etc.
 
 // Vertex Buffer Objects (VBOs) store actual data.
 
+// Just data?
+
 NAMESPACE_BEGIN( LOGLW )
 
 using FloatData = std::vector<float>;
@@ -37,6 +40,9 @@ class LIBOPENGLWRAPPER_API IVBO:
 public:
     IVBO() = default;
     virtual ~IVBO() = default;
+
+    virtual void setId( Cunt id ) = 0;
+    virtual Cunt getId() const = 0;
 
     virtual void setData( const FloatData& data ) = 0;
 

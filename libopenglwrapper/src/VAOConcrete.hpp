@@ -11,7 +11,10 @@ public:
     ~VAOConcrete();
 protected:
 private:
-
+    VAOConcrete( const VAOConcrete& arg ) = delete;
+    VAOConcrete( VAOConcrete&& arg ) = delete;
+    VAOConcrete& operator=( const VAOConcrete& arg ) = delete;
+    VAOConcrete& operator=( VAOConcrete&& arg ) = delete;
 
 };
 

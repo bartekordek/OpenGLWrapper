@@ -27,5 +27,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
+    <None Include="..\libopenglwrapper\basic_definitions\default_triangle.json">
+      <Filter>OtherFiles</Filter>
+    </None>
+    <None Include="..\libopenglwrapper\shaders\fragmentShader.frag">
+      <Filter>OtherFiles</Filter>
+    </None>
+    <None Include="..\libopenglwrapper\shaders\simpleFrag.frag">
+      <Filter>OtherFiles</Filter>
+    </None>
+    <None Include="..\libopenglwrapper\shaders\simpleVertex.vert">
+      <Filter>OtherFiles</Filter>
+    </None>
+    <None Include="..\libopenglwrapper\shaders\vertexShader.vert">
+      <Filter>OtherFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

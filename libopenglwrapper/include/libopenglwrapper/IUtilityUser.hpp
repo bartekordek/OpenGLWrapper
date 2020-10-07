@@ -1,9 +1,10 @@
 #pragma once
 
-#include "libopenglwrapper/IUtility.hpp"
+#include "libopenglwrapper/Import.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
+class IUtility;
 class LIBOPENGLWRAPPER_API IUtilityUser
 {
 public:
