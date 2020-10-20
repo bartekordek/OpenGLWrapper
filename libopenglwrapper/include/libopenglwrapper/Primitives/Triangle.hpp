@@ -35,6 +35,8 @@ public:
     const Point& getP2() const;
     const Point& getP3() const;
 
+    const std::vector<float> getData() const override;
+
     ~Triangle();
 protected:
 private:

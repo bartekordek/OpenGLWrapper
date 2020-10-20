@@ -1,6 +1,7 @@
 #include "ProgramConcrete.hpp"
 #include "VAOOpengl.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
 
 using namespace LOGLW;
 
@@ -12,45 +13,48 @@ ProgramConcrete::ProgramConcrete( IUtility* utility, IShaderFactory& sf ):
     CUL::Assert::simple( m_id != 0, "Cannot create program." );
 }
 
-ProgramConcrete::~ProgramConcrete()
+
+IVAO* ProgramConcrete::createVao()
 {
-    m_utility->removeProgram( m_id );
-    m_id = 0;
+    auto vao = IVAO::createVAO();
+    m_vaoList.push_back( vao );
+    return vao;
 }
 
-void ProgramConcrete::setAttrib( CsStr&, const char* )
+
+void ProgramConcrete::setAttrib( const String&, const char* )
 {
     //TODO
 }
 
-void ProgramConcrete::setAttrib( CsStr& , Cfloat  )
+void ProgramConcrete::setAttrib( const String& , Cfloat  )
 {
 }
 
-void ProgramConcrete::setAttrib( CsStr& , Cunt  )
+void ProgramConcrete::setAttrib( const String& , Cunt  )
 {
 }
 
-void ProgramConcrete::setAttrib( CsStr& , Cint  )
+void ProgramConcrete::setAttrib( const String& , Cint  )
 {
 }
 
-CsStr ProgramConcrete::getAttributeStr( CsStr&  )
+const String ProgramConcrete::getAttributeStr( const String&  )
 {
-    return CsStr();
+    return String();
 }
 
-Cfloat ProgramConcrete::getAttributeF( CsStr&  )
+Cfloat ProgramConcrete::getAttributeF( const String&  )
 {
     return Cfloat();
 }
 
-Cunt ProgramConcrete::getAttributeUi( CsStr&  )
+Cunt ProgramConcrete::getAttributeUi( const String&  )
 {
     return Cunt();
 }
 
-Cint ProgramConcrete::getAttributeI( CsStr&  )
+Cint ProgramConcrete::getAttributeI( const String&  )
 {
     return Cint();
 }
@@ -94,6 +98,13 @@ void ProgramConcrete::validate()
     m_utility->validateProgram( m_id );
 }
 
+IShader* ProgramConcrete::createShader( const Path& path )
+{
+    std::unique_ptr<IFile> filePtr( CUL::FS::FileFactory::createFileFromPath( path ) );
+    filePtr->load( true );
+    return createShader( filePtr.get() );
+}
+
 IShader* ProgramConcrete::createShader( IFile* file )
 {
     auto result = m_sf.createShader( file );
@@ -102,7 +113,11 @@ IShader* ProgramConcrete::createShader( IFile* file )
     return result;
 }
 
-const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( CsStr& name ) const
+void ProgramConcrete::render()
+{
+}
+
+const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( const String& name ) const
 {
     ProgramConcrete::AttribKey result;
 
@@ -134,9 +149,8 @@ Cunt ProgramConcrete::getProgramId() const
     return m_id;
 }
 
-IVAO* ProgramConcrete::createVao()
+ProgramConcrete::~ProgramConcrete()
 {
-    auto vao = IVAO::createVAO();
-    
-    return vao;
+    m_utility->removeProgram( m_id );
+    m_id = 0;
 }

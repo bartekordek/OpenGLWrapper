@@ -2,6 +2,7 @@
 
 #include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
+#include "libopenglwrapper/IObject.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 /*
@@ -34,6 +35,7 @@ NAMESPACE_BEGIN( LOGLW )
 
 using FloatData = std::vector<float>;
 
+
 class LIBOPENGLWRAPPER_API IVBO:
     public IUtilityUser
 {
@@ -45,6 +47,7 @@ public:
     virtual Cunt getId() const = 0;
 
     virtual void setData( const FloatData& data ) = 0;
+    virtual void setDataFromObject( IObject* object ) = 0;
 
     static IVBO* createVBO();
 

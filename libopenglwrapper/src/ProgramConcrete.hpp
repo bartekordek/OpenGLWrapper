@@ -21,15 +21,15 @@ private:
     using AttribKey = unsigned int;
     using AttribMap = std::map<CUL::String, AttribKey>;
 
-    void setAttrib( CsStr& name, const char* value ) override;
-    void setAttrib( CsStr& name, Cfloat value ) override;
-    void setAttrib( CsStr& name, Cunt value ) override;
-    void setAttrib( CsStr& name, Cint value ) override;
+    void setAttrib( const String& name, const char* value ) override;
+    void setAttrib( const String& name, Cfloat value ) override;
+    void setAttrib( const String& name, Cunt value ) override;
+    void setAttrib( const String& name, Cint value ) override;
 
-    CsStr getAttributeStr( CsStr& name ) override;
-    Cfloat getAttributeF( CsStr& name ) override;
-    Cunt getAttributeUi( CsStr& name ) override;
-    Cint getAttributeI( CsStr& name ) override;
+    const String getAttributeStr( const String& name ) override;
+    Cfloat getAttributeF( const String& name ) override;
+    Cunt getAttributeUi( const String& name ) override;
+    Cint getAttributeI( const String& name ) override;
 
     void attachShader( IShader* shader ) override;
     void dettachShader( IShader* shader = nullptr ) override;
@@ -38,9 +38,12 @@ private:
     void enable() override;
     void disable() override;
     void validate() override;
+    IShader* createShader( const Path& path ) override;
     IShader* createShader( IFile* file ) override;
 
-    const AttribKey getAttribLocation( CsStr& name ) const;
+    void render() override;
+
+    const AttribKey getAttribLocation( const String& name ) const;
     const ShaderList& getShaderList() const override;
 
     void bufferData( const std::vector<float>& data, const BufferTypes type ) override;
@@ -55,6 +58,7 @@ private:
     unsigned int m_id = 0;
 
     IShaderFactory& m_sf;
+    std::vector<IVAO*> m_vaoList;
 
     AttribMap m_attribMap;
     ShaderList m_attachedShaders;
@@ -62,7 +66,9 @@ private:
 
 private: // Deleted
     ProgramConcrete( const ProgramConcrete& arg ) = delete;
+    ProgramConcrete( ProgramConcrete&& arg ) = delete;
     ProgramConcrete& operator=( const ProgramConcrete& rhv ) = delete;
+    ProgramConcrete& operator=( ProgramConcrete&& rhv ) = delete;
 };
 
 NAMESPACE_END( LOGLW )

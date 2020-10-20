@@ -5,6 +5,7 @@
 #include "libopenglwrapper/IShaderFactory.hpp"
 
 #include "CUL/Filesystem/IFile.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -19,6 +20,8 @@ public:
     virtual ~IObject() = default;
 
     virtual void addShader( IFile* shaderFile, IShaderFactory* sf ) = 0;
+
+    virtual const std::vector<float> getData() const = 0;
 
 protected:
 private:

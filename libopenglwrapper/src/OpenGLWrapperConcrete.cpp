@@ -50,6 +50,12 @@ void OpenGLWrapperConcrete::beforeFrame( const EmptyFunctionCallback& callback )
     m_onBeforeFrame = callback;
 }
 
+void OpenGLWrapperConcrete::addObjectToRender( IRenderable* renderable )
+{
+    std::lock_guard<std::mutex> lockGuard( m_objectsToRenderMtx );
+    m_objectsToRender.insert( renderable );
+}
+
 IShaderFactory* OpenGLWrapperConcrete::getShaderFactory()
 {
     return &*m_shaderFactory;
@@ -94,7 +100,7 @@ Triangle* OpenGLWrapperConcrete::createTriangle()
     return nullptr;
 }   
 
-IObject* OpenGLWrapperConcrete::createFromFile( const CsStr& path )
+IObject* OpenGLWrapperConcrete::createFromFile( const String& path )
 {
     const CUL::FS::Path filePath( path );
     if( ".json" == filePath.getExtension() )
@@ -182,11 +188,10 @@ void OpenGLWrapperConcrete::renderLoop()
 void OpenGLWrapperConcrete::initialize()
 {
     m_logger->log( "OpenGLWrapperConcrete::initialize()..." );
-    m_oglContext = SDL_GL_CreateContext( *m_activeWindow );
 
-    auto versionString = m_oglUtility->initContextVersion( 3, 1 );
+    m_glContext = m_oglUtility->initContextVersion( m_activeWindow, 3, 1 );
     m_logger->log( "OpenGLWrapperConcrete::initialize(), OpenGL version:" );
-    m_logger->log( versionString );
+    m_logger->log( m_glContext.glVersion );
 
     m_shaderFactory = new OpenGLShaderFactory( this );
     m_shaderFactory->useUtility( m_oglUtility );
@@ -203,13 +208,15 @@ void OpenGLWrapperConcrete::initialize()
 
     setViewPort( vp );
 
-    setBackgroundColor( ColorS( 0.0, 1.0, 0.0, 0.0 ) );
+    setBackgroundColor( m_backgroundColor );
 
     auto extensionList = m_oglUtility->listExtensions();
     for( const auto& extension: extensionList )
     {
         m_logger->log( "Extension: " + extension );
     }
+
+    m_logger->log( "Extension count: " + std::to_string( extensionList.size() ) );
 
     m_imageLoader = IImageLoader::createConcrete( nullptr );
 
@@ -291,6 +298,7 @@ void OpenGLWrapperConcrete::executeTasks()
 
 void OpenGLWrapperConcrete::renderObjects()
 {
+    std::lock_guard<std::mutex> lockGuard( m_objectsToRenderMtx );
     for( auto& renderableObject : m_objectsToRender )
     {
         renderableObject->render();
@@ -326,20 +334,20 @@ void OpenGLWrapperConcrete::setBackgroundColor( const ColorS& color )
 OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
 {
     m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete()..." );
-    release();
+
     m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete() Done." );
 }
 
 void OpenGLWrapperConcrete::release()
 {
-    if( m_oglContext )
-    {
-        m_shaderFactory.release();
-        SDL_GL_DeleteContext( m_oglContext );
-        m_oglContext = nullptr; // This is basically void* !
-        delete m_oglUtility;
-        m_oglUtility = nullptr;
-    }
+    m_logger->log( "OpenGLWrapperConcrete::release()..." );
+    m_shaderFactory.release();
+
+    m_oglUtility->destroyContext( m_glContext );
+
+    delete m_oglUtility;
+    m_oglUtility = nullptr;
+    m_logger->log( "OpenGLWrapperConcrete::release()... Done." );
 }
 
 void OpenGLWrapperConcrete::drawQuad( const bool draw )

@@ -8,7 +8,7 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-using CsStr = CUL::CsStr;
+using String = CUL::String;
 
 class LIBOPENGLWRAPPER_API IObjectFactory
 {
@@ -19,7 +19,7 @@ public:
     virtual IRect* createRect() = 0;
     virtual Triangle* createTriangle() = 0;
     virtual IObject* createFromFile( IFile* file ) = 0;
-    virtual IObject* createFromFile( const CsStr& path ) = 0;
+    virtual IObject* createFromFile( const String& path ) = 0;
 
 protected:
 private:

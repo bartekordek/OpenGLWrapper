@@ -11,6 +11,7 @@ public:
     void setId( Cunt id ) override;
     Cunt getId() const override;
     void setData( const FloatData& data ) override;
+    void setDataFromObject( IObject* object ) override;
 
     ~VBOConcrete();
 protected:

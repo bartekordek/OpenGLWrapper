@@ -30,6 +30,7 @@ const Point& TriangleImpl::getPos() const
     return m_triangle.getCentralPosition();
 }
 
+// TODO:
 void TriangleImpl::setPosition( const Pos& )
 {
 }
@@ -48,6 +49,7 @@ void TriangleImpl::setP2( const Point& val )
 {
     m_triangle.setP2( val );
 }
+
 void TriangleImpl::setP3( const Point& val )
 {
     m_triangle.setP3( val );

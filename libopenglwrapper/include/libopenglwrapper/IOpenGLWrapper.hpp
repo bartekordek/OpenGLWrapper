@@ -51,6 +51,8 @@ public:
     virtual IImageLoader* getImageLoader() = 0;
     virtual IUtility* getUtility() = 0;
 
+    virtual void addObjectToRender( IRenderable* renderable ) = 0;
+
     virtual CUL::LOG::ILogger* getLoger() = 0;
 
     virtual void beforeFrame( const EmptyFunctionCallback& callback ) = 0;

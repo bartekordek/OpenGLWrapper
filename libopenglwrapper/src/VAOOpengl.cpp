@@ -18,17 +18,18 @@ Cunt VAOOpengl::getId() const
     return m_id;
 }
 
-void VAOOpengl::addVBO( IVBO* vbo )
-{
-    m_vbos[ vbo->getId() ] = vbo;
-}
-
 IVBO* VAOOpengl::createVBO()
 {
     auto vbo = IVBO::createVBO();
     auto vboId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
     vbo->setId( vboId );
+    addVBO( vbo );
     return vbo;
+}
+
+void VAOOpengl::addVBO( IVBO* vbo )
+{
+    m_vbos[ vbo->getId() ] = vbo;
 }
 
 VAOOpengl::~VAOOpengl()

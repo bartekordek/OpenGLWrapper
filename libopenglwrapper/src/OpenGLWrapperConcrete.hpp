@@ -39,7 +39,7 @@ private:
 
     IRect* createRect() override;
     Triangle* createTriangle() override;
-    IObject* createFromFile( const CsStr& path ) override;
+    IObject* createFromFile( const String& path ) override;
     IObject* createFromFile( CUL::JSON::IJSONFile* file );
     IObject* createFromFile( IFile* file ) override;
     IObject* createTriangle( CUL::JSON::INode* jNode );
@@ -49,6 +49,8 @@ private:
     void stopRenderingLoop() override;
     void onInitialize( const EmptyFunctionCallback& callback ) override;
     void beforeFrame( const EmptyFunctionCallback& callback ) override;
+
+    void addObjectToRender( IRenderable* renderable ) override;
 
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
@@ -69,11 +71,12 @@ private:
 
     void drawQuad( const bool draw = true ) override;
 
+
     DumbPtr<OpenGLShaderFactory> m_shaderFactory;
+    ContextInfo m_glContext;
 
     SDL2W::ISDL2Wrapper* m_sdlW = nullptr;
     SDL2W::IWindow* m_activeWindow = nullptr;
-    SDL_GLContext m_oglContext = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     IUtility* m_oglUtility = nullptr;
 
@@ -90,9 +93,11 @@ private:
     CUL::GUTILS::LckPrim<unsigned> m_renderLoopLatencyUs = 44;
     CUL::GUTILS::LckPrim<ProjectionType> m_currentProjection = ProjectionType::ORTO;
 
-    ColorS m_backgroundColor;
+    ColorS m_backgroundColor = ColorS( ColorE::BLACK );
 
     std::queue<ITask*> m_preRenderTasks;
+
+    std::mutex m_objectsToRenderMtx;
     std::set<IRenderable*> m_objectsToRender;
 
     EmptyFunctionCallback m_onInitializeCallback;

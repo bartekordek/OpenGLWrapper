@@ -33,6 +33,7 @@ SDL2W::WindowData windowData;
 float objectZ = 0.0f;
 LOGLW::Viewport viewport;
 Pos3Df eyePos;
+LOGLW::IObject* g_triangle0 = nullptr;
 
 void afterInit();
 void renderScene();
@@ -48,7 +49,7 @@ int main( int argc, char** argv )
     windowData.name = "Test";
     windowData.pos = SDL2W::Vector3Di( 256, 256, 0 );
     windowData.size.setSize( 1280, 800 );
-    windowData.withOpenGL = true;
+    windowData.rendererName = "opengl";
 
     g_sdlw = SDL2W::createSDL2Wrapper();
     g_sdlw->init( windowData );
@@ -107,7 +108,11 @@ void afterInit()
 
     const CUL::FS::Path defDir( wrapperDir + "/basic_definitions/" );
 
-    of->createFromFile( defDir + "default_triangle.json" );
+    g_triangle0 = of->createFromFile( defDir + "default_triangle.json" );
+
+    g_triangle0->setPosition( { -64, 64, 0 } );
+
+    window->toggleFpsCounter( true, 4u );
 }
 
 void drawTriangle( const Color& color, Cfloat size = 2.0f );
@@ -119,6 +124,9 @@ void renderScene()
     matrixStack.push();
     glRotatef( angle, 0.0f, 0.0f, 1.0f );
     glTranslatef( 0.0f, 32.0f, objectZ );
+
+    //TODO:
+//    g_triangle0->render();
     drawTriangle( red, size );
     glRotatef( 180, 0.0f, 0.0f, 1.0f );
     drawTriangle( yellow, size );

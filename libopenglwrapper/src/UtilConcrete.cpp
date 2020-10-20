@@ -194,7 +194,7 @@ const CUL::String enumToString( const GLenum val )
     }
 }
 
-const ShaderTypes UtilConcrete::getShaderType( CUL::CsStr& fileExtension ) const
+const ShaderTypes UtilConcrete::getShaderType( const CUL::String& fileExtension ) const
 {
     /*
     .vert - a vertex shader
@@ -204,15 +204,15 @@ const ShaderTypes UtilConcrete::getShaderType( CUL::CsStr& fileExtension ) const
     .frag - a fragment shader
     .comp - a compute shader
     */
-    if( fileExtension == "frag" || fileExtension == ".frag" )
+    if( fileExtension.equals( "frag" ) || fileExtension.equals( ".frag" ) )
     {
         return static_cast<ShaderTypes>( GL_FRAGMENT_SHADER );
     }
-    else if( fileExtension == "vert" || fileExtension == ".vert" )
+    else if( fileExtension.equals( "vert" ) || fileExtension.equals( ".vert" ) )
     {
         return static_cast<ShaderTypes>( GL_VERTEX_SHADER );
     }
-    else if( fileExtension == "geom" || fileExtension == ".geom" )
+    else if( fileExtension.equals( "geom" ) || fileExtension.equals( ".geom" ) )
     {
         return static_cast<ShaderTypes>( GL_GEOMETRY_SHADER );
     }
@@ -248,8 +248,11 @@ const GLuint toGluint( Cunt value )
     return static_cast<GLuint>( value );
 }
 
-CUL::String UtilConcrete::initContextVersion( Cunt major, Cunt minor ) const
+ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window, Cunt major, Cunt minor ) const
 {
+    ContextInfo result;
+
+    result.glContext = SDL_GL_CreateContext( *window );
     /*
     Context version can be only set after context creation.
     I.e. SDL: SDL_GL_DeleteContext call.
@@ -265,7 +268,8 @@ CUL::String UtilConcrete::initContextVersion( Cunt major, Cunt minor ) const
     //    SDL_GL_CONTEXT_PROFILE_ES = 0x0004 /**< GLX_CONTEXT_ES2_PROFILE_BIT_EXT */
     //} SDL_GLprofile;
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG );
-    const CUL::String contextInfo = glGetString( GL_VERSION );
+    const auto glStringVersion = glGetString( GL_VERSION );
+    result.glVersion = glStringVersion;
 
     if( major >= 3 )
     {
@@ -274,9 +278,15 @@ CUL::String UtilConcrete::initContextVersion( Cunt major, Cunt minor ) const
             GLEW_OK == error,
             "GLEW error: " +
             CUL::String( reinterpret_cast<const char*>( glewGetErrorString( error ) ) +
-            contextInfo ) );
+                         result.glVersion ) );
     }
-    return contextInfo;
+    return result;
+}
+
+void UtilConcrete::destroyContext( ContextInfo& context )
+{
+    SDL_GL_DeleteContext( context.glContext ); // This is basically void* !
+    context.glContext = nullptr;
 }
 
 void UtilConcrete::setAttribValue( Cint attributeLocation, Cfloat value ) const

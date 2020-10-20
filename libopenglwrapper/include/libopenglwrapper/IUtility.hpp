@@ -3,6 +3,9 @@
 #include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/IVAO.hpp"
 #include "libopenglwrapper/ViewPort.hpp"
+
+#include "SDL2Wrapper/IWindow.hpp"
+
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Graphics/Color.hpp"
@@ -69,6 +72,13 @@ enum class DataType: int
     DOUBLE = 0x140A
 };
 
+struct LIBOPENGLWRAPPER_API ContextInfo
+{
+    void* glContext = nullptr;
+    String glVersion;
+};
+
+
 class LIBOPENGLWRAPPER_API IUtility
 {
 public:
@@ -83,7 +93,7 @@ public:
     virtual void lookAt( const std::array< Pos3Dd, 3>& lookAtVec ) const = 0;
     virtual void lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up ) const = 0;
 
-    virtual const ShaderTypes getShaderType( CUL::CsStr& fileExtension ) const = 0;
+    virtual const ShaderTypes getShaderType( const CUL::String& fileExtension ) const = 0;
 
     virtual Cunt createProgram() const = 0;
     virtual void removeProgram( Cunt programId ) const = 0;
@@ -98,7 +108,9 @@ public:
     virtual void dettachShader( Cunt programId, Cunt shaderId ) const = 0;
     virtual void removeShader( Cunt shaderId ) const = 0;
 
-    virtual String initContextVersion( Cunt major, Cunt minor ) const = 0;
+    virtual ContextInfo initContextVersion( SDL2W::IWindow* window, Cunt major, Cunt minor ) const = 0;
+    virtual void destroyContext( ContextInfo& context ) = 0;
+
     virtual void setAttribValue( Cint attributeLocation, Cfloat value ) const = 0;
     virtual void setAttribValue( Cint attributeLocation, Cint value ) const = 0;
     virtual void setAttribValue( Cint attributeLocation, Cunt value ) const = 0;

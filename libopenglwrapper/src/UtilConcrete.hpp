@@ -18,7 +18,7 @@ public:
     void lookAt( const std::array< Pos3Dd, 3>& lookAtVec ) const override;
     void lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up ) const override;
 
-    const ShaderTypes getShaderType( CUL::CsStr& fileExtension ) const override;
+    const ShaderTypes getShaderType( const CUL::String& fileExtension ) const override;
 
     Cunt createProgram() const override;
     void removeProgram( Cunt programId ) const override;
@@ -31,7 +31,8 @@ public:
     void dettachShader( Cunt programId, Cunt shaderId ) const override;
     void removeShader( Cunt shaderId ) const override;
 
-    String initContextVersion( Cunt major, Cunt minor ) const override;
+    ContextInfo initContextVersion( SDL2W::IWindow* window, Cunt major, Cunt minor ) const override;
+    void destroyContext( ContextInfo& context ) override;
     void setAttribValue( Cint attributeLocation, Cfloat value ) const override;
     void setAttribValue( Cint attributeLocation, Cint value ) const override;
     void setAttribValue( Cint attributeLocation, Cunt value ) const override;

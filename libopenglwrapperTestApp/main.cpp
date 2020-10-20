@@ -33,6 +33,16 @@ Pos3Df eyePos;
 CUL::FS::IFile* getFile( const CUL::FS::Path& filePath );
 void afterInit();
 
+struct Base
+{
+
+};
+
+struct Derived: public Base
+{
+
+};
+
 int main( int argc, char** argv )
 {
     auto& argsInstance = CUL::GUTILS::ConsoleUtilities::getInstance();
@@ -42,13 +52,14 @@ int main( int argc, char** argv )
     windowData.name = "Test";
     windowData.pos = SDL2W::Vector3Di( 256, 256, 0 );
     windowData.size.setSize( 640, 480 );
-    windowData.withOpenGL = true;
+    windowData.rendererName = "opengl";
 
     SDLWrap sdlW = SDL2W::createSDL2Wrapper();
     sdlW->init( windowData );
     g_sdlw = sdlW.get();
     auto window = sdlW->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorE::BLACK );
+    window->toggleFpsCounter( true, 8u );
 
     g_oglw = LOGLW::createOpenGLWrapper( sdlW );
     g_oglw->onInitialize( afterInit );
@@ -96,7 +107,6 @@ void afterInit()
     g_oglw->setViewPort( viewport );
 
     of = g_oglw->getObjectFactory();
-
 
 
     const CUL::FS::Path defDir( wrapperDir + "/basic_definitions/" );
