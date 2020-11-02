@@ -1,14 +1,15 @@
 #include "ShaderConcrete.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "libopenglwrapper/IUtility.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-ShaderConcrete::ShaderConcrete( IFile* shaderCode, IUtility* util ):
-    m_utility( util ),
-    m_shaderCode( shaderCode ),
-    m_filePath( shaderCode->getPath() )
+ShaderConcrete::ShaderConcrete( IFile* filePath, IUtility* util ):
+    m_utility( util )
 {
+    m_shaderCode = filePath;
+    m_shaderCode->load( true );
     createShader();
 }
 
@@ -28,9 +29,10 @@ void ShaderConcrete::reload()
     createShader();
 }
 
-const String& ShaderConcrete::getPath() const
+const Path& ShaderConcrete::getPath() const
 {
-    return m_filePath;
+    auto shaderCode = m_shaderCode.get();
+    return shaderCode->getPath();
 }
 
 void ShaderConcrete::createShader()

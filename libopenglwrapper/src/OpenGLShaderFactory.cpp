@@ -3,6 +3,7 @@
 #include "CUL/Log/ILogContainer.hpp"
 #include "ShaderConcrete.hpp"
 #include "ProgramConcrete.hpp"
+#include "libopenglwrapper/IOpenGLWrapper.hpp"
 
 using OpenGLShaderFactory = LOGLW::OpenGLShaderFactory;
 using ShaderPtr = LOGLW::ShaderPtr;
@@ -13,29 +14,21 @@ using IProgram = LOGLW::IProgram;
 auto logger = CUL::LOG::LOG_CONTAINER::getLogger();
 
 OpenGLShaderFactory::OpenGLShaderFactory( LOGLW::IOpenGLWrapper* wrapper ):
-    m_openglWrapper( *wrapper )
+    m_openglWrapper( *wrapper ),
+    m_culInterface( wrapper->getCul() )
 {
 }
 
-OpenGLShaderFactory::~OpenGLShaderFactory()
+IShader* OpenGLShaderFactory::createShader( const Path& filePath )
 {
-    IUtilityUser::getUtility()->useProgram( 0 );
-    m_shaders.clear();
-    m_programs.clear();
-}
-
-IShader* OpenGLShaderFactory::createShader( IFile* shaderCode )
-{
-    logger->log( "OpenGLShaderFactory::createShader: " + shaderCode->getPath() );
-    if( shaderExist( *shaderCode ) )
+    auto result = getShader( filePath );
+    if( result )
     {
-        logger->log( "OpenGLShaderFactory::createShader: shader exist." );
-        return getShader( *shaderCode );
+        return result;
     }
     else
     {
-        logger->log( "OpenGLShaderFactory::createShader: shader does not exist." );
-        return addShader( shaderCode );
+        return addShader( filePath );
     }
 }
 
@@ -48,21 +41,29 @@ IProgram* OpenGLShaderFactory::createProgram()
     return result;
 }
 
-bool OpenGLShaderFactory::shaderExist( const IFile& shaderCode ) const
+bool OpenGLShaderFactory::shaderExist( const Path& filePath ) const
 {
-    ShaderMap::iterator it = m_shaders.find( shaderCode.getPath().getPath() );
+    ShaderMap::iterator it = m_shaders.find( filePath );
     return m_shaders.end() != it;
 }
 
-IShader* OpenGLShaderFactory::getShader( const IFile& shaderCode )
+IShader* OpenGLShaderFactory::getShader( const Path& filePath )
 {
-    return m_shaders[shaderCode.getPath().getPath()].get();
+    return m_shaders[ filePath ].get();
 }
 
-IShader* OpenGLShaderFactory::addShader( IFile* shaderCode )
+IShader* OpenGLShaderFactory::addShader( const Path& filePath )
 {
-    logger->log( "OpenGLShaderFactory::addShader: creating: " + shaderCode->getPath() );
-    auto shader = new ShaderConcrete( shaderCode, IUtilityUser::getUtility() );
-    m_shaders[shaderCode->getPath().getPath()] = shader;
+    logger->log( "OpenGLShaderFactory::addShader: creating: " + filePath );
+    auto shaderPtr = m_culInterface->getFF()->createFileFromPath( filePath );
+    auto shader = new ShaderConcrete( shaderPtr, IUtilityUser::getUtility() );
+    m_shaders[ filePath ] = shader;
     return shader;
+}
+
+OpenGLShaderFactory::~OpenGLShaderFactory()
+{
+    IUtilityUser::getUtility()->useProgram( 0 );
+    m_shaders.clear();
+    m_programs.clear();
 }

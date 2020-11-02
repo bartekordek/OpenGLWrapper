@@ -84,6 +84,7 @@
     <ClCompile Include="src\VAOOpengl.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="include\libopenglwrapper\IProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Primitives\TriangleImpl.hpp">

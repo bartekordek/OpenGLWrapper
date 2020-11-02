@@ -33,6 +33,8 @@ public:
 protected:
 private:
     void initialize() override;
+    CUL::CULInterface* getCul() override;
+
     void refreshBuffers();
     void setRenderLoopLatency( Cunt uS ) override;
     void setViewPort( const Viewport& rect ) override;
@@ -77,6 +79,7 @@ private:
 
     SDL2W::ISDL2Wrapper* m_sdlW = nullptr;
     SDL2W::IWindow* m_activeWindow = nullptr;
+    CUL::CULInterface* m_cul = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     IUtility* m_oglUtility = nullptr;
 

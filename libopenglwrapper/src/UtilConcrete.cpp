@@ -12,16 +12,12 @@
 
 using namespace LOGLW;
 
-void assertOnProgramError( Cunt programId, const GLenum val );
 const CUL::String enumToString( const GLenum val );
 const GLuint toGluint( Cunt value );
 
-void Assert( const bool value, const CUL::String& message )
-{
-    CUL::Assert::simple( value, message );
-}
-
-UtilConcrete::UtilConcrete()
+UtilConcrete::UtilConcrete( CUL::CULInterface* culInterface ):
+    m_culInterface( culInterface ),
+    m_logger( culInterface->getLogger() )
 {
 }
 
@@ -105,11 +101,12 @@ Cunt UtilConcrete::createProgram() const
 {
     const auto programId = static_cast<const unsigned int>(
         glCreateProgram() );
+    log( "UtilConcrete::createProgram, programId = " + String( programId ) );
 
     if( 0 == programId )
     {
         const GLenum err = glGetError();
-        Assert(
+        assert(
             GL_NO_ERROR == programId,
             "Error creating program, error numer: " + CUL::String( err ) );
         return 0;
@@ -120,6 +117,7 @@ Cunt UtilConcrete::createProgram() const
 
 void UtilConcrete::removeProgram( Cunt programId ) const
 {
+    log( "UtilConcrete::removeProgram, programId = " + String( programId ) );
     glDeleteProgram( toGluint( programId ) );
     // TODO: find a correct way to check whether program was deleted.
     //assertOnProgramError( programId, GL_DELETE_STATUS );
@@ -162,13 +160,13 @@ Cunt UtilConcrete::createShader( const IFile& shaderCode ) const
         CUL::String shaderCompilationErrorMessage = "Error compiling shader: " +
             errorAsString + "\n";
         shaderCompilationErrorMessage += "Shader Path: " + shaderCode.getPath().getPath() + "\n";
-        Assert( false, shaderCompilationErrorMessage );
+        assert( false, shaderCompilationErrorMessage );
     }
 
     return id;
 }
 
-void assertOnProgramError( Cunt programId, const GLenum val )
+void UtilConcrete::assertOnProgramError( Cunt programId, Cunt val ) const
 {
     GLint result = 0;
     glGetProgramiv( programId, val, &result );
@@ -177,7 +175,7 @@ void assertOnProgramError( Cunt programId, const GLenum val )
         GLchar eLog[1024] = { 0 };
         glGetProgramInfoLog( programId, sizeof( eLog ), nullptr, eLog );
         CUL::String message = "Error on " + enumToString( val ) + std::string( eLog );
-        Assert( false, message );
+        assert( false, message );
     }
 }
 
@@ -227,6 +225,11 @@ void UtilConcrete::attachShader(
     glAttachShader(
         toGluint( programId ),
         toGluint( shaderId ) );
+
+    const GLenum err = glGetError();
+    assert(
+        GL_NO_ERROR == err,
+        "Error creating program, error numer: " + CUL::String( err ) );
 }
 
 void UtilConcrete::dettachShader( Cunt programId, Cunt shaderId ) const
@@ -713,6 +716,18 @@ std::vector<std::string> UtilConcrete::listExtensions()
     return extensionsVec;
 }
 
+void UtilConcrete::log( const String& text,
+                        const CUL::LOG::Severity severity ) const
+{
+    assert( m_logger != nullptr,
+            "Logger utility is unninitialized inside of UtilConcrete." );
+    m_logger->log( text, severity );
+}
+
+void UtilConcrete::assert( const bool value, const CUL::String& message ) const
+{
+    CUL::Assert::simple( value, message );
+}
 
 UtilConcrete::~UtilConcrete()
 {

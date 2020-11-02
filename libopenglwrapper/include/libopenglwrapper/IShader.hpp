@@ -10,6 +10,7 @@ NAMESPACE_BEGIN( LOGLW )
 
 using IFile = CUL::FS::IFile;
 using String = CUL::String;
+using Path = CUL::FS::Path;
 
 class LIBOPENGLWRAPPER_API IShader
 {
@@ -19,7 +20,7 @@ public:
     virtual Cunt getId() const = 0;
     virtual void useShader() const = 0;
     virtual void reload() = 0;
-    virtual const String& getPath() const = 0;
+    virtual const Path& getPath() const = 0;
 
     virtual ~IShader();
 

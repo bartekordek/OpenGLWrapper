@@ -39,7 +39,6 @@ private:
     void disable() override;
     void validate() override;
     IShader* createShader( const Path& path ) override;
-    IShader* createShader( IFile* file ) override;
 
     void render() override;
 

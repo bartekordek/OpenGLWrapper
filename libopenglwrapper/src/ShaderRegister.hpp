@@ -12,7 +12,7 @@ public:
     ShaderRegister();
 
     //const
-    IShader* getShader( const IFile& shaderPath );
+    IShader* getShader( const Path& filePath );
 
     ~ShaderRegister();
 

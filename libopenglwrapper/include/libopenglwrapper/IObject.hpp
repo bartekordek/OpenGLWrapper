@@ -19,7 +19,7 @@ public:
     IObject() = default;
     virtual ~IObject() = default;
 
-    virtual void addShader( IFile* shaderFile, IShaderFactory* sf ) = 0;
+    virtual void addShader( const Path& filePath, IShaderFactory* sf ) = 0;
 
     virtual const std::vector<float> getData() const = 0;
 

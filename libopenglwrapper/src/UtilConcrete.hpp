@@ -2,13 +2,15 @@
 
 #include "libopenglwrapper/IUtility.hpp"
 
+#include "CUL/Log/ILogger.hpp"
+
 NAMESPACE_BEGIN( LOGLW )
 
 class UtilConcrete final:
     public IUtility
 {
 public:
-    UtilConcrete();
+    UtilConcrete( CUL::CULInterface* culInterface );
 
     void setViewPort( const Viewport& rect ) const override;
     void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble m_zNear, CDouble m_zFar ) const override;
@@ -79,6 +81,14 @@ public:
 
 protected:
 private:
+    void assertOnProgramError( Cunt programId, Cunt val ) const;
+    void log( const String& text,
+              const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;
+    void assert( const bool value, const CUL::String& message ) const;
+
+    CUL::CULInterface* m_culInterface = nullptr;
+    CUL::LOG::ILogger* m_logger = nullptr;
+
     UtilConcrete( const UtilConcrete& arg ) = delete;
     UtilConcrete( UtilConcrete&& arg ) = delete;
     UtilConcrete& operator=( const UtilConcrete& rhv ) = delete;

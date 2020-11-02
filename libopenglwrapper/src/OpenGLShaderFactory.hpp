@@ -23,21 +23,23 @@ public:
     explicit OpenGLShaderFactory( IOpenGLWrapper* wrapper );
     ~OpenGLShaderFactory();
 
-    IShader* createShader( IFile* shaderCode ) override;
+    IShader* createShader( const Path& filePath ) override;
     IProgram* createProgram() override;
+    IShader* getShader( const Path& filePath ) override;
 
 protected:
 private:
     OpenGLShaderFactory( const OpenGLShaderFactory& arg ) = delete;
     OpenGLShaderFactory& operator=( const OpenGLShaderFactory& rhv ) = delete;
 
-    bool shaderExist( const IFile& shaderCode ) const;
-    IShader* getShader( const IFile& shaderCode );
-    IShader* addShader( IFile* shaderCode );
+    bool shaderExist( const Path& filePath ) const;
+    
+    IShader* addShader( const Path& filePath );
 
     mutable ShaderMap m_shaders;
     ProgramMap m_programs;
     IOpenGLWrapper& m_openglWrapper;
+    CUL::CULInterface* m_culInterface = nullptr;
 };
 
 NAMESPACE_END( LOGLW )

@@ -26,8 +26,8 @@ Color yellow( 1.0f, 1.0f, 0.0f, 1.0f );
 GLfloat angle = 0.0f;
 DumbPtr<LOGLW::Triangle> triangle;
 LOGLW::IObjectFactory* of = nullptr;
-ShaderFile* vertexShaderFile = nullptr;
-ShaderFile* fragmentShaderFile = nullptr;
+CUL::FS::Path vertexShaderFile;
+CUL::FS::Path fragmentShaderFile;
 LOGLW::IProgram* program = nullptr;
 SDL2W::WindowData windowData;
 float objectZ = 0.0f;
@@ -77,11 +77,8 @@ void afterInit()
 
     const CUL::String wrapperDir = "../libopenglwrapper";
     const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
-    vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "simpleVertex.vert" );
-    fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "simpleFrag.frag" );
-
-    vertexShaderFile->load( true );
-    fragmentShaderFile->load( true );
+    vertexShaderFile = shadersDir + "simpleVertex.vert";
+    fragmentShaderFile = shadersDir + "simpleFrag.frag";
 
     auto vs = sf->createShader( vertexShaderFile );
     auto fs = sf->createShader( fragmentShaderFile );

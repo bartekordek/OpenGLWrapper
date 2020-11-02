@@ -11,10 +11,6 @@ IOpenGLWrapper::IOpenGLWrapper()
 {
 }
 
-IOpenGLWrapper::~IOpenGLWrapper()
-{
-}
-
 IOpenGLWrapper* LOGLW::createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w )
 {
     s_instance = new OpenGLWrapperConcrete( sdl2w );
@@ -24,4 +20,9 @@ IOpenGLWrapper* LOGLW::createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w )
 IOpenGLWrapper* getInstance()
 {
     return s_instance;
+}
+
+
+IOpenGLWrapper::~IOpenGLWrapper()
+{
 }

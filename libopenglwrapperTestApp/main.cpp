@@ -24,24 +24,13 @@ SDL2W::ISDL2Wrapper* g_sdlw = nullptr;
 LOGLW::IProgram* program = nullptr;
 LOGLW::IObjectFactory* of = nullptr;
 
-ShaderFile vertexShaderFile;
-ShaderFile fragmentShaderFile;
+CUL::FS::Path vertexShaderFile;
+CUL::FS::Path fragmentShaderFile;
 
 LOGLW::Viewport viewport;
 Pos3Df eyePos;
 
-CUL::FS::IFile* getFile( const CUL::FS::Path& filePath );
 void afterInit();
-
-struct Base
-{
-
-};
-
-struct Derived: public Base
-{
-
-};
 
 int main( int argc, char** argv )
 {
@@ -79,11 +68,9 @@ void afterInit()
 
     const CUL::String wrapperDir = "../libopenglwrapper";
     const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
-    vertexShaderFile = FF::createRegularFileRawPtr( shadersDir + "vertexShader.vert" );
-    fragmentShaderFile = FF::createRegularFileRawPtr( shadersDir + "fragmentShader.frag" );
+    vertexShaderFile = shadersDir + "vertexShader.vert";
+    fragmentShaderFile = shadersDir + "fragmentShader.frag";
 
-    vertexShaderFile->load( true );
-    fragmentShaderFile->load( true );
 
     auto vs = sf->createShader( vertexShaderFile );
     auto fs = sf->createShader( fragmentShaderFile );
@@ -112,13 +99,6 @@ void afterInit()
     const CUL::FS::Path defDir( wrapperDir + "/basic_definitions/" );
 
     of->createFromFile( defDir + "default_triangle.json" );
-}
-
-
-CUL::FS::IFile* getFile( const CUL::FS::Path& filePath )
-{
-    auto file = CUL::FS::FileFactory::createRegularFileRawPtr( filePath );
-    return nullptr;
 }
 
 void onKeyBoardEvent( const SDL2W::IKey& key )

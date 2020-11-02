@@ -6,7 +6,7 @@ ShaderRegister::ShaderRegister()
 {
 }
 
-IShader* ShaderRegister::getShader( const IFile& )
+IShader* ShaderRegister::getShader( const Path& )
 {
     return nullptr;
 }

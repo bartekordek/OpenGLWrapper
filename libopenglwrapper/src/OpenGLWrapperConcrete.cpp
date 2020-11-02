@@ -14,8 +14,9 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     SDL2W::ISDL2Wrapper* sdl2w ):
     m_sdlW( sdl2w ),
     m_activeWindow( sdl2w->getMainWindow() ),
+    m_cul( sdl2w->getCul() ),
     m_logger( CUL::LOG::LOG_CONTAINER::getLogger() ),
-    m_oglUtility( new UtilConcrete() )
+    m_oglUtility( new UtilConcrete( sdl2w->getCul() ) )
 {
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
     CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
@@ -105,7 +106,7 @@ IObject* OpenGLWrapperConcrete::createFromFile( const String& path )
     const CUL::FS::Path filePath( path );
     if( ".json" == filePath.getExtension() )
     {
-        const auto file = CUL::FS::FileFactory::createJSONFileRawPtr( path );
+        const auto file = m_cul->getFF()->createJSONFileRawPtr( path );
         file->load();
         return createFromFile( file );
     }
@@ -227,6 +228,11 @@ void OpenGLWrapperConcrete::initialize()
     {
         m_onInitializeCallback();
     }
+}
+
+CUL::CULInterface* OpenGLWrapperConcrete::getCul()
+{
+    return m_sdlW->getCul();
 }
 
 void OpenGLWrapperConcrete::renderFrame()

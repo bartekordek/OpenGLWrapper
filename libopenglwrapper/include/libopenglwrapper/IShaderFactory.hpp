@@ -13,7 +13,8 @@ public:
     IShaderFactory() = default;
     virtual ~IShaderFactory() = default;
 
-    virtual IShader* createShader( IFile* filePath ) = 0;
+    virtual IShader* createShader( const Path& filePath ) = 0;
+    virtual IShader* getShader( const Path& filePath ) = 0;
 
 protected:
 private:

@@ -19,7 +19,7 @@ public:
     Triangle();
 
     void addShader(
-        IFile* shaderFile,
+        const Path& filePath,
         IShaderFactory* sf ) override;
     void render();
 

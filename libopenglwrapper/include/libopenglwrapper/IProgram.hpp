@@ -15,8 +15,7 @@ using Path = CUL::FS::Path;
 class LIBOPENGLWRAPPER_API IProgram
 {
 public:
-    IProgram() = default;
-    virtual ~IProgram() = default;
+    IProgram();
 
     virtual void setAttrib( const String& name, const char* value ) = 0;
     virtual void setAttrib( const String& name, Cfloat value ) = 0;
@@ -34,7 +33,6 @@ public:
     virtual void enable() = 0;
     virtual void disable() = 0;
     virtual void validate() = 0;
-    virtual IShader* createShader( IFile* file ) = 0;
     virtual IShader* createShader( const Path& path ) = 0;
 
     virtual void bufferData(
@@ -48,10 +46,13 @@ public:
 
     virtual void render() = 0;
 
+    virtual ~IProgram();
 protected:
 private:
     IProgram( const IProgram& arg ) = delete;
+    IProgram( const IProgram& arg ) = delete;
     IProgram& operator=( const IProgram& rhv ) = delete;
+    IProgram& operator=( IProgram&& rhv ) = delete;
 };
 
 NAMESPACE_END( LOGLW )

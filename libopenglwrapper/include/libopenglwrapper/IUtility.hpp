@@ -6,6 +6,7 @@
 
 #include "SDL2Wrapper/IWindow.hpp"
 
+#include "CUL/CULInterface.hpp"
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Graphics/Color.hpp"

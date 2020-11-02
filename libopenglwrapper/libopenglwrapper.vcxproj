@@ -285,6 +285,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="src\VBOConcrete.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\libopenglwrapper\IProgram.cpp" />
     <ClCompile Include="src\IObjectFactory.cpp" />
     <ClCompile Include="src\IOpenGLWrapper.cpp" />
     <ClCompile Include="src\IShader.cpp" />

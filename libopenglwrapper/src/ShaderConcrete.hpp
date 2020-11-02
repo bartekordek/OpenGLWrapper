@@ -9,13 +9,13 @@ class ShaderConcrete final:
     public IShader
 {
 public:
-    ShaderConcrete( IFile* shaderCode, IUtility* util );
+    ShaderConcrete( IFile* file, IUtility* util );
     ~ShaderConcrete();
 
     Cunt getId() const override;
     void useShader() const override;
     void reload() override;
-    const String& getPath() const override;
+    const Path& getPath() const override;
 
 protected:
 private:
@@ -26,10 +26,10 @@ private:
     ShaderConcrete( const ShaderConcrete& arg ) = delete;
     ShaderConcrete& operator=( const ShaderConcrete& arg ) = delete;
 
+
     IUtility* m_utility = nullptr;
     unsigned int m_id = 0;
-    IFile* m_shaderCode = nullptr;
-    String m_filePath;
+    CUL::GUTILS::DumbPtr<IFile> m_shaderCode;
 };
 
 NAMESPACE_END( LOGLW )

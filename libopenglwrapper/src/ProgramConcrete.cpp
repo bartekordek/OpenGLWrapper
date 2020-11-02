@@ -10,7 +10,6 @@ ProgramConcrete::ProgramConcrete( IUtility* utility, IShaderFactory& sf ):
     m_id( utility->createProgram() ),
     m_sf( sf )
 {
-    CUL::Assert::simple( m_id != 0, "Cannot create program." );
 }
 
 
@@ -100,14 +99,7 @@ void ProgramConcrete::validate()
 
 IShader* ProgramConcrete::createShader( const Path& path )
 {
-    std::unique_ptr<IFile> filePtr( CUL::FS::FileFactory::createFileFromPath( path ) );
-    filePtr->load( true );
-    return createShader( filePtr.get() );
-}
-
-IShader* ProgramConcrete::createShader( IFile* file )
-{
-    auto result = m_sf.createShader( file );
+    auto result = m_sf.createShader( path );
     attachShader( result );
     link();
     return result;
@@ -115,6 +107,10 @@ IShader* ProgramConcrete::createShader( IFile* file )
 
 void ProgramConcrete::render()
 {
+    //for( const auto& vao: m_vaoList )
+    //{
+    //    //vao->
+    //}
 }
 
 const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( const String& name ) const
