@@ -66,6 +66,8 @@ public:
 
     virtual void drawQuad( const bool draw = true ) = 0;
 
+    virtual void clearModelViewEveryFrame( const bool enable ) = 0;
+
     virtual ~IOpenGLWrapper();
 
 protected:

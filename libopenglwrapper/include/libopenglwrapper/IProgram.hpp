@@ -50,7 +50,7 @@ public:
 protected:
 private:
     IProgram( const IProgram& arg ) = delete;
-    IProgram( const IProgram& arg ) = delete;
+    IProgram( IProgram&& arg ) = delete;
     IProgram& operator=( const IProgram& rhv ) = delete;
     IProgram& operator=( IProgram&& rhv ) = delete;
 };

@@ -73,6 +73,8 @@ private:
 
     void drawQuad( const bool draw = true ) override;
 
+    void clearModelViewEveryFrame( const bool enable ) override;
+
 
     DumbPtr<OpenGLShaderFactory> m_shaderFactory;
     ContextInfo m_glContext;

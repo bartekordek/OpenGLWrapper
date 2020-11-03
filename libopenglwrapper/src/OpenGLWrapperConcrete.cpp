@@ -360,3 +360,8 @@ void OpenGLWrapperConcrete::drawQuad( const bool draw )
 {
     m_drawQuad = draw;
 }
+
+void OpenGLWrapperConcrete::clearModelViewEveryFrame( const bool enable )
+{
+    m_clearModelView = enable;
+}

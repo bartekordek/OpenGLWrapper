@@ -49,15 +49,17 @@ public:
 
     ~Viewport();
 
+    Pos3Df center = { 0.0, 1.0, 0.0 };
+    Pos3Df eye;
+    Pos3Df up;
+    Size2Du size;
+    float fov = 90.0f;
+    double zNear = 1.0;
+    double zFar = -1.0;
+
 protected:
 private:
-    Pos3Df m_center = { 0.0, 1.0, 0.0 };
-    Pos3Df m_eye;
-    Pos3Df m_up;
-    Size2Du m_size;
-    float m_fov = 90.0f;
-    double m_zNear = 1.0;
-    double m_zFar = -1.0;
+
 };
 
 NAMESPACE_END( LOGLW )
