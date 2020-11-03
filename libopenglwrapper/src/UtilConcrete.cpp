@@ -319,6 +319,39 @@ void UtilConcrete::resetMatrixToIdentity( const MatrixTypes matrix ) const
     glLoadIdentity();
 }
 
+void UtilConcrete::translate( const float x, const float y, const float z )
+{
+    glTranslatef( x, y, z );
+}
+
+void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
+{
+    glBegin( GL_QUADS );
+        glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
+        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+        glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
+    glEnd();
+}
+
+void UtilConcrete::draw( const QuadF& quad, const std::array<ColorS, 4>& color )
+{
+    glBegin( GL_QUADS );
+    glColor4f( color[0].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
+    glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+
+    glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
+    glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+
+    glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
+    glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+
+    glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() );
+    glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
+    glEnd();
+}
+
 void UtilConcrete::clearColorAndDepthBuffer() const
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

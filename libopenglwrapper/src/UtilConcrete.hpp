@@ -77,6 +77,11 @@ public:
     std::vector<std::string> listExtensions() override;
 
     void resetMatrixToIdentity( const MatrixTypes matrix ) const override;
+
+    void translate( const float x, const float y, const float z ) override;
+    void draw( const QuadF& quad, const ColorS& color ) override;
+    void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) override;
+
     ~UtilConcrete();
 
 protected:

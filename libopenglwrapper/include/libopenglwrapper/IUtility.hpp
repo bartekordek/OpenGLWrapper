@@ -11,6 +11,7 @@
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/Graphics/Rect2D.hpp"
+#include "CUL/Math/Primitives/Quad.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 
@@ -22,6 +23,7 @@ using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
 using Pos3Dd = CUL::Graphics::Pos3Dd;
 using IFile = CUL::FS::IFile;
+using QuadF = CUL::MATH::QuadF;
 
 enum class MatrixTypes: int
 {
@@ -153,6 +155,12 @@ public:
     virtual void enableVertexAttribArray( Cunt attributeId ) const = 0;
 
     virtual std::vector<std::string> listExtensions() = 0;
+
+    virtual void draw( const QuadF& quad, const ColorS& color ) = 0;
+    virtual void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) = 0;
+
+
+    virtual void translate( const float x, const float y, const float z ) = 0;
 
     virtual ~IUtility();
 

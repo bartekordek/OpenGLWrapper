@@ -8,43 +8,43 @@ Viewport::Viewport()
 }
 
 Viewport::Viewport( const Viewport& val ):
-    m_center( val.m_center ),
-    m_eye( val.m_eye ),
-    m_up( val.m_up ),
-    m_size( val.m_size ),
-    m_fov( val.m_fov ),
-    m_zNear( val.m_zNear ),
-    m_zFar( val.m_zFar )
+    center( val.center ),
+    eye( val.eye ),
+    up( val.up ),
+    size( val.size ),
+    fov( val.fov ),
+    zNear( val.zNear ),
+    zFar( val.zFar )
 {
 }
 
 Viewport::Viewport( Viewport&& val ):
-    m_center( std::move( val.m_center ) ),
-    m_eye( std::move( val.m_eye ) ),
-    m_up( std::move( val.m_up ) ),
-    m_size( std::move( val.m_size ) ),
-    m_fov( val.m_fov ),
-    m_zNear( val.m_zNear ),
-    m_zFar( val.m_zFar )
+    center( std::move( val.center ) ),
+    eye( std::move( val.eye ) ),
+    up( std::move( val.up ) ),
+    size( std::move( val.size ) ),
+    fov( val.fov ),
+    zNear( val.zNear ),
+    zFar( val.zFar )
 {
 }
 
 Cfloat Viewport::getAspectRatio() const
 {
-    return static_cast<float>(m_size.getWidth()) / static_cast<float>(m_size.getHeight());
+    return static_cast<float>(size.getWidth()) / static_cast<float>(size.getHeight());
 }
 
 Viewport& Viewport::operator=( const Viewport& rhv )
 {
     if( this != &rhv )
     {
-        m_center = rhv.m_center;
-        m_eye = rhv.m_eye;
-        m_up = rhv.m_up;
-        m_size = rhv.m_size;
-        m_fov = rhv.m_fov;
-        m_zNear = rhv.m_zNear;
-        m_zFar = rhv.m_zFar;
+        center = rhv.center;
+        eye = rhv.eye;
+        up = rhv.up;
+        size = rhv.size;
+        fov = rhv.fov;
+        zNear = rhv.zNear;
+        zFar = rhv.zFar;
     }
     return *this;
 }
@@ -53,105 +53,105 @@ Viewport& Viewport::operator=( Viewport&& rhv )
 {
     if( this != &rhv )
     {
-        m_center = std::move( rhv.m_center );
-        m_eye = std::move( rhv.m_eye );
-        m_up = std::move( rhv.m_up );
-        m_size = std::move( rhv.m_size );
-        m_fov = rhv.m_fov;
-        m_zNear = rhv.m_zNear;
-        m_zFar = rhv.m_zFar;
+        center = std::move( rhv.center );
+        eye = std::move( rhv.eye );
+        up = std::move( rhv.up );
+        size = std::move( rhv.size );
+        fov = rhv.fov;
+        zNear = rhv.zNear;
+        zFar = rhv.zFar;
     }
     return *this;
 }
 
-void Viewport::setSize( const Size2Du& size )
+void Viewport::setSize( const Size2Du& sizeArg )
 {
-    m_size = size;
+    size = sizeArg;
 }
 
 void Viewport::setCenter( const Pos3Df& pos )
 {
-    m_center = pos;
+    center = pos;
 }
 
 void Viewport::setEyePos( const Pos3Df& pos )
 {
-    m_eye = pos;
+    eye = pos;
 }
 
 void Viewport::setUp( const Pos3Df& pos )
 {
-    m_up = pos;
+    up = pos;
 }
 
 void Viewport::setZnear( Cdouble val )
 {
-    m_zNear = val;
+    zNear = val;
 }
 
 void Viewport::setZfar( Cdouble val )
 {
-    m_zFar = val;
+    zFar = val;
 }
 
 void Viewport::setFov( Cfloat val )
 {
-    m_fov = val;
+    fov = val;
 }
 
 const Size2Du& Viewport::getSize() const
 {
-    return m_size;
+    return size;
 }
 
 Cdouble Viewport::getLeft() const
 {
-    return m_center.getX() - m_size.getWidth() / 2.0;
+    return center.getX() - size.getWidth() / 2.0;
 }
 
 Cdouble Viewport::getRight() const
 {
-    return m_center.getX() + m_size.getWidth() / 2.0;
+    return center.getX() + size.getWidth() / 2.0;
 }
 
 Cdouble Viewport::getTop() const
 {
-    return m_center.getY() + m_size.getHeight() / 2.0;
+    return center.getY() - size.getHeight() / 2.0;
 }
 
 Cdouble Viewport::getBottom() const
 {
-    return m_center.getY() - m_size.getHeight() / 2.0;
+    return center.getY() + size.getHeight() / 2.0;
 }
 
 Cdouble Viewport::getZnear() const
 {
-    return m_zNear;
+    return zNear;
 }
 
 Cdouble Viewport::getZfar() const
 {
-    return m_zFar;
+    return zFar;
 }
 
 Cfloat Viewport::getFov() const
 {
-    return m_fov;
+    return fov;
 }
 
 const Pos3Df& Viewport::getCenter() const
 {
-    return m_center;
+    return center;
 }
 
 const Pos3Df & Viewport::getEye() const
 {
-    return m_eye;
+    return eye;
 }
 
 const Pos3Df & Viewport::getUp() const
 {
-    return m_up;
+    return up;
 }
 
 Viewport::~Viewport()
