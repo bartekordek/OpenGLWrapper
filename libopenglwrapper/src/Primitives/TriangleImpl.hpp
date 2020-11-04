@@ -3,7 +3,7 @@
 #include "libopenglwrapper/Primitives/Triangle.hpp"
 #include "libopenglwrapper/IShader.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/Math/Triangle.hpp"
+#include "CUL/Math/Primitives/Triangle3D.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -34,7 +34,7 @@ public:
 
 protected:
 private:
-    CUL::MATH::Triangle3DF m_triangle;
+    CUL::MATH::Primitives::Triangle3DF m_triangle;
     std::vector<IShader*> m_shaders;
 
 private: // Deleted:

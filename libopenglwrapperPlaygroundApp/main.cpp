@@ -5,11 +5,14 @@
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Graphics/Rect2D.hpp"
+#include "CUL/Math/Primitives/Triangle.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/Log/ILogger.hpp"
 
 using SDLWrap = CUL::GUTILS::DumbPtr<SDL2W::ISDL2Wrapper>;
 using GLWrap = CUL::GUTILS::DumbPtr<LOGLW::IOpenGLWrapper>;
-using Color = CUL::Graphics::ColorS;
+using ColorS = CUL::Graphics::ColorS;
+using ColorE = CUL::Graphics::ColorE;
 using WinEventType = SDL2W::WindowEvent::Type;
 using ShaderFile = CUL::FS::IFile;
 template <typename TYPE> using DumbPtr = CUL::GUTILS::DumbPtr<TYPE>;
@@ -17,12 +20,18 @@ using FF = CUL::FS::FileFactory;
 using Rect = CUL::Graphics::Rect3Di;
 using Cfloat = CUL::Cfloat;
 using Pos3Df = CUL::Graphics::Pos3Df;
+using Triangle = CUL::MATH::Primitives::TriangleF;
+using String = CUL::String;
 
 DumbPtr<SDL2W::ISDL2Wrapper> g_sdlw;
 GLWrap g_oglw;
+LOGLW::IUtility* g_utility = nullptr;
+CUL::LOG::ILogger* g_logger = nullptr;
 LOGLW::MatrixStack matrixStack;
-Color red( 1.0f, 0.0f, 0.0f, 1.0f );
-Color yellow( 1.0f, 1.0f, 0.0f, 1.0f );
+ColorS red( ColorE::RED );
+ColorS yellow( 1.0f, 1.0f, 0.0f, 1.0f );
+ColorS blue( ColorE::BLUE );
+ColorS white( ColorE::WHITE );
 GLfloat angle = 0.0f;
 DumbPtr<LOGLW::Triangle> triangle;
 LOGLW::IObjectFactory* of = nullptr;
@@ -31,9 +40,17 @@ CUL::FS::Path fragmentShaderFile;
 LOGLW::IProgram* program = nullptr;
 SDL2W::WindowData windowData;
 float objectZ = 0.0f;
-LOGLW::Viewport viewport;
-Pos3Df eyePos;
+LOGLW::ProjectionData g_projectionData;
+Pos3Df g_eyePos;
 LOGLW::IObject* g_triangle0 = nullptr;
+
+Triangle triangleRed;
+Triangle triangleYellow;
+Triangle triangleBackground0;
+Triangle triangleBackground1;
+
+const CUL::String wrapperDir = "../libopenglwrapper";
+const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
 
 void afterInit();
 void renderScene();
@@ -55,7 +72,9 @@ int main( int argc, char** argv )
     g_sdlw->init( windowData );
 
     g_oglw = LOGLW::createOpenGLWrapper( g_sdlw );
+    g_logger = g_oglw->getLoger();
 
+    g_utility = g_oglw->getUtility();
     g_oglw->onInitialize( afterInit );
     g_oglw->beforeFrame( renderScene );
     g_oglw->setRenderLoopLatency( 8192 );
@@ -75,8 +94,7 @@ void afterInit()
     auto sf = g_oglw->getShaderFactory();
     auto pf = g_oglw->getProgramFactory();
 
-    const CUL::String wrapperDir = "../libopenglwrapper";
-    const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
+
     vertexShaderFile = shadersDir + "simpleVertex.vert";
     fragmentShaderFile = shadersDir + "simpleFrag.frag";
 
@@ -94,12 +112,14 @@ void afterInit()
     auto window = g_sdlw->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
     const auto& winSize = window->getSize();
-    viewport.setSize( winSize );
-    eyePos.z = 70.0f;
-    viewport.setEyePos( eyePos );
-    viewport.setCenter( Pos3Df( 0.0f, 0.0f, 0.0f ) );
-    viewport.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
-    g_oglw->setViewPort( viewport );
+    g_projectionData.setSize( winSize );
+    g_eyePos.z = 70.0f;
+    g_projectionData.setEyePos( g_eyePos );
+    g_projectionData.setCenter( Pos3Df( 0.0f, 0.0f, 0.0f ) );
+    g_projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
+    g_projectionData.setZfar( -16.0f );
+    g_projectionData.setZnear( 8.0f );
+    g_oglw->setProjection( g_projectionData );
 
     of = g_oglw->getObjectFactory();
 
@@ -110,47 +130,36 @@ void afterInit()
     g_triangle0->setPosition( { -64, 64, 0 } );
 
     window->toggleFpsCounter( true, 4u );
-}
+    const float size = 64.0f;
 
-void drawTriangle( const Color& color, Cfloat size = 2.0f );
+    triangleRed.p1 = {  size, -size, 0.0f };
+    triangleRed.p2 = { -size, -size, 0.0f };
+    triangleRed.p3 = { -size,  size, 0.0f };
+
+}
 
 void renderScene()
 {
-    const float z = 0.0f;
-    const float size = 64.0f;
     matrixStack.push();
-    glRotatef( angle, 0.0f, 0.0f, 1.0f );
-    glTranslatef( 0.0f, 32.0f, objectZ );
+    g_utility->translate( 0.0f, 0.0f, objectZ );
+    g_utility->draw( triangleRed, blue );
+
+
+    matrixStack.pop();
+
+    matrixStack.push();
+
+    g_utility->rotate( angle, 0.0f, 0.0f, 1.0f );
+    //glTranslatef( 0.0f, 32.0f, objectZ );
 
     //TODO:
 //    g_triangle0->render();
-    drawTriangle( red, size );
-    glRotatef( 180, 0.0f, 0.0f, 1.0f );
-    drawTriangle( yellow, size );
+    g_utility->draw( triangleRed, red );
+    g_utility->rotate( 180.0f, 0.0f, 0.0f, 1.0f );
+    g_utility->draw( triangleRed, yellow );
     matrixStack.pop();
 
     angle += 0.8f;
-
-    program->enable();
-    program->disable();
-}
-
-void drawTriangle( const Color& color, Cfloat size )
-{
-    glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
-    glBegin( GL_TRIANGLES );
-    glVertex3f( size, -size, 0.0f );
-    glVertex3f( -size, -size, 0.0f );
-    glVertex3f( -size, size, 0.0f );
-    glEnd();
-
-    //glBegin( GL_QUADS );
-    //    glColor3f( 0.0f, 1.0f, 1.0f );
-    //    glVertex3f( -50.0f, -50.0f, 0.0f );
-    //    glVertex3f( 50.0f, -50.0f, 0.0f );
-    //    glVertex3f( 50.0f, 50.0f, 0.0f );
-    //    glVertex3f( -50.0f, 50.0f, 0.0f );
-    //glEnd();
 }
 
 void onKeyBoardEvent( const SDL2W::IKey& key )
@@ -170,44 +179,50 @@ void onKeyBoardEvent( const SDL2W::IKey& key )
     else if( keyName == "W" )
     {
         objectZ -= deltaZ;
+        g_logger->log( "setting objectZ to: " + String( objectZ ) );
     }
     else if( keyName == "S" )
     {
         objectZ += deltaZ;
+        g_logger->log( "setting objectZ to: " + String( objectZ ) );
     }
     else if( keyName == "U" )
     {
-        auto val = viewport.getZfar();
-        viewport.setZfar( val + delta );
-        g_oglw->setViewPort( viewport );
+        auto newVal = g_projectionData.getZfar() + delta;
+        g_projectionData.setZfar( newVal );
+        g_oglw->setProjection( g_projectionData );
+        g_logger->log( "setting zFar to: " + String( newVal ) );
     }
     else if( keyName == "J" )
     {
-        auto val = viewport.getZfar();
-        viewport.setZfar( val - delta );
-        g_oglw->setViewPort( viewport );
+        auto newVal = g_projectionData.getZfar() - delta;
+        g_projectionData.setZfar( newVal );
+        g_oglw->setProjection( g_projectionData );
+        g_logger->log( "setting zFar to: " + String( newVal ) );
     }
     else if( keyName == "I" )
     {
-        eyePos.z += 2.0f;
-        g_oglw->setEyePos( eyePos );
+        g_eyePos.z += 2.0f;
+        g_oglw->setEyePos( g_eyePos );
+        g_logger->log( "setting g_eyePos.z to: " + String( g_eyePos.z ) );
     }
     else if( keyName == "K" )
     {
-        eyePos.z -= 2.0f;
-        g_oglw->setEyePos( eyePos );
+        g_eyePos.z -= 2.0f;
+        g_oglw->setEyePos( g_eyePos );
+        g_logger->log( "setting g_eyePos.z to: " + String( g_eyePos.z ) );
     }
     else if( keyName == "P" )
     {
         static bool toggle = true;
         if( toggle == true )
         {
-            std::cout << "Changing projection to ortographic.\n";
+            g_logger->log( "Changing projection to ortographic." );
             g_oglw->setProjectionType( LOGLW::ProjectionType::ORTO );
         }
         else
         {
-            std::cout << "Changing projection to PERSPECTIVE.\n";
+            g_logger->log( "Changing projection to PERSPECTIVE." );
             g_oglw->setProjectionType( LOGLW::ProjectionType::PERSPECTIVE );
         }
         toggle = !toggle;

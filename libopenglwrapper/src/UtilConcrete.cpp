@@ -1,4 +1,5 @@
 #include "UtilConcrete.hpp"
+#include "libopenglwrapper/Viewport.hpp"
 
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
@@ -21,16 +22,26 @@ UtilConcrete::UtilConcrete( CUL::CULInterface* culInterface ):
 {
 }
 
-void UtilConcrete::setViewPort( const Viewport& rect ) const
+// TODO: Remove:
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable:4100 )
+#endif
+void UtilConcrete::setProjection( const ProjectionData& ) const
 {
-    const auto& pos = rect.getCenter();
-    const auto& size = rect.getSize();
-    glViewport(
-        static_cast<GLint>( pos.getX() ),
-        static_cast<GLint>( pos.getY() ),
-        static_cast<GLsizei>( size.getWidth() ),
-        static_cast<GLsizei>( size.getHeight() ) );
+
 }
+void UtilConcrete::setViewport( const Viewport& viewport ) const
+{
+    glViewport(
+        viewport.pos.getX(),
+        viewport.pos.getY(),
+        viewport.size.getWidth(),
+        viewport.size.getHeight() );
+}
+#if _MSC_VER
+#pragma warning( pop )
+#endif
 
 void UtilConcrete::setPerspective(
     const Angle& angle,
@@ -45,7 +56,7 @@ void UtilConcrete::setPerspective(
         m_zFar );
 }
 
-void UtilConcrete::setOrthogonalPerspective( const Viewport& vp ) const
+void UtilConcrete::setOrthogonalPerspective( const ProjectionData& vp ) const
 {
     const auto left = vp.getLeft();
     const auto right = vp.getRight();
@@ -53,6 +64,29 @@ void UtilConcrete::setOrthogonalPerspective( const Viewport& vp ) const
     const auto top = vp.getTop();
     const auto zNear = vp.getZnear();
     const auto zFar = vp.getZfar();
+
+// glOrtho - multiply the current matrix with an orthographic matrix
+//left, right
+//    Specify the coordinates for the leftand right vertical clipping planes.
+
+//bottom, top
+//    Specify the coordinates for the bottomand top horizontal clipping planes.
+
+//nearVal, farVal
+//    Specify the distances to the nearerand farther depth clipping planes.These values are negative if the plane is to be behind the viewer.
+
+
+//glOrtho describes a transformation that produces a parallel projection.The current matrix( see glMatrixMode ) is multiplied by this matrixand the result replaces the current matrix, as if glMultMatrix were called with the following matrix as its argument :
+
+//2 right - left 0 0 t x 0 2 top - bottom 0 t y 0 0 - 2 farVal - nearVal t z 0 0 0 1
+//    where
+
+//    t x = -right + left right - left
+//    t y = -top + bottom top - bottom
+//    t z = -farVal + nearVal farVal - nearVal
+//    Typically, the matrix mode is GL_PROJECTION, and left bottom - nearVal and right top - nearVal specify the points on the near clipping plane that are mapped to the lower left and upper right corners of the window, respectively, assuming that the eye is located at( 0, 0, 0 ). - farVal specifies the location of the far clipping plane.Both nearVal and farVal can be either positive or negative.
+
+//    Use glPushMatrix and glPopMatrix to save and restore the current matrix stack.
 
     glOrtho(
         left, // left
@@ -64,12 +98,16 @@ void UtilConcrete::setOrthogonalPerspective( const Viewport& vp ) const
     );
 }
 
-void UtilConcrete::setPerspectiveProjection( const Viewport& vp ) const
+void UtilConcrete::setPerspectiveProjection( const ProjectionData& vp ) const
 {
-    gluPerspective( vp.getFov(), vp.getAspectRatio(), vp.getZnear(), vp.getZfar() );
+    static auto fov = vp.getFov();
+    static auto ar = vp.getAspectRatio();
+    static auto zNear = vp.getZnear();
+    static auto zFar = vp.getZfar();
+    gluPerspective( fov, ar, zNear, zFar );
 }
 
-void UtilConcrete::lookAt( const Viewport& vp ) const
+void UtilConcrete::lookAt( const ProjectionData& vp ) const
 {
     const auto& eye = vp.getEye();
     const auto& center = vp.getCenter();
@@ -324,10 +362,19 @@ void UtilConcrete::translate( const float x, const float y, const float z )
     glTranslatef( x, y, z );
 }
 
+void UtilConcrete::rotate( const float angle, const float x, const float y, const float z )
+{
+    glRotatef( angle, x, y, z );
+}
+
 void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
 {
     glBegin( GL_QUADS );
-        glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
+        auto red = color.getRF();
+        auto green = color.getGF();
+        auto blue = color.getBF();
+        auto alpha = color.getAF();
+        glColor4f( red, green, blue, alpha );
         glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
         glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
         glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
@@ -338,19 +385,45 @@ void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
 void UtilConcrete::draw( const QuadF& quad, const std::array<ColorS, 4>& color )
 {
     glBegin( GL_QUADS );
-    glColor4f( color[0].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
-    glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+        glColor4f( color[0].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
+        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
 
-    glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
-    glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
-
-    glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
-    glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
-
-    glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() );
-    glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
+        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+        
+        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
+        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+        
+        glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() );
+        glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
     glEnd();
 }
+
+
+void UtilConcrete::draw( const TriangleF& triangle, const ColorS& color )
+{
+    glBegin( GL_TRIANGLES );
+        glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
+        glVertex3f( triangle.p1.getX(), triangle.p1.getY(), triangle.p1.getZ() );
+        glVertex3f( triangle.p2.getX(), triangle.p2.getY(), triangle.p2.getZ() );
+        glVertex3f( triangle.p3.getX(), triangle.p3.getY(), triangle.p3.getZ() );
+    glEnd();
+}
+
+void UtilConcrete::draw( const TriangleF& quad, const std::array<ColorS, 4>& color )
+{
+    glBegin( GL_TRIANGLES );
+        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
+        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+        
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
+        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+        
+        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
+        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+    glEnd();
+}
+
 
 void UtilConcrete::clearColorAndDepthBuffer() const
 {
@@ -760,6 +833,18 @@ void UtilConcrete::log( const String& text,
 void UtilConcrete::assert( const bool value, const CUL::String& message ) const
 {
     CUL::Assert::simple( value, message );
+}
+
+void UtilConcrete::setDepthTest( const bool enabled ) const
+{
+    if( enabled )
+    {
+        glEnable( GL_DEPTH_TEST );
+    }
+    else
+    {
+        glDisable( GL_DEPTH_TEST );
+    }
 }
 
 UtilConcrete::~UtilConcrete()

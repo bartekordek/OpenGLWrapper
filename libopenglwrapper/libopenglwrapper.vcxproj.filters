@@ -60,9 +60,6 @@
     <ClCompile Include="src\ShaderRegister.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Viewport.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\VBOConcrete.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -85,6 +82,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="include\libopenglwrapper\IProgram.cpp" />
+    <ClCompile Include="src\ProjectionData.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Viewport.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Primitives\TriangleImpl.hpp">
@@ -165,9 +168,6 @@
     <ClInclude Include="include\libopenglwrapper\IVertexBuffer.hpp">
       <Filter>include\libopenglwrapper</Filter>
     </ClInclude>
-    <ClInclude Include="include\libopenglwrapper\ViewPort.hpp">
-      <Filter>include\libopenglwrapper</Filter>
-    </ClInclude>
     <ClInclude Include="src\VBOConcrete.hpp">
       <Filter>src</Filter>
     </ClInclude>
@@ -182,6 +182,12 @@
     </ClInclude>
     <ClInclude Include="src\VAOOpengl.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\ProjectionData.hpp">
+      <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\Viewport.hpp">
+      <Filter>include\libopenglwrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

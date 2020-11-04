@@ -12,11 +12,12 @@ class UtilConcrete final:
 public:
     UtilConcrete( CUL::CULInterface* culInterface );
 
-    void setViewPort( const Viewport& rect ) const override;
+    void setProjection( const ProjectionData& rect ) const override;
+    void setViewport( const Viewport& viewport ) const override;
     void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble m_zNear, CDouble m_zFar ) const override;
-    void setOrthogonalPerspective( const Viewport& vp ) const override;
-    void setPerspectiveProjection( const Viewport& vp ) const override;
-    void lookAt( const Viewport& vp ) const override;
+    void setOrthogonalPerspective( const ProjectionData& vp ) const override;
+    void setPerspectiveProjection( const ProjectionData& vp ) const override;
+    void lookAt( const ProjectionData& vp ) const override;
     void lookAt( const std::array< Pos3Dd, 3>& lookAtVec ) const override;
     void lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up ) const override;
 
@@ -79,8 +80,17 @@ public:
     void resetMatrixToIdentity( const MatrixTypes matrix ) const override;
 
     void translate( const float x, const float y, const float z ) override;
+    void rotate(
+        const float angle,
+        const float x = 0.0f,
+        const float y = 0.0f,
+        const float z = 0.0f ) override;
+
     void draw( const QuadF& quad, const ColorS& color ) override;
     void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) override;
+
+    void draw( const TriangleF& triangle, const ColorS& color ) override;
+    void draw( const TriangleF& quad, const std::array<ColorS, 4>& color ) override;
 
     ~UtilConcrete();
 
@@ -90,6 +100,7 @@ private:
     void log( const String& text,
               const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;
     void assert( const bool value, const CUL::String& message ) const;
+    void setDepthTest( const bool enabled ) const override;
 
     CUL::CULInterface* m_culInterface = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;

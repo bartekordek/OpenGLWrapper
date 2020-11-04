@@ -106,6 +106,7 @@
       <ProgramDataBaseFileName />
       <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>5045</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
@@ -143,6 +144,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <ProgramDataBaseFileName />
       <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>5045</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
@@ -182,6 +184,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <ProgramDataBaseFileName />
       <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>5045</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -223,6 +226,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <ProgramDataBaseFileName />
       <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>5045</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -270,7 +274,8 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp" />
     <ClInclude Include="include\libopenglwrapper\Primitives\Triangle.hpp" />
     <ClInclude Include="include\libopenglwrapper\IUtility.hpp" />
-    <ClInclude Include="include\libopenglwrapper\ViewPort.hpp" />
+    <ClInclude Include="include\libopenglwrapper\ProjectionData.hpp" />
+    <ClInclude Include="include\libopenglwrapper\Viewport.hpp" />
     <ClInclude Include="src\ImportFreeglut.hpp" />
     <ClInclude Include="src\IMPORT_glew.hpp" />
     <ClInclude Include="src\MatrixStack.hpp" />
@@ -305,6 +310,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClCompile Include="src\ShaderRegister.cpp" />
     <ClCompile Include="src\VAOOpengl.cpp" />
     <ClCompile Include="src\VBOConcrete.cpp" />
+    <ClCompile Include="src\ProjectionData.cpp" />
     <ClCompile Include="src\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>

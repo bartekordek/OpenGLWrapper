@@ -37,7 +37,8 @@ private:
 
     void refreshBuffers();
     void setRenderLoopLatency( Cunt uS ) override;
-    void setViewPort( const Viewport& rect ) override;
+    void setProjection( const ProjectionData& rect ) override;
+    void setViewport( const Viewport& viewport ) override;
 
     IRect* createRect() override;
     Triangle* createTriangle() override;
@@ -64,6 +65,7 @@ private:
     void renderLoop();
     void renderFrame() override;
     void setProjectionType( const ProjectionType type ) override;
+    void changeProjectionType();
     void setEyePos( const Pos3Df& pos ) override;
     void renderObjects();
 
@@ -85,8 +87,6 @@ private:
     CUL::LOG::ILogger* m_logger = nullptr;
     IUtility* m_oglUtility = nullptr;
 
-    Viewport m_viewport;
-
     DumbPtr<IImageLoader> m_imageLoader;
 
     std::thread m_renderingLoopThread;
@@ -95,6 +95,15 @@ private:
     SafeBool m_clearEveryFrame = true;
     SafeBool m_clearModelView = true;
     SafeBool m_updateBuffers = true;
+
+    
+    Viewport m_viewport;
+    SafeBool m_viewportChanged = false;
+
+    ProjectionType m_projectionType = ProjectionType::ORTO;
+
+    ProjectionData m_projectionData;
+    SafeBool m_projectionChanged = false;
     CUL::GUTILS::LckPrim<unsigned> m_renderLoopLatencyUs = 44;
     CUL::GUTILS::LckPrim<ProjectionType> m_currentProjection = ProjectionType::ORTO;
 

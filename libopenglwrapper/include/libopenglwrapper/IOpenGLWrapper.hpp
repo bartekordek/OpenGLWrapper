@@ -3,8 +3,9 @@
 #include "libopenglwrapper/IObjectFactory.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IProgramFactory.hpp"
-#include "libopenglwrapper/ViewPort.hpp"
+#include "libopenglwrapper/ProjectionData.hpp"
 #include "libopenglwrapper/IUtility.hpp"
+#include "libopenglwrapper/Viewport.hpp"
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 
@@ -60,9 +61,10 @@ public:
 
     virtual void setRenderLoopLatency( Cunt uS ) = 0;
 
-    virtual void setViewPort( const Viewport& rect ) = 0;
+    virtual void setProjection( const ProjectionData& rect ) = 0;
     virtual void setEyePos( const Pos3Df& pos ) = 0;
     virtual void setProjectionType( const ProjectionType type ) = 0;
+    virtual void setViewport( const Viewport& viewport ) = 0;
 
     virtual void drawQuad( const bool draw = true ) = 0;
 

@@ -197,18 +197,24 @@ void OpenGLWrapperConcrete::initialize()
     m_shaderFactory = new OpenGLShaderFactory( this );
     m_shaderFactory->useUtility( m_oglUtility );
 
-    const auto& winSize = m_activeWindow->getSize();
 
     m_oglUtility->setProjectionAndModelToIdentity();
 
-    Viewport vp;
-    vp.setSize( winSize );
-    vp.setEyePos( Pos3Df( 0.0f, 0.0f, 10.0f ) );
-    vp.setCenter( Pos3Df( 0.0f, 0.0f, 0.0f ) );
-    vp.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
+    const auto& winSize = m_activeWindow->getSize();
+    ProjectionData projectionData;
+    projectionData.setSize( winSize );
+    projectionData.setEyePos( Pos3Df( 0.0f, 0.0f, 10.0f ) );
+    projectionData.setCenter( Pos3Df(
+        static_cast<float>( winSize.getWidth() ) / 2.f,
+        static_cast<float>( winSize.getHeight() ) / 2.f, 0.0f ) );
+    projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
 
-    setViewPort( vp );
+    setProjection( projectionData );
 
+    m_viewport.pos.setXY( 0, 0 );
+    m_viewport.size.setSize( winSize.getWidth(), winSize.getHeight() );
+
+    m_backgroundColor.setAlphaF( 0.0 );
     setBackgroundColor( m_backgroundColor );
 
     auto extensionList = m_oglUtility->listExtensions();
@@ -221,13 +227,15 @@ void OpenGLWrapperConcrete::initialize()
 
     m_imageLoader = IImageLoader::createConcrete( nullptr );
 
-    m_hasBeenInitialized = true;
-    m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
+    m_oglUtility->setDepthTest( true );
 
     if( m_onInitializeCallback )
     {
         m_onInitializeCallback();
     }
+
+    m_hasBeenInitialized = true;
+    m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
 }
 
 CUL::CULInterface* OpenGLWrapperConcrete::getCul()
@@ -237,20 +245,33 @@ CUL::CULInterface* OpenGLWrapperConcrete::getCul()
 
 void OpenGLWrapperConcrete::renderFrame()
 {
-    setBackgroundColor( m_backgroundColor );
+    //setBackgroundColor( m_backgroundColor );
     if( m_clearEveryFrame )
     {
         m_oglUtility->clearColorAndDepthBuffer();
     }
 
+    if( m_projectionChanged )
+    {
+        changeProjectionType();
+        
+        m_projectionChanged = false;
+    }
+
     if( m_clearModelView )
     {
-        setProjectionType( m_currentProjection );
+        
+        m_oglUtility->resetMatrixToIdentity( MatrixTypes::MODELVIEW );
     }
 
     if( m_onBeforeFrame )
     {
         m_onBeforeFrame();
+    }
+
+    if( m_viewportChanged )
+    {
+        m_oglUtility->setViewport( m_viewport );
     }
 
     executeTasks();
@@ -262,8 +283,14 @@ void OpenGLWrapperConcrete::renderFrame()
 
 void OpenGLWrapperConcrete::setProjectionType( const ProjectionType type )
 {
+    m_projectionType = type;
+    m_projectionChanged = true;
+}
+
+void OpenGLWrapperConcrete::changeProjectionType()
+{
     m_oglUtility->resetMatrixToIdentity( MatrixTypes::PROJECTION );
-    if( ProjectionType::ORTO == type )
+    if( ProjectionType::ORTO == m_projectionType )
     {
         /*
 https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
@@ -276,20 +303,21 @@ https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
 
             nearVal, farVal
             Specify the distances to the nearer and farther depth clipping planes.These values are negative if the plane is to be behind the viewer.*/
-        m_oglUtility->setOrthogonalPerspective( m_viewport );
+        m_oglUtility->setOrthogonalPerspective( m_projectionData );
     }
-    else if( ProjectionType::PERSPECTIVE == type )
+    else if( ProjectionType::PERSPECTIVE == m_projectionType )
     {
-        m_oglUtility->setPerspectiveProjection( m_viewport );
-        m_oglUtility->lookAt( m_viewport );
+        m_oglUtility->setPerspectiveProjection( m_projectionData );
+        m_oglUtility->lookAt( m_projectionData );
     }
-    m_oglUtility->resetMatrixToIdentity( MatrixTypes::MODELVIEW );
-    m_currentProjection = type;
+    m_currentProjection = m_projectionType;
+    setProjection( m_projectionData );
 }
 
 void OpenGLWrapperConcrete::setEyePos( const Pos3Df& pos )
 {
-    m_viewport.setEyePos( pos );
+    m_projectionData.setEyePos( pos );
+    m_projectionChanged = true;
 }
 
 void OpenGLWrapperConcrete::executeTasks()
@@ -325,10 +353,18 @@ void OpenGLWrapperConcrete::setRenderLoopLatency( Cunt uS )
     m_renderLoopLatencyUs = uS;
 }
 
-void OpenGLWrapperConcrete::setViewPort( const Viewport& rect )
+void OpenGLWrapperConcrete::setProjection( const ProjectionData& rect )
 {
-    m_oglUtility->setViewPort( rect );
-    m_viewport = rect;
+    m_oglUtility->setProjection( rect );
+
+    m_projectionData = rect;
+    m_projectionChanged = true;
+}
+
+void OpenGLWrapperConcrete::setViewport( const Viewport& viewport )
+{
+    m_viewport = viewport;
+    m_viewportChanged = true;
 }
 
 void OpenGLWrapperConcrete::setBackgroundColor( const ColorS& color )

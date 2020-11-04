@@ -1,13 +1,13 @@
 #pragma once
 
 #include "libopenglwrapper/IObject.hpp"
-#include "CUL/Math/Triangle.hpp"
+#include "CUL/Math/Primitives/Triangle3D.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/Graphics/Pos3D.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
-using Triangle3DF = CUL::MATH::Triangle3DF;
+using Triangle3DF = CUL::MATH::Primitives::Triangle3DF;
 using IFile = CUL::FS::IFile;
 using Point = CUL::MATH::PointF;
 

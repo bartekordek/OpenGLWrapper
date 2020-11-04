@@ -2,7 +2,7 @@
 
 #include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/IVAO.hpp"
-#include "libopenglwrapper/ViewPort.hpp"
+#include "libopenglwrapper/ProjectionData.hpp"
 
 #include "SDL2Wrapper/IWindow.hpp"
 
@@ -12,6 +12,7 @@
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/Graphics/Rect2D.hpp"
 #include "CUL/Math/Primitives/Quad.hpp"
+#include "CUL/Math/Primitives/Triangle.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 
@@ -23,7 +24,8 @@ using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
 using Pos3Dd = CUL::Graphics::Pos3Dd;
 using IFile = CUL::FS::IFile;
-using QuadF = CUL::MATH::QuadF;
+using QuadF = CUL::MATH::Primitives::QuadF;
+using TriangleF = CUL::MATH::Primitives::TriangleF;
 
 enum class MatrixTypes: int
 {
@@ -81,6 +83,7 @@ struct LIBOPENGLWRAPPER_API ContextInfo
     String glVersion;
 };
 
+class Viewport;
 
 class LIBOPENGLWRAPPER_API IUtility
 {
@@ -88,11 +91,12 @@ public:
     IUtility();
 
     virtual void resetMatrixToIdentity( const MatrixTypes matrix ) const = 0;
-    virtual void setViewPort( const Viewport& rect ) const = 0;
+    virtual void setProjection( const ProjectionData& rect ) const = 0;
+    virtual void setViewport( const Viewport& viewport ) const = 0;
     virtual void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble m_zNear, CDouble m_zFar ) const = 0;
-    virtual void setOrthogonalPerspective( const Viewport& vp ) const = 0;
-    virtual void setPerspectiveProjection( const Viewport& vp ) const = 0;
-    virtual void lookAt( const Viewport& vp ) const = 0;
+    virtual void setOrthogonalPerspective( const ProjectionData& vp ) const = 0;
+    virtual void setPerspectiveProjection( const ProjectionData& vp ) const = 0;
+    virtual void lookAt( const ProjectionData& vp ) const = 0;
     virtual void lookAt( const std::array< Pos3Dd, 3>& lookAtVec ) const = 0;
     virtual void lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up ) const = 0;
 
@@ -159,8 +163,12 @@ public:
     virtual void draw( const QuadF& quad, const ColorS& color ) = 0;
     virtual void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) = 0;
 
+    virtual void draw( const TriangleF& triangle, const ColorS& color ) = 0;
+    virtual void draw( const TriangleF& quad, const std::array<ColorS, 4>& color ) = 0;
 
     virtual void translate( const float x, const float y, const float z ) = 0;
+    virtual void rotate( const float angle, const float x = 0.0f, const float y = 0.0f, const float z = 0.0f ) = 0;
+    virtual void setDepthTest( const bool enabled ) const = 0;
 
     virtual ~IUtility();
 
