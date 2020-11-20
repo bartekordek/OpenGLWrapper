@@ -104,15 +104,16 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName />
-      <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>5045</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;LOGLW-AdditionalDeps.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -142,15 +143,16 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName />
-      <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>5045</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;LOGLW-AdditionalDeps.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -182,17 +184,18 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <ProgramDataBaseFileName />
-      <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>5045</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;LOGLW-AdditionalDeps.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -224,17 +227,18 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <ProgramDataBaseFileName />
-      <AdditionalIncludeDirectories>$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>5045</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libsdl2wrapper.lib;SDL2main.lib;SDL2.lib;SDL2_image.lib;LOGLW-AdditionalDeps.lib;libcul.lib;glfw.lib;glew_shared.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
       <Command>
@@ -255,6 +259,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\libopenglwrapper\IDebugOverlay.hpp" />
     <ClInclude Include="include\libopenglwrapper\IMovable.hpp" />
     <ClInclude Include="include\libopenglwrapper\IObject.hpp" />
     <ClInclude Include="include\libopenglwrapper\IObjectFactory.hpp" />
@@ -277,6 +282,7 @@ xcopy "$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)\*.dll" "$(TargetD
     <ClInclude Include="include\libopenglwrapper\ProjectionData.hpp" />
     <ClInclude Include="include\libopenglwrapper\Viewport.hpp" />
     <ClInclude Include="src\ImportFreeglut.hpp" />
+    <ClInclude Include="src\ImportImgui.hpp" />
     <ClInclude Include="src\IMPORT_glew.hpp" />
     <ClInclude Include="src\MatrixStack.hpp" />
     <ClInclude Include="src\OpenGLShaderFactory.hpp" />

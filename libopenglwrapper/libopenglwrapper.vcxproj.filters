@@ -189,6 +189,12 @@
     <ClInclude Include="include\libopenglwrapper\Viewport.hpp">
       <Filter>include\libopenglwrapper</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImportImgui.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\IDebugOverlay.hpp">
+      <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentShader.frag">

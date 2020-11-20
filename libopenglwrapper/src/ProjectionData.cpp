@@ -19,7 +19,8 @@ ProjectionData::ProjectionData( const ProjectionData& val ):
     m_left( val.m_left ),
     m_right( val.m_right ),
     m_top( val.m_top ),
-    m_bottom( val.m_bottom )
+    m_bottom( val.m_bottom ),
+    m_projectionType( val.m_projectionType )
 {
 }
 
@@ -34,11 +35,12 @@ ProjectionData::ProjectionData( ProjectionData&& val ):
     m_left( val.m_left ),
     m_right( val.m_right ),
     m_top( val.m_top ),
-    m_bottom( val.m_bottom )
+    m_bottom( val.m_bottom ),
+    m_projectionType( val.m_projectionType )
 {
 }
 
-Cfloat ProjectionData::getAspectRatio() const
+float ProjectionData::getAspectRatio() const
 {
     return static_cast<float>(m_size.getWidth()) / static_cast<float>(m_size.getHeight());
 }
@@ -58,6 +60,7 @@ ProjectionData& ProjectionData::operator=( const ProjectionData& rhv )
         m_right = rhv.m_right;
         m_top = rhv.m_top;
         m_bottom = rhv.m_bottom;
+        m_projectionType = rhv.m_projectionType;
     }
     return *this;
 }
@@ -77,6 +80,7 @@ ProjectionData& ProjectionData::operator=( ProjectionData&& rhv )
         m_right = rhv.m_right;
         m_top = rhv.m_top;
         m_bottom = rhv.m_bottom;
+        m_projectionType = rhv.m_projectionType;
     }
     return *this;
 }
@@ -85,27 +89,28 @@ void ProjectionData::setSize( const Size2Di& sizeArg )
 {
     m_size = sizeArg;
 
-    m_left = m_center.getX() - m_size.getWidth() / 2.0;
-    m_right = m_center.getX() + m_size.getWidth() / 2.0;
+    m_left = m_center.x - 0.5f * (float) m_size.getWidth();
+    m_right = m_center.x + 0.5f * (float) m_size.getWidth();
 
-    m_bottom = m_center.getY() - m_size.getHeight() / 2.0;
-    m_top = m_center.getY() + m_size.getHeight() / 2.0;
+    m_bottom = m_center.y - 0.5f * (float) m_size.getHeight();
+    m_top = m_center.y + 0.5f * (float) m_size.getHeight();
 }
 
 void ProjectionData::setCenter( const Pos3Df& pos )
 {
     m_center = pos;
 
-    m_left = m_center.getX() - m_size.getWidth() / 2.0;
-    m_right = m_center.getX() + m_size.getWidth() / 2.0;
+    m_left = m_center.x - (float) m_size.getWidth() / 2.0f;
+    m_right = m_center.x + (float) m_size.getWidth() / 2.0f;
 
-    m_bottom = m_center.getY() - m_size.getHeight() / 2.0;
-    m_top = m_center.getY() + m_size.getHeight() / 2.0;
+    m_bottom = m_center.y - (float) m_size.getHeight() / 2.0f;
+    m_top = m_center.y + (float) m_size.getHeight() / 2.0f;
 }
 
 void ProjectionData::setEyePos( const Pos3Df& pos )
 {
     m_eye = pos;
+    m_zNear = pos.z;
 }
 
 void ProjectionData::setUp( const Pos3Df& pos )
@@ -113,17 +118,18 @@ void ProjectionData::setUp( const Pos3Df& pos )
     m_up = pos;
 }
 
-void ProjectionData::setZnear( Cdouble val )
+void ProjectionData::setZnear( const float val )
 {
     m_zNear = val;
+    m_eye.z = val;
 }
 
-void ProjectionData::setZfar( Cdouble val )
+void ProjectionData::setZfar( const float val )
 {
     m_zFar = val;
 }
 
-void ProjectionData::setFov( Cfloat val )
+void ProjectionData::setFov( const float val )
 {
     m_fov = val;
 }
@@ -133,37 +139,37 @@ const Size2Di& ProjectionData::getSize() const
     return m_size;
 }
 
-Cdouble ProjectionData::getLeft() const
+float ProjectionData::getLeft() const
 {
     return m_left;
 }
 
-Cdouble ProjectionData::getRight() const
+float ProjectionData::getRight() const
 {
     return m_right;
 }
 
-Cdouble ProjectionData::getTop() const
+float ProjectionData::getTop() const
 {
     return m_top;
 }
 
-Cdouble ProjectionData::getBottom() const
+float ProjectionData::getBottom() const
 {
     return m_bottom;
 }
 
-Cdouble ProjectionData::getZnear() const
+float ProjectionData::getZnear() const
 {
     return m_zNear;
 }
 
-Cdouble ProjectionData::getZfar() const
+float ProjectionData::getZfar() const
 {
     return m_zFar;
 }
 
-Cfloat ProjectionData::getFov() const
+float ProjectionData::getFov() const
 {
     return m_fov;
 }

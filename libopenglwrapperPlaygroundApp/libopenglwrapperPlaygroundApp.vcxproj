@@ -100,12 +100,13 @@
       <SDLCheck>true</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
@@ -132,17 +133,18 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level1</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\glew\Build-Windows\$(Platform);$(ProjectDir)..\deps\glfw\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2_image-2.0.3\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\Build-Windows\$(Platform);$(ProjectDir)..\deps\SDL2Wrapper\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\freeglut\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
@@ -175,13 +177,14 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
       <SupportJustMyCode>false</SupportJustMyCode>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -216,13 +219,14 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\imgui;$(ProjectDir)..\libopenglwrapper\include;$(ProjectDir)..\libopenglwrapper\src;$(ProjectDIr)..\deps\freeglut\include;$(ProjectDir)..\deps\glfw\include;$(ProjectDir)..\deps\glm\include;$(ProjectDir)..\deps\glew\include;$(ProjectDir)src;$(ProjectDir)include;$(ProjectDir)..\deps\SDL2Wrapper\deps\SDL2\include;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\src;$(ProjectDir)..\deps\SDL2Wrapper\libsdl2wrapper\inc;$(ProjectDir)..\deps\SDL2Wrapper\deps\CUL\libcul\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DisableSpecificWarnings>4514;5039</DisableSpecificWarnings>
       <SupportJustMyCode>false</SupportJustMyCode>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -250,6 +254,7 @@ xcopy "$(TargetDir)*.pdb" /y "$(LocalDebuggerWorkingDirectory)"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="..\media\Config.txt" />
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -60,8 +60,10 @@ void UtilConcrete::setOrthogonalPerspective( const ProjectionData& vp ) const
 {
     const auto left = vp.getLeft();
     const auto right = vp.getRight();
+
     const auto bottom = vp.getBottom();
     const auto top = vp.getTop();
+
     const auto zNear = vp.getZnear();
     const auto zFar = vp.getZfar();
 
@@ -87,35 +89,41 @@ void UtilConcrete::setOrthogonalPerspective( const ProjectionData& vp ) const
 //    Typically, the matrix mode is GL_PROJECTION, and left bottom - nearVal and right top - nearVal specify the points on the near clipping plane that are mapped to the lower left and upper right corners of the window, respectively, assuming that the eye is located at( 0, 0, 0 ). - farVal specifies the location of the far clipping plane.Both nearVal and farVal can be either positive or negative.
 
 //    Use glPushMatrix and glPopMatrix to save and restore the current matrix stack.
-
+// https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
     glOrtho(
-        left, // left
-        right, // right
-        bottom, // bottom
-        top, // top
-        zNear, // near
-        zFar // far
+        left,    // left
+        right,   // right
+        bottom,  // bottom
+        top,     // top
+        zNear,   // near
+        zFar     // far
     );
 }
 
-void UtilConcrete::setPerspectiveProjection( const ProjectionData& vp ) const
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4189 )
+#endif
+void UtilConcrete::setPerspectiveProjection( const ProjectionData& projectionData ) const
 {
-    static auto fov = vp.getFov();
-    static auto ar = vp.getAspectRatio();
-    static auto zNear = vp.getZnear();
-    static auto zFar = vp.getZfar();
+    auto fov = projectionData.getFov();
+    auto ar = projectionData.getAspectRatio();
+    auto zNear = projectionData.getZnear();
+    auto zFar = projectionData.getZfar();
     gluPerspective( fov, ar, zNear, zFar );
 }
-
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 void UtilConcrete::lookAt( const ProjectionData& vp ) const
 {
     const auto& eye = vp.getEye();
     const auto& center = vp.getCenter();
     const auto& up = vp.getUp();
     gluLookAt(
-        eye.getX(), eye.getY(), eye.getZ(),
-        center.getX(), center.getY(), center.getZ(),
-        up.getX(), up.getY(), up.getZ() );
+        eye.x, eye.y, eye.z,
+        center.x, center.y, center.z,
+        up.x, up.y, up.z );
 }
 
 void UtilConcrete::lookAt( const std::array<Pos3Dd, 3>& vec ) const
@@ -298,6 +306,8 @@ ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window, Cunt major
     Context version can be only set after context creation.
     I.e. SDL: SDL_GL_DeleteContext call.
     */
+    //SDL_GL_DOUBLEBUFFER
+    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, SDL_TRUE );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, static_cast<int>( major ) );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, static_cast<int>( minor ) );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
@@ -390,10 +400,10 @@ void UtilConcrete::draw( const QuadF& quad, const std::array<ColorS, 4>& color )
 
         glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
         glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
-        
+
         glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
         glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
-        
+
         glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() );
         glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
     glEnd();
@@ -415,10 +425,10 @@ void UtilConcrete::draw( const TriangleF& quad, const std::array<ColorS, 4>& col
     glBegin( GL_TRIANGLES );
         glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
         glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
-        
+
         glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
         glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
-        
+
         glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
         glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
     glEnd();
@@ -490,7 +500,7 @@ Creates and initializes a buffer object's data store
             target,// Specifies the target to which the buffer object is bound for glBufferData.
             dataSize,// Specifies the size in bytes of the buffer object's new data store.
             data,// Specifies a pointer to data that will be copied into the data store for initialization, or NULL if no data is to be copied.
-            GL_STATIC_DRAW// usage - Specifies the expected usage pattern of the data store. 
+            GL_STATIC_DRAW// usage - Specifies the expected usage pattern of the data store.
         );
 /*
 target:
@@ -750,7 +760,7 @@ mode - Specifies what kind of primitives to render. Symbolic constants GL_POINTS
 first - Specifies the starting index in the enabled arrays.
 count - Specifies the number of indices to be rendered.
 */
-    glDrawArrays( 
+    glDrawArrays(
         static_cast<GLenum>( primitiveType ),
         static_cast<GLint>( first ),
         static_cast<GLsizei>( count ) );

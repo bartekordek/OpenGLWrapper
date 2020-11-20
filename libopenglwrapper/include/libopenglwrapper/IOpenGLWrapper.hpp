@@ -16,6 +16,8 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
+class IDebugOverlay;
+
 using String = CUL::String;
 
 using ColorS = CUL::Graphics::ColorS;
@@ -26,12 +28,6 @@ using CPos2Di = const Pos2Di;
 using CMString = const String;
 using IImageLoader = CUL::Graphics::IImageLoader;
 using EmptyFunctionCallback = std::function<void()>;
-
-enum class ProjectionType: char
-{
-    ORTO = 0,
-    PERSPECTIVE
-};
 
 class LIBOPENGLWRAPPER_API IOpenGLWrapper
 {
@@ -59,8 +55,6 @@ public:
 
     virtual void beforeFrame( const EmptyFunctionCallback& callback ) = 0;
 
-    virtual void setRenderLoopLatency( Cunt uS ) = 0;
-
     virtual void setProjection( const ProjectionData& rect ) = 0;
     virtual void setEyePos( const Pos3Df& pos ) = 0;
     virtual void setProjectionType( const ProjectionType type ) = 0;
@@ -69,6 +63,13 @@ public:
     virtual void drawQuad( const bool draw = true ) = 0;
 
     virtual void clearModelViewEveryFrame( const bool enable ) = 0;
+
+    virtual const ContextInfo& getContext() const = 0;
+
+    virtual void drawDebugInfo( const bool enable ) = 0;
+
+    virtual IDebugOverlay* getDebugOverlay() = 0;
+
 
     virtual ~IOpenGLWrapper();
 

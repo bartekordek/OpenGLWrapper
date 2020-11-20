@@ -19,6 +19,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+    <Text Include="..\media\Config.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

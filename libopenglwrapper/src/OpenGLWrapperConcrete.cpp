@@ -8,6 +8,8 @@
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "UtilConcrete.hpp"
 
+#include "ImportImgui.hpp"
+
 using namespace LOGLW;
 
 OpenGLWrapperConcrete::OpenGLWrapperConcrete(
@@ -16,7 +18,8 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     m_activeWindow( sdl2w->getMainWindow() ),
     m_cul( sdl2w->getCul() ),
     m_logger( CUL::LOG::LOG_CONTAINER::getLogger() ),
-    m_oglUtility( new UtilConcrete( sdl2w->getCul() ) )
+    m_oglUtility( new UtilConcrete( sdl2w->getCul() ) ),
+    m_frameTimer( CUL::TimerFactory::getChronoTimer() )
 {
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
     CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
@@ -25,7 +28,7 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
 void OpenGLWrapperConcrete::startRenderingLoop()
 {
     m_logger->log( "OpenGLWrapperConcrete::startRenderingLoop()..." );
-    m_renderingLoopThread = std::thread( &OpenGLWrapperConcrete::renderLoop, this );
+    m_renderingLoopThread = std::thread( &OpenGLWrapperConcrete::mainThread, this );
     m_logger->log( "OpenGLWrapperConcrete::startRenderingLoop() Done." );
 }
 
@@ -87,6 +90,11 @@ IUtility* OpenGLWrapperConcrete::getUtility()
     return m_oglUtility;
 }
 
+const ContextInfo& OpenGLWrapperConcrete::getContext() const
+{
+    return m_glContext;
+}
+
 IRect* OpenGLWrapperConcrete::createRect()
 {
     return nullptr;
@@ -99,7 +107,7 @@ Triangle* OpenGLWrapperConcrete::createTriangle()
     m_objectsToRender.insert( result );
     */
     return nullptr;
-}   
+}
 
 IObject* OpenGLWrapperConcrete::createFromFile( const String& path )
 {
@@ -174,16 +182,56 @@ IObject* OpenGLWrapperConcrete::createTriangle( CUL::JSON::INode* jNode )
     return triangle;
 }
 
-void OpenGLWrapperConcrete::renderLoop()
+void OpenGLWrapperConcrete::mainThread()
 {
     CUL::ThreadUtils::setCurrentThreadName( "OpenGL render thread." );
 
     initialize();
+
+    renderLoop();
+
+    if( m_debugDrawInitialized )
+    {
+        ImGui_ImplOpenGL2_Shutdown();
+        ImGui_ImplSDL2_Shutdown();
+        ImGui::DestroyContext();
+    }
+
+    release();
+}
+
+void OpenGLWrapperConcrete::renderLoop()
+{
     while( m_runRenderLoop )
     {
+        m_frameTimer->start();
+
+        if( m_enableDebugDraw && !m_debugDrawInitialized )
+        {
+            initDebugInfo();
+        }
+
         renderFrame();
+
+        CUL::ITimer::sleepMicroSeconds( m_frameSleepUs );
+        m_frameTimer->stop();
+
+        m_currentFrameLengthUs = (int) m_frameTimer->getElapsed().getUs();
+
+        calculateNextFrameLengths();
     }
-    release();
+}
+
+void OpenGLWrapperConcrete::initDebugInfo()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplSDL2_InitForOpenGL( *m_activeWindow, getContext().glContext );
+    ImGui_ImplOpenGL2_Init();
+
+    m_debugDrawInitialized = true;
 }
 
 void OpenGLWrapperConcrete::initialize()
@@ -197,19 +245,12 @@ void OpenGLWrapperConcrete::initialize()
     m_shaderFactory = new OpenGLShaderFactory( this );
     m_shaderFactory->useUtility( m_oglUtility );
 
+    m_sdlW->registerSDLEventObserver( this );
 
     m_oglUtility->setProjectionAndModelToIdentity();
 
     const auto& winSize = m_activeWindow->getSize();
-    ProjectionData projectionData;
-    projectionData.setSize( winSize );
-    projectionData.setEyePos( Pos3Df( 0.0f, 0.0f, 10.0f ) );
-    projectionData.setCenter( Pos3Df(
-        static_cast<float>( winSize.getWidth() ) / 2.f,
-        static_cast<float>( winSize.getHeight() ) / 2.f, 0.0f ) );
-    projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
-
-    setProjection( projectionData );
+    setupProjectionData( winSize );
 
     m_viewport.pos.setXY( 0, 0 );
     m_viewport.size.setSize( winSize.getWidth(), winSize.getHeight() );
@@ -217,17 +258,13 @@ void OpenGLWrapperConcrete::initialize()
     m_backgroundColor.setAlphaF( 0.0 );
     setBackgroundColor( m_backgroundColor );
 
-    auto extensionList = m_oglUtility->listExtensions();
-    for( const auto& extension: extensionList )
-    {
-        m_logger->log( "Extension: " + extension );
-    }
-
-    m_logger->log( "Extension count: " + std::to_string( extensionList.size() ) );
+    showExtensions();
 
     m_imageLoader = IImageLoader::createConcrete( nullptr );
 
     m_oglUtility->setDepthTest( true );
+
+    calculateFrameWait();
 
     if( m_onInitializeCallback )
     {
@@ -238,9 +275,27 @@ void OpenGLWrapperConcrete::initialize()
     m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
 }
 
-CUL::CULInterface* OpenGLWrapperConcrete::getCul()
+void OpenGLWrapperConcrete::showExtensions()
 {
-    return m_sdlW->getCul();
+    auto extensionList = m_oglUtility->listExtensions();
+    for( const auto& extension : extensionList )
+    {
+        m_logger->log( "Extension: " + extension );
+    }
+
+    m_logger->log( "Extension count: " + std::to_string( extensionList.size() ) );
+}
+
+void OpenGLWrapperConcrete::setupProjectionData( const SDL2W::WindowSize& winSize )
+{
+    ProjectionData projectionData;
+    projectionData.setSize( winSize );
+    projectionData.setEyePos( Pos3Df( 0.0f, 0.0f, 10.0f ) );
+    projectionData.setCenter( Pos3Df(
+        static_cast<float>(winSize.getWidth()) / 2.f,
+        static_cast<float>(winSize.getHeight()) / 2.f, 0.0f ) );
+    projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
+    setProjection( projectionData );
 }
 
 void OpenGLWrapperConcrete::renderFrame()
@@ -251,17 +306,16 @@ void OpenGLWrapperConcrete::renderFrame()
         m_oglUtility->clearColorAndDepthBuffer();
     }
 
+    //m_projectionChanged = true;
     if( m_projectionChanged )
     {
         changeProjectionType();
-        
         m_projectionChanged = false;
     }
 
     if( m_clearModelView )
     {
-        
-        m_oglUtility->resetMatrixToIdentity( MatrixTypes::MODELVIEW );
+        //m_oglUtility->resetMatrixToIdentity( MatrixTypes::MODELVIEW );
     }
 
     if( m_onBeforeFrame )
@@ -277,40 +331,205 @@ void OpenGLWrapperConcrete::renderFrame()
     executeTasks();
     renderObjects();
 
+    if( m_enableDebugDraw )
+    {
+        renderInfo();
+    }
+
     refreshBuffers();
-    CUL::ITimer::sleepMicroSeconds( m_renderLoopLatencyUs );
+
 }
+
+void OpenGLWrapperConcrete::calculateNextFrameLengths()
+{
+    if( m_currentFrameLengthUs > m_targetFrameLengthUs + m_usRes )
+    {
+        m_frameSleepUs -= m_usDelta;
+        if( m_frameSleepUs < 0 )
+        {
+            m_frameSleepUs = 0;
+        }
+    }
+    else if( m_currentFrameLengthUs < m_targetFrameLengthUs - m_usRes )
+    {
+        m_frameSleepUs += m_usDelta;
+    }
+    m_usDelta = std::abs( m_currentFrameLengthUs - m_targetFrameLengthUs ) / 16;
+}
+
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 4061)
+#endif
+void OpenGLWrapperConcrete::renderInfo()
+{
+    ImGui::SetNextWindowPos( { 0, 0 } );
+    const auto& winSize = m_activeWindow->getSize();
+    
+    ImGui_ImplOpenGL2_NewFrame();
+    
+    ImGui_ImplSDL2_NewFrame( *m_activeWindow );
+
+    ImGui::NewFrame();
+
+    String name = "INFO LOG";
+    ImGui::Begin( name.cStr() );
+    ImGui::SetWindowSize( { (float) winSize.getWidth() * 0.3f, (float) winSize.getHeight() * 1.f } );
+
+    ImGui::Text( "Projection: %s", ( m_projectionData.m_projectionType == ProjectionType::PERSPECTIVE)? "Perspective" : "Orthogonal" );
+    ImGui::Text( "Aspect Ratio: %f", m_projectionData.getAspectRatio() );
+    ImGui::Text( "FOV-Y: %f", m_projectionData.getFov() );
+    ImGui::Text( "Z-Near: %f", m_projectionData.getZnear() );
+    ImGui::Text( "Z-Far: %f", m_projectionData.getZfar() );
+
+    String text = "Center:" + m_projectionData.getCenter().serialize();
+    ImGui::Text( text.cStr() );
+
+    text = "Eye:" + m_projectionData.getEye().serialize();
+    ImGui::Text( text.cStr() );
+
+    text = "Up:" + m_projectionData.getUp().serialize();
+    ImGui::Text( text.cStr() );
+
+    auto res = ImGui::SliderFloat( "Z Near", &m_projectionData.m_zNear, -64.f, 64.f );
+    if( res )
+    {
+        m_projectionData.setZnear( m_projectionData.getZnear() );
+        m_projectionChanged = true;
+    }
+
+    res = ImGui::SliderFloat( "Z Far", &m_projectionData.m_zFar, -64.f, 64.f );
+    if( res )
+    {
+        m_projectionChanged = true;
+    }
+
+    res = ImGui::SliderFloat( "Eye-Z", &m_projectionData.m_eye.z, 0.0f, 255.0f );
+    if( res )
+    {
+        m_projectionData.setZnear( m_projectionData.m_eye.z );
+        m_projectionChanged = true;
+    }
+
+    res = ImGui::SliderFloat( "Center-Z", &m_projectionData.m_center.z, -64.0f, 255.0f );
+    if( res )
+    {
+        m_projectionChanged = true;
+    }
+
+    text = "Left: " + String( m_projectionData.getLeft() );
+    ImGui::Text( text.cStr() );
+
+    text = "Right: " + String( m_projectionData.getRight() );
+    ImGui::Text( text.cStr() );
+
+    text = "Top: " + String( m_projectionData.getTop() );
+    ImGui::Text( text.cStr() );
+
+    text = "Bottom: " + String( m_projectionData.getBottom() );
+    ImGui::Text( text.cStr() );
+
+    for( const auto& pair: m_debugValues )
+    {
+        if( pair.second.type == DebugType::TEXT )
+        {
+            const size_t id = pair.second.value.index();
+            switch( id )
+            {
+                case 0:
+                    ImGui::Text( pair.second.text.cStr(), *(const char*)std::get<String*>( pair.second.value ) );
+                    break;
+                case 1:
+                    ImGui::Text( pair.second.text.cStr(), *std::get<float*>( pair.second.value ) );
+                    break;
+                case 2:
+                    ImGui::Text( pair.second.text.cStr(), *std::get<int*>( pair.second.value ) );
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if( pair.second.type == DebugType::SLIDER )
+        {
+            const size_t id = pair.second.value.index();
+            bool changed = false;
+            switch( id )
+            {
+                case 0:
+                    //ImGui::Text( pair.second.text.cStr(),  );
+                    //const auto changed = ImGui::SliderFloat( pair.second.text.cStr(), *std::get<String*>( pair.second.value ) 0.0f, 192.0f );
+                    break;
+                case 1:
+                    changed = ImGui::SliderFloat( pair.second.text.cStr(), std::get<float*>( pair.second.value ), pair.second.min, pair.second.max );
+                    break;
+                case 2:
+                    changed = ImGui::SliderInt( pair.second.text.cStr(), std::get<int*>( pair.second.value ), (int)pair.second.min, (int)pair.second.max );
+                    break;
+                default:
+                    break;
+            }
+
+            if( changed && pair.second.onChange )
+            {
+                pair.second.onChange();
+            }
+        }
+    }
+
+    ImGui::Text( "FrameTime: %4.2f ms", 1000.f / ImGui::GetIO().Framerate );
+    ImGui::Text( "FPS: %4.2f", m_activeWindow->getFpsCounter()->getCurrentFps() );
+    const float var = m_frameSleepUs;
+    ImGui::Text( "m_frameSleepUs: %d", m_frameSleepUs.getValCopy() );
+    ImGui::Text( "m_usDelta: %d", m_usDelta );
+
+    ImGui::End();
+
+    ImGui::Render();
+
+    ImGui_ImplOpenGL2_RenderDrawData( ImGui::GetDrawData() );
+}
+#if _MSC_VER
+#pragma warning( pop )
+#endif
 
 void OpenGLWrapperConcrete::setProjectionType( const ProjectionType type )
 {
-    m_projectionType = type;
+    m_projectionData.m_projectionType = type;
+    prepareProjection();
     m_projectionChanged = true;
+}
+
+void OpenGLWrapperConcrete::prepareProjection()
+{
+    //if( ProjectionType::ORTO == m_projectionData.m_projectionType )
+    //{
+    //    auto eyeCopy = m_projectionData.getEye();
+    //    eyeCopy.z = std::max( eyeCopy.z, m_projectionData.getZnear() );
+    //    m_projectionData.setZnear( eyeCopy.z );
+    //    m_projectionData.setEyePos( eyeCopy );
+    //}
+    //else if( ProjectionType::PERSPECTIVE == m_projectionData.m_projectionType )
+    //{
+    //    m_projectionData.setZnear( std::min( m_projectionData.getEye().z, m_projectionData.getZnear() ) );
+    //}
 }
 
 void OpenGLWrapperConcrete::changeProjectionType()
 {
     m_oglUtility->resetMatrixToIdentity( MatrixTypes::PROJECTION );
-    if( ProjectionType::ORTO == m_projectionType )
+    if( ProjectionType::ORTO == m_projectionData.m_projectionType )
     {
-        /*
-https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml
-          Parameters
-            left, right
-            Specify the coordinates for the left and right vertical clipping planes.
 
-            bottom, top
-            Specify the coordinates for the bottom and top horizontal clipping planes.
-
-            nearVal, farVal
-            Specify the distances to the nearer and farther depth clipping planes.These values are negative if the plane is to be behind the viewer.*/
         m_oglUtility->setOrthogonalPerspective( m_projectionData );
     }
-    else if( ProjectionType::PERSPECTIVE == m_projectionType )
+    else if( ProjectionType::PERSPECTIVE == m_projectionData.m_projectionType )
     {
         m_oglUtility->setPerspectiveProjection( m_projectionData );
-        m_oglUtility->lookAt( m_projectionData );
+
     }
-    m_currentProjection = m_projectionType;
+    m_oglUtility->resetMatrixToIdentity( MatrixTypes::MODELVIEW );
+    m_oglUtility->lookAt( m_projectionData );
+    m_currentProjection = m_projectionData.m_projectionType;
     setProjection( m_projectionData );
 }
 
@@ -348,11 +567,6 @@ void OpenGLWrapperConcrete::refreshBuffers()
     }
 }
 
-void OpenGLWrapperConcrete::setRenderLoopLatency( Cunt uS )
-{
-    m_renderLoopLatencyUs = uS;
-}
-
 void OpenGLWrapperConcrete::setProjection( const ProjectionData& rect )
 {
     m_oglUtility->setProjection( rect );
@@ -373,16 +587,12 @@ void OpenGLWrapperConcrete::setBackgroundColor( const ColorS& color )
     m_backgroundColor = color;
 }
 
-OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
-{
-    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete()..." );
-
-    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete() Done." );
-}
-
 void OpenGLWrapperConcrete::release()
 {
     m_logger->log( "OpenGLWrapperConcrete::release()..." );
+
+    m_sdlW->unRegisterSDLEventObserver( this );
+
     m_shaderFactory.release();
 
     m_oglUtility->destroyContext( m_glContext );
@@ -400,4 +610,74 @@ void OpenGLWrapperConcrete::drawQuad( const bool draw )
 void OpenGLWrapperConcrete::clearModelViewEveryFrame( const bool enable )
 {
     m_clearModelView = enable;
+}
+
+void OpenGLWrapperConcrete::calculateFrameWait()
+{
+    m_targetFrameLengthUs = 1000000.0f / m_fpsLimit;
+}
+
+void OpenGLWrapperConcrete::drawDebugInfo( const bool enable )
+{
+    m_enableDebugDraw = enable;
+}
+
+IDebugOverlay* OpenGLWrapperConcrete::getDebugOverlay()
+{
+    return this;
+}
+
+void OpenGLWrapperConcrete::handleEvent( const SDL_Event& event )
+{
+    if( m_debugDrawInitialized )
+    {
+        ImGui_ImplSDL2_ProcessEvent( &event );
+    }
+}
+
+unsigned OpenGLWrapperConcrete::addSliderValue( const CUL::String& text, float* val, float min, float max, const std::function<void( void )> onUpdate )
+{
+    const unsigned size = (const unsigned)m_debugValues.size();
+    const auto newId = size + 1u;
+
+    DebugValueRow row;
+    row.type = DebugType::SLIDER;
+    row.id = newId;
+    row.min = min;
+    row.max = max;
+    row.value = val;
+    row.text = text;
+    row.onChange = onUpdate;
+
+    m_debugValues[ newId ] = row;
+
+    return newId;
+}
+
+unsigned OpenGLWrapperConcrete::addText( const CUL::String& text, float* val )
+{
+    const unsigned size = (const unsigned) m_debugValues.size();
+    const auto newId = size + 1u;
+
+    DebugValueRow row;
+    row.type = DebugType::TEXT;
+    row.id = newId;
+    row.value = val;
+    row.text = text;
+
+    m_debugValues[ newId ] = row;
+
+    return newId;
+}
+
+CUL::CULInterface* OpenGLWrapperConcrete::getCul()
+{
+    return m_sdlW->getCul();
+}
+
+OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
+{
+    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete()..." );
+
+    m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete() Done." );
 }
