@@ -90,6 +90,16 @@ IUtility* OpenGLWrapperConcrete::getUtility()
     return m_oglUtility;
 }
 
+const Viewport& OpenGLWrapperConcrete::getViewport() const
+{
+    return m_viewport;
+}
+
+const ProjectionData* const OpenGLWrapperConcrete::getProjectionData() const
+{
+    return &m_projectionData;
+}
+
 const ContextInfo& OpenGLWrapperConcrete::getContext() const
 {
     return m_glContext;
@@ -255,6 +265,9 @@ void OpenGLWrapperConcrete::initialize()
     m_viewport.pos.setXY( 0, 0 );
     m_viewport.size.setSize( winSize.getWidth(), winSize.getHeight() );
 
+    m_logger->log( "Current viewport:" );
+    m_logger->log( "\n" + m_viewport.serialize( 0 ) );
+
     m_backgroundColor.setAlphaF( 0.0 );
     setBackgroundColor( m_backgroundColor );
 
@@ -262,9 +275,28 @@ void OpenGLWrapperConcrete::initialize()
 
     m_imageLoader = IImageLoader::createConcrete( nullptr );
 
-    m_oglUtility->setDepthTest( true );
-
     calculateFrameWait();
+
+    m_projectionData.m_depthTest.setOnChange( [this](){
+        m_projectionChanged = true;
+    } );
+
+    m_isPerspective.setOnChange( [this] ()
+    {
+        if( m_isPerspective )
+        {
+            m_projectionData.m_projectionType = ProjectionType::PERSPECTIVE;
+        }
+        else
+        {
+            m_projectionData.m_projectionType = ProjectionType::ORTO;
+        }
+
+        m_projectionChanged = true;
+    } );
+
+    //m_oglUtility->setBackfaceCUll(  );
+    //m_oglUtility->setDepthTest( true );
 
     if( m_onInitializeCallback )
     {
@@ -306,6 +338,8 @@ void OpenGLWrapperConcrete::renderFrame()
         m_oglUtility->clearColorAndDepthBuffer();
     }
 
+    
+
     //m_projectionChanged = true;
     if( m_projectionChanged )
     {
@@ -313,19 +347,27 @@ void OpenGLWrapperConcrete::renderFrame()
         m_projectionChanged = false;
     }
 
+
+
     if( m_clearModelView )
     {
         //m_oglUtility->resetMatrixToIdentity( MatrixTypes::MODELVIEW );
     }
+
 
     if( m_onBeforeFrame )
     {
         m_onBeforeFrame();
     }
 
+
+    //m_oglUtility->setDepthTest( true );
+   // m_oglUtility->setBackfaceCUll( true );
+
     if( m_viewportChanged )
     {
         m_oglUtility->setViewport( m_viewport );
+        m_viewportChanged = false;
     }
 
     executeTasks();
@@ -376,29 +418,33 @@ void OpenGLWrapperConcrete::renderInfo()
     ImGui::Begin( name.cStr() );
     ImGui::SetWindowSize( { (float) winSize.getWidth() * 0.3f, (float) winSize.getHeight() * 1.f } );
 
+    auto res = false;
+    ImGui::Checkbox( "Projection is Perspective", &m_isPerspective.getRef() );
+    m_isPerspective.runIfChanged();
+
+    ImGui::Checkbox( "Depth test", &m_projectionData.m_depthTest.getRef() );
+    m_projectionData.m_depthTest.runIfChanged();
+
     ImGui::Text( "Projection: %s", ( m_projectionData.m_projectionType == ProjectionType::PERSPECTIVE)? "Perspective" : "Orthogonal" );
     ImGui::Text( "Aspect Ratio: %f", m_projectionData.getAspectRatio() );
     ImGui::Text( "FOV-Y: %f", m_projectionData.getFov() );
-    ImGui::Text( "Z-Near: %f", m_projectionData.getZnear() );
-    ImGui::Text( "Z-Far: %f", m_projectionData.getZfar() );
 
-    String text = "Center:" + m_projectionData.getCenter().serialize();
+    String text = "Center:" + m_projectionData.getCenter().serialize( 0 );
     ImGui::Text( text.cStr() );
 
-    text = "Eye:" + m_projectionData.getEye().serialize();
+    text = "Eye:" + m_projectionData.getEye().serialize( 0 );
     ImGui::Text( text.cStr() );
 
-    text = "Up:" + m_projectionData.getUp().serialize();
+    text = "Up:" + m_projectionData.getUp().serialize( 0 );
     ImGui::Text( text.cStr() );
 
-    auto res = ImGui::SliderFloat( "Z Near", &m_projectionData.m_zNear, -64.f, 64.f );
+    res = ImGui::SliderFloat( "Z Far", &m_projectionData.m_zFar, -64.f, 64.f );
     if( res )
     {
-        m_projectionData.setZnear( m_projectionData.getZnear() );
         m_projectionChanged = true;
     }
 
-    res = ImGui::SliderFloat( "Z Far", &m_projectionData.m_zFar, -64.f, 64.f );
+    res = ImGui::SliderFloat( "Z Near", &m_projectionData.m_zNear, -63.f, 255.f );
     if( res )
     {
         m_projectionChanged = true;
@@ -407,7 +453,7 @@ void OpenGLWrapperConcrete::renderInfo()
     res = ImGui::SliderFloat( "Eye-Z", &m_projectionData.m_eye.z, 0.0f, 255.0f );
     if( res )
     {
-        m_projectionData.setZnear( m_projectionData.m_eye.z );
+        //m_projectionData.setZnear( m_projectionData.m_eye.z );
         m_projectionChanged = true;
     }
 
@@ -531,6 +577,7 @@ void OpenGLWrapperConcrete::changeProjectionType()
     m_oglUtility->lookAt( m_projectionData );
     m_currentProjection = m_projectionData.m_projectionType;
     setProjection( m_projectionData );
+    m_oglUtility->setDepthTest( m_projectionData.m_depthTest );
 }
 
 void OpenGLWrapperConcrete::setEyePos( const Pos3Df& pos )
@@ -575,10 +622,20 @@ void OpenGLWrapperConcrete::setProjection( const ProjectionData& rect )
     m_projectionChanged = true;
 }
 
-void OpenGLWrapperConcrete::setViewport( const Viewport& viewport )
+void OpenGLWrapperConcrete::setViewport( const Viewport& viewport, const bool instant )
 {
-    m_viewport = viewport;
-    m_viewportChanged = true;
+    if( m_viewport != viewport )
+    {
+        m_viewport = viewport;
+        if( false == instant )
+        {
+            m_viewportChanged = true;
+        }
+        else
+        {
+            m_oglUtility->setViewport( m_viewport );
+        }
+    }
 }
 
 void OpenGLWrapperConcrete::setBackgroundColor( const ColorS& color )

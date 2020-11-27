@@ -75,7 +75,7 @@ private:
 
     void refreshBuffers();
     void setProjection( const ProjectionData& rect ) override;
-    void setViewport( const Viewport& viewport ) override;
+    void setViewport( const Viewport& viewport, const bool instant = false ) override;
 
     IRect* createRect() override;
     Triangle* createTriangle() override;
@@ -98,6 +98,8 @@ private:
     IImageLoader* getImageLoader() override;
     CUL::LOG::ILogger* getLoger() override;
     IUtility* getUtility() override;
+    const Viewport& getViewport() const override;
+    const ProjectionData* const getProjectionData() const override;
 
     const ContextInfo& getContext() const override;
 
@@ -148,6 +150,7 @@ private:
 
     std::thread m_renderingLoopThread;
 
+    CUL::GUTILS::ValueChangeHook<bool> m_isPerspective = true;
     SafeBool m_runRenderLoop = true;
     SafeBool m_clearEveryFrame = true;
     SafeBool m_clearModelView = true;

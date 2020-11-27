@@ -1,40 +1,43 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.852
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libopenglwrapper", "libopenglwrapper\libopenglwrapper.vcxproj", "{8A83731D-8F5C-4AE8-8CCF-74B7B18609DB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{946707F5-BE49-4A7F-9CD9-0BFF983CE298} = {946707F5-BE49-4A7F-9CD9-0BFF983CE298}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsdl2wrapper-v141", "deps\SDL2Wrapper\libsdl2wrapper\libsdl2wrapper.vcxproj", "{946707F5-BE49-4A7F-9CD9-0BFF983CE298}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsdl2wrapper", "deps\SDL2Wrapper\libsdl2wrapper\libsdl2wrapper.vcxproj", "{946707F5-BE49-4A7F-9CD9-0BFF983CE298}"
 	ProjectSection(ProjectDependencies) = postProject
-		{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA} = {243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}
+		{6B7FF520-98CF-4132-813C-0F205C22152F} = {6B7FF520-98CF-4132-813C-0F205C22152F}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcul-v142", "deps\SDL2Wrapper\deps\CUL\libcul\libcul.vcxproj", "{A44B1777-B335-4580-AE9E-89CB3779F81E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libopenglwrapperTestApp", "libopenglwrapperTestApp\libopenglwrapperTestApp.vcxproj", "{75FF01A3-E575-4661-B75B-3AA935B46F2F}"
 	ProjectSection(ProjectDependencies) = postProject
-		{8A83731D-8F5C-4AE8-8CCF-74B7B18609DB} = {8A83731D-8F5C-4AE8-8CCF-74B7B18609DB}
+		{D140819A-A939-4EEE-96A4-44E60831F93E} = {D140819A-A939-4EEE-96A4-44E60831F93E}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsdl2wrapperTestApp-v141", "deps\SDL2Wrapper\libsdl2wrapperTestApp\libsdl2wrapperTestApp.vcxproj", "{D43D15FF-25E5-47DF-A66C-7F16B4D54971}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsdl2wrapperTestApp", "deps\SDL2Wrapper\libsdl2wrapperTestApp\libsdl2wrapperTestApp.vcxproj", "{D43D15FF-25E5-47DF-A66C-7F16B4D54971}"
 	ProjectSection(ProjectDependencies) = postProject
 		{946707F5-BE49-4A7F-9CD9-0BFF983CE298} = {946707F5-BE49-4A7F-9CD9-0BFF983CE298}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcul-v141", "deps\SDL2Wrapper\deps\CUL\libcul\libcul-v141.vcxproj", "{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcul", "deps\SDL2Wrapper\deps\CUL\libcul\libcul-v141.vcxproj", "{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153} = {CF814454-DA46-3AA5-B88A-F3FCC5528153}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libopenglwrapperPlaygroundApp", "libopenglwrapperPlaygroundApp\libopenglwrapperPlaygroundApp.vcxproj", "{D140819A-A939-4EEE-96A4-44E60831F93E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8A83731D-8F5C-4AE8-8CCF-74B7B18609DB} = {8A83731D-8F5C-4AE8-8CCF-74B7B18609DB}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libculTests-v141", "deps\SDL2Wrapper\deps\CUL\libculTests\libculTests-v141.vcxproj", "{6B7FF520-98CF-4132-813C-0F205C22152F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libculTests", "deps\SDL2Wrapper\deps\CUL\libculTests\libculTests-v141.vcxproj", "{6B7FF520-98CF-4132-813C-0F205C22152F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA} = {243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00-AdditionalDeps", "deps\SDL2Wrapper\deps\CUL\deps\00-AdditionalDeps.vcxproj", "{CF814454-DA46-3AA5-B88A-F3FCC5528153}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,14 +63,6 @@ Global
 		{946707F5-BE49-4A7F-9CD9-0BFF983CE298}.Release|Win32.Build.0 = Release|Win32
 		{946707F5-BE49-4A7F-9CD9-0BFF983CE298}.Release|x64.ActiveCfg = Release|x64
 		{946707F5-BE49-4A7F-9CD9-0BFF983CE298}.Release|x64.Build.0 = Release|x64
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Debug|Win32.Build.0 = Debug|Win32
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Debug|x64.ActiveCfg = Debug|x64
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Debug|x64.Build.0 = Debug|x64
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Release|Win32.ActiveCfg = Release|Win32
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Release|Win32.Build.0 = Release|Win32
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Release|x64.ActiveCfg = Release|x64
-		{A44B1777-B335-4580-AE9E-89CB3779F81E}.Release|x64.Build.0 = Release|x64
 		{75FF01A3-E575-4661-B75B-3AA935B46F2F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{75FF01A3-E575-4661-B75B-3AA935B46F2F}.Debug|Win32.Build.0 = Debug|Win32
 		{75FF01A3-E575-4661-B75B-3AA935B46F2F}.Debug|x64.ActiveCfg = Debug|x64
@@ -108,6 +103,14 @@ Global
 		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|Win32.Build.0 = Release|Win32
 		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|x64.ActiveCfg = Release|x64
 		{6B7FF520-98CF-4132-813C-0F205C22152F}.Release|x64.Build.0 = Release|x64
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Debug|Win32.Build.0 = Debug|Win32
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Debug|x64.ActiveCfg = Debug|x64
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Debug|x64.Build.0 = Debug|x64
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Release|Win32.ActiveCfg = Release|Win32
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Release|Win32.Build.0 = Release|Win32
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Release|x64.ActiveCfg = Release|x64
+		{CF814454-DA46-3AA5-B88A-F3FCC5528153}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

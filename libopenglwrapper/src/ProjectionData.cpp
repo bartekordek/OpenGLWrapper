@@ -110,28 +110,33 @@ void ProjectionData::setCenter( const Pos3Df& pos )
 void ProjectionData::setEyePos( const Pos3Df& pos )
 {
     m_eye = pos;
-    m_zNear = pos.z;
+    //m_zNear = pos.z;
+    onChange();
 }
 
 void ProjectionData::setUp( const Pos3Df& pos )
 {
     m_up = pos;
+    onChange();
 }
 
 void ProjectionData::setZnear( const float val )
 {
     m_zNear = val;
-    m_eye.z = val;
+    //m_eye.z = val;
+    onChange();
 }
 
 void ProjectionData::setZfar( const float val )
 {
     m_zFar = val;
+    onChange();
 }
 
 void ProjectionData::setFov( const float val )
 {
     m_fov = val;
+    onChange();
 }
 
 const Size2Di& ProjectionData::getSize() const

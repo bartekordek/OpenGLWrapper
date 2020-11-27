@@ -15,9 +15,7 @@ public:
 
     ~MatrixStack()
     {
-        CUL::Assert::simple(
-            0 == m_currentMatrix,
-            "ERROR PUSH COUNT IS NOT EQUAL TO POP COUNT." );
+
     }
 
     void push()

@@ -1,6 +1,10 @@
 #pragma once
 
 #include "libopenglwrapper//Import.hpp"
+
+#include "CUL/GenericUtils/IOnChange.hpp"
+#include "CUL/GenericUtils/ValueChangeHook.hpp"
+
 #include "CUL/Graphics/Pos3D.hpp"
 #include "CUL/Graphics/Pos2D.hpp"
 #include "CUL/Graphics/Size2D.hpp"
@@ -21,7 +25,8 @@ using Size2Du = CUL::Graphics::Size2Du;
 using Size2Di = CUL::Graphics::Size2Di;
 using Cunt = const unsigned int;
 
-class LIBOPENGLWRAPPER_API ProjectionData final
+class LIBOPENGLWRAPPER_API ProjectionData final:
+    public CUL::GUTILS::IOnChange
 {
 public:
     ProjectionData();
@@ -55,13 +60,14 @@ public:
 
     ~ProjectionData();
 
-    Pos3Df m_center = { 0.0, 0.0, 0.0 };
+    CUL::GUTILS::ValueChangeHook<bool> m_depthTest = false;
+    Pos3Df m_center = { 0.0, 0.0, 32.0 };
     Pos3Df m_eye;
     Pos3Df m_up = { 0.0, 1.0, 0.0 };
     Size2Di m_size;
     float m_fov = 90.0f;
-    float m_zNear = 16.0f;
-    float m_zFar = -1.0f;
+    float m_zNear = 32.0f;
+    float m_zFar = 0.0f;
     float m_left = 0.0f;
     float m_right = 0.0f;
     float m_top = 0.0f;

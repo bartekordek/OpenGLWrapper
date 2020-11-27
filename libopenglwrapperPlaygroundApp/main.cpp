@@ -39,7 +39,6 @@ ColorS yellow( 1.0f, 1.0f, 0.0f, 1.0f );
 ColorS blue( ColorE::BLUE );
 ColorS white( ColorE::WHITE );
 GLfloat angle = 0.0f;
-DumbPtr<LOGLW::Triangle> triangle;
 LOGLW::IObjectFactory* of = nullptr;
 CUL::FS::Path vertexShaderFile;
 CUL::FS::Path fragmentShaderFile;
@@ -52,6 +51,7 @@ Pos3Df g_eyePos;
 LOGLW::IObject* g_triangle0 = nullptr;
 CUL::TimeConcrete configModificationTime;
 SDL2W::IWindow* g_mainWindow = nullptr;
+SDL2W::MouseData g_mouseData;
 
 Triangle triangleRed;
 Triangle triangleYellow;
@@ -71,18 +71,21 @@ void onWindowEvent( const WinEventType type );
 void closeApp();
 void reloadConfig();
 
-void onMouseEvent( const SDL2W::IMouseData& md );
+void onMouseEvent( const SDL2W::MouseData& md );
 
 int main( int argc, char** argv )
 {
-    auto& argsInstance = CUL::GUTILS::ConsoleUtilities::getInstance();
-    argsInstance.setArgs( argc, argv );
+    auto& cu = CUL::GUTILS::ConsoleUtilities::getInstance();
+    cu.setArgs( argc, argv );
+
+    const auto width = std::stoul( cu.getFlagValue( "-w" ).string() );
+    const auto height = std::stoul( cu.getFlagValue( "-h" ).string() );
 
     windowData.name = "Test";
     windowData.pos = SDL2W::Vector3Di( 256, 256, 0 );
-    auto posS = windowData.pos.serialize();
+    auto posS = windowData.pos.serialize(0);
 
-    windowData.size.setSize( 800, 600 );
+    windowData.size.setSize( width, height );
     windowData.rendererName = "opengl";
 
     g_sdlw = SDL2W::createSDL2Wrapper();
@@ -140,10 +143,35 @@ void afterInit()
     g_oglw->getDebugOverlay()->addSliderValue( "Red Z", &redTriangleZ, -64.0f, 128.f, [] ()
     {
     } );
+
+    g_mouseData = g_sdlw->getMouseData();
 }
 
-void onMouseEvent( const SDL2W::IMouseData& )
+void onMouseEvent( const SDL2W::MouseData& md )
 {
+    if( md.isButtonDown( 3 ) )
+    {
+        const auto& md = g_sdlw->getMouseData();
+        const auto winW = windowData.size.getWidth();
+        const auto winH = windowData.size.getHeight();
+        const auto centerX = md.getX() - winW / 2;
+        const auto centerY = md.getY() - winH / 2;
+
+        g_logger->log( "Mouse:" );
+        g_logger->log( md.serialize( 0 ) );
+
+        if( std::abs( centerX ) < winW / 2 && std::abs( centerY ) < winH / 2 )
+        {
+
+
+            auto eye = g_oglw->getProjectionData()->getEye();
+            static auto delta = 0.5f;
+            eye.x = -centerX * delta;
+            eye.y = centerY * delta;
+            g_oglw->setEyePos( eye );
+            g_mouseData = md;
+        }
+    }
     //auto newX = md.getX();
     //if( newX != (int) g_eyePos.z )
     //{
@@ -204,7 +232,6 @@ void reloadConfig()
 
     g_projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
     g_projectionData.setZfar( g_configFile->getValue( "Z_FAR" ).toFloat() );
-    g_projectionData.setZnear( g_configFile->getValue( "Z_NEAR" ).toFloat() );
     g_oglw->setProjection( g_projectionData );
 
     float size = g_configFile->getValue( "RED_SIZE" ).toFloat();

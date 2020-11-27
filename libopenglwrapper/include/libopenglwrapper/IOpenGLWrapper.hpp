@@ -3,7 +3,6 @@
 #include "libopenglwrapper/IObjectFactory.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IProgramFactory.hpp"
-#include "libopenglwrapper/ProjectionData.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/Viewport.hpp"
 
@@ -17,6 +16,7 @@
 NAMESPACE_BEGIN( LOGLW )
 
 class IDebugOverlay;
+class ProjectionData;
 
 using String = CUL::String;
 
@@ -47,6 +47,8 @@ public:
     virtual IProgramFactory* getProgramFactory() = 0;
     virtual IImageLoader* getImageLoader() = 0;
     virtual IUtility* getUtility() = 0;
+    virtual const Viewport& getViewport() const = 0;
+    virtual const ProjectionData* const getProjectionData() const = 0;
 
     virtual void addObjectToRender( IRenderable* renderable ) = 0;
 
@@ -58,7 +60,7 @@ public:
     virtual void setProjection( const ProjectionData& rect ) = 0;
     virtual void setEyePos( const Pos3Df& pos ) = 0;
     virtual void setProjectionType( const ProjectionType type ) = 0;
-    virtual void setViewport( const Viewport& viewport ) = 0;
+    virtual void setViewport( const Viewport& viewport, const bool instant = false ) = 0;
 
     virtual void drawQuad( const bool draw = true ) = 0;
 

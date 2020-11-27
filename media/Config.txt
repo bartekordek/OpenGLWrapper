@@ -1,7 +1,6 @@
 BLUE_Z 0
 RED_Z 0
 
-Z_NEAR 1.0
 Z_FAR 0.0
 
 EYE_Z 220.0

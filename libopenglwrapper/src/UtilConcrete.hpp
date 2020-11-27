@@ -12,6 +12,11 @@ class UtilConcrete final:
 public:
     UtilConcrete( CUL::CULInterface* culInterface );
 
+
+    ~UtilConcrete();
+
+protected:
+private:
     void setProjection( const ProjectionData& rect ) const override;
     void setViewport( const Viewport& viewport ) const override;
     void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble m_zNear, CDouble m_zFar ) const override;
@@ -41,12 +46,12 @@ public:
     void setAttribValue( Cint attributeLocation, Cunt value ) const override;
 
     void setProjectionAndModelToIdentity() const override;
-    void clearColorAndDepthBuffer() const override; 
+    void clearColorAndDepthBuffer() const override;
     void createQuad( Cfloat scale = 1.0f ) const override;
     void clearColorTo( const ColorS color ) const override;
     void clearBuffer( const ClearMasks mask ) const override;
 
-    Cunt generateVertexArray (const int size = 1 ) const override;
+    Cunt generateVertexArray( const int size = 1 ) const override;
 
     void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const override;
     void bufferData( const std::vector<float>& data, const BufferTypes type ) const override;
@@ -58,7 +63,7 @@ public:
     void disableVertexAttribiute( Cunt programId, const String& attribName ) const override;
     Cunt getAttribLocation( Cunt programId, const String& attribName ) const override;
     void unbindBuffer( const BufferTypes bufferType ) const override;
-    void bindBuffer(IVAO* vao) const override;
+    void bindBuffer( IVAO* vao ) const override;
     void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const override;
     Cunt generateBuffer( const BufferTypes type, const int size = 1 ) const override;
 
@@ -86,24 +91,27 @@ public:
         const float y = 0.0f,
         const float z = 0.0f ) override;
 
+    virtual void scale( const CUL::MATH::Vector3Df& scale ) const override;
+    virtual void scale( const float scale ) const override;
+
     void draw( const QuadF& quad, const ColorS& color ) override;
     void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) override;
 
     void draw( const TriangleF& triangle, const ColorS& color ) override;
     void draw( const TriangleF& quad, const std::array<ColorS, 4>& color ) override;
-
-    ~UtilConcrete();
-
-protected:
-private:
     void assertOnProgramError( Cunt programId, Cunt val ) const;
     void log( const String& text,
               const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;
     void assert( const bool value, const CUL::String& message ) const;
     void setDepthTest( const bool enabled ) const override;
+    void setBackfaceCUll( const bool enabled ) const override;
+
+    void matrixStackPush() override;
+    void matrixStackPop() override;
 
     CUL::CULInterface* m_culInterface = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
+    unsigned int m_currentMatrix = 0;
 
     UtilConcrete( const UtilConcrete& arg ) = delete;
     UtilConcrete( UtilConcrete&& arg ) = delete;

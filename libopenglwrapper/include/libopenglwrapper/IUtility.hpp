@@ -168,7 +168,13 @@ public:
 
     virtual void translate( const float x, const float y, const float z ) = 0;
     virtual void rotate( const float angle, const float x = 0.0f, const float y = 0.0f, const float z = 0.0f ) = 0;
+    virtual void scale( const CUL::MATH::Vector3Df& scale ) const = 0;
+    virtual void scale( const float scale ) const = 0;
     virtual void setDepthTest( const bool enabled ) const = 0;
+    virtual void setBackfaceCUll( const bool enabled ) const = 0;
+
+    virtual void matrixStackPush() = 0;
+    virtual void matrixStackPop() = 0;
 
 
     virtual ~IUtility();

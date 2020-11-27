@@ -26,8 +26,7 @@ LOGLW::IObjectFactory* of = nullptr;
 
 CUL::FS::Path vertexShaderFile;
 CUL::FS::Path fragmentShaderFile;
-
-LOGLW::Viewport viewport;
+LOGLW::ProjectionData projectionData;
 Pos3Df eyePos;
 
 void afterInit();
@@ -86,12 +85,10 @@ void afterInit()
     auto window = g_sdlw->getMainWindow();
     window->setBackgroundColor( SDL2W::ColorS( 0.0f, 0.0f, 0.0f, 1.0f ) );
     const auto& winSize = window->getSize();
-    viewport.setSize( winSize );
-    eyePos.z = 170.0f;
-    viewport.setEyePos( eyePos );
-    viewport.setCenter( Pos3Df( 0.0f, 0.0f, 0.0f ) );
-    viewport.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
-    g_oglw->setViewPort( viewport );
+    projectionData.setEyePos( { 0.f, 0.f, 170.f } );
+    projectionData.setCenter( { 0.f, 0.f, 0.f } );
+    projectionData.setUp( { 0.f, 1.f, 0.f } );
+    g_oglw->setProjection( projectionData );
 
     of = g_oglw->getObjectFactory();
 

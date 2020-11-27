@@ -308,6 +308,10 @@ ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window, Cunt major
     */
     //SDL_GL_DOUBLEBUFFER
     SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, SDL_TRUE );
+
+    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
+    SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, 8 );
+
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, static_cast<int>( major ) );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, static_cast<int>( minor ) );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
@@ -375,6 +379,16 @@ void UtilConcrete::translate( const float x, const float y, const float z )
 void UtilConcrete::rotate( const float angle, const float x, const float y, const float z )
 {
     glRotatef( angle, x, y, z );
+}
+
+void UtilConcrete::scale( const CUL::MATH::Vector3Df& scale ) const
+{
+    glScalef( scale.getX(), scale.getY(), scale.getZ() );
+}
+
+void UtilConcrete::scale( const float scale ) const
+{
+    glScalef( scale, scale, scale );
 }
 
 void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
@@ -857,6 +871,35 @@ void UtilConcrete::setDepthTest( const bool enabled ) const
     }
 }
 
+void UtilConcrete::setBackfaceCUll( const bool enabled ) const
+{
+    if( enabled )
+    {
+        glEnable( GL_CULL_FACE );
+        glCullFace( GL_BACK );
+    }
+    else
+    {
+        glDisable( GL_CULL_FACE );
+        glCullFace( GL_BACK );
+    }
+}
+
+void UtilConcrete::matrixStackPush()
+{
+    glPushMatrix();
+    ++m_currentMatrix;
+}
+
+void UtilConcrete::matrixStackPop()
+{
+    glPopMatrix();
+    --m_currentMatrix;
+}
+
 UtilConcrete::~UtilConcrete()
 {
+    CUL::Assert::simple(
+        0 == m_currentMatrix,
+        "ERROR PUSH COUNT IS NOT EQUAL TO POP COUNT." );
 }
