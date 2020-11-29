@@ -12,7 +12,7 @@ void VBOConcrete::setId( Cunt id )
     m_bufferId = id;
 }
 
-Cunt VBOConcrete::getId() const
+unsigned int VBOConcrete::getId() const
 {
     return m_bufferId;
 }
@@ -36,7 +36,7 @@ void VBOConcrete::setDataFromObject( IObject* object )
         LOGLW::DataType::FLOAT,
         false,
         dataSize * dataTypeSize
-    
+
     );
     getUtility()->enableVertexAttribArray( 0 );
 }

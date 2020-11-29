@@ -16,7 +16,7 @@ protected:
 private:
 
     void setId( Cunt id ) override;
-    Cunt getId() const override;
+    unsigned int getId() const override;
     void addVBO( IVBO* vbo ) override;
     IVBO* createVBO() override;
 

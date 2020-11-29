@@ -21,6 +21,7 @@ public:
 
     void set( const Pos2Di& newPos, const Size2Di newSize );
 
+    bool operator!=( const Viewport& arg ) const;
     bool operator==( const Viewport& arg ) const;
 
     Viewport& operator=( const Viewport& rhv );

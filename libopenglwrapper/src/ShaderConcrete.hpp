@@ -12,7 +12,7 @@ public:
     ShaderConcrete( IFile* file, IUtility* util );
     ~ShaderConcrete();
 
-    Cunt getId() const override;
+    unsigned int getId() const override;
     void useShader() const override;
     void reload() override;
     const Path& getPath() const override;

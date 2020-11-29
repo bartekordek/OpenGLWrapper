@@ -13,7 +13,7 @@ void VAOOpengl::setId( Cunt id )
     m_id = id;
 }
 
-Cunt VAOOpengl::getId() const
+unsigned int VAOOpengl::getId() const
 {
     return m_id;
 }

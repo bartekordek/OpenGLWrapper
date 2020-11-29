@@ -9,6 +9,7 @@ ProjectionData::ProjectionData()
 }
 
 ProjectionData::ProjectionData( const ProjectionData& val ):
+    CUL::GUTILS::IOnChange(),
     m_center( val.m_center ),
     m_eye( val.m_eye ),
     m_up( val.m_up ),

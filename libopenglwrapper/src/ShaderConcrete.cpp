@@ -13,7 +13,7 @@ ShaderConcrete::ShaderConcrete( IFile* filePath, IUtility* util ):
     createShader();
 }
 
-Cunt ShaderConcrete::getId() const
+unsigned int ShaderConcrete::getId() const
 {
     return m_id;
 }

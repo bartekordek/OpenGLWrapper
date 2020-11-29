@@ -100,17 +100,16 @@ public:
     virtual void lookAt( const std::array< Pos3Dd, 3>& lookAtVec ) const = 0;
     virtual void lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd& up ) const = 0;
 
-    virtual const ShaderTypes getShaderType( const CUL::String& fileExtension ) const = 0;
+    virtual ShaderTypes getShaderType( const CUL::String& fileExtension ) const = 0;
 
-    virtual Cunt createProgram() const = 0;
+    virtual unsigned int createProgram()  = 0;
     virtual void removeProgram( Cunt programId ) const = 0;
     virtual void useProgram( Cunt programId ) const = 0;
     virtual void linkProgram( Cunt programId ) const = 0;
     virtual void validateProgram( Cunt programId ) const = 0;
 
-    virtual Cunt createShader(
-        const IFile&
-        shaderCode ) const = 0;
+    virtual unsigned int createShader(
+        const IFile& shaderCode ) = 0;
     virtual void attachShader( Cunt programId, Cunt shaderId ) const = 0;
     virtual void dettachShader( Cunt programId, Cunt shaderId ) const = 0;
     virtual void removeShader( Cunt shaderId ) const = 0;
@@ -128,22 +127,22 @@ public:
     virtual void clearColorTo( const ColorS color ) const = 0;
     virtual void clearBuffer( const ClearMasks mask ) const = 0;
 
-    virtual Cunt generateVertexArray( const int size = 1 ) const = 0;
+    virtual unsigned int generateVertexArray( const int size = 1 ) const = 0;
 
     virtual void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const std::vector<float>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const float vertices[] ) const = 0;
 
-    virtual Cunt generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const = 0;
-    virtual Cunt generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const = 0;
+    virtual unsigned int generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const = 0;
+    virtual unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const = 0;
 
     virtual void enableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
     virtual void disableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
-    virtual Cunt getAttribLocation( Cunt programId, const String& attribName ) const = 0;
+    virtual unsigned int getAttribLocation( Cunt programId, const String& attribName ) const = 0;
     virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
     virtual void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const = 0;
     virtual void bindBuffer( IVAO* vao ) const = 0;
-    virtual Cunt generateBuffer( const BufferTypes type, const int size = 1 ) const = 0;
+    virtual unsigned int generateBuffer( const BufferTypes type, const int size = 1 ) const = 0;
 
     virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;
     virtual void drawElements( const PrimitiveType type, const std::vector<float>& data ) const = 0;

@@ -13,8 +13,8 @@
 
 using namespace LOGLW;
 
-const CUL::String enumToString( const GLenum val );
-const GLuint toGluint( Cunt value );
+CUL::String enumToString( const GLenum val );
+GLuint toGluint( Cunt value );
 
 UtilConcrete::UtilConcrete( CUL::CULInterface* culInterface ):
     m_culInterface( culInterface ),
@@ -143,9 +143,9 @@ void UtilConcrete::lookAt( const Pos3Dd& eye, const Pos3Dd& center, const Pos3Dd
         up.x, up.y, up.z );
 }
 
-Cunt UtilConcrete::createProgram() const
+unsigned int UtilConcrete::createProgram()
 {
-    const auto programId = static_cast<const unsigned int>(
+    const auto programId = static_cast<unsigned int>(
         glCreateProgram() );
     log( "UtilConcrete::createProgram, programId = " + String( programId ) );
 
@@ -186,10 +186,10 @@ void UtilConcrete::validateProgram( Cunt programId ) const
     assertOnProgramError( programId, GL_VALIDATE_STATUS );
 }
 
-Cunt UtilConcrete::createShader( const IFile& shaderCode ) const
+unsigned int UtilConcrete::createShader( const IFile& shaderCode )
 {
     const auto shaderType = UtilConcrete::getShaderType( shaderCode.getPath().getExtension() );
-    const auto id = static_cast<Cunt>( glCreateShader( static_cast<GLenum>( shaderType ) ) );
+    const auto id = static_cast<unsigned int>( glCreateShader( static_cast<GLenum>( shaderType ) ) );
 
     auto codeLength = static_cast<GLint>(
         shaderCode.getLinesCount() );
@@ -225,7 +225,7 @@ void UtilConcrete::assertOnProgramError( Cunt programId, Cunt val ) const
     }
 }
 
-const CUL::String enumToString( const GLenum val )
+CUL::String enumToString( const GLenum val )
 {
     switch( val )
     {
@@ -238,7 +238,7 @@ const CUL::String enumToString( const GLenum val )
     }
 }
 
-const ShaderTypes UtilConcrete::getShaderType( const CUL::String& fileExtension ) const
+ShaderTypes UtilConcrete::getShaderType( const CUL::String& fileExtension ) const
 {
     /*
     .vert - a vertex shader
@@ -292,7 +292,7 @@ void UtilConcrete::removeShader( Cunt shaderId ) const
         toGluint( shaderId ) );
 }
 
-const GLuint toGluint( Cunt value )
+GLuint toGluint( Cunt value )
 {
     return static_cast<GLuint>( value );
 }
@@ -479,7 +479,7 @@ void UtilConcrete::clearBuffer( const ClearMasks mask ) const
     glClear( static_cast<GLbitfield>( mask ) );
 }
 
-Cunt UtilConcrete::generateVertexArray( const int size ) const
+unsigned int UtilConcrete::generateVertexArray( const int size ) const
 {
     GLuint vao = 0;
     glGenVertexArrays( size, &vao );
@@ -597,14 +597,14 @@ GL_OUT_OF_MEMORY is generated if the GL is unable to create a data store with th
 */
 }
 
-Cunt UtilConcrete::generateAndBindBuffer( const BufferTypes bufferType, const int size ) const
+unsigned int UtilConcrete::generateAndBindBuffer( const BufferTypes bufferType, const int size ) const
 {
     const auto bufferId = generateBuffer( bufferType, size );
     bindBuffer( bufferType, bufferId );
     return bufferId;
 }
 
-Cunt UtilConcrete::generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size ) const
+unsigned int UtilConcrete::generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size ) const
 {
     const auto ebo = generateBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, size );
     bindBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, ebo );
@@ -657,11 +657,11 @@ void UtilConcrete::disableVertexAttribiute(
     glDisableVertexAttribArray( attributeLocation );
 }
 
-Cunt UtilConcrete::getAttribLocation(
+unsigned int UtilConcrete::getAttribLocation(
     Cunt programId,
     const String& attribName ) const
 {
-    auto attribLocation = static_cast<const unsigned int>(
+    auto attribLocation = static_cast<unsigned int>(
         glGetAttribLocation(
         programId,
         attribName.cStr() ) );
@@ -718,7 +718,7 @@ sharing between contexts through the appropriate GL windows interfaces functions
 }
 
 //TODO: Remove type?
-Cunt UtilConcrete::generateBuffer( const BufferTypes bufferType, const int size ) const
+unsigned int UtilConcrete::generateBuffer( const BufferTypes bufferType, const int size ) const
 {
     GLuint bufferId = 0;
     if ( BufferTypes::VERTEX_ARRAY == bufferType )

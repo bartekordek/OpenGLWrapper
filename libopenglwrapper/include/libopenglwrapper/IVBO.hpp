@@ -44,7 +44,7 @@ public:
     virtual ~IVBO() = default;
 
     virtual void setId( Cunt id ) = 0;
-    virtual Cunt getId() const = 0;
+    virtual unsigned int getId() const = 0;
 
     virtual void setData( const FloatData& data ) = 0;
     virtual void setDataFromObject( IObject* object ) = 0;

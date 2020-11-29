@@ -26,10 +26,10 @@ private:
     void setAttrib( const String& name, Cunt value ) override;
     void setAttrib( const String& name, Cint value ) override;
 
-    const String getAttributeStr( const String& name ) override;
-    Cfloat getAttributeF( const String& name ) override;
-    Cunt getAttributeUi( const String& name ) override;
-    Cint getAttributeI( const String& name ) override;
+    String getAttributeStr( const String& name ) override;
+    float getAttributeF( const String& name ) override;
+    unsigned int getAttributeUi( const String& name ) override;
+    int getAttributeI( const String& name ) override;
 
     void attachShader( IShader* shader ) override;
     void dettachShader( IShader* shader = nullptr ) override;
@@ -42,12 +42,12 @@ private:
 
     void render() override;
 
-    const AttribKey getAttribLocation( const String& name ) const;
+    AttribKey getAttribLocation( const String& name ) const;
     const ShaderList& getShaderList() const override;
 
     void bufferData( const std::vector<float>& data, const BufferTypes type ) override;
 
-    Cunt getProgramId() const override;
+    unsigned int getProgramId() override;
 
     IVAO* createVao() override;
 

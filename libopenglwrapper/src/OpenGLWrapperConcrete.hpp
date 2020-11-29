@@ -19,6 +19,7 @@
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_variant.hpp"
+#include "CUL/STL_IMPORTS/STD_atomic.hpp"
 
 union SDL_Event;
 
@@ -99,7 +100,7 @@ private:
     CUL::LOG::ILogger* getLoger() override;
     IUtility* getUtility() override;
     const Viewport& getViewport() const override;
-    const ProjectionData* const getProjectionData() const override;
+    ProjectionData* getProjectionData() override;
 
     const ContextInfo& getContext() const override;
 

@@ -5,6 +5,7 @@
 #include "CUL/JSON/INode.hpp"
 #include "libopenglwrapper/Primitives/Triangle.hpp"
 
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "UtilConcrete.hpp"
 
@@ -95,7 +96,7 @@ const Viewport& OpenGLWrapperConcrete::getViewport() const
     return m_viewport;
 }
 
-const ProjectionData* const OpenGLWrapperConcrete::getProjectionData() const
+ProjectionData* OpenGLWrapperConcrete::getProjectionData()
 {
     return &m_projectionData;
 }
@@ -338,8 +339,6 @@ void OpenGLWrapperConcrete::renderFrame()
         m_oglUtility->clearColorAndDepthBuffer();
     }
 
-    
-
     //m_projectionChanged = true;
     if( m_projectionChanged )
     {
@@ -407,9 +406,9 @@ void OpenGLWrapperConcrete::renderInfo()
 {
     ImGui::SetNextWindowPos( { 0, 0 } );
     const auto& winSize = m_activeWindow->getSize();
-    
+
     ImGui_ImplOpenGL2_NewFrame();
-    
+
     ImGui_ImplSDL2_NewFrame( *m_activeWindow );
 
     ImGui::NewFrame();
@@ -430,13 +429,13 @@ void OpenGLWrapperConcrete::renderInfo()
     ImGui::Text( "FOV-Y: %f", m_projectionData.getFov() );
 
     String text = "Center:" + m_projectionData.getCenter().serialize( 0 );
-    ImGui::Text( text.cStr() );
+    ImGui::Text( "%s",text.cStr() );
 
     text = "Eye:" + m_projectionData.getEye().serialize( 0 );
-    ImGui::Text( text.cStr() );
+    ImGui::Text( "%s",text.cStr() );
 
     text = "Up:" + m_projectionData.getUp().serialize( 0 );
-    ImGui::Text( text.cStr() );
+    ImGui::Text( "%s",text.cStr() );
 
     res = ImGui::SliderFloat( "Z Far", &m_projectionData.m_zFar, -64.f, 64.f );
     if( res )
@@ -464,16 +463,16 @@ void OpenGLWrapperConcrete::renderInfo()
     }
 
     text = "Left: " + String( m_projectionData.getLeft() );
-    ImGui::Text( text.cStr() );
+    ImGui::Text( "%s",text.cStr() );
 
     text = "Right: " + String( m_projectionData.getRight() );
-    ImGui::Text( text.cStr() );
+    ImGui::Text( "%s",text.cStr() );
 
     text = "Top: " + String( m_projectionData.getTop() );
-    ImGui::Text( text.cStr() );
+    ImGui::Text( "%s",text.cStr() );
 
     text = "Bottom: " + String( m_projectionData.getBottom() );
-    ImGui::Text( text.cStr() );
+    ImGui::Text( "%s",text.cStr() );
 
     for( const auto& pair: m_debugValues )
     {
@@ -524,7 +523,7 @@ void OpenGLWrapperConcrete::renderInfo()
 
     ImGui::Text( "FrameTime: %4.2f ms", 1000.f / ImGui::GetIO().Framerate );
     ImGui::Text( "FPS: %4.2f", m_activeWindow->getFpsCounter()->getCurrentFps() );
-    const float var = m_frameSleepUs;
+
     ImGui::Text( "m_frameSleepUs: %d", m_frameSleepUs.getValCopy() );
     ImGui::Text( "m_usDelta: %d", m_usDelta );
 
@@ -694,7 +693,7 @@ void OpenGLWrapperConcrete::handleEvent( const SDL_Event& event )
 
 unsigned OpenGLWrapperConcrete::addSliderValue( const CUL::String& text, float* val, float min, float max, const std::function<void( void )> onUpdate )
 {
-    const unsigned size = (const unsigned)m_debugValues.size();
+    const unsigned size = (unsigned)m_debugValues.size();
     const auto newId = size + 1u;
 
     DebugValueRow row;
@@ -713,7 +712,7 @@ unsigned OpenGLWrapperConcrete::addSliderValue( const CUL::String& text, float* 
 
 unsigned OpenGLWrapperConcrete::addText( const CUL::String& text, float* val )
 {
-    const unsigned size = (const unsigned) m_debugValues.size();
+    const unsigned size = (unsigned) m_debugValues.size();
     const auto newId = size + 1u;
 
     DebugValueRow row;

@@ -17,7 +17,7 @@ class LIBOPENGLWRAPPER_API IShader
 public:
     IShader();
 
-    virtual Cunt getId() const = 0;
+    virtual unsigned int getId() const = 0;
     virtual void useShader() const = 0;
     virtual void reload() = 0;
     virtual const Path& getPath() const = 0;

@@ -48,7 +48,7 @@ public:
     virtual IImageLoader* getImageLoader() = 0;
     virtual IUtility* getUtility() = 0;
     virtual const Viewport& getViewport() const = 0;
-    virtual const ProjectionData* const getProjectionData() const = 0;
+    virtual ProjectionData* getProjectionData() = 0;
 
     virtual void addObjectToRender( IRenderable* renderable ) = 0;
 

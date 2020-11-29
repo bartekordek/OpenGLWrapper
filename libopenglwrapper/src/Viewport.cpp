@@ -13,6 +13,11 @@ void Viewport::set( const Pos2Di& newPos, const Size2Di newSize )
     size = newSize;
 }
 
+bool Viewport::operator!=( const Viewport& arg ) const
+{
+    return !(*this == arg);
+}
+
 bool Viewport::operator==( const Viewport& arg ) const
 {
     if( this == &arg )

@@ -38,22 +38,22 @@ void ProgramConcrete::setAttrib( const String& , Cint  )
 {
 }
 
-const String ProgramConcrete::getAttributeStr( const String&  )
+String ProgramConcrete::getAttributeStr( const String&  )
 {
     return String();
 }
 
-Cfloat ProgramConcrete::getAttributeF( const String&  )
+float ProgramConcrete::getAttributeF( const String&  )
 {
     return Cfloat();
 }
 
-Cunt ProgramConcrete::getAttributeUi( const String&  )
+unsigned int ProgramConcrete::getAttributeUi( const String&  )
 {
     return Cunt();
 }
 
-Cint ProgramConcrete::getAttributeI( const String&  )
+int ProgramConcrete::getAttributeI( const String&  )
 {
     return Cint();
 }
@@ -113,7 +113,7 @@ void ProgramConcrete::render()
     //}
 }
 
-const ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( const String& name ) const
+ProgramConcrete::AttribKey ProgramConcrete::getAttribLocation( const String& name ) const
 {
     ProgramConcrete::AttribKey result;
 
@@ -140,7 +140,7 @@ void ProgramConcrete::bufferData( const std::vector<float>&, const BufferTypes )
 {
 }
 
-Cunt ProgramConcrete::getProgramId() const
+unsigned int ProgramConcrete::getProgramId()
 {
     return m_id;
 }

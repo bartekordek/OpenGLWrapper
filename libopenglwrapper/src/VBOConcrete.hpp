@@ -9,7 +9,7 @@ public:
     VBOConcrete();
 
     void setId( Cunt id ) override;
-    Cunt getId() const override;
+    unsigned int getId() const override;
     void setData( const FloatData& data ) override;
     void setDataFromObject( IObject* object ) override;
 

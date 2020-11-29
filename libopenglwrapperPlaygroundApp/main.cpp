@@ -1,5 +1,3 @@
-#include "MatrixStack.hpp"
-
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "libopenglwrapper/IDebugOverlay.hpp"
 
@@ -33,12 +31,11 @@ DumbPtr<SDL2W::ISDL2Wrapper> g_sdlw;
 GLWrap g_oglw;
 LOGLW::IUtility* g_utility = nullptr;
 CUL::LOG::ILogger* g_logger = nullptr;
-LOGLW::MatrixStack matrixStack;
 ColorS red( ColorE::RED );
 ColorS yellow( 1.0f, 1.0f, 0.0f, 1.0f );
 ColorS blue( ColorE::BLUE );
 ColorS white( ColorE::WHITE );
-GLfloat angle = 0.0f;
+float angle = 0.0f;
 LOGLW::IObjectFactory* of = nullptr;
 CUL::FS::Path vertexShaderFile;
 CUL::FS::Path fragmentShaderFile;
@@ -187,20 +184,20 @@ void onMouseEvent( const SDL2W::MouseData& md )
 
 void renderScene()
 {
-    matrixStack.push();
+    g_utility->matrixStackPush();
         g_utility->translate( 0.0f, 0.0f, blueTriangleZ );
         g_utility->draw( triangleBackground0, blue );
         g_utility->rotate( 180.0f, 0.0f, 0.0f, 1.0f );
         g_utility->draw( triangleBackground0, white );
-    matrixStack.pop();
+    g_utility->matrixStackPop();
 
-    matrixStack.push();
+    g_utility->matrixStackPush();
         g_utility->translate( 0.0f, 0.0f, redTriangleZ );
         g_utility->rotate( angle, 0.0f, 0.0f, 1.0f );
         g_utility->draw( triangleRed, red );
         g_utility->rotate( 180.0f, 0.0f, 0.0f, 1.0f );
         g_utility->draw( triangleRed, yellow );
-    matrixStack.pop();
+    g_utility->matrixStackPop();
 
     angle += 0.8f;
 
@@ -220,7 +217,6 @@ void reloadConfig()
     g_configFile->reload();
 
     const auto x = 0.0f;
-    const auto y = 0.0f;
 
     g_projectionData.setCenter( Pos3Df(
         x,

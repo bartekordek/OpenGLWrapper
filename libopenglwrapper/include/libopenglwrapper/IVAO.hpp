@@ -39,7 +39,7 @@ public:
     explicit IVAO();
 
     virtual void setId( Cunt id ) = 0;
-    virtual Cunt getId() const = 0;
+    virtual unsigned int getId() const = 0;
     virtual void addVBO( IVBO* vbo ) = 0;
     virtual IVBO* createVBO() = 0;
 

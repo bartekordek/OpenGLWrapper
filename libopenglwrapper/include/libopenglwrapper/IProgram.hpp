@@ -22,10 +22,10 @@ public:
     virtual void setAttrib( const String& name, Cunt value ) = 0;
     virtual void setAttrib( const String& name, Cint value ) = 0;
 
-    virtual const String getAttributeStr( const String& name ) = 0;
-    virtual Cfloat getAttributeF( const String& name ) = 0;
-    virtual Cunt getAttributeUi( const String& name ) = 0;
-    virtual Cint getAttributeI( const String& name ) = 0;
+    virtual String getAttributeStr( const String& name ) = 0;
+    virtual float getAttributeF( const String& name ) = 0;
+    virtual unsigned int getAttributeUi( const String& name ) = 0;
+    virtual int getAttributeI( const String& name ) = 0;
 
     virtual void attachShader( IShader* shader ) = 0;
     virtual void dettachShader( IShader* shader = nullptr ) = 0;
@@ -39,7 +39,7 @@ public:
         const std::vector<float>& data,
         const BufferTypes type ) = 0;
 
-    virtual Cunt getProgramId() const = 0;
+    virtual unsigned int getProgramId() = 0;
     virtual const ShaderList& getShaderList() const = 0;
 
     virtual IVAO* createVao() = 0;
