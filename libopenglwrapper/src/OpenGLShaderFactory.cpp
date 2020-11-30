@@ -19,7 +19,7 @@ OpenGLShaderFactory::OpenGLShaderFactory( LOGLW::IOpenGLWrapper* wrapper ):
 {
 }
 
-IShader* OpenGLShaderFactory::createShader( const Path& filePath )
+IShader* OpenGLShaderFactory::createShader( const CUL::FS::Path& filePath )
 {
     auto result = getShader( filePath );
     if( result )
@@ -41,18 +41,18 @@ IProgram* OpenGLShaderFactory::createProgram()
     return result;
 }
 
-bool OpenGLShaderFactory::shaderExist( const Path& filePath ) const
+bool OpenGLShaderFactory::shaderExist( const CUL::FS::Path& filePath ) const
 {
     ShaderMap::iterator it = m_shaders.find( filePath );
     return m_shaders.end() != it;
 }
 
-IShader* OpenGLShaderFactory::getShader( const Path& filePath )
+IShader* OpenGLShaderFactory::getShader( const CUL::FS::Path& filePath )
 {
     return m_shaders[ filePath ].get();
 }
 
-IShader* OpenGLShaderFactory::addShader( const Path& filePath )
+IShader* OpenGLShaderFactory::addShader( const CUL::FS::Path& filePath )
 {
     logger->log( "OpenGLShaderFactory::addShader: creating: " + filePath );
     auto shaderPtr = m_culInterface->getFF()->createFileFromPath( filePath );
@@ -63,7 +63,6 @@ IShader* OpenGLShaderFactory::addShader( const Path& filePath )
 
 OpenGLShaderFactory::~OpenGLShaderFactory()
 {
-    IUtilityUser::getUtility()->useProgram( 0 );
     m_shaders.clear();
     m_programs.clear();
 }

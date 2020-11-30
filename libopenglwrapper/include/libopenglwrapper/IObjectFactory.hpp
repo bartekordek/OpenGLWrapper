@@ -16,8 +16,6 @@ public:
     IObjectFactory() = default;
     virtual ~IObjectFactory() = default;
 
-    virtual IRect* createRect() = 0;
-    virtual Triangle* createTriangle() = 0;
     virtual IObject* createFromFile( IFile* file ) = 0;
     virtual IObject* createFromFile( const String& path ) = 0;
 

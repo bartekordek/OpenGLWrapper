@@ -10,7 +10,6 @@ NAMESPACE_BEGIN( LOGLW )
 
 using String = CUL::String;
 using ShaderList = std::map<String, IShader*>;
-using Path = CUL::FS::Path;
 
 class LIBOPENGLWRAPPER_API IProgram
 {
@@ -33,7 +32,7 @@ public:
     virtual void enable() = 0;
     virtual void disable() = 0;
     virtual void validate() = 0;
-    virtual IShader* createShader( const Path& path ) = 0;
+    virtual IShader* createShader( const CUL::FS::Path& path ) = 0;
 
     virtual void bufferData(
         const std::vector<float>& data,

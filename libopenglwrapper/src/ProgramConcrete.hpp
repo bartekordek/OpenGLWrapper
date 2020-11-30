@@ -38,7 +38,7 @@ private:
     void enable() override;
     void disable() override;
     void validate() override;
-    IShader* createShader( const Path& path ) override;
+    IShader* createShader( const CUL::FS::Path& path ) override;
 
     void render() override;
 

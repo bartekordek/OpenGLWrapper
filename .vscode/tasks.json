@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Recreate Cmake",
+            "type": "shell",
+            "command": "clear;cd Build-Linux;rm -rf *; cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug;time make -j12",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Make Debug",
+            "type":"shell",
+            "command": "clear;cd Build-Linux;time make -j12",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {// & rd /s /q Build-Windows & mkdir Build-Windows & cd Build-Windows & cmake -G \"Visual Studio 16 2019\" .. -DCMAKE_BUILD_TYPE=Debug"
+            "label": "Windows Recreate Cmake",
+            "type": "shell",
+            "command": ".\\scripts\\RecreateTests.bat",
+            "group": {
+                "kind": "none",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}

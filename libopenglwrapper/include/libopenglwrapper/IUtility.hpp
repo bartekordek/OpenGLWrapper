@@ -4,8 +4,6 @@
 #include "libopenglwrapper/IVAO.hpp"
 #include "libopenglwrapper/ProjectionData.hpp"
 
-#include "SDL2Wrapper/IWindow.hpp"
-
 #include "CUL/CULInterface.hpp"
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Math/Angle.hpp"
@@ -15,6 +13,16 @@
 #include "CUL/Math/Primitives/Triangle.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
+
+NAMESPACE_BEGIN( CUL )
+NAMESPACE_BEGIN( Graphics )
+enum class PixelFormat: short;
+NAMESPACE_END( Graphics )
+NAMESPACE_END( CUL )
+
+NAMESPACE_BEGIN( SDL2W )
+class IWindow;
+NAMESPACE_END( SDL2W )
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -67,6 +75,7 @@ enum class PrimitiveType: unsigned
 
 enum class DataType: int
 {
+    NONE = 0,
     BYTE = 0x1400,
     UNSIGNED_BYTE = 0x1401,
     SHORT = 0x1402,
@@ -81,6 +90,33 @@ struct LIBOPENGLWRAPPER_API ContextInfo
 {
     void* glContext = nullptr;
     String glVersion;
+};
+
+enum class TextureFilterType: short
+{
+    NONE = 0,
+    NEAREST = 0x2600,
+    LINEAR = 0x2601
+};
+
+enum class TextureParameters: short
+{
+    NONE = 0,
+    MAG_FILTER = 0x2800,
+    MIN_FILTER = 0x2801,
+    WRAP_S = 0x2802,
+    WRAP_T = 0x2803
+};
+
+struct LIBOPENGLWRAPPER_API TextureInfo
+{
+    unsigned int textureId = 0;
+    int level = 0;
+    CUL::Graphics::PixelFormat pixelFormat;
+    int border = 0;
+    DataType dataType = DataType::UNSIGNED_BYTE;
+    void* data = nullptr;
+    CUL::Graphics::SSize2Di size;
 };
 
 class Viewport;
@@ -159,6 +195,7 @@ public:
 
     virtual std::vector<std::string> listExtensions() = 0;
 
+    virtual void draw( const QuadF& quad, const QuadF& texQuad ) = 0;
     virtual void draw( const QuadF& quad, const ColorS& color ) = 0;
     virtual void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) = 0;
 
@@ -171,6 +208,14 @@ public:
     virtual void scale( const float scale ) const = 0;
     virtual void setDepthTest( const bool enabled ) const = 0;
     virtual void setBackfaceCUll( const bool enabled ) const = 0;
+
+    // Texturing
+    virtual void setTexuring( const bool enabled ) const = 0;
+    virtual unsigned generateTexture() const = 0;
+    virtual void bindTexture( const unsigned int textureId ) const = 0;
+    virtual void setTextureParameter( const TextureParameters type, const TextureFilterType val ) const = 0;
+    virtual void setTextureData( const TextureInfo& ti ) const = 0;
+    virtual void freeTexture( unsigned int& textureId ) const = 0;
 
     virtual void matrixStackPush() = 0;
     virtual void matrixStackPop() = 0;

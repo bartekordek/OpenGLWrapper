@@ -19,7 +19,7 @@ public:
     Triangle();
 
     void addShader(
-        const Path& filePath,
+        const CUL::FS::Path& filePath,
         IShaderFactory* sf ) override;
     void render();
 

@@ -97,7 +97,7 @@ void ProgramConcrete::validate()
     m_utility->validateProgram( m_id );
 }
 
-IShader* ProgramConcrete::createShader( const Path& path )
+IShader* ProgramConcrete::createShader( const CUL::FS::Path& path )
 {
     auto result = m_sf.createShader( path );
     attachShader( result );

@@ -21,6 +21,7 @@
 *.pdb
 *.res
 *.sdf
+*.so
 *.suo
 *.tlog
 *.VC.db
@@ -31,5 +32,6 @@ Build-*
 build/*
 CMakeFiles/
 deps/Makefile
+Makefile
 intermediate
 runDir

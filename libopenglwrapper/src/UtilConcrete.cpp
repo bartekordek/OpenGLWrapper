@@ -4,8 +4,9 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
 #include "IMPORT_glew.hpp"
-#include "IMPORT_SDL_opengl.hpp"
+#include "SDL2Wrapper/IMPORT_SDL_opengl.hpp"
 #include "ImportFreeglut.hpp"
+#include "SDL2Wrapper/IWindow.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
@@ -391,6 +392,23 @@ void UtilConcrete::scale( const float scale ) const
     glScalef( scale, scale, scale );
 }
 
+void UtilConcrete::draw( const QuadF& quad, const QuadF& texQuad )
+{
+    glBegin( GL_QUADS );
+        glTexCoord3f( texQuad.p1.getX(), texQuad.p1.getY(), texQuad.p1.getZ() );
+        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+
+        glTexCoord3f( texQuad.p2.getX(), texQuad.p2.getY(), texQuad.p2.getZ() );
+        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+
+        glTexCoord3f( texQuad.p3.getX(), texQuad.p3.getY(), texQuad.p3.getZ() );
+        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+
+        glTexCoord3f( texQuad.p4.getX(), texQuad.p4.getY(), texQuad.p4.getZ() );
+        glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
+    glEnd();
+}
+
 void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
 {
     glBegin( GL_QUADS );
@@ -452,6 +470,7 @@ void UtilConcrete::draw( const TriangleF& quad, const std::array<ColorS, 4>& col
 void UtilConcrete::clearColorAndDepthBuffer() const
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    //glDepthFunc( GL_LEQUAL );
 }
 
 void UtilConcrete::createQuad( Cfloat scale ) const
@@ -864,6 +883,11 @@ void UtilConcrete::setDepthTest( const bool enabled ) const
     if( enabled )
     {
         glEnable( GL_DEPTH_TEST );
+        //glDepthMask( GL_TRUE );
+        //glClearDepth( 1.0f );
+        //glDepthMask( GL_FALSE );
+        glEnable( GL_DEPTH_TEST );
+        glDepthFunc( GL_LESS );
     }
     else
     {
@@ -882,6 +906,57 @@ void UtilConcrete::setBackfaceCUll( const bool enabled ) const
     {
         glDisable( GL_CULL_FACE );
         glCullFace( GL_BACK );
+    }
+}
+
+void UtilConcrete::setTexuring( const bool enabled ) const
+{
+    if( enabled )
+    {
+        glEnable( GL_TEXTURE_2D );
+    }
+    else
+    {
+        glDisable( GL_TEXTURE_2D );
+    }
+}
+
+unsigned UtilConcrete::generateTexture() const
+{
+    GLuint textureId = 0;
+    glGenTextures( 1, &textureId );
+    return textureId;
+}
+
+void UtilConcrete::bindTexture( const unsigned int textureId ) const
+{
+    glBindTexture( GL_TEXTURE_2D, textureId );
+}
+
+void UtilConcrete::setTextureParameter( const TextureParameters type, const TextureFilterType val ) const
+{
+    glTexParameteri( GL_TEXTURE_2D, (GLenum)type, (GLint)val );
+}
+
+void UtilConcrete::setTextureData( const TextureInfo& ti ) const
+{
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        ti.level,
+        (GLint)ti.pixelFormat,
+        ti.size.width, ti.size.height,
+        ti.border,
+        (GLenum) ti.pixelFormat,
+        (GLenum) GL_UNSIGNED_BYTE,
+        ti.data );
+}
+
+void UtilConcrete::freeTexture( unsigned int& textureId ) const
+{
+    if( textureId != 0 )
+    {
+        glDeleteTextures( 1, &textureId );
+        textureId = 0;
     }
 }
 

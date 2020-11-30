@@ -1,18 +1,20 @@
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "libopenglwrapper/IDebugOverlay.hpp"
 
-#include "SDL2Wrapper/ISDL2Wrapper.hpp"
+#include "SDL2Wrapper/IWindow.hpp"
 
-#include "CUL/Math/Axis.hpp"
-#include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
-#include "CUL/Graphics/Rect2D.hpp"
-#include "CUL/Math/Primitives/Triangle.hpp"
-#include "CUL/STL_IMPORTS/STD_iostream.hpp" 
-#include "CUL/Log/ILogger.hpp"
+#include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/GenericUtils/IConfigFile.hpp"
+#include "CUL/Graphics/Rect2D.hpp"
+#include "CUL/Log/ILogger.hpp"
+#include "CUL/Math/Axis.hpp"
+#include "CUL/Math/Primitives/Triangle.hpp"
+#include "CUL/STL_IMPORTS/STD_thread.hpp"
+#include "CUL/STL_IMPORTS/STD_cmath.hpp"
 
-using SDLWrap = CUL::GUTILS::DumbPtr<SDL2W::ISDL2Wrapper>;
+using Vector3Di = LOGLW::Vector3Di;
+using WindowSize = LOGLW::WindowSize;
 using GLWrap = CUL::GUTILS::DumbPtr<LOGLW::IOpenGLWrapper>;
 using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
@@ -27,7 +29,6 @@ using Triangle = CUL::MATH::Primitives::TriangleF;
 using String = CUL::String;
 
 DumbPtr<CUL::GUTILS::IConfigFile> g_configFile;
-DumbPtr<SDL2W::ISDL2Wrapper> g_sdlw;
 GLWrap g_oglw;
 LOGLW::IUtility* g_utility = nullptr;
 CUL::LOG::ILogger* g_logger = nullptr;
@@ -40,7 +41,6 @@ LOGLW::IObjectFactory* of = nullptr;
 CUL::FS::Path vertexShaderFile;
 CUL::FS::Path fragmentShaderFile;
 LOGLW::IProgram* program = nullptr;
-SDL2W::WindowData windowData;
 float blueTriangleZ = -1.0f;
 float redTriangleZ = 1.0f;
 LOGLW::ProjectionData g_projectionData;
@@ -49,6 +49,7 @@ LOGLW::IObject* g_triangle0 = nullptr;
 CUL::TimeConcrete configModificationTime;
 SDL2W::IWindow* g_mainWindow = nullptr;
 SDL2W::MouseData g_mouseData;
+std::mutex g_renderMtx;
 
 Triangle triangleRed;
 Triangle triangleYellow;
@@ -75,37 +76,32 @@ int main( int argc, char** argv )
     auto& cu = CUL::GUTILS::ConsoleUtilities::getInstance();
     cu.setArgs( argc, argv );
 
-    const auto width = std::stoul( cu.getFlagValue( "-w" ).string() );
-    const auto height = std::stoul( cu.getFlagValue( "-h" ).string() );
+    const auto width = std::stoi( cu.getFlagValue( "-w" ).string() );
+    const auto height = std::stoi( cu.getFlagValue( "-h" ).string() );
 
-    windowData.name = "Test";
-    windowData.pos = SDL2W::Vector3Di( 256, 256, 0 );
-    auto posS = windowData.pos.serialize(0);
+    Vector3Di winPos = { 200, 200, 0 };
+    WindowSize winSize = { width, height };
+    g_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper(
+        winPos,
+        winSize,
+        "../media/Config.txt",
+        "libopenglwrapperPlaygroundApp",
+        "opengl" );
+    g_oglw->addMouseEventCallback( onMouseEvent );
+    g_configFile = g_oglw->getConfig();
 
-    windowData.size.setSize( width, height );
-    windowData.rendererName = "opengl";
-
-    g_sdlw = SDL2W::createSDL2Wrapper();
-    g_sdlw->init( windowData, "../media/Config.txt" );
-
-    g_sdlw->addMouseEventCallback( onMouseEvent );
-
-    g_configFile = g_sdlw->getConfig();
-
-    g_oglw = LOGLW::createOpenGLWrapper( g_sdlw );
     g_logger = g_oglw->getLoger();
-    g_logger->log( "\n" + posS );
 
     g_utility = g_oglw->getUtility();
     g_oglw->onInitialize( afterInit );
     g_oglw->beforeFrame( renderScene );
 
-    g_sdlw->registerKeyboardEventCallback( &onKeyBoardEvent );
-    g_sdlw->registerWindowEventCallback( &onWindowEvent );
+    g_oglw->registerKeyboardEventCallback( &onKeyBoardEvent );
+    g_oglw->registerWindowEventCallback( &onWindowEvent );
 
     g_oglw->startRenderingLoop();
 
-    g_sdlw->runEventLoop();
+    g_oglw->runEventLoop();
 
     return 0;
 }
@@ -114,7 +110,7 @@ void afterInit()
 {
     g_oglw->setProjectionType( LOGLW::ProjectionType::PERSPECTIVE );
 
-    g_mainWindow = g_sdlw->getMainWindow();
+    g_mainWindow = g_oglw->getMainWindow();
     g_mainWindow->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
     const auto& winSize = g_mainWindow->getSize();
 
@@ -141,30 +137,44 @@ void afterInit()
     {
     } );
 
-    g_mouseData = g_sdlw->getMouseData();
+    g_mouseData = g_oglw->getMouseData();
 }
 
 void onMouseEvent( const SDL2W::MouseData& md )
 {
     if( md.isButtonDown( 3 ) )
     {
-        const auto& md = g_sdlw->getMouseData();
-        const auto winW = windowData.size.getWidth();
-        const auto winH = windowData.size.getHeight();
-        const auto centerX = md.getX() - winW / 2;
-        const auto centerY = md.getY() - winH / 2;
+        const auto& md = g_oglw->getMouseData();
+        const auto& winSize = g_oglw->getMainWindow()->getSize();
+        const auto winW = winSize.getWidth();
+        const auto winH = winSize.getHeight();
+        const auto mouseX = md.getX();
+        const auto mouseY = md.getY();
+        const auto centerX = winW / 2 - mouseX;
+        const auto centerY = winH / 2 - mouseY;
 
         g_logger->log( "Mouse:" );
         g_logger->log( md.serialize( 0 ) );
 
-        if( std::abs( centerX ) < winW / 2 && std::abs( centerY ) < winH / 2 )
+        const auto rectW = winW / 2;
+        const auto rectH = winH / 2;
+
+        const auto leftX = (winW - rectW) / 2;
+        const auto rightX = winW - leftX;
+
+        const auto bottom = (winH - rectH) / 2;
+        const auto top = winH - bottom;
+
+        if( mouseX < rightX &&
+            mouseX > leftX &&
+            mouseY < top &&
+            mouseY > bottom )
+
         {
-
-
-            auto eye = g_oglw->getProjectionData()->getEye();
+            auto eye = g_oglw->getProjectionData().getEye();
             static auto delta = 0.5f;
-            eye.x = -centerX * delta;
-            eye.y = centerY * delta;
+            eye.x = +centerX * delta;
+            eye.y = -centerY * delta;
             g_oglw->setEyePos( eye );
             g_mouseData = md;
         }
@@ -184,6 +194,7 @@ void onMouseEvent( const SDL2W::MouseData& md )
 
 void renderScene()
 {
+    std::lock_guard<std::mutex> guard( g_renderMtx );
     g_utility->matrixStackPush();
         g_utility->translate( 0.0f, 0.0f, blueTriangleZ );
         g_utility->draw( triangleBackground0, blue );
@@ -193,7 +204,7 @@ void renderScene()
 
     g_utility->matrixStackPush();
         g_utility->translate( 0.0f, 0.0f, redTriangleZ );
-        g_utility->rotate( angle, 0.0f, 0.0f, 1.0f );
+       // g_utility->rotate( angle, 0.0f, 0.0f, 1.0f );
         g_utility->draw( triangleRed, red );
         g_utility->rotate( 180.0f, 0.0f, 0.0f, 1.0f );
         g_utility->draw( triangleRed, yellow );
@@ -210,6 +221,11 @@ void renderScene()
 
         configModificationTime = g_configFile->getModificationTime();
     }
+
+    const auto amp = 64.f;
+
+    blueTriangleZ = amp + sin( angle * 0.005 ) * amp;
+    redTriangleZ = amp + cos( angle * 0.005 ) * amp;
 }
 
 void reloadConfig()
@@ -332,5 +348,5 @@ void onWindowEvent( const WinEventType type )
 void closeApp()
 {
     g_oglw->stopRenderingLoop();
-    g_sdlw->stopEventLoop();
+    g_oglw->stopEventLoop();
 }

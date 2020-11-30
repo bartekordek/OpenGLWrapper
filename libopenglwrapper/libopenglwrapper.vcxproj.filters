@@ -57,9 +57,6 @@
     <ClCompile Include="src\ShaderConcrete.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShaderRegister.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\VBOConcrete.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -88,6 +85,12 @@
     <ClCompile Include="src\Viewport.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\TextureConcrete.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ITexture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Primitives\TriangleImpl.hpp">
@@ -112,9 +115,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ShaderConcrete.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ShaderRegister.hpp">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="include\libopenglwrapper\Primitives\IRect.hpp">
@@ -194,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="include\libopenglwrapper\IDebugOverlay.hpp">
       <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="include\libopenglwrapper\ITextureFactory.hpp">
+      <Filter>include\libopenglwrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureConcrete.hpp">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

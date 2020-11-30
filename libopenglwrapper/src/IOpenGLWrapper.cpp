@@ -1,27 +1,47 @@
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "OpenGLWrapperConcrete.hpp"
 
+#include "SDL2Wrapper/WindowData.hpp"
+
 using namespace LOGLW;
 
-IOpenGLWrapper* s_instance = nullptr;
+IOpenGLWrapper* IOpenGLWrapper::s_instance = nullptr;
 
-IOpenGLWrapper* getInstance();
 
 IOpenGLWrapper::IOpenGLWrapper()
 {
 }
 
-IOpenGLWrapper* LOGLW::createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w )
+IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w )
 {
     s_instance = new OpenGLWrapperConcrete( sdl2w );
     return s_instance;
 }
 
-IOpenGLWrapper* getInstance()
+IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper(
+    const Vector3Di& pos,
+    const WindowSize& winSize,
+    const String& configPath,
+    const String& winName,
+    const String& renderername )
 {
+    SDL2W::WindowData windowData;
+    windowData.name = winName;
+    windowData.pos = pos;
+    windowData.size = winSize;
+    windowData.rendererName = renderername;
+
+    auto sdlWrap = SDL2W::ISDL2Wrapper::createSDL2Wrapper();
+    sdlWrap->init( windowData, configPath );
+
+    s_instance = new OpenGLWrapperConcrete( sdlWrap );
     return s_instance;
 }
 
+IOpenGLWrapper* IOpenGLWrapper::getInstance()
+{
+    return s_instance;
+}
 
 IOpenGLWrapper::~IOpenGLWrapper()
 {

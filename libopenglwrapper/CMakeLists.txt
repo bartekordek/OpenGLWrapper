@@ -4,14 +4,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(openglWrapper LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-set(EXEC openglWrapper)
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../deps/SDL2Wrapper ${CMAKE_CURRENT_BINARY_DIR}/../deps/SDL2Wrapper)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../deps ${CMAKE_CURRENT_BINARY_DIR}/../deps)
-
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/SDL2Wrapper/deps/CUL/libcul/inc)
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/SDL2Wrapper/libsdl2wrapper/inc)
-include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/SDL2Wrapper/libsdl2wrapper/src)
+set(EXEC ${PROJECT_NAME})
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -36,6 +29,7 @@ src/IShader.cpp
 src/IShaderFactory.cpp
 src/IUtility.cpp
 src/IUtilityUser.cpp
+src/ITexture.cpp
 src/IVAO.cpp
 src/OpenGLShaderFactory.cpp
 src/OpenGLWrapperConcrete.cpp
@@ -45,7 +39,7 @@ src/Primitives/TriangleImpl.cpp
 src/ProgramConcrete.cpp
 src/ProjectionData.cpp
 src/ShaderConcrete.cpp
-src/ShaderRegister.cpp
+src/TextureConcrete.cpp
 src/UtilConcrete.cpp
 src/VAOConcrete.cpp
 src/VAOOpengl.cpp
@@ -87,17 +81,24 @@ src/OpenGLWrapperConcrete.hpp
 src/Primitives/TriangleImpl.hpp
 src/ProgramConcrete.hpp
 src/ShaderConcrete.hpp
-src/ShaderRegister.hpp
+src/TextureConcrete.hpp
 src/UtilConcrete.hpp
 src/VAOConcrete.hpp
 src/VAOOpengl.hpp
 src/VBOConcrete.hpp
 )
 
+set( DEPENDENCIES
+LOGLW-AdditionalDeps
+sdl2wrapper
+cul
+AdditionalDeps
+)
+
 if( MSVC )
-    target_link_libraries( ${EXEC} LOGLW-AdditionalDeps sdl2wrapper cul AdditionalDeps )
+    target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
-    target_link_libraries( ${EXEC} LOGLW-AdditionalDeps sdl2wrapper cul AdditionalDeps stdc++fs  )
+    target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs  )
 endif()
 
 target_include_directories(${EXEC} PUBLIC include)

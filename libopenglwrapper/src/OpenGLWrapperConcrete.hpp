@@ -2,6 +2,8 @@
 
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "libopenglwrapper/IDebugOverlay.hpp"
+#include "libopenglwrapper/ITextureFactory.hpp"
+
 #include "OpenGLShaderFactory.hpp"
 
 #include "SDL2Wrapper/IMPORT_SDL_video.hpp"
@@ -22,6 +24,12 @@
 #include "CUL/STL_IMPORTS/STD_atomic.hpp"
 
 union SDL_Event;
+
+NAMESPACE_BEGIN( SDL2W )
+class IKey;
+class IKeyboardObserver;
+using WindowSize = CUL::Graphics::Size2Di;
+NAMESPACE_END( SDL2W )
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -61,7 +69,8 @@ class OpenGLWrapperConcrete final:
     public IOpenGLWrapper,
     private IObjectFactory,
     private IDebugOverlay,
-    private SDL2W::ISDLEventObserver
+    private SDL2W::ISDLEventObserver,
+    private ITextureFactory
 {
 public:
     OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w );
@@ -78,8 +87,6 @@ private:
     void setProjection( const ProjectionData& rect ) override;
     void setViewport( const Viewport& viewport, const bool instant = false ) override;
 
-    IRect* createRect() override;
-    Triangle* createTriangle() override;
     IObject* createFromFile( const String& path ) override;
     IObject* createFromFile( CUL::JSON::IJSONFile* file );
     IObject* createFromFile( IFile* file ) override;
@@ -100,7 +107,7 @@ private:
     CUL::LOG::ILogger* getLoger() override;
     IUtility* getUtility() override;
     const Viewport& getViewport() const override;
-    ProjectionData* getProjectionData() override;
+    ProjectionData& getProjectionData() override;
 
     const ContextInfo& getContext() const override;
 
@@ -125,6 +132,8 @@ private:
     void clearModelViewEveryFrame( const bool enable ) override;
     void calculateFrameWait();
 
+    CUL::GUTILS::IConfigFile* getConfig() override;
+
     void drawDebugInfo( const bool enable ) override;
 
     IDebugOverlay* getDebugOverlay() override;
@@ -132,6 +141,33 @@ private:
 
     unsigned addSliderValue( const CUL::String& valName, float* value, float min, float max, const std::function<void( void )> onUpdate = nullptr ) override;
     unsigned addText( const CUL::String& text, float* value ) override;
+
+    void runEventLoop() override;
+    void stopEventLoop() override;
+    SDL2W::IWindow* getMainWindow() override;
+
+
+// ITextureFactory
+    ITextureFactory* getTextureFactory() override;
+    ITexture* createTexture( const CUL::FS::Path& path, const bool rgba = false ) override;
+
+
+// SDL2W::IMouseObservable
+    void addMouseEventCallback( const SDL2W::IMouseObservable::MouseCallback& callback ) override;
+    void registerMouseEventListener( SDL2W::IMouseObserver* observer ) override;
+    void unregisterMouseEventListener( SDL2W::IMouseObserver* observer ) override;
+    SDL2W::MouseData& getMouseData() override;
+
+// SDL2W::IKeyboardObservable
+    void registerKeyboardEventCallback( const std::function<void( const SDL2W::IKey& key )>& callback ) override;
+
+    void registerKeyboardEventListener( SDL2W::IKeyboardObserver* observer ) override;
+    void unregisterKeyboardEventListener( SDL2W::IKeyboardObserver* observer ) override;
+
+    bool isKeyUp( const String& keyName ) const override;
+
+// SDL2W::IWindowEventOBservable
+    void registerWindowEventCallback( const SDL2W::WindowCallback& callback ) override;
 
     std::map<unsigned, DebugValueRow> m_debugValues;
 
@@ -175,7 +211,7 @@ private:
     EmptyFunctionCallback m_onBeforeFrame;
 
     DumbPtr<CUL::ITimer> m_frameTimer;
-    Safe<float> m_fpsLimit = 60.f;
+    Safe<float> m_fpsLimit = 144.f;
     Safe<int> m_targetFrameLengthUs = 0u;
     Safe<int> m_currentFrameLengthUs = 0u;
     Safe<int> m_frameSleepUs = 64;

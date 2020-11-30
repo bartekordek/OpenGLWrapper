@@ -94,6 +94,7 @@ private:
     virtual void scale( const CUL::MATH::Vector3Df& scale ) const override;
     virtual void scale( const float scale ) const override;
 
+    void draw( const QuadF& quad, const QuadF& texQuad ) override;
     void draw( const QuadF& quad, const ColorS& color ) override;
     void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) override;
 
@@ -105,6 +106,16 @@ private:
     void assert( const bool value, const CUL::String& message ) const;
     void setDepthTest( const bool enabled ) const override;
     void setBackfaceCUll( const bool enabled ) const override;
+
+// Texturing
+    void setTexuring( const bool enabled ) const override;
+    unsigned generateTexture() const override;
+    void bindTexture( const unsigned int textureId ) const override;
+    void setTextureParameter(
+        const TextureParameters type,
+        const TextureFilterType val ) const override;
+    void setTextureData( const TextureInfo& ti ) const override;
+    void freeTexture( unsigned int& textureId ) const override;
 
     void matrixStackPush() override;
     void matrixStackPop() override;

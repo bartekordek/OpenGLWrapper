@@ -1,15 +1,19 @@
 #include "OpenGLWrapperConcrete.hpp"
+
+#include "TextureConcrete.hpp"
+#include "UtilConcrete.hpp"
+#include "ImportImgui.hpp"
+
+#include "libopenglwrapper/Primitives/Triangle.hpp"
+
+#include "SDL2Wrapper/IWindow.hpp"
+
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/ITimer.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/JSON/INode.hpp"
-#include "libopenglwrapper/Primitives/Triangle.hpp"
-
-#include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
-#include "UtilConcrete.hpp"
-
-#include "ImportImgui.hpp"
 
 using namespace LOGLW;
 
@@ -18,12 +22,13 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     m_sdlW( sdl2w ),
     m_activeWindow( sdl2w->getMainWindow() ),
     m_cul( sdl2w->getCul() ),
-    m_logger( CUL::LOG::LOG_CONTAINER::getLogger() ),
+    m_logger( sdl2w->getCul()->getLogger() ),
     m_oglUtility( new UtilConcrete( sdl2w->getCul() ) ),
     m_frameTimer( CUL::TimerFactory::getChronoTimer() )
 {
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
     CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
+    CUL::Assert::simple( nullptr != m_logger, "NO LOGGER." );
 }
 
 void OpenGLWrapperConcrete::startRenderingLoop()
@@ -63,7 +68,7 @@ void OpenGLWrapperConcrete::addObjectToRender( IRenderable* renderable )
 
 IShaderFactory* OpenGLWrapperConcrete::getShaderFactory()
 {
-    return &*m_shaderFactory;
+    return m_shaderFactory.get();
 }
 
 IObjectFactory* OpenGLWrapperConcrete::getObjectFactory()
@@ -96,28 +101,14 @@ const Viewport& OpenGLWrapperConcrete::getViewport() const
     return m_viewport;
 }
 
-ProjectionData* OpenGLWrapperConcrete::getProjectionData()
+ProjectionData& OpenGLWrapperConcrete::getProjectionData()
 {
-    return &m_projectionData;
+    return m_projectionData;
 }
 
 const ContextInfo& OpenGLWrapperConcrete::getContext() const
 {
     return m_glContext;
-}
-
-IRect* OpenGLWrapperConcrete::createRect()
-{
-    return nullptr;
-}
-
-Triangle* OpenGLWrapperConcrete::createTriangle()
-{
-    /*
-    auto result = new TriangleImpl();
-    m_objectsToRender.insert( result );
-    */
-    return nullptr;
 }
 
 IObject* OpenGLWrapperConcrete::createFromFile( const String& path )
@@ -259,6 +250,7 @@ void OpenGLWrapperConcrete::initialize()
     m_sdlW->registerSDLEventObserver( this );
 
     m_oglUtility->setProjectionAndModelToIdentity();
+    m_oglUtility->setTexuring( true );
 
     const auto& winSize = m_activeWindow->getSize();
     setupProjectionData( winSize );
@@ -279,6 +271,10 @@ void OpenGLWrapperConcrete::initialize()
     calculateFrameWait();
 
     m_projectionData.m_depthTest.setOnChange( [this](){
+        m_projectionChanged = true;
+    } );
+
+    m_projectionData.setOnChange( [this] () {
         m_projectionChanged = true;
     } );
 
@@ -339,7 +335,9 @@ void OpenGLWrapperConcrete::renderFrame()
         m_oglUtility->clearColorAndDepthBuffer();
     }
 
-    //m_projectionChanged = true;
+    m_oglUtility->setDepthTest( m_projectionData.m_depthTest );
+
+    m_projectionChanged = true;
     if( m_projectionChanged )
     {
         changeProjectionType();
@@ -395,7 +393,7 @@ void OpenGLWrapperConcrete::calculateNextFrameLengths()
     {
         m_frameSleepUs += m_usDelta;
     }
-    m_usDelta = std::abs( m_currentFrameLengthUs - m_targetFrameLengthUs ) / 16;
+    m_usDelta = std::abs( m_currentFrameLengthUs - m_targetFrameLengthUs ) / 4;
 }
 
 #if _MSC_VER
@@ -436,6 +434,10 @@ void OpenGLWrapperConcrete::renderInfo()
 
     text = "Up:" + m_projectionData.getUp().serialize( 0 );
     ImGui::Text( "%s",text.cStr() );
+
+    const auto& mData = m_sdlW->getMouseData();
+    text = "Mouse = ( " + String( mData.getX() ) + ", " + String( mData.getY() ) + " )";
+    ImGui::Text( "%s", text.cStr() );
 
     res = ImGui::SliderFloat( "Z Far", &m_projectionData.m_zFar, -64.f, 64.f );
     if( res )
@@ -673,6 +675,13 @@ void OpenGLWrapperConcrete::calculateFrameWait()
     m_targetFrameLengthUs = 1000000.0f / m_fpsLimit;
 }
 
+CUL::GUTILS::IConfigFile* OpenGLWrapperConcrete::getConfig()
+{
+    CUL::Assert::simple( m_sdlW != nullptr, "No proper SDL2 pointer initialized." );
+
+    return m_sdlW->getConfig();
+}
+
 void OpenGLWrapperConcrete::drawDebugInfo( const bool enable )
 {
     m_enableDebugDraw = enable;
@@ -724,6 +733,80 @@ unsigned OpenGLWrapperConcrete::addText( const CUL::String& text, float* val )
     m_debugValues[ newId ] = row;
 
     return newId;
+}
+
+void OpenGLWrapperConcrete::runEventLoop()
+{
+    m_sdlW->runEventLoop();
+}
+
+void OpenGLWrapperConcrete::stopEventLoop()
+{
+    m_sdlW->stopEventLoop();
+}
+
+SDL2W::IWindow* OpenGLWrapperConcrete::getMainWindow()
+{
+    return m_sdlW->getMainWindow();
+}
+
+ITextureFactory* OpenGLWrapperConcrete::getTextureFactory()
+{
+    return this;
+}
+
+ITexture* OpenGLWrapperConcrete::createTexture( const CUL::FS::Path& path, const bool )
+{
+    //auto image = m_sdlW->getCul()->getImageLoader()->loadImage( path, rgba );
+    auto textureConcrete = new TextureConcrete( getUtility(), m_sdlW->getCul()->getImageLoader(), path );
+    return textureConcrete;
+}
+
+// SDL2W::IMouseObservable
+void OpenGLWrapperConcrete::addMouseEventCallback( const SDL2W::IMouseObservable::MouseCallback& callback )
+{
+    m_sdlW->addMouseEventCallback( callback );
+}
+
+void OpenGLWrapperConcrete::registerMouseEventListener( SDL2W::IMouseObserver* observer )
+{
+    m_sdlW->registerMouseEventListener( observer );
+}
+
+void OpenGLWrapperConcrete::unregisterMouseEventListener( SDL2W::IMouseObserver* observer )
+{
+    m_sdlW->unregisterMouseEventListener( observer );
+}
+
+SDL2W::MouseData& OpenGLWrapperConcrete::getMouseData()
+{
+    return m_sdlW->getMouseData();
+}
+
+// SDL2W::IKeyboardObservable
+void OpenGLWrapperConcrete::registerKeyboardEventCallback( const std::function<void( const SDL2W::IKey& key )>& callback )
+{
+    m_sdlW->registerKeyboardEventCallback( callback );
+}
+
+void OpenGLWrapperConcrete::registerKeyboardEventListener( SDL2W::IKeyboardObserver* observer )
+{
+    m_sdlW->registerKeyboardEventListener( observer );
+}
+
+void OpenGLWrapperConcrete::unregisterKeyboardEventListener( SDL2W::IKeyboardObserver* observer )
+{
+    m_sdlW->unregisterKeyboardEventListener( observer );
+}
+
+bool OpenGLWrapperConcrete::isKeyUp( const String& keyName ) const
+{
+    return m_sdlW->isKeyUp( keyName );
+}
+
+void OpenGLWrapperConcrete::registerWindowEventCallback( const SDL2W::WindowCallback& callback )
+{
+    m_sdlW->registerWindowEventCallback( callback );
 }
 
 CUL::CULInterface* OpenGLWrapperConcrete::getCul()

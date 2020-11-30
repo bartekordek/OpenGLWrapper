@@ -9,7 +9,7 @@ Triangle::Triangle():
 }
 
 void Triangle::addShader(
-    const Path& filePath,
+    const CUL::FS::Path& filePath,
     IShaderFactory* sf )
 {
     m_impl->addShader( filePath, sf );

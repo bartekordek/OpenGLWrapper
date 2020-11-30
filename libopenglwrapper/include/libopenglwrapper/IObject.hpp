@@ -9,8 +9,6 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-using IFile = CUL::FS::IFile;
-
 class LIBOPENGLWRAPPER_API IObject:
     public IRenderable,
     public IMovable
@@ -19,7 +17,7 @@ public:
     IObject() = default;
     virtual ~IObject() = default;
 
-    virtual void addShader( const Path& filePath, IShaderFactory* sf ) = 0;
+    virtual void addShader( const CUL::FS::Path& filePath, IShaderFactory* sf ) = 0;
 
     virtual const std::vector<float> getData() const = 0;
 

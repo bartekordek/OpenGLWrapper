@@ -2,15 +2,13 @@
 
 #include "libopenglwrapper/Import.hpp"
 
-#include "CUL/Filesystem/IFile.hpp"
-#include "CUL/Filesystem/Path.hpp"
-#include "CUL/GenericUtils/DumbPtr.hpp"
+NAMESPACE_BEGIN( CUL )
+NAMESPACE_BEGIN( FS )
+class Path;
+NAMESPACE_END( FS )
+NAMESPACE_END( CUL )
 
 NAMESPACE_BEGIN( LOGLW )
-
-using IFile = CUL::FS::IFile;
-using String = CUL::String;
-using Path = CUL::FS::Path;
 
 class LIBOPENGLWRAPPER_API IShader
 {
@@ -20,7 +18,7 @@ public:
     virtual unsigned int getId() const = 0;
     virtual void useShader() const = 0;
     virtual void reload() = 0;
-    virtual const Path& getPath() const = 0;
+    virtual const CUL::FS::Path& getPath() const = 0;
 
     virtual ~IShader();
 
