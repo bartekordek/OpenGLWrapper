@@ -14,16 +14,15 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/SDL2Wrapper/deps/sdl2-r
 find_package(OpenGL)
 find_package(GLEW)
 
-#set(LIBS ${LIBS} ${OPENGL_LIBRARY} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${Assimp_LIBRARIES} )
-set(LIBS ${LIBS} ${OPENGL_LIBRARY} ${GLEW_LIBRARIES} )
-
 if (MSVC)
     set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Build-Windows )
-    message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+else()
+    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Build-Linux )
 endif()
+message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
 
 add_library(${EXEC} STATIC
 imgui/examples/imgui_impl_opengl2.cpp
@@ -52,8 +51,11 @@ imgui/misc/cpp/imgui_stdlib.h
 
 target_include_directories(${EXEC} PUBLIC imgui)
 
+#set(LIBS ${LIBS} ${OPENGL_LIBRARY} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${Assimp_LIBRARIES} )
+set(LIBS ${GLEW_LIBRARIES} )
+
 if (MSVC)
-    target_link_libraries( ${EXEC} ${LIBS} )
+    target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
-    target_link_libraries( ${EXEC} ${LIBS} stdc++fs )
+    target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
 endif()

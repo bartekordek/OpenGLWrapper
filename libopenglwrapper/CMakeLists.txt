@@ -13,12 +13,19 @@ if( MSVC )
     #set_target_properties(SDL2 PROPERTIES
     #    COMPILE_FLAGS "/MP" # Adjust as needed
     #)
+    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Windows )
 else()
     # lots of warnings and all warnings as errors
     #add_compile_options(-Wall -Wextra -pedantic -Werror)
     add_compile_options( -Wall -Wextra -pedantic -Werror )
     add_definitions( -Wfatal-errors )
+    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Linux )
 endif()
+
+message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
 
 add_library( ${EXEC} SHARED
 include/libopenglwrapper/IProgram.cpp
@@ -88,12 +95,22 @@ src/VAOOpengl.hpp
 src/VBOConcrete.hpp
 )
 
+find_package(OpenGL)
+find_package(GLEW)
+find_package(freeglut)
+
 set( DEPENDENCIES
 LOGLW-AdditionalDeps
 sdl2wrapper
 cul
 AdditionalDeps
+${GLEW_LIBRARIES}
+freeglut
+${OPENGL_LIBRARIES}
+${OPENGL_LIBRARY}
 )
+
+message( "DEPENDENCIES: ${DEPENDENCIES}" )
 
 if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )

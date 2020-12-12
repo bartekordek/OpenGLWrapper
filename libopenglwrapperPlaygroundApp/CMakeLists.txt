@@ -47,12 +47,20 @@ IF(NOT APPLE AND NOT MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 ENDIF()
 
+find_package(OpenGL)
+
 set( DEPENDENCIES
 openglWrapper
 LOGLW-AdditionalDeps
 cul
 AdditionalDeps
+${GLEW_LIBRARIES}
+freeglut
+${OPENGL_LIBRARIES}
+${OPENGL_LIBRARY}
 )
+
+message( "DEPENDENCIES: ${DEPENDENCIES}" )
 
 if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
@@ -66,6 +74,8 @@ target_include_directories(${EXEC} PRIVATE src)
 if( MSVC )
     set_property(TARGET ${EXEC} PROPERTY "VS_DEBUGGER_WORKING_DIRECTORY" "${CMAKE_SOURCE_DIR}/runDir")
 endif()
+
+file(COPY GET_RUNTIME_DEPENDENCIES ${OUTPUT_DIR})
 
 #add_custom_command(TARGET ${EXEC} POST_BUILD       # Adds a post-build event to MyTest
 #    COMMAND ${CMAKE_COMMAND} -E copy_if_different  # which executes "cmake - E copy_if_different..."
