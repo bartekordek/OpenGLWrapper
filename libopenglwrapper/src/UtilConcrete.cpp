@@ -395,17 +395,17 @@ void UtilConcrete::scale( const float scale ) const
 void UtilConcrete::draw( const QuadF& quad, const QuadF& texQuad )
 {
     glBegin( GL_QUADS );
-        glTexCoord3f( texQuad.p1.getX(), texQuad.p1.getY(), texQuad.p1.getZ() );
-        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+        glTexCoord3f( texQuad.p1().x, texQuad.p1().y, texQuad.p1().z );
+        glVertex3f( quad.p1().x, quad.p1().y, quad.p1().z );
 
-        glTexCoord3f( texQuad.p2.getX(), texQuad.p2.getY(), texQuad.p2.getZ() );
-        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+        glTexCoord3f( texQuad.p2().x, texQuad.p2().y, texQuad.p2().z );
+        glVertex3f( quad.p2().x, quad.p2().y, quad.p2().z );
 
-        glTexCoord3f( texQuad.p3.getX(), texQuad.p3.getY(), texQuad.p3.getZ() );
-        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+        glTexCoord3f( texQuad.p3().x, texQuad.p3().y, texQuad.p3().z );
+        glVertex3f( quad.p3().x, quad.p3().y, quad.p3().z );
 
-        glTexCoord3f( texQuad.p4.getX(), texQuad.p4.getY(), texQuad.p4.getZ() );
-        glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
+        glTexCoord3f( texQuad.p4().x, texQuad.p4().y, texQuad.p4().z );
+        glVertex3f( quad.p4().x, quad.p4().y, quad.p4().z );
     glEnd();
 }
 
@@ -417,10 +417,10 @@ void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
         auto blue = color.getBF();
         auto alpha = color.getAF();
         glColor4f( red, green, blue, alpha );
-        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
-        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
-        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
-        glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
+        glVertex3f( quad.p1().x, quad.p1().y, quad.p1().z );
+        glVertex3f( quad.p2().x, quad.p2().y, quad.p2().z );
+        glVertex3f( quad.p3().x, quad.p3().y, quad.p3().z );
+        glVertex3f( quad.p4().x, quad.p4().y, quad.p4().z );
     glEnd();
 }
 
@@ -428,16 +428,16 @@ void UtilConcrete::draw( const QuadF& quad, const std::array<ColorS, 4>& color )
 {
     glBegin( GL_QUADS );
         glColor4f( color[0].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
-        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+        glVertex3f( quad.p1().x, quad.p1().y, quad.p1().z );
 
         glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
-        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+        glVertex3f( quad.p2().x, quad.p2().y, quad.p2().z );
 
         glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
-        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+        glVertex3f( quad.p3().x, quad.p3().y, quad.p3().z );
 
         glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() );
-        glVertex3f( quad.p4.getX(), quad.p4.getY(), quad.p4.getZ() );
+        glVertex3f( quad.p4().x, quad.p4().y, quad.p4().z );
     glEnd();
 }
 
@@ -446,9 +446,9 @@ void UtilConcrete::draw( const TriangleF& triangle, const ColorS& color )
 {
     glBegin( GL_TRIANGLES );
         glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
-        glVertex3f( triangle.p1.getX(), triangle.p1.getY(), triangle.p1.getZ() );
-        glVertex3f( triangle.p2.getX(), triangle.p2.getY(), triangle.p2.getZ() );
-        glVertex3f( triangle.p3.getX(), triangle.p3.getY(), triangle.p3.getZ() );
+        glVertex3f( triangle.p1().getX(), triangle.p1().getY(), triangle.p1().getZ() );
+        glVertex3f( triangle.p2().getX(), triangle.p2().getY(), triangle.p2().getZ() );
+        glVertex3f( triangle.p3().getX(), triangle.p3().getY(), triangle.p3().getZ() );
     glEnd();
 }
 
@@ -456,13 +456,13 @@ void UtilConcrete::draw( const TriangleF& quad, const std::array<ColorS, 4>& col
 {
     glBegin( GL_TRIANGLES );
         glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
-        glVertex3f( quad.p1.getX(), quad.p1.getY(), quad.p1.getZ() );
+        glVertex3f( quad.p1().getX(), quad.p1().getY(), quad.p1().getZ() );
 
         glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
-        glVertex3f( quad.p2.getX(), quad.p2.getY(), quad.p2.getZ() );
+        glVertex3f( quad.p2().getX(), quad.p2().getY(), quad.p2().getZ() );
 
         glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
-        glVertex3f( quad.p3.getX(), quad.p3.getY(), quad.p3.getZ() );
+        glVertex3f( quad.p3().getX(), quad.p3().getY(), quad.p3().getZ() );
     glEnd();
 }
 
@@ -498,6 +498,22 @@ void UtilConcrete::clearBuffer( const ClearMasks mask ) const
     glClear( static_cast<GLbitfield>( mask ) );
 }
 
+void UtilConcrete::setVertexArrayClientState( const bool enable ) const
+{
+// If enabled, the vertex array is enabled for writing and used during
+// rendering when glArrayElement,
+// glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays,
+// or glMultiDrawElements is called. See glVertexPointer.
+    if( enable )
+    {
+        glEnableClientState( GL_VERTEX_ARRAY );
+    }
+    else
+    {
+        glEnableClientState( GL_VERTEX_ARRAY );
+    }
+}
+
 unsigned int UtilConcrete::generateVertexArray( const int size ) const
 {
     GLuint vao = 0;
@@ -507,9 +523,17 @@ unsigned int UtilConcrete::generateVertexArray( const int size ) const
 
 void bufferDataImpl( const void* data, const GLenum type, const GLsizeiptr dataSize );
 
+void UtilConcrete::bufferData( const CUL::MATH::Primitives::QuadF data, const BufferTypes type ) const
+{
+    auto dataVal = (void*)(&data.data);
+    bufferDataImpl(
+        dataVal,
+        static_cast<GLenum>(type),
+        static_cast<GLsizeiptr>(4 * sizeof( QuadF::PointType )) );
+}
+
 void UtilConcrete::bufferData( const std::vector<unsigned int>& data, const BufferTypes type  ) const
 {
-
     bufferDataImpl(
         data.data(),
         static_cast<GLenum>( type ),
@@ -666,6 +690,24 @@ void UtilConcrete::enableVertexAttribiute(
 {
     const auto attributeLocation = UtilConcrete::getAttribLocation( programId, attribName );
     glEnableVertexAttribArray( attributeLocation );
+}
+
+void UtilConcrete::setVertexPointer(
+    int coordinatesPerVertex,
+    DataType dataType,
+    int stride,
+    const void* data ) const
+{
+// glVertexPointer — define an array of vertex data
+// glVertexPointer specifies the location and data format of an array of vertex coordinates to use when rendering. size specifies the number of coordinates per vertex, and must be 2, 3, or 4. type specifies the data type of each coordinate, and stride specifies the byte stride from one vertex to the next, allowing vertices and attributes to be packed into a single array or stored in separate arrays. (Single-array storage may be more efficient on some implementations; see glInterleavedArrays.)
+
+//  If a non-zero named buffer object is bound to the GL_ARRAY_BUFFER target (see glBindBuffer) while a vertex array is specified, pointer is treated as a byte offset into the buffer object's data store. Also, the buffer object binding (GL_ARRAY_BUFFER_BINDING) is saved as vertex array client-side state (GL_VERTEX_ARRAY_BUFFER_BINDING).
+
+//When a vertex array is specified, size, type, stride, and pointer are saved as client-side state, in addition to the current vertex array buffer object binding.
+
+// To enable and disable the vertex array, call glEnableClientState and glDisableClientState with the argument GL_VERTEX_ARRAY. If enabled, the vertex array is used when glArrayElement, glDrawArrays, glMultiDrawArrays, glDrawElements, glMultiDrawElements, or glDrawRangeElements is called.
+//    glVertexPointer( coordinatesPerVertex, (GLenum)dataType, stride, data );
+    glVertexPointer( coordinatesPerVertex, (GLenum) dataType, stride, data );
 }
 
 void UtilConcrete::disableVertexAttribiute(

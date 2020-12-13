@@ -247,14 +247,14 @@ void reloadConfig()
     g_oglw->setProjection( g_projectionData );
 
     float size = g_configFile->getValue( "RED_SIZE" ).toFloat();
-    triangleRed.p1 = {  size, -size, 0.0f };
-    triangleRed.p2 = { -size, -size, 0.0f };
-    triangleRed.p3 = { -size,  size, 0.0f };
+    triangleRed.p1() = {  size, -size, 0.0f };
+    triangleRed.p2() = { -size, -size, 0.0f };
+    triangleRed.p3() = { -size,  size, 0.0f };
 
     size = g_configFile->getValue( "BLUE_SIZE" ).toFloat();
-    triangleBackground0.p1 = {  size, -size, 0.0f };
-    triangleBackground0.p2 = { -size, -size, 0.0f };
-    triangleBackground0.p3 = { -size,  size, 0.0f };
+    triangleBackground0.p1() = {  size, -size, 0.0f };
+    triangleBackground0.p2() = { -size, -size, 0.0f };
+    triangleBackground0.p3() = { -size,  size, 0.0f };
 
     blueTriangleZ = g_configFile->getValue( "BLUE_Z" ).toFloat();
     redTriangleZ = g_configFile->getValue( "RED_Z" ).toFloat();

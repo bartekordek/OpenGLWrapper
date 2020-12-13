@@ -97,7 +97,7 @@ src/VBOConcrete.hpp
 
 find_package(OpenGL)
 find_package(GLEW)
-find_package(freeglut)
+#find_package(freeglut)
 
 set( DEPENDENCIES
 LOGLW-AdditionalDeps

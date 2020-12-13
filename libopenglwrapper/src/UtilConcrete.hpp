@@ -51,8 +51,11 @@ private:
     void clearColorTo( const ColorS color ) const override;
     void clearBuffer( const ClearMasks mask ) const override;
 
+// VBO, VAO
+    void setVertexArrayClientState( const bool enable ) const override;
     unsigned int generateVertexArray( const int size = 1 ) const override;
 
+    void bufferData( const CUL::MATH::Primitives::QuadF data, const BufferTypes type ) const override;
     void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const override;
     void bufferData( const std::vector<float>& data, const BufferTypes type ) const override;
     void bufferData( const float vertices[] ) const override;
@@ -79,6 +82,7 @@ private:
         Cint stride,
         const void* offset = nullptr ) const override;
     void enableVertexAttribArray( Cunt attributeId ) const override;
+    void setVertexPointer( int coordinatesPerVertex, DataType dataType, int stride, const void* data ) const override;
 
     std::vector<std::string> listExtensions() override;
 

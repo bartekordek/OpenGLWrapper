@@ -6,7 +6,7 @@
         {
             "label": "Recreate Cmake",
             "type": "shell",
-            "command": "clear;cd Build-Linux;rm -rf *; cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug;time make -j12",
+            "command": "pwd;rm -rf Build-Linux; mkdir Build-Linux; cd Build-Linux; cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug",
             "group": {
                 "kind": "build",
                 "isDefault": true

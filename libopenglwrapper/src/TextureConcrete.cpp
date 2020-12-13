@@ -74,15 +74,15 @@ void TextureConcrete::calculateQuads()
         //    quadHeight = clip->h;
         //}
 
-        m_objectQuad.p1 = {      0.0f,       0.0f, 0.0f };
-        m_objectQuad.p2 = { quadWidth,       0.0f, 0.0f };
-        m_objectQuad.p3 = { quadWidth, quadHeight, 0.0f };
-        m_objectQuad.p4 = {      0.0f, quadHeight, 0.0f };
+        m_objectQuad.p1() = {      0.0f,       0.0f, 0.0f };
+        m_objectQuad.p2() = { quadWidth,       0.0f, 0.0f };
+        m_objectQuad.p3() = { quadWidth, quadHeight, 0.0f };
+        m_objectQuad.p4() = {      0.0f, quadHeight, 0.0f };
 
-        m_texQuad.p1 = {  texLeft,    texTop, 0.0f };
-        m_texQuad.p2 = { texRight,    texTop, 0.0f };
-        m_texQuad.p3 = { texRight, texBottom, 0.0f };
-        m_texQuad.p4 = {  texLeft, texBottom, 0.0f };
+        m_texQuad.p1() = {  texLeft,    texTop, 0.0f };
+        m_texQuad.p2() = { texRight,    texTop, 0.0f };
+        m_texQuad.p3() = { texRight, texBottom, 0.0f };
+        m_texQuad.p4() = {  texLeft, texBottom, 0.0f };
     }
 }
 

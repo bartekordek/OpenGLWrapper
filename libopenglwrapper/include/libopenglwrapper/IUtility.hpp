@@ -165,10 +165,13 @@ public:
 
     virtual unsigned int generateVertexArray( const int size = 1 ) const = 0;
 
+    virtual void bufferData( const CUL::MATH::Primitives::QuadF data, const BufferTypes type ) const = 0;
     virtual void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const std::vector<float>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const float vertices[] ) const = 0;
 
+// VAO, VBO
+    virtual void setVertexArrayClientState( const bool enable ) const = 0;
     virtual unsigned int generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const = 0;
     virtual unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const = 0;
 
@@ -192,6 +195,9 @@ public:
         Cint stride,
         const void* offset = nullptr ) const = 0;
     virtual void enableVertexAttribArray( Cunt attributeId ) const = 0;
+    virtual void setVertexPointer( int coordinatesPerVertex, DataType dataType, int stride, const void* data ) const = 0;
+
+
 
     virtual std::vector<std::string> listExtensions() = 0;
 
