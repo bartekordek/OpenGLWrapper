@@ -73,7 +73,7 @@ void onMouseEvent( const SDL2W::MouseData& md );
 
 int main( int argc, char** argv )
 {
-    auto& cu = CUL::GUTILS::ConsoleUtilities::getInstance();
+    CUL::GUTILS::ConsoleUtilities cu;
     cu.setArgs( argc, argv );
 
     const auto width = std::stoi( cu.getFlagValue( "-w" ).string() );

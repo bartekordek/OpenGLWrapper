@@ -165,7 +165,7 @@ public:
 
     virtual unsigned int generateVertexArray( const int size = 1 ) const = 0;
 
-    virtual void bufferData( const CUL::MATH::Primitives::QuadF data, const BufferTypes type ) const = 0;
+    virtual void bufferData( const CUL::MATH::Primitives::QuadF& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const std::vector<float>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const float vertices[] ) const = 0;

@@ -240,7 +240,8 @@ void OpenGLWrapperConcrete::initialize()
 {
     m_logger->log( "OpenGLWrapperConcrete::initialize()..." );
 
-    m_glContext = m_oglUtility->initContextVersion( m_activeWindow, 3, 1 );
+    m_glContext = m_oglUtility->initContextVersion( m_activeWindow, 4, 3 );
+    //m_glContext = m_oglUtility->initContextVersion( m_activeWindow, 3, 1 );
     m_logger->log( "OpenGLWrapperConcrete::initialize(), OpenGL version:" );
     m_logger->log( m_glContext.glVersion );
 
