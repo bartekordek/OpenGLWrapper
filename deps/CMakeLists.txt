@@ -11,18 +11,14 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/SDL2Wrapper/deps/)
 #add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../deps/sdl2-repo ${CMAKE_CURRENT_BINARY_DIR}/../deps/sdl2-repo)
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/SDL2Wrapper/deps/sdl2-repo/include)
 
-find_package(OpenGL)
-find_package(GLEW)
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${FREEGLUT_HOME}" )
+message( "[openglwrapper] 00 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
+find_package( OpenGL REQUIRED )
+find_package( GLEW REQUIRED )
 
-if (MSVC)
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Build-Windows )
-else()
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Build-Linux )
-endif()
-message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 
 add_library(${EXEC} STATIC
 imgui/examples/imgui_impl_opengl2.cpp

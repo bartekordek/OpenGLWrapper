@@ -6,6 +6,27 @@ project(openglWrapper LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(EXEC ${PROJECT_NAME})
 
+include_directories( SYSTEM ${GLM_INCLUDE_DIR} )
+include_directories( SYSTEM ${GLEW_INCLUDE_DIR} )
+include_directories( SYSTEM ${GLFW_INCLUDE_DIR} )
+include_directories( SYSTEM ${FREEGLUT_INCLUDE_DIR} )
+
+message( "[openglwrapper lib] GLEW_INCLUDE_DIRS: ${GLEW_INCLUDE_DIRS}" )
+message( "[openglwrapper lib] GLEW_HOME: ${GLEW_HOME}" )
+
+message( "[openglwrapper lib] PRINTING:" )
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+    message(STATUS "${dir}")
+endforeach()
+message( "[openglwrapper lib] DONE" )
+
+message( "[openglwrapper lib] 00 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
+find_package( OpenGL REQUIRED )
+find_package( GLEW REQUIRED )
+find_package( freeglut REQUIRED )
+find_package( GLFW REQUIRED )
+
 if( MSVC )
     # warning level 4 and all warnings as errors
     add_compile_options( /W4 /WX )
@@ -13,19 +34,17 @@ if( MSVC )
     #set_target_properties(SDL2 PROPERTIES
     #    COMPILE_FLAGS "/MP" # Adjust as needed
     #)
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Windows )
 else()
     # lots of warnings and all warnings as errors
     #add_compile_options(-Wall -Wextra -pedantic -Werror)
     add_compile_options( -Wall -Wextra -pedantic -Werror )
     add_definitions( -Wfatal-errors )
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Linux )
 endif()
 
-message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+message( "[openglwrapper lib] Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OGLW_OUTPUT_DIR}" )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 
 add_library( ${EXEC} SHARED
 include/libopenglwrapper/IProgram.cpp
@@ -95,9 +114,6 @@ src/VAOOpengl.hpp
 src/VBOConcrete.hpp
 )
 
-find_package(OpenGL)
-find_package(GLEW)
-#find_package(freeglut)
 
 set( DEPENDENCIES
 LOGLW-AdditionalDeps
@@ -105,17 +121,30 @@ sdl2wrapper
 cul
 AdditionalDeps
 ${GLEW_LIBRARIES}
+GLFW3
+${GLFW_LIBRARIES}
 freeglut
 ${OPENGL_LIBRARIES}
 ${OPENGL_LIBRARY}
 )
 
-message( "DEPENDENCIES: ${DEPENDENCIES}" )
+message( "[openglwrapper lib] DEPENDENCIES: ${DEPENDENCIES}" )
 
 if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs  )
+endif()
+
+if (MSVC)
+    CmakeToWindow( "${OGLW_TESTS_RUN_DIR}" OGLW_TESTS_RUN_DIR_WINDOWS )
+    CmakeToWindow( "${OGLW_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/*.dll" OGLW_DLLS )
+    CmakeToWindow( "${OGLW_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/*.pdb" OGLW_PDBS )
+
+    add_custom_command(TARGET ${EXEC} POST_BUILD
+        COMMAND "xcopy" "${OGLW_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+        COMMAND "xcopy" "${OGLW_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+    )
 endif()
 
 target_include_directories(${EXEC} PUBLIC include)

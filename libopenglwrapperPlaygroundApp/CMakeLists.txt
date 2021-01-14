@@ -18,7 +18,7 @@ else()
     set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Linux )
 endif()
 
-message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
+message( "[PlaygroundApp] Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
@@ -47,7 +47,7 @@ IF(NOT APPLE AND NOT MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 ENDIF()
 
-find_package(OpenGL)
+find_package(OpenGL REQUIRED)
 
 set( DEPENDENCIES
 openglWrapper
@@ -60,7 +60,7 @@ ${OPENGL_LIBRARIES}
 ${OPENGL_LIBRARY}
 )
 
-message( "DEPENDENCIES: ${DEPENDENCIES}" )
+#message( "DEPENDENCIES: ${DEPENDENCIES}" )
 
 if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
