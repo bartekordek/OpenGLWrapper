@@ -55,6 +55,7 @@ LOGLW-AdditionalDeps
 cul
 AdditionalDeps
 ${GLEW_LIBRARIES}
+${GLFW3_LIBRARIES}
 freeglut
 ${OPENGL_LIBRARIES}
 ${OPENGL_LIBRARY}

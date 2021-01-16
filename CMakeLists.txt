@@ -13,9 +13,10 @@ endif()
 
 set( OGLW_TESTS_RUN_DIR ${OGLW_ROOT}/runDir )
 
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps/SDL2Wrapper/deps/CUL/deps" )
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps/SDL2Wrapper/deps/CUL/cmake_modules" )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps" )
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${FREEGLUT_HOME}" )
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules" )
+message( "[openglwarpper] CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 
 # Add sub directories
 add_subdirectory( deps/SDL2Wrapper )
@@ -43,4 +44,4 @@ option(RENDER_OPENGL_CORE "Enable Opengl" ON)
 add_subdirectory( libopenglwrapper )
 add_subdirectory( libopenglwrapperPlaygroundApp )
 
-add_subdirectory( deps/GWork )
+#add_subdirectory( deps/GWork )

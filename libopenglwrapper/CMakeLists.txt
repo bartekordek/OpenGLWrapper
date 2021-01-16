@@ -36,7 +36,6 @@ if( MSVC )
     #)
 else()
     # lots of warnings and all warnings as errors
-    #add_compile_options(-Wall -Wextra -pedantic -Werror)
     add_compile_options( -Wall -Wextra -pedantic -Werror )
     add_definitions( -Wfatal-errors )
 endif()
@@ -121,7 +120,7 @@ sdl2wrapper
 cul
 AdditionalDeps
 ${GLEW_LIBRARIES}
-GLFW3
+${GLFW3_LIBRARIES}
 ${GLFW_LIBRARIES}
 freeglut
 ${OPENGL_LIBRARIES}
