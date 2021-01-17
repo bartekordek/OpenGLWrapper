@@ -168,8 +168,8 @@ if (MSVC)
     #)
 
     add_custom_command(TARGET ${EXEC} POST_BUILD
-        COMMAND ${OGLW_ROOT_WINDOWS}\\Copy.bat ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
-        COMMAND ${OGLW_ROOT_WINDOWS}\\Copy.bat ${OGLW_DEPS_ROOT_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
+        COMMAND ${OGLW_DEPS_ROOT_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
+        COMMAND ${OGLW_DEPS_ROOT_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat ${OGLW_DEPS_ROOT_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
     )
 endif()
 

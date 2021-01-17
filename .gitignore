@@ -35,3 +35,5 @@ deps/Makefile
 Makefile
 intermediate
 runDir
+
+deps/glew-2.1.0/glew.pc
