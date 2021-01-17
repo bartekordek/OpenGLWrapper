@@ -76,8 +76,16 @@ int main( int argc, char** argv )
     CUL::GUTILS::ConsoleUtilities cu;
     cu.setArgs( argc, argv );
 
-    const auto width = std::stoi( cu.getFlagValue( "-w" ).string() );
-    const auto height = std::stoi( cu.getFlagValue( "-h" ).string() );
+    auto wValue = cu.getFlagValue( "-w" ).string();
+    auto hValue = cu.getFlagValue( "-h" ).string();
+    
+    auto width = 1024;
+    auto height = 600;
+    if( !wValue.empty() && !hValue.empty() )
+    {
+        width = std::stoi( wValue );
+        height = std::stoi( hValue );
+    }
 
     Vector3Di winPos = { 200, 200, 0 };
     WindowSize winSize = { width, height };
@@ -140,9 +148,9 @@ void afterInit()
     g_mouseData = g_oglw->getMouseData();
 }
 
-void onMouseEvent( const SDL2W::MouseData& md )
+void onMouseEvent( const SDL2W::MouseData& mouseData )
 {
-    if( md.isButtonDown( 3 ) )
+    if( mouseData.isButtonDown( 3 ) )
     {
         const auto& md = g_oglw->getMouseData();
         const auto& winSize = g_oglw->getMainWindow()->getSize();
