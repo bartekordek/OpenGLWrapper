@@ -5,6 +5,7 @@ project(openglwrapper_main)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set( OGLW_ROOT ${CMAKE_CURRENT_SOURCE_DIR} )
+#set( ENV{OGLW_ROOT} ${OGLW_ROOT} )
 if( MSVC )
     set( OGLW_OUTPUT_DIR ${OGLW_ROOT}/Build-Windows )
 else()
@@ -12,6 +13,7 @@ else()
 endif()
 
 set( OGLW_TESTS_RUN_DIR ${OGLW_ROOT}/runDir )
+set( OGLW_DEPS_ROOT ${OGLW_ROOT}/deps )
 
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps/SDL2Wrapper/deps/CUL/cmake_modules" )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps" )
@@ -22,6 +24,7 @@ message( "[openglwarpper] CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 add_subdirectory( deps/SDL2Wrapper )
 add_subdirectory( deps )
 set( FREEGLUT_HOME ${OGLW_ROOT}/deps/freeglut-3.2.1 )
+set( ENV{FREEGLUT_HOME} ${FREEGLUT_HOME} )
 set( FREEGLUT_INCLUDE_DIR ${FREEGLUT_HOME}/include )
 add_subdirectory( ${FREEGLUT_HOME} )
 

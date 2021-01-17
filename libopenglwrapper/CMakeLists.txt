@@ -118,6 +118,7 @@ set( DEPENDENCIES
 LOGLW-AdditionalDeps
 sdl2wrapper
 cul
+glew
 AdditionalDeps
 ${GLEW_LIBRARIES}
 ${GLFW3_LIBRARIES}
@@ -136,13 +137,39 @@ else()
 endif()
 
 if (MSVC)
+    CMakeToWindow( ${OGLW_ROOT} OGLW_ROOT_WINDOWS )
+    CMakeToWindow( ${OGLW_OUTPUT_DIR} OGLW_OUTPUT_DIR_WINDOWS )
+    CMakeToWindow( ${OGLW_DEPS_ROOT} OGLW_DEPS_ROOT_WINDOWS )
+
     CmakeToWindow( "${OGLW_TESTS_RUN_DIR}" OGLW_TESTS_RUN_DIR_WINDOWS )
     CmakeToWindow( "${OGLW_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/*.dll" OGLW_DLLS )
     CmakeToWindow( "${OGLW_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/*.pdb" OGLW_PDBS )
 
+    CmakeToWindow( "${OGLW_OUTPUT_DIR}/bin/${CMAKE_BUILD_TYPE}/*.dll" OGLW_BIN_DLLS )
+    CmakeToWindow( "${OGLW_OUTPUT_DIR}/bin/${CMAKE_BUILD_TYPE}/*.pdb" OGLW_BIN_PDBS )
+
+    CMakeToWindow( $ENV{SDL2W_TESTS_RUN_DIR}/*.dll SDLW_DLLS )
+    CMakeToWindow( $ENV{SDL2W_TESTS_RUN_DIR}/*.pdb SDLW_PDBS )
+
+    CMakeToWindow( ${OGLW_OUTPUT_DIR}/*.dll INPUT_DIR_DLL )
+    CMakeToWindow( ${OGLW_OUTPUT_DIR}/*.pdb INPUT_DIR_PDB )
+#
+    #message( "[openglwrapper lib] glew lib: $<glew>" )
+#
+    #add_custom_command(TARGET ${EXEC} POST_BUILD
+    #    COMMAND "xcopy" "${OGLW_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+    #    COMMAND "xcopy" "${OGLW_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+#
+    #    COMMAND "xcopy" "${OGLW_BIN_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+    #    COMMAND "xcopy" "${OGLW_BIN_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+#
+    #    COMMAND "xcopy" "${SDLW_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+    #    COMMAND "xcopy" "${SDLW_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+    #)
+
     add_custom_command(TARGET ${EXEC} POST_BUILD
-        COMMAND "xcopy" "${OGLW_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
-        COMMAND "xcopy" "${OGLW_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
+        COMMAND ${OGLW_ROOT_WINDOWS}\\Copy.bat ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
+        COMMAND ${OGLW_ROOT_WINDOWS}\\Copy.bat ${OGLW_DEPS_ROOT_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
     )
 endif()
 

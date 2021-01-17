@@ -10,3 +10,6 @@
 [submodule "deps/glfw-repo"]
 	path = deps/glfw-repo
 	url = git@github.com:glfw/glfw.git
+[submodule "deps/helpers"]
+	path = deps/helpers
+	url = git@github.com:bartekordek/helpers.git
