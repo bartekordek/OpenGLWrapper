@@ -1,7 +1,6 @@
 *.a
 *.bin
 *.check_cache
-*.cmake
 *.exe
 *.exp
 *.idb
@@ -32,6 +31,7 @@ Build-*
 build/*
 CMakeFiles/
 deps/Makefile
+cmake_install.cmake
 Makefile
 intermediate
 runDir

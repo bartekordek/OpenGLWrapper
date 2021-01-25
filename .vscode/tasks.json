@@ -6,7 +6,7 @@
         {
             "label": "CMake - Linux Debug",
             "type": "shell",
-            "command": "pwd;mkdir -p Build-Linux; cd Build-Linux; ../Build.sh",
+            "command": "pwd && mkdir -p Build-Linux; cd Build-Linux;pwd; sh ../deps/helpers/Createx64CmakeBuildDebug.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
