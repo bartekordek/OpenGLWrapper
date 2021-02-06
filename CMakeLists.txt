@@ -5,7 +5,7 @@ project(openglwrapper_main)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set( OGLW_ROOT ${CMAKE_CURRENT_SOURCE_DIR} )
-#set( ENV{OGLW_ROOT} ${OGLW_ROOT} )
+
 if( MSVC )
     set( OGLW_OUTPUT_DIR ${OGLW_ROOT}/Build-Windows )
 else()
@@ -31,20 +31,18 @@ add_subdirectory( ${FREEGLUT_HOME} )
 set( GLM_INCLUDE_DIR $ENV{GLM_INCLUDE_DIR} )
 set( GLM_INCLUDE_DIRS $ENV{GLM_INCLUDE_DIRS} )
 
-
 set( GLEW_HOME ${CMAKE_CURRENT_SOURCE_DIR}/deps/glew-2.1.0 )
+set( ENV{GLEW_HOME} ${GLEW_HOME} )
 set( GLFW_HOME ${CMAKE_CURRENT_SOURCE_DIR}/deps/glfw-repo )
 set( GLEW_INCLUDE_DIR ${GLEW_HOME}/include  )
 set( GLEW_INCLUDE_DIRS ${GLEW_HOME}/include )
 set( GLFW_INCLUDE_DIR ${GLFW_HOME}/include )
 
 list(APPEND CMAKE_MODULE_PATH ${GLEW_HOME} )
-add_subdirectory( deps/glew-2.1.0/build/cmake )
-add_subdirectory( deps/glfw-repo )
+add_subdirectory( ${GLEW_HOME}/build/cmake )
+add_subdirectory( ${GLFW_HOME} )
 
 option(RENDER_OPENGL_CORE "Enable Opengl" ON)
 
 add_subdirectory( libopenglwrapper )
 add_subdirectory( libopenglwrapperPlaygroundApp )
-
-#add_subdirectory( deps/GWork )
