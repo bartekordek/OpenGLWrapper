@@ -21,9 +21,9 @@ set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 
 add_library(${EXEC} STATIC
-imgui/examples/imgui_impl_opengl2.cpp
+imgui/backends/imgui_impl_opengl2.cpp
 #imgui/examples/imgui_impl_opengl3.cpp
-imgui/examples/imgui_impl_sdl.cpp
+imgui/backends/imgui_impl_sdl.cpp
 #imgui/examples/imgui_impl_win32.cpp
 imgui/imgui.cpp
 imgui/imgui_demo.cpp
