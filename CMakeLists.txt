@@ -26,6 +26,7 @@ add_subdirectory( deps )
 set( FREEGLUT_HOME ${OGLW_ROOT}/deps/freeglut-3.2.1 )
 set( ENV{FREEGLUT_HOME} ${FREEGLUT_HOME} )
 set( FREEGLUT_INCLUDE_DIR ${FREEGLUT_HOME}/include )
+set( FREEGLUT_BUILD_DEMOS "Build demos." OFF )
 add_subdirectory( ${FREEGLUT_HOME} )
 
 set( GLM_INCLUDE_DIR $ENV{GLM_INCLUDE_DIR} )
