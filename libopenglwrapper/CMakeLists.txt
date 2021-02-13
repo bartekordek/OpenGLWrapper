@@ -151,9 +151,11 @@ if (MSVC)
     CMakeToWindow( ${OGLW_OUTPUT_DIR}/*.dll INPUT_DIR_DLL )
     CMakeToWindow( ${OGLW_OUTPUT_DIR}/*.pdb INPUT_DIR_PDB )
 
+    set( CopyCommand ${OGLW_DEPS_ROOT_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat )
+
     add_custom_command(TARGET ${EXEC} POST_BUILD
-        COMMAND ${OGLW_DEPS_ROOT_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
-        COMMAND ${OGLW_DEPS_ROOT_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat ${OGLW_DEPS_ROOT_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
+        COMMAND ${CopyCommand} ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
+        COMMAND ${CopyCommand} ${OGLW_DEPS_ROOT_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
     )
 endif()
 
