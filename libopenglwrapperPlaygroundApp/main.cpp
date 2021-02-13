@@ -77,7 +77,7 @@ int main( int argc, char** argv )
 
     auto wValue = cu.getFlagValue( "-w" ).string();
     auto hValue = cu.getFlagValue( "-h" ).string();
-    
+
     auto width = 1024;
     auto height = 600;
     if( !wValue.empty() && !hValue.empty() )
@@ -237,7 +237,6 @@ void renderScene()
             configModificationTime = g_configFile->getModificationTime();
         }
     }
-
 
     const auto amp = 64.f;
 
