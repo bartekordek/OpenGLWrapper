@@ -59,7 +59,6 @@ Triangle triangleBackground1;
 const CUL::String wrapperDir = "../libopenglwrapper";
 const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
 
-float g_eyeZ = 20.f;
 int g_mouseX = 0.0f;
 
 void afterInit();
@@ -125,9 +124,7 @@ void afterInit()
     g_projectionData.setSize( {
         winSize.getWidth(),
         winSize.getHeight() } );
-    const auto eyeZ = g_configFile->getValue( "EYE_Z" ).toFloat();
-    g_projectionData.setEyePos( { 0.0f, 0.0f, eyeZ } );
-    g_eyeZ = eyeZ;
+    g_projectionData.setEyePos( { 0.0f, 0.0f, 131.f } );
 
     reloadConfig();
     configModificationTime = g_configFile->getModificationTime();
@@ -146,6 +143,14 @@ void afterInit()
     } );
 
     g_mouseData = g_oglw->getMouseData();
+
+    const float size = 32.f;
+    triangleRed.p1() = {  size, -size, 0.0f };
+    triangleRed.p2() = { -size, -size, 0.0f };
+    triangleRed.p3() = { -size,  size, 0.0f };
+    triangleBackground0.p1() = {  size, -size, 0.0f };
+    triangleBackground0.p2() = { -size, -size, 0.0f };
+    triangleBackground0.p3() = { -size,  size, 0.0f };
 }
 
 void onMouseEvent( const SDL2W::MouseData& mouseData )
@@ -220,15 +225,19 @@ void renderScene()
 
     angle += 0.8f;
 
-    auto newTime = g_configFile->getModificationTime();
-    if( newTime > configModificationTime )
+    if( g_configFile )
     {
-        g_logger->log( "Reloading..." );
-        reloadConfig();
-        g_logger->log( "Reloading... done." );
+        auto newTime = g_configFile->getModificationTime();
+        if( newTime > configModificationTime )
+        {
+            g_logger->log( "Reloading..." );
+            reloadConfig();
+            g_logger->log( "Reloading... done." );
 
-        configModificationTime = g_configFile->getModificationTime();
+            configModificationTime = g_configFile->getModificationTime();
+        }
     }
+
 
     const auto amp = 64.f;
 
@@ -238,34 +247,24 @@ void renderScene()
 
 void reloadConfig()
 {
-    g_configFile->reload();
+    if( g_configFile )
+    {
+        g_configFile->reload();
 
-    const auto x = 0.0f;
+        const auto x = 0.0f;
 
-    g_projectionData.setCenter( Pos3Df(
-        x,
-        g_configFile->getValue( "CENTER_Y" ).toFloat(),
-        g_configFile->getValue( "CENTER_Z" ).toFloat() ) );
-    g_eyePos = g_projectionData.getEye();
-    g_eyePos.z = g_configFile->getValue( "EYE_Z" ).toFloat();
-    g_projectionData.setEyePos( g_eyePos );
+        g_projectionData.setCenter( Pos3Df(
+            x,
+            g_configFile->getValue( "CENTER_Y" ).toFloat(),
+            g_configFile->getValue( "CENTER_Z" ).toFloat() ) );
+        g_eyePos = g_projectionData.getEye();
+        g_eyePos.z = g_configFile->getValue( "EYE_Z" ).toFloat();
+        g_projectionData.setEyePos( g_eyePos );
 
-    g_projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
-    g_projectionData.setZfar( g_configFile->getValue( "Z_FAR" ).toFloat() );
-    g_oglw->setProjection( g_projectionData );
-
-    float size = g_configFile->getValue( "RED_SIZE" ).toFloat();
-    triangleRed.p1() = {  size, -size, 0.0f };
-    triangleRed.p2() = { -size, -size, 0.0f };
-    triangleRed.p3() = { -size,  size, 0.0f };
-
-    size = g_configFile->getValue( "BLUE_SIZE" ).toFloat();
-    triangleBackground0.p1() = {  size, -size, 0.0f };
-    triangleBackground0.p2() = { -size, -size, 0.0f };
-    triangleBackground0.p3() = { -size,  size, 0.0f };
-
-    blueTriangleZ = g_configFile->getValue( "BLUE_Z" ).toFloat();
-    redTriangleZ = g_configFile->getValue( "RED_Z" ).toFloat();
+        g_projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
+        g_projectionData.setZfar( g_configFile->getValue( "Z_FAR" ).toFloat() );
+        g_oglw->setProjection( g_projectionData );
+    }
 }
 
 void onKeyBoardEvent( const SDL2W::IKey& key )

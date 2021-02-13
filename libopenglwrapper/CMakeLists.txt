@@ -31,9 +31,6 @@ if( MSVC )
     # warning level 4 and all warnings as errors
     add_compile_options( /W4 /WX )
     add_compile_options( /MP )
-    #set_target_properties(SDL2 PROPERTIES
-    #    COMPILE_FLAGS "/MP" # Adjust as needed
-    #)
 else()
     # lots of warnings and all warnings as errors
     add_compile_options( -Wall -Wextra -pedantic -Werror )
@@ -153,19 +150,6 @@ if (MSVC)
 
     CMakeToWindow( ${OGLW_OUTPUT_DIR}/*.dll INPUT_DIR_DLL )
     CMakeToWindow( ${OGLW_OUTPUT_DIR}/*.pdb INPUT_DIR_PDB )
-#
-    #message( "[openglwrapper lib] glew lib: $<glew>" )
-#
-    #add_custom_command(TARGET ${EXEC} POST_BUILD
-    #    COMMAND "xcopy" "${OGLW_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
-    #    COMMAND "xcopy" "${OGLW_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
-#
-    #    COMMAND "xcopy" "${OGLW_BIN_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
-    #    COMMAND "xcopy" "${OGLW_BIN_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
-#
-    #    COMMAND "xcopy" "${SDLW_DLLS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
-    #    COMMAND "xcopy" "${SDLW_PDBS}" "${OGLW_TESTS_RUN_DIR_WINDOWS}" "/y" "/f"
-    #)
 
     add_custom_command(TARGET ${EXEC} POST_BUILD
         COMMAND ${OGLW_DEPS_ROOT_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}

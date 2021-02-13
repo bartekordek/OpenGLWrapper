@@ -61,8 +61,6 @@ ${OPENGL_LIBRARIES}
 ${OPENGL_LIBRARY}
 )
 
-#message( "DEPENDENCIES: ${DEPENDENCIES}" )
-
 if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
@@ -73,12 +71,5 @@ target_include_directories(${EXEC} PRIVATE inc)
 target_include_directories(${EXEC} PRIVATE src)
 
 if( MSVC )
-    set_property(TARGET ${EXEC} PROPERTY "VS_DEBUGGER_WORKING_DIRECTORY" "${CMAKE_SOURCE_DIR}/runDir")
+    set_property(TARGET ${EXEC} PROPERTY "VS_DEBUGGER_WORKING_DIRECTORY" "${CMAKE_CURRENT_SOURCE_DIR}/runDir")
 endif()
-
-#file(COPY GET_RUNTIME_DEPENDENCIES ${OUTPUT_DIR})
-
-#add_custom_command(TARGET ${EXEC} POST_BUILD       # Adds a post-build event to MyTest
-#    COMMAND ${CMAKE_COMMAND} -E copy_if_different  # which executes "cmake - E copy_if_different..."
-#    "${PROJECT_SOURCE_DIR}/libs/test.dll"      # <--this is in-file
-#        $<TARGET_FILE_DIR:${EXEC}>)                 # <--this is out-file path
