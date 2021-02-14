@@ -10,18 +10,16 @@ if (MSVC)
     # warning level 4 and all warnings as errors
     add_compile_options(/W4 /WX)
     add_compile_options( /MP )
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Windows )
 else()
     # lots of warnings and all warnings as errors
     add_compile_options(-Wall -Wextra -pedantic -Werror)
     add_definitions(-Wfatal-errors)
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Linux )
 endif()
 
 message( "[PlaygroundApp] Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 
 file( GLOB SOURCES *.cpp )
 
@@ -71,5 +69,15 @@ target_include_directories(${EXEC} PRIVATE inc)
 target_include_directories(${EXEC} PRIVATE src)
 
 if( MSVC )
-    set_property(TARGET ${EXEC} PROPERTY "VS_DEBUGGER_WORKING_DIRECTORY" "${CMAKE_CURRENT_SOURCE_DIR}/runDir")
+    set_property(TARGET ${EXEC} PROPERTY "VS_DEBUGGER_WORKING_DIRECTORY" "${OGLW_TESTS_RUN_DIR}")
+
+    CmakeToWindow( ${OGLW_OUTPUT_DIR} OGLW_OUTPUT_DIR_WINDOWS )
+    CmakeToWindow( ${OGLW_DEPS_ROOT} OGLW_DEPS_ROOT_WINDOWS )
+    CmakeToWindow( ${OGLW_TESTS_RUN_DIR} OGLW_TESTS_RUN_DIR_WINDOWS )
+
+    set( CopyCommand ${OGLW_DEPS_ROOT}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat )
+    add_custom_command(TARGET ${EXEC} POST_BUILD
+        COMMAND ${CopyCommand} ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
+        COMMAND ${CopyCommand} ${OGLW_DEPS_ROOT_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
+    )
 endif()

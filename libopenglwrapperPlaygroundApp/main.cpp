@@ -75,15 +75,19 @@ int main( int argc, char** argv )
     CUL::GUTILS::ConsoleUtilities cu;
     cu.setArgs( argc, argv );
 
-    auto wValue = cu.getFlagValue( "-w" ).string();
-    auto hValue = cu.getFlagValue( "-h" ).string();
-
-    auto width = 1024;
+    auto width = 1280;
     auto height = 600;
-    if( !wValue.empty() && !hValue.empty() )
+
+    auto& valW = cu.getFlagValue( "-w" ).string();
+    if( !valW.empty() )
     {
-        width = std::stoi( wValue );
-        height = std::stoi( hValue );
+        width = std::stoi( valW );
+    }
+
+    auto& valH = cu.getFlagValue( "-h" ).string();
+    if( !valH.empty() )
+    {
+        height = std::stoi( valH );
     }
 
     Vector3Di winPos = { 200, 200, 0 };
@@ -192,17 +196,6 @@ void onMouseEvent( const SDL2W::MouseData& mouseData )
             g_mouseData = md;
         }
     }
-    //auto newX = md.getX();
-    //if( newX != (int) g_eyePos.z )
-    //{
-    //    auto diff = g_mouseX - newX;
-    //    g_mouseX = newX;
-
-    //    g_eyePos.z += (float)diff / 8.0f;
-    //    g_logger->log( "New mouse x = " + String( g_eyePos.z ) );
-    //    g_projectionData.setEyePos( g_eyePos );
-    //    g_oglw->setProjection( g_projectionData );
-    //}
 }
 
 void renderScene()
@@ -217,7 +210,6 @@ void renderScene()
 
     g_utility->matrixStackPush();
         g_utility->translate( 0.0f, 0.0f, redTriangleZ );
-       // g_utility->rotate( angle, 0.0f, 0.0f, 1.0f );
         g_utility->draw( triangleRed, red );
         g_utility->rotate( 180.0f, 0.0f, 0.0f, 1.0f );
         g_utility->draw( triangleRed, yellow );
