@@ -446,9 +446,19 @@ void UtilConcrete::resetMatrixToIdentity( const MatrixTypes matrix ) const
     glLoadIdentity();
 }
 
+void UtilConcrete::translate( const Point& point )
+{
+    translate( point.x, point.y, point.z );
+}
+
 void UtilConcrete::translate( const float x, const float y, const float z )
 {
+    // TODO: save modelview
+    //GLfloat mat[16];
+    //glGetFloatv(GL_MODELVIEW_MATRIX, mat);
     glTranslatef( x, y, z );
+    //glMatrixMode( GL_MODELVIEW_MATRIX );
+    //glLoadMatrixf( mat );
 }
 
 void UtilConcrete::rotate( const float angle, const float x, const float y, const float z )
@@ -540,6 +550,19 @@ void UtilConcrete::draw( const TriangleF& quad, const std::array<ColorS, 4>& col
     glEnd();
 }
 
+void UtilConcrete::draw( const ValuesArray& values, const std::array<ColorS, 3>& color )
+{
+    glBegin( GL_TRIANGLES );
+        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
+        glVertex3f( values[0][0], values[0][1], values[0][2] );
+
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
+        glVertex3f( values[1][0], values[1][1], values[1][2] );
+
+        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
+        glVertex3f( values[2][0], values[2][1], values[2][2] );
+    glEnd();
+}
 
 void UtilConcrete::clearColorAndDepthBuffer() const
 {

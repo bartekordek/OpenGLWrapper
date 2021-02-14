@@ -6,11 +6,15 @@
 
 #include "CUL/CULInterface.hpp"
 #include "CUL/Filesystem/IFile.hpp"
-#include "CUL/Math/Angle.hpp"
+
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/Graphics/Rect2D.hpp"
+
+#include "CUL/Math/Angle.hpp"
+#include "CUL/Math/Primitives/Triangle3D.hpp"
 #include "CUL/Math/Primitives/Quad.hpp"
 #include "CUL/Math/Primitives/Triangle.hpp"
+
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 
@@ -34,6 +38,11 @@ using Pos3Dd = CUL::Graphics::Pos3Dd;
 using IFile = CUL::FS::IFile;
 using QuadF = CUL::MATH::Primitives::QuadF;
 using TriangleF = CUL::MATH::Primitives::TriangleF;
+using Triangle3DF = CUL::MATH::Primitives::Triangle3DF;
+using IFile = CUL::FS::IFile;
+using ValuesArray = CUL::MATH::Primitives::ValuesArray;
+using TriangleColors = std::array<ColorS, 3>;
+using Point = CUL::MATH::PointF;
 
 enum class MatrixTypes: int
 {
@@ -207,7 +216,9 @@ public:
 
     virtual void draw( const TriangleF& triangle, const ColorS& color ) = 0;
     virtual void draw( const TriangleF& quad, const std::array<ColorS, 4>& color ) = 0;
+    virtual void draw( const ValuesArray& values, const std::array<ColorS, 3>& color ) = 0;
 
+    virtual void translate( const Point& point ) = 0;
     virtual void translate( const float x, const float y, const float z ) = 0;
     virtual void rotate( const float angle, const float x = 0.0f, const float y = 0.0f, const float z = 0.0f ) = 0;
     virtual void scale( const CUL::MATH::Vector3Df& scale ) const = 0;

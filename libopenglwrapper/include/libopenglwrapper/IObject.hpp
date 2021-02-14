@@ -9,20 +9,27 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
+using Point = CUL::MATH::PointF;
 class LIBOPENGLWRAPPER_API IObject:
     public IRenderable,
     public IMovable
 {
 public:
-    IObject() = default;
-    virtual ~IObject() = default;
+    IObject();
 
     virtual void addShader( const CUL::FS::Path& filePath, IShaderFactory* sf ) = 0;
 
     virtual const std::vector<float> getData() const = 0;
 
+    void setWorldPosition( const Point& position );
+    const Point& getWorldPosition();
+
+    virtual ~IObject();
 protected:
 private:
+    Point m_worldPos;
+
+// Deleted:
     IObject( const IObject& value ) = delete;
     IObject( IObject&& value ) = delete;
     IObject& operator=( const IObject& value ) = delete;

@@ -91,6 +91,7 @@ private:
     IObject* createFromFile( CUL::JSON::IJSONFile* file );
     IObject* createFromFile( IFile* file ) override;
     IObject* createTriangle( CUL::JSON::INode* jNode );
+    ITriangle* createTriangle( const ValuesArray& data, const ColorS& color = ColorE::BLACK ) override;
 
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;

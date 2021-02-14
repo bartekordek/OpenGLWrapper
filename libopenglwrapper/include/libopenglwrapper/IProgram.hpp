@@ -14,7 +14,10 @@ using ShaderList = std::map<String, IShader*>;
 class LIBOPENGLWRAPPER_API IProgram
 {
 public:
-    IProgram();
+    IProgram()
+    {
+
+    }
 
     virtual void setAttrib( const String& name, const char* value ) = 0;
     virtual void setAttrib( const String& name, Cfloat value ) = 0;
@@ -45,7 +48,10 @@ public:
 
     virtual void render() = 0;
 
-    virtual ~IProgram();
+    virtual ~IProgram()
+    {
+
+    }
 protected:
 private:
     IProgram( const IProgram& arg ) = delete;

@@ -88,6 +88,7 @@ private:
 
     void resetMatrixToIdentity( const MatrixTypes matrix ) const override;
 
+    void translate( const Point& point ) override;
     void translate( const float x, const float y, const float z ) override;
     void rotate(
         const float angle,
@@ -104,9 +105,11 @@ private:
 
     void draw( const TriangleF& triangle, const ColorS& color ) override;
     void draw( const TriangleF& quad, const std::array<ColorS, 4>& color ) override;
+    void draw( const ValuesArray& values, const std::array<ColorS, 3>& color ) override;
+
     void assertOnProgramError( Cunt programId, Cunt val ) const;
     void log( const String& text,
-              const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;
+            const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;
     void assert( const bool value, const CUL::String& message ) const;
     void setDepthTest( const bool enabled ) const override;
     void setBackfaceCUll( const bool enabled ) const override;

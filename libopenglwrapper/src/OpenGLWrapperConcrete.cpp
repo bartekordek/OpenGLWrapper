@@ -4,7 +4,7 @@
 #include "UtilConcrete.hpp"
 #include "ImportImgui.hpp"
 
-#include "libopenglwrapper/Primitives/Triangle.hpp"
+#include "Primitives/TriangleImpl.hpp"
 
 #include "SDL2Wrapper/IWindow.hpp"
 
@@ -29,6 +29,9 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
     CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
     CUL::Assert::simple( nullptr != m_logger, "NO LOGGER." );
+
+    TriangleImpl::useUtility( m_oglUtility );
+    OpenGLShaderFactory::useUtility( m_oglUtility );
 }
 
 void OpenGLWrapperConcrete::startRenderingLoop()
@@ -156,7 +159,7 @@ IObject* OpenGLWrapperConcrete::createTriangle( CUL::JSON::INode* jNode )
     CUL::Assert::simple( CUL::JSON::ElementType::ARRAY == jNode->getType(), "Different types." );
     CUL::Assert::simple( 3 == jNode->getArray().size(), "Defined triangle vertices count mismatch." );
 
-    auto triangle = new Triangle();
+    auto triangle = new TriangleImpl();
 
     auto jsonToPoint = []( CUL::JSON::INode* node ) -> Point
     {
@@ -181,6 +184,15 @@ IObject* OpenGLWrapperConcrete::createTriangle( CUL::JSON::INode* jNode )
     triangle->setP2( jsonToPoint( vertex2 ) );
     triangle->setP3( jsonToPoint( vertex3 ) );
 
+    return triangle;
+}
+
+ITriangle* OpenGLWrapperConcrete::createTriangle( const ValuesArray& data, const ColorS& color )
+{
+    ITriangle* triangle = new TriangleImpl();
+    triangle->setValues( data );
+    triangle->setColor( color );
+    addObjectToRender( triangle );
     return triangle;
 }
 
@@ -246,7 +258,6 @@ void OpenGLWrapperConcrete::initialize()
     m_logger->log( m_glContext.glVersion );
 
     m_shaderFactory = new OpenGLShaderFactory( this );
-    m_shaderFactory->useUtility( m_oglUtility );
 
     m_sdlW->registerSDLEventObserver( this );
 

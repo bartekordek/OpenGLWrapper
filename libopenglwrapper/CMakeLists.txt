@@ -42,73 +42,9 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
 
-add_library( ${EXEC} SHARED
-include/libopenglwrapper/IProgram.cpp
-src/IVBO.cpp
-src/IObjectFactory.cpp
-src/IOpenGLWrapper.cpp
-src/IShader.cpp
-src/IShaderFactory.cpp
-src/IUtility.cpp
-src/IUtilityUser.cpp
-src/ITexture.cpp
-src/IVAO.cpp
-src/OpenGLShaderFactory.cpp
-src/OpenGLWrapperConcrete.cpp
-src/Primitives/Rect.cpp
-src/Primitives/Triangle.cpp
-src/Primitives/TriangleImpl.cpp
-src/ProgramConcrete.cpp
-src/ProjectionData.cpp
-src/ShaderConcrete.cpp
-src/TextureConcrete.cpp
-src/UtilConcrete.cpp
-src/VAOConcrete.cpp
-src/VAOOpengl.cpp
-src/VBOConcrete.cpp
-src/Viewport.cpp
-)
-
-#set_target_properties(cul PROPERTIES PUBLIC_HEADER
-set( HEADERS_PUBLIC
-include/libopenglwrapper/IDebugOverlay.hpp
-include/libopenglwrapper/IMovable.hpp
-include/libopenglwrapper/Import.hpp
-include/libopenglwrapper/IObject.hpp
-include/libopenglwrapper/IObjectFactory.hpp
-include/libopenglwrapper/IOpenGLWrapper.hpp
-include/libopenglwrapper/IProgram.hpp
-include/libopenglwrapper/IProgramFactory.hpp
-include/libopenglwrapper/IRenderable.hpp
-include/libopenglwrapper/IShader.hpp
-include/libopenglwrapper/IShaderFactory.hpp
-include/libopenglwrapper/ITexture.hpp
-include/libopenglwrapper/IUtility.hpp
-include/libopenglwrapper/IUtilityUser.hpp
-include/libopenglwrapper/IVAO.hpp
-include/libopenglwrapper/IVBO.hpp
-include/libopenglwrapper/IVertexArray.hpp
-include/libopenglwrapper/IVertexBuffer.hpp
-include/libopenglwrapper/Primitives/IRect.hpp
-include/libopenglwrapper/Primitives/Triangle.hpp
-include/libopenglwrapper/ProjectionData.hpp
-include/libopenglwrapper/ViewPort.hpp
-include/libopenglwrapper/Viewport.hpp
-src/OpenGLShaderFactory.hpp
-src/ImportFreeglut.hpp
-src/ImportImgui.hpp
-src/IMPORT_glew.hpp
-src/MatrixStack.hpp
-src/OpenGLWrapperConcrete.hpp
-src/Primitives/TriangleImpl.hpp
-src/ProgramConcrete.hpp
-src/ShaderConcrete.hpp
-src/TextureConcrete.hpp
-src/UtilConcrete.hpp
-src/VAOConcrete.hpp
-src/VAOOpengl.hpp
-src/VBOConcrete.hpp
-)
+file( GLOB_RECURSE SOURCES include/*.hpp src/*.hpp src/*.cpp )
+source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
+add_library( ${EXEC} SHARED ${SOURCES} )
 
 
 set( DEPENDENCIES
