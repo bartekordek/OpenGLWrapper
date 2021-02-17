@@ -92,6 +92,7 @@ private:
     IObject* createFromFile( IFile* file ) override;
     IObject* createTriangle( CUL::JSON::INode* jNode );
     ITriangle* createTriangle( const ValuesArray& data, const ColorS& color = ColorE::BLACK ) override;
+    ISprite* createSprite( const String& path );
 
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;

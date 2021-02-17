@@ -1087,6 +1087,10 @@ void UtilConcrete::setTexuring( const bool enabled ) const
 
 unsigned UtilConcrete::generateTexture() const
 {
+    //glGenTextures generate texture names.
+    // n - Specifies the number of texture names to be generated.
+    // textures - Specifies an array in which the generated texture names are stored.
+
     GLuint textureId = 0;
     glGenTextures( 1, &textureId );
     return textureId;

@@ -10,6 +10,8 @@ NAMESPACE_BEGIN( LOGLW )
 
 using String = CUL::String;
 
+class ISprite;
+
 class LIBOPENGLWRAPPER_API IObjectFactory
 {
 public:
@@ -21,8 +23,12 @@ public:
 
     virtual ITriangle* createTriangle( const ValuesArray& data, const ColorS& color = ColorE::BLACK ) = 0;
 
+    virtual ISprite* createSprite( const String& path ) = 0;
+
 protected:
 private:
+
+// Deleted:
     IObjectFactory( const IObjectFactory& arg ) = delete;
     IObjectFactory( IObjectFactory&& arg ) = delete;
     IObjectFactory& operator=( const IObjectFactory& rhv ) = delete;

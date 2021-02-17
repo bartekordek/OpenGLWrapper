@@ -1,6 +1,7 @@
 #include "OpenGLWrapperConcrete.hpp"
 
 #include "TextureConcrete.hpp"
+#include "Sprite.hpp"
 #include "UtilConcrete.hpp"
 #include "ImportImgui.hpp"
 
@@ -194,6 +195,26 @@ ITriangle* OpenGLWrapperConcrete::createTriangle( const ValuesArray& data, const
     triangle->setColor( color );
     addObjectToRender( triangle );
     return triangle;
+}
+
+ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
+{
+    auto sprite = new Sprite();
+
+    sprite->m_image = m_imageLoader->loadImage( path );
+    sprite->m_textureId = m_oglUtility->generateTexture();
+    m_oglUtility->bindTexture( sprite->m_textureId );
+
+    const auto& ii = sprite->m_image->getImageInfo();
+
+    TextureInfo td;
+    td.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
+    td.size = ii.size;
+    td.data = sprite->m_image->getData();
+
+    return sprite;
+
+    //return nullptr;
 }
 
 void OpenGLWrapperConcrete::mainThread()

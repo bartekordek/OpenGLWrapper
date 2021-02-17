@@ -17,9 +17,9 @@ class LIBOPENGLWRAPPER_API IObject:
 public:
     IObject();
 
-    virtual void addShader( const CUL::FS::Path& filePath, IShaderFactory* sf ) = 0;
+    virtual void addShader( const CUL::FS::Path& filePath, IShaderFactory* sf );
 
-    virtual const std::vector<float> getData() const = 0;
+    virtual const std::vector<float> getData() const;
 
     virtual ~IObject();
 protected:
