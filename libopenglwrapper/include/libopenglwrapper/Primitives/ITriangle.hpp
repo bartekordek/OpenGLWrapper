@@ -16,10 +16,6 @@ public:
 
     virtual void render() = 0;
 
-    virtual const Pos& getPos() const = 0;
-    virtual void setPosition( const Pos& pos ) = 0;
-    virtual void translate( const TranslationVector& moveVect ) = 0;
-
     virtual void setP1( const Point& val ) = 0;
     virtual void setP2( const Point& val ) = 0;
     virtual void setP3( const Point& val ) = 0;

@@ -16,10 +16,6 @@ public:
 
     void render() override;
 
-    const Point& getPos() const override;
-    void setPosition( const Pos& pos ) override;
-    void translate( const TranslationVector& moveVect ) override;
-
     void setP1( const Point& val ) override;
     void setP2( const Point& val ) override;
     void setP3( const Point& val ) override;

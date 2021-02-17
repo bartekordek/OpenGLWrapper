@@ -331,11 +331,13 @@ void OpenGLWrapperConcrete::setupProjectionData( const SDL2W::WindowSize& winSiz
 {
     ProjectionData projectionData;
     projectionData.setSize( winSize );
-    projectionData.setEyePos( Pos3Df( 0.0f, 0.0f, 10.0f ) );
+    projectionData.setEyePos( Pos3Df( 0.0f, 0.0f, 220.0f ) );
     projectionData.setCenter( Pos3Df(
         static_cast<float>(winSize.getWidth()) / 2.f,
         static_cast<float>(winSize.getHeight()) / 2.f, 0.0f ) );
     projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
+    projectionData.m_zFar = -64.f;
+    projectionData.m_zNear = 64.f;
     setProjection( projectionData );
 }
 

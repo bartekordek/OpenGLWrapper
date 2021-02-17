@@ -66,8 +66,8 @@ public:
     Pos3Df m_up = { 0.0, 1.0, 0.0 };
     Size2Di m_size;
     float m_fov = 90.0f;
-    float m_zNear = 32.0f;
-    float m_zFar = 4.0f;
+    float m_zNear = 64.0f;
+    float m_zFar = -64.0f;
     float m_left = 0.0f;
     float m_right = 0.0f;
     float m_top = 0.0f;

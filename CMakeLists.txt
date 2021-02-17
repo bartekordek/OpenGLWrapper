@@ -7,10 +7,12 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set( OGLW_ROOT ${CMAKE_CURRENT_SOURCE_DIR} )
 
 if( MSVC )
-    set( OGLW_OUTPUT_DIR ${OGLW_ROOT}/Build-Windows )
+    set( BUILD_ROOT_POSTFIX Build-Windows )
 else()
-    set( OGLW_OUTPUT_DIR ${OGLW_ROOT}/Build-Linux )
+    set( BUILD_ROOT_POSTFIX Build-Linux )
 endif()
+
+set( OGLW_OUTPUT_DIR ${OGLW_ROOT}/${BUILD_ROOT_POSTFIX} )
 
 set( OGLW_TESTS_RUN_DIR ${OGLW_ROOT}/runDir )
 set( OGLW_DEPS_ROOT ${OGLW_ROOT}/deps )

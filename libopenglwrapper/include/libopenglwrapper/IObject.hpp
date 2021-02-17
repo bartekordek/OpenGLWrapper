@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libopenglwrapper/IRenderable.hpp"
-#include "libopenglwrapper/IMovable.hpp"
+#include "libopenglwrapper/ITransformable.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
 
 #include "CUL/Filesystem/IFile.hpp"
@@ -9,10 +9,10 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-using Point = CUL::MATH::PointF;
+
 class LIBOPENGLWRAPPER_API IObject:
     public IRenderable,
-    public IMovable
+    public ITransformable
 {
 public:
     IObject();
@@ -21,13 +21,10 @@ public:
 
     virtual const std::vector<float> getData() const = 0;
 
-    void setWorldPosition( const Point& position );
-    const Point& getWorldPosition();
-
     virtual ~IObject();
 protected:
 private:
-    Point m_worldPos;
+
 
 // Deleted:
     IObject( const IObject& value ) = delete;

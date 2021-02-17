@@ -42,7 +42,6 @@ public:
     IRect() = default;
 
     virtual const Size& getSize() const = 0;
-    virtual const Pos& getPos() const override = 0;
 
     virtual ~IRect() = default;
 

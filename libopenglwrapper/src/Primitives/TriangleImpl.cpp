@@ -10,24 +10,12 @@ void TriangleImpl::render()
 {
     getUtility()->matrixStackPush();
     getUtility()->translate( getWorldPosition() );
+    static const auto type = CUL::MATH::Angle::Type::DEGREE;
+    getUtility()->rotate( getWorldAngle( CUL::MATH::EulerAngles::YAW ).getValueF( type ),   0.f, 0.f, 1.f );
+    getUtility()->rotate( getWorldAngle( CUL::MATH::EulerAngles::PITCH ).getValueF( type ), 0.f, 1.f, 0.f );
+    getUtility()->rotate( getWorldAngle( CUL::MATH::EulerAngles::ROLL ).getValueF( type ),  1.f, 0.f, 0.f );
     getUtility()->draw( m_values, m_colors );
     getUtility()->matrixStackPop();
-}
-
-// TODO
-const Point& TriangleImpl::getPos() const
-{
-    return m_triangle.getCentralPosition();
-}
-
-// TODO:
-void TriangleImpl::setPosition( const Pos& )
-{
-}
-
-void TriangleImpl::translate( const TranslationVector& tv )
-{
-    m_triangle += tv;
 }
 
 void TriangleImpl::setP1( const Point& val )
