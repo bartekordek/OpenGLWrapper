@@ -12,12 +12,19 @@ void ITransformable::setWorldPosition( const Pos& position )
     m_worldPos = position;
 }
 
+void ITransformable::setWorldPosition( Type x, Type y, Type z )
+{
+    m_worldPos.x = x;
+    m_worldPos.y = y;
+    m_worldPos.z = z;
+}
+
 const Pos& ITransformable::getWorldPosition() const
 {
     return m_worldPos;
 }
 
-void ITransformable::setWorldAngle(CUL::MATH::EulerAngles type, float value)
+void ITransformable::setWorldAngle(CUL::MATH::EulerAngles type, Type value)
 {
     m_angles[(size_t)type].setValue( value, CUL::MATH::Angle::Type::RADIAN );
 }

@@ -10,7 +10,8 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-using Pos = CUL::MATH::PointF;
+using Type = float;
+using Pos = CUL::MATH::Point<Type>;
 using TranslationVector = CUL::MATH::PointF;
 
 class LIBOPENGLWRAPPER_API ITransformable
@@ -19,9 +20,10 @@ public:
     ITransformable();
 
     void setWorldPosition( const Pos& position );
+    void setWorldPosition( Type x, Type y, Type z );
     const Pos& getWorldPosition() const;
 
-    void setWorldAngle( CUL::MATH::EulerAngles type, float value );
+    void setWorldAngle( CUL::MATH::EulerAngles type, Type value );
     void setWorldAngle( CUL::MATH::EulerAngles type, const CUL::MATH::Angle& angle );
 
     float getWorldAngleF( CUL::MATH::EulerAngles type ) const;
@@ -33,7 +35,7 @@ protected:
 private:
     Pos m_worldPos;
     std::array<CUL::MATH::Angle, 3> m_angles;
-    // Deleted:
+// Deleted:
     ITransformable( const ITransformable& value ) = delete;
     ITransformable& operator=( const ITransformable& value ) = delete;
 };
