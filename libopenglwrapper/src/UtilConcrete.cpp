@@ -478,6 +478,7 @@ void UtilConcrete::scale( const float scale ) const
 
 void UtilConcrete::draw( const QuadF& quad, const QuadF& texQuad )
 {
+    glColor4f( 1.f, 1.f, 1.f, 1.f );
     glBegin( GL_QUADS );
         glTexCoord3f( texQuad.p1().x, texQuad.p1().y, texQuad.p1().z );
         glVertex3f( quad.p1().x, quad.p1().y, quad.p1().z );
