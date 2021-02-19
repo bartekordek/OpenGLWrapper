@@ -37,7 +37,7 @@ ColorS red( ColorE::RED );
 ColorS yellow( 1.0f, 1.0f, 0.0f, 1.0f );
 ColorS blue( ColorE::BLUE );
 ColorS white( ColorE::WHITE );
-float angle = 0.0f;
+CUL::MATH::Angle g_angle;
 LOGLW::IObjectFactory* of = nullptr;
 CUL::FS::Path vertexShaderFile;
 CUL::FS::Path fragmentShaderFile;
@@ -52,16 +52,22 @@ SDL2W::IWindow* g_mainWindow = nullptr;
 SDL2W::MouseData g_mouseData;
 std::mutex g_renderMtx;
 
-Triangle triangleRed;
-Triangle triangleYellow;
-Triangle triangleBackground0;
-Triangle triangleBackground1;
+LOGLW::ITriangle* g_blueTriangle = nullptr;
+LOGLW::ITriangle* g_whiteTriangle = nullptr;
+
+LOGLW::ITriangle* g_redTriangle = nullptr;
+LOGLW::ITriangle* g_yellowTriangle = nullptr;
+
 LOGLW::ISprite* g_sprite = nullptr;
 
 const CUL::String wrapperDir = "../libopenglwrapper";
 const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
 
 int g_mouseX = 0.0f;
+
+CUL::MATH::Angle ang90( 90, CUL::MATH::Angle::Type::DEGREE );
+CUL::MATH::Angle ang180( 180, CUL::MATH::Angle::Type::DEGREE );
+CUL::MATH::Angle ang270( 270, CUL::MATH::Angle::Type::DEGREE );
 
 void afterInit();
 void renderScene();
@@ -151,14 +157,84 @@ void afterInit()
     g_mouseData = g_oglw->getMouseData();
 
     const float size = 32.f;
-    triangleRed.p1() = {  size, -size, 0.0f };
-    triangleRed.p2() = { -size, -size, 0.0f };
-    triangleRed.p3() = { -size,  size, 0.0f };
-    triangleBackground0.p1() = {  size, -size, 0.0f };
-    triangleBackground0.p2() = { -size, -size, 0.0f };
-    triangleBackground0.p3() = { -size,  size, 0.0f };
+    LOGLW::ValuesArray values;
+    values[ 0 ] = { size, -size, 0.0f };
+    values[ 1 ] = { -size, -size, 0.0f };
+    values[ 2 ] = { -size,  size, 0.0f };
+
+    g_blueTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::BLUE );
+    g_whiteTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::WHITE );
+    
+    g_redTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::RED );
+    g_yellowTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::YELLOW );
 
     g_sprite = g_oglw->getObjectFactory()->createSprite( "../media/texture.png" );
+}
+
+void renderScene()
+{
+    g_blueTriangle->setWorldAngle( CUL::MATH::EulerAngles::YAW, g_angle );
+    g_whiteTriangle->setWorldAngle( CUL::MATH::EulerAngles::YAW, g_angle + ang180 );
+
+    g_redTriangle->setWorldAngle( CUL::MATH::EulerAngles::YAW, g_angle );
+    g_yellowTriangle->setWorldAngle( CUL::MATH::EulerAngles::YAW, g_angle + ang180 );
+
+
+    auto oldPosWhiteBlue = g_blueTriangle->getWorldPosition();
+    oldPosWhiteBlue.z = blueTriangleZ;
+    g_blueTriangle->setWorldPosition( oldPosWhiteBlue );
+    g_whiteTriangle->setWorldPosition( oldPosWhiteBlue );
+
+    auto oldPosRedYellow = g_redTriangle->getWorldPosition();
+    oldPosRedYellow.z = redTriangleZ;
+    g_redTriangle->setWorldPosition( oldPosRedYellow );
+    g_yellowTriangle->setWorldPosition( oldPosRedYellow );
+
+    g_sprite->setWorldPosition( 0.f, 80.f * sin( g_angle.getValueF() ), 40.f * cos( g_angle.getValueF() ) );
+
+
+    g_angle += 0.01f;
+
+    if( g_configFile )
+    {
+        auto newTime = g_configFile->getModificationTime();
+        if( newTime > configModificationTime )
+        {
+            g_logger->log( "Reloading..." );
+            reloadConfig();
+            g_logger->log( "Reloading... done." );
+
+            configModificationTime = g_configFile->getModificationTime();
+        }
+    }
+
+    const auto amp = 64.f;
+    const auto frac = 0.8f;
+
+    blueTriangleZ = amp + sin( g_angle.getValueF() * frac ) * amp;
+    redTriangleZ = amp + cos( g_angle.getValueF() * frac ) * amp;
+}
+
+void reloadConfig()
+{
+    if( g_configFile )
+    {
+        g_configFile->reload();
+
+        const auto x = 0.0f;
+
+        g_projectionData.setCenter( Pos3Df(
+            x,
+            g_configFile->getValue( "CENTER_Y" ).toFloat(),
+            g_configFile->getValue( "CENTER_Z" ).toFloat() ) );
+        g_eyePos = g_projectionData.getEye();
+        g_eyePos.z = g_configFile->getValue( "EYE_Z" ).toFloat();
+        g_projectionData.setEyePos( g_eyePos );
+
+        g_projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
+        g_projectionData.setZfar( g_configFile->getValue( "Z_FAR" ).toFloat() );
+        g_oglw->setProjection( g_projectionData );
+    }
 }
 
 void onMouseEvent( const SDL2W::MouseData& mouseData )
@@ -199,66 +275,6 @@ void onMouseEvent( const SDL2W::MouseData& mouseData )
             g_oglw->setEyePos( eye );
             g_mouseData = md;
         }
-    }
-}
-
-void renderScene()
-{
-    std::lock_guard<std::mutex> guard( g_renderMtx );
-    g_utility->matrixStackPush();
-        g_utility->translate( 0.0f, 0.0f, blueTriangleZ );
-        g_utility->draw( triangleBackground0, blue );
-        g_utility->rotate( 180.0f, 0.0f, 0.0f, 1.0f );
-        g_utility->draw( triangleBackground0, white );
-    g_utility->matrixStackPop();
-
-    g_utility->matrixStackPush();
-        g_utility->translate( 0.0f, 0.0f, redTriangleZ );
-        g_utility->draw( triangleRed, red );
-        g_utility->rotate( 180.0f, 0.0f, 0.0f, 1.0f );
-        g_utility->draw( triangleRed, yellow );
-    g_utility->matrixStackPop();
-
-    angle += 0.8f;
-
-    if( g_configFile )
-    {
-        auto newTime = g_configFile->getModificationTime();
-        if( newTime > configModificationTime )
-        {
-            g_logger->log( "Reloading..." );
-            reloadConfig();
-            g_logger->log( "Reloading... done." );
-
-            configModificationTime = g_configFile->getModificationTime();
-        }
-    }
-
-    const auto amp = 64.f;
-
-    blueTriangleZ = amp + sin( angle * 0.005 ) * amp;
-    redTriangleZ = amp + cos( angle * 0.005 ) * amp;
-}
-
-void reloadConfig()
-{
-    if( g_configFile )
-    {
-        g_configFile->reload();
-
-        const auto x = 0.0f;
-
-        g_projectionData.setCenter( Pos3Df(
-            x,
-            g_configFile->getValue( "CENTER_Y" ).toFloat(),
-            g_configFile->getValue( "CENTER_Z" ).toFloat() ) );
-        g_eyePos = g_projectionData.getEye();
-        g_eyePos.z = g_configFile->getValue( "EYE_Z" ).toFloat();
-        g_projectionData.setEyePos( g_eyePos );
-
-        g_projectionData.setUp( Pos3Df( 0.0f, 1.0f, 0.0f ) );
-        g_projectionData.setZfar( g_configFile->getValue( "Z_FAR" ).toFloat() );
-        g_oglw->setProjection( g_projectionData );
     }
 }
 
