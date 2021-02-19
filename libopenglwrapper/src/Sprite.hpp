@@ -6,7 +6,8 @@
 NAMESPACE_BEGIN( LOGLW )
 
 class Sprite final:
-    public ISprite
+    public ISprite,
+    public IUtilityUser
 {
 public:
     Sprite();
@@ -19,7 +20,6 @@ public:
     ~Sprite();
 protected:
 private:
-
 
 // Deleted:
     Sprite( const Sprite& arg ) = delete;

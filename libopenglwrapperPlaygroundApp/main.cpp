@@ -1,5 +1,6 @@
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "libopenglwrapper/IDebugOverlay.hpp"
+#include "libopenglwrapper/ISprite.hpp"
 
 #include "SDL2Wrapper/IWindow.hpp"
 
@@ -55,6 +56,7 @@ Triangle triangleRed;
 Triangle triangleYellow;
 Triangle triangleBackground0;
 Triangle triangleBackground1;
+LOGLW::ISprite* g_sprite = nullptr;
 
 const CUL::String wrapperDir = "../libopenglwrapper";
 const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
@@ -155,6 +157,8 @@ void afterInit()
     triangleBackground0.p1() = {  size, -size, 0.0f };
     triangleBackground0.p2() = { -size, -size, 0.0f };
     triangleBackground0.p3() = { -size,  size, 0.0f };
+
+    g_sprite = g_oglw->getObjectFactory()->createSprite( "../media/texture.png" );
 }
 
 void onMouseEvent( const SDL2W::MouseData& mouseData )

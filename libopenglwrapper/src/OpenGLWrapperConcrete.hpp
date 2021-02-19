@@ -74,6 +74,7 @@ class OpenGLWrapperConcrete final:
 {
 public:
     OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w );
+    void registerObjectForUtility();
     ~OpenGLWrapperConcrete();
 
 protected:

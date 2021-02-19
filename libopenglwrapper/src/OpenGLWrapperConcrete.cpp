@@ -31,8 +31,14 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
     CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
     CUL::Assert::simple( nullptr != m_logger, "NO LOGGER." );
 
+    registerObjectForUtility();
+}
+
+void OpenGLWrapperConcrete::registerObjectForUtility()
+{
     TriangleImpl::useUtility( m_oglUtility );
     OpenGLShaderFactory::useUtility( m_oglUtility );
+    Sprite::useUtility( m_oglUtility );
 }
 
 void OpenGLWrapperConcrete::startRenderingLoop()
@@ -211,10 +217,16 @@ ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
     td.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
     td.size = ii.size;
     td.data = sprite->m_image->getData();
+    m_oglUtility->setTextureData( td );
+
+    m_oglUtility->setTextureParameter( TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
+    m_oglUtility->setTextureParameter( TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
+
+    m_oglUtility->bindTexture( 0 );
+
+    addObjectToRender( sprite );
 
     return sprite;
-
-    //return nullptr;
 }
 
 void OpenGLWrapperConcrete::mainThread()
