@@ -9,33 +9,28 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-class TriangleImpl final: public ITriangle, public IUtilityUser
+class TriangleImpl final:
+    public ITriangle,
+    public IUtilityUser
 {
 public:
+    TriangleData m_values;
+
     TriangleImpl();
-
-    void render() override;
-
-    void setP1( const Point& val ) override;
-    void setP2( const Point& val ) override;
-    void setP3( const Point& val ) override;
-
-    const Point& getP1() const override;
-    const Point& getP2() const override;
-    const Point& getP3() const override;
 
     ~TriangleImpl();
 
 protected:
-    void setValues( const ValuesArray& values ) override;
+    void setValues( const TriangleData& values ) override;
     void addShader( const CUL::FS::Path& filePath, IShaderFactory* sf ) override;
     const std::vector<float> getData() const override;
     void setColor( const TriangleColors& colors ) override;
     void setColor( const ColorS& color ) override;
 
 private:
-    ValuesArray m_values;
-    CUL::MATH::Primitives::Triangle3DF m_triangle;
+    void render() override;
+
+    CUL::MATH::Primitives::Triangle3D m_triangle;
     std::array<ColorS, 3> m_colors;
 
 // Deleted:

@@ -2,7 +2,7 @@
 
 #include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/Primitives/ITriangle.hpp"
-#include "libopenglwrapper/Primitives/IRect.hpp"
+#include "libopenglwrapper/Primitives/IQuad.hpp"
 
 #include "CUL/Filesystem/IFile.hpp"
 
@@ -21,7 +21,9 @@ public:
     virtual IObject* createFromFile( IFile* file ) = 0;
     virtual IObject* createFromFile( const String& path ) = 0;
 
-    virtual ITriangle* createTriangle( const ValuesArray& data, const ColorS& color = ColorE::BLACK ) = 0;
+    virtual ITriangle* createTriangle( const TriangleData& data, const ColorS& color = ColorE::WHITE ) = 0;
+
+    virtual IQuad* createQuad( const QuadData& data, const ColorS& color = ColorE::WHITE ) = 0;
 
     virtual ISprite* createSprite( const String& path ) = 0;
 

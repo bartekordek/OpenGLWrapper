@@ -18,37 +18,7 @@ void TriangleImpl::render()
     getUtility()->matrixStackPop();
 }
 
-void TriangleImpl::setP1( const Point& val )
-{
-    m_triangle.setP1( val );
-}
-
-void TriangleImpl::setP2( const Point& val )
-{
-    m_triangle.setP2( val );
-}
-
-void TriangleImpl::setP3( const Point& val )
-{
-    m_triangle.setP3( val );
-}
-
-const Point& TriangleImpl::getP1() const
-{
-    return m_triangle.getP1();
-}
-
-const Point& TriangleImpl::getP2() const
-{
-    return m_triangle.getP2();
-}
-
-const Point& TriangleImpl::getP3() const
-{
-    return m_triangle.getP3();
-}
-
-void TriangleImpl::setValues( const ValuesArray& values )
+void TriangleImpl::setValues( const TriangleData& values )
 {
     m_values = values;
     m_triangle.setValues( values );

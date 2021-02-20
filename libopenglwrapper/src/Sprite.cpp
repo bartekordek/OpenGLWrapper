@@ -10,7 +10,7 @@ Sprite::Sprite()
 
 void Sprite::render()
 {
-    QuadF quad1;
+    Quad quad1;
 
     std::array<std::array<float, 3>,4 > values;
     values[ 3 ] = { 0.f, 0.f, 0.f };
@@ -19,7 +19,7 @@ void Sprite::render()
     values[ 0 ] = { 0.f, 1.f, 0.f };
     quad1.setData( values );
 
-    QuadF quad2;
+    Quad quad2;
     const auto& size = m_image->getImageInfo().size;
     values[ 0 ] = {               0.f,                 0.f, 0.f, };
     values[ 1 ] = { (float)size.width,                 0.f, 0.f, };

@@ -6,6 +6,7 @@
 #include "ImportImgui.hpp"
 
 #include "Primitives/TriangleImpl.hpp"
+#include "Primitives/QuadImpl.hpp"
 
 #include "SDL2Wrapper/IWindow.hpp"
 
@@ -37,6 +38,7 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
 void OpenGLWrapperConcrete::registerObjectForUtility()
 {
     TriangleImpl::useUtility( m_oglUtility );
+    QuadImpl::useUtility( m_oglUtility );
     OpenGLShaderFactory::useUtility( m_oglUtility );
     Sprite::useUtility( m_oglUtility );
 }
@@ -177,9 +179,9 @@ IObject* OpenGLWrapperConcrete::createTriangle( CUL::JSON::INode* jNode )
         auto pz = node->findChild( "z" );
 
         Point point;
-        point.x = px->getDouble();
-        point.y = py->getDouble();
-        point.z = pz->getDouble();
+        point[ 0 ] = px->getDouble();
+        point[ 1 ] = py->getDouble();
+        point[ 2 ] = pz->getDouble();
         return point;
     };
 
@@ -187,20 +189,29 @@ IObject* OpenGLWrapperConcrete::createTriangle( CUL::JSON::INode* jNode )
     const auto vertex2 = jNode->getArray()[1];
     const auto vertex3 = jNode->getArray()[2];
 
-    triangle->setP1( jsonToPoint( vertex1 ) );
-    triangle->setP2( jsonToPoint( vertex2 ) );
-    triangle->setP3( jsonToPoint( vertex3 ) );
+    triangle->m_values[ 0 ] = jsonToPoint( vertex1 );
+    triangle->m_values[ 1 ] = jsonToPoint( vertex2 );
+    triangle->m_values[ 2 ] = jsonToPoint( vertex3 );
 
     return triangle;
 }
 
-ITriangle* OpenGLWrapperConcrete::createTriangle( const ValuesArray& data, const ColorS& color )
+ITriangle* OpenGLWrapperConcrete::createTriangle( const TriangleData& data, const ColorS& color )
 {
     ITriangle* triangle = new TriangleImpl();
     triangle->setValues( data );
     triangle->setColor( color );
     addObjectToRender( triangle );
     return triangle;
+}
+
+IQuad* OpenGLWrapperConcrete::createQuad( const QuadData& data, const ColorS& color )
+{
+    IQuad* quad = new QuadImpl();
+    quad->setValues( data );
+    quad->setColor( color );
+    addObjectToRender( quad );
+    return quad;
 }
 
 ISprite* OpenGLWrapperConcrete::createSprite( const String& path )

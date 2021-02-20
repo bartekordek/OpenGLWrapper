@@ -9,21 +9,20 @@
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
-
-using Type = float;
-using Pos = CUL::MATH::Point<Type>;
-using TranslationVector = CUL::MATH::PointF;
-
 class LIBOPENGLWRAPPER_API ITransformable
 {
 public:
+
+    using Pos = CUL::MATH::Point;
+    using TranslationVector = CUL::MATH::Point;
+
     ITransformable();
 
     void setWorldPosition( const Pos& position );
-    void setWorldPosition( Type x, Type y, Type z );
+    void setWorldPosition( Pos::Type x, Pos::Type y, Pos::Type z );
     const Pos& getWorldPosition() const;
 
-    void setWorldAngle( CUL::MATH::EulerAngles type, Type value );
+    void setWorldAngle( CUL::MATH::EulerAngles type, Pos::Type value );
     void setWorldAngle( CUL::MATH::EulerAngles type, const CUL::MATH::Angle& angle );
 
     float getWorldAngleF( CUL::MATH::EulerAngles type ) const;

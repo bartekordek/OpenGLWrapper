@@ -14,17 +14,7 @@ class LIBOPENGLWRAPPER_API ITriangle:
 public:
     ITriangle();
 
-    virtual void render() = 0;
-
-    virtual void setP1( const Point& val ) = 0;
-    virtual void setP2( const Point& val ) = 0;
-    virtual void setP3( const Point& val ) = 0;
-
-    virtual const Point& getP1() const = 0;
-    virtual const Point& getP2() const = 0;
-    virtual const Point& getP3() const = 0;
-
-    virtual void setValues( const ValuesArray& values ) = 0;
+    virtual void setValues( const TriangleData& values ) = 0;
     virtual void setColor( const TriangleColors& colors ) = 0;
     virtual void setColor( const ColorS& color ) = 0;
 

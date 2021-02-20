@@ -41,8 +41,8 @@ private:
     unsigned int m_textureId = 0;
     CUL::GUTILS::DumbPtr<CUL::Graphics::IImage> m_image;
     CUL::Graphics::SSize2Di m_size;
-    CUL::MATH::Primitives::QuadF m_objectQuad;
-    CUL::MATH::Primitives::QuadF m_texQuad;
+    CUL::MATH::Primitives::Quad m_objectQuad;
+    CUL::MATH::Primitives::Quad m_texQuad;
 
 // Deleted:
     TextureConcrete( const TextureConcrete& arg ) = delete;

@@ -26,7 +26,7 @@ using FF = CUL::FS::FileFactory;
 using Rect = CUL::Graphics::Rect3Di;
 using Cfloat = CUL::Cfloat;
 using Pos3Df = CUL::Graphics::Pos3Df;
-using Triangle = CUL::MATH::Primitives::TriangleF;
+using Triangle = CUL::MATH::Primitives::Triangle;
 using String = CUL::String;
 
 DumbPtr<CUL::GUTILS::IConfigFile> g_configFile;
@@ -157,14 +157,14 @@ void afterInit()
     g_mouseData = g_oglw->getMouseData();
 
     const float size = 32.f;
-    LOGLW::ValuesArray values;
+    LOGLW::TriangleData values;
     values[ 0 ] = { size, -size, 0.0f };
     values[ 1 ] = { -size, -size, 0.0f };
     values[ 2 ] = { -size,  size, 0.0f };
 
     g_blueTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::BLUE );
     g_whiteTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::WHITE );
-    
+
     g_redTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::RED );
     g_yellowTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::YELLOW );
 
@@ -181,12 +181,12 @@ void renderScene()
 
 
     auto oldPosWhiteBlue = g_blueTriangle->getWorldPosition();
-    oldPosWhiteBlue.z = blueTriangleZ;
+    oldPosWhiteBlue.z() = blueTriangleZ;
     g_blueTriangle->setWorldPosition( oldPosWhiteBlue );
     g_whiteTriangle->setWorldPosition( oldPosWhiteBlue );
 
     auto oldPosRedYellow = g_redTriangle->getWorldPosition();
-    oldPosRedYellow.z = redTriangleZ;
+    oldPosRedYellow.z() = redTriangleZ;
     g_redTriangle->setWorldPosition( oldPosRedYellow );
     g_yellowTriangle->setWorldPosition( oldPosRedYellow );
 

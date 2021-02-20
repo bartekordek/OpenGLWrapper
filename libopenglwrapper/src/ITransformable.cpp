@@ -2,9 +2,9 @@
 
 using namespace LOGLW;
 
-ITransformable::ITransformable()
+ITransformable::ITransformable():
+    m_worldPos( { 0.0f, 0.0f, 0.0f } )
 {
-
 }
 
 void ITransformable::setWorldPosition( const Pos& position )
@@ -12,19 +12,19 @@ void ITransformable::setWorldPosition( const Pos& position )
     m_worldPos = position;
 }
 
-void ITransformable::setWorldPosition( Type x, Type y, Type z )
+void ITransformable::setWorldPosition( Pos::Type x, Pos::Type y, Pos::Type z )
 {
-    m_worldPos.x = x;
-    m_worldPos.y = y;
-    m_worldPos.z = z;
+    m_worldPos[0] = x;
+    m_worldPos[1] = y;
+    m_worldPos[2] = z;
 }
 
-const Pos& ITransformable::getWorldPosition() const
+const ITransformable::Pos& ITransformable::getWorldPosition() const
 {
     return m_worldPos;
 }
 
-void ITransformable::setWorldAngle(CUL::MATH::EulerAngles type, Type value)
+void ITransformable::setWorldAngle(CUL::MATH::EulerAngles type, Pos::Type value)
 {
     m_angles[(size_t)type].setValue( value, CUL::MATH::Angle::Type::RADIAN );
 }
@@ -46,5 +46,4 @@ const CUL::MATH::Angle& ITransformable::getWorldAngle( CUL::MATH::EulerAngles ty
 
 ITransformable::~ITransformable()
 {
-
 }

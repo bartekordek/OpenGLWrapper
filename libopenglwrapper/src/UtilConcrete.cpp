@@ -448,7 +448,7 @@ void UtilConcrete::resetMatrixToIdentity( const MatrixTypes matrix ) const
 
 void UtilConcrete::translate( const Point& point )
 {
-    translate( point.x, point.y, point.z );
+    translate( point[0], point[1], point[2] );
 }
 
 void UtilConcrete::translate( const float x, const float y, const float z )
@@ -476,25 +476,18 @@ void UtilConcrete::scale( const float scale ) const
     glScalef( scale, scale, scale );
 }
 
-void UtilConcrete::draw( const QuadF& quad, const QuadF& texQuad )
+void UtilConcrete::draw( const Quad& quad, const Quad& texQuad )
 {
     glColor4f( 1.f, 1.f, 1.f, 1.f );
     glBegin( GL_QUADS );
-        glTexCoord3f( texQuad.p1().x, texQuad.p1().y, texQuad.p1().z );
-        glVertex3f( quad.p1().x, quad.p1().y, quad.p1().z );
-
-        glTexCoord3f( texQuad.p2().x, texQuad.p2().y, texQuad.p2().z );
-        glVertex3f( quad.p2().x, quad.p2().y, quad.p2().z );
-
-        glTexCoord3f( texQuad.p3().x, texQuad.p3().y, texQuad.p3().z );
-        glVertex3f( quad.p3().x, quad.p3().y, quad.p3().z );
-
-        glTexCoord3f( texQuad.p4().x, texQuad.p4().y, texQuad.p4().z );
-        glVertex3f( quad.p4().x, quad.p4().y, quad.p4().z );
+        glTexCoord3f( texQuad[0][0], texQuad[0][1], texQuad[0][2] ); glVertex3f( quad[0][0], quad[0][1], quad[0][2] );
+        glTexCoord3f( texQuad[1][0], texQuad[1][1], texQuad[1][2] ); glVertex3f( quad[1][0], quad[1][1], quad[1][2] );
+        glTexCoord3f( texQuad[2][0], texQuad[2][1], texQuad[2][2] ); glVertex3f( quad[2][0], quad[2][1], quad[2][2] );
+        glTexCoord3f( texQuad[3][0], texQuad[3][1], texQuad[3][2] ); glVertex3f( quad[3][0], quad[3][1], quad[3][2] );
     glEnd();
 }
 
-void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
+void UtilConcrete::draw( const Quad& quad, const ColorS& color )
 {
     glBegin( GL_QUADS );
         auto red = color.getRF();
@@ -502,66 +495,74 @@ void UtilConcrete::draw( const QuadF& quad, const ColorS& color )
         auto blue = color.getBF();
         auto alpha = color.getAF();
         glColor4f( red, green, blue, alpha );
-        glVertex3f( quad.p1().x, quad.p1().y, quad.p1().z );
-        glVertex3f( quad.p2().x, quad.p2().y, quad.p2().z );
-        glVertex3f( quad.p3().x, quad.p3().y, quad.p3().z );
-        glVertex3f( quad.p4().x, quad.p4().y, quad.p4().z );
+        glVertex3f( quad[0][0], quad[0][1], quad[0][2] );
+        glVertex3f( quad[1][0], quad[1][1], quad[1][2] );
+        glVertex3f( quad[2][0], quad[2][1], quad[2][2] );
+        glVertex3f( quad[3][0], quad[3][1], quad[3][2] );
     glEnd();
 }
 
-void UtilConcrete::draw( const QuadF& quad, const std::array<ColorS, 4>& color )
+void UtilConcrete::draw( const QuadData& quad, const ColorS& color )
 {
     glBegin( GL_QUADS );
-        glColor4f( color[0].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
-        glVertex3f( quad.p1().x, quad.p1().y, quad.p1().z );
+        auto red = color.getRF();
+        auto green = color.getGF();
+        auto blue = color.getBF();
+        auto alpha = color.getAF();
+        glColor4f( red, green, blue, alpha );
+        glVertex3f( quad[0][0], quad[0][1], quad[0][2] );
+        glVertex3f( quad[1][0], quad[1][1], quad[1][2] );
+        glVertex3f( quad[2][0], quad[2][1], quad[2][2] );
+        glVertex3f( quad[3][0], quad[3][1], quad[3][2] );
+    glEnd();
+}
 
-        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
-        glVertex3f( quad.p2().x, quad.p2().y, quad.p2().z );
+void UtilConcrete::draw( const QuadData& quad, const std::array<ColorS, 4>& color )
+{
+    glBegin( GL_QUADS );
+        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() ); glVertex3f( quad[0][0], quad[0][1], quad[0][2] );
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() ); glVertex3f( quad[1][0], quad[1][1], quad[1][2] );
+        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() ); glVertex3f( quad[2][0], quad[2][1], quad[2][2] );
+        glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() ); glVertex3f( quad[3][0], quad[3][1], quad[3][2] );
+    glEnd();
+}
 
-        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
-        glVertex3f( quad.p3().x, quad.p3().y, quad.p3().z );
-
-        glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() );
-        glVertex3f( quad.p4().x, quad.p4().y, quad.p4().z );
+void UtilConcrete::draw( const Quad& quad, const std::array<ColorS, 4>& color )
+{
+    glBegin( GL_QUADS );
+        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() ); glVertex3f( quad[0][0], quad[0][1], quad[0][2] );
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() ); glVertex3f( quad[1][0], quad[1][1], quad[1][2] );
+        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() ); glVertex3f( quad[2][0], quad[2][1], quad[2][2] );
+        glColor4f( color[ 3 ].getRF(), color[ 3 ].getGF(), color[ 3 ].getBF(), color[ 3 ].getAF() ); glVertex3f( quad[3][0], quad[3][1], quad[3][2] );
     glEnd();
 }
 
 
-void UtilConcrete::draw( const TriangleF& triangle, const ColorS& color )
+void UtilConcrete::draw( const Triangle& triangle, const ColorS& color )
 {
     glBegin( GL_TRIANGLES );
         glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
-        glVertex3f( triangle.p1().getX(), triangle.p1().getY(), triangle.p1().getZ() );
-        glVertex3f( triangle.p2().getX(), triangle.p2().getY(), triangle.p2().getZ() );
-        glVertex3f( triangle.p3().getX(), triangle.p3().getY(), triangle.p3().getZ() );
+        glVertex3f( triangle[0][0], triangle[0][1], triangle[0][2] );
+        glVertex3f( triangle[1][0], triangle[1][1], triangle[1][2] );
+        glVertex3f( triangle[2][0], triangle[2][1], triangle[2][2] );
     glEnd();
 }
 
-void UtilConcrete::draw( const TriangleF& quad, const std::array<ColorS, 4>& color )
+void UtilConcrete::draw( const Triangle& quad, const std::array<ColorS, 4>& color )
 {
     glBegin( GL_TRIANGLES );
-        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
-        glVertex3f( quad.p1().getX(), quad.p1().getY(), quad.p1().getZ() );
-
-        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
-        glVertex3f( quad.p2().getX(), quad.p2().getY(), quad.p2().getZ() );
-
-        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
-        glVertex3f( quad.p3().getX(), quad.p3().getY(), quad.p3().getZ() );
+        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() ); glVertex3f( quad[0][0], quad[0][1], quad[0][2] );
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() ); glVertex3f( quad[1][0], quad[1][1], quad[1][2] );
+        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() ); glVertex3f( quad[2][0], quad[2][1], quad[2][2] );
     glEnd();
 }
 
-void UtilConcrete::draw( const ValuesArray& values, const std::array<ColorS, 3>& color )
+void UtilConcrete::draw( const TriangleData& values, const std::array<ColorS, 3>& color )
 {
     glBegin( GL_TRIANGLES );
-        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() );
-        glVertex3f( values[0][0], values[0][1], values[0][2] );
-
-        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() );
-        glVertex3f( values[1][0], values[1][1], values[1][2] );
-
-        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() );
-        glVertex3f( values[2][0], values[2][1], values[2][2] );
+        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() ); glVertex3f( values[0][0], values[0][1], values[0][2] );
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() ); glVertex3f( values[1][0], values[1][1], values[1][2] );
+        glColor4f( color[ 2 ].getRF(), color[ 2 ].getGF(), color[ 2 ].getBF(), color[ 2 ].getAF() ); glVertex3f( values[2][0], values[2][1], values[2][2] );
     glEnd();
 }
 
@@ -621,13 +622,13 @@ unsigned int UtilConcrete::generateVertexArray( const int size ) const
 
 void bufferDataImpl( const void* data, const GLenum type, const GLsizeiptr dataSize );
 
-void UtilConcrete::bufferData( const CUL::MATH::Primitives::QuadF& data, const BufferTypes type ) const
+void UtilConcrete::bufferData( const CUL::MATH::Primitives::Quad& data, const BufferTypes type ) const
 {
     auto dataVal = (void*)(&data.data);
     bufferDataImpl(
         dataVal,
         static_cast<GLenum>(type),
-        static_cast<GLsizeiptr>(4 * sizeof( QuadF::PointType )) );
+        static_cast<GLsizeiptr>(4 * sizeof( Quad::PointType )) );
 }
 
 void UtilConcrete::bufferData( const std::vector<unsigned int>& data, const BufferTypes type  ) const

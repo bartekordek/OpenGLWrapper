@@ -36,13 +36,15 @@ using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
 using Pos3Dd = CUL::Graphics::Pos3Dd;
 using IFile = CUL::FS::IFile;
-using QuadF = CUL::MATH::Primitives::QuadF;
-using TriangleF = CUL::MATH::Primitives::TriangleF;
-using Triangle3DF = CUL::MATH::Primitives::Triangle3DF;
+using Quad = CUL::MATH::Primitives::Quad;
+using Triangle = CUL::MATH::Primitives::Triangle;
+using Triangle3D = CUL::MATH::Primitives::Triangle3D;
 using IFile = CUL::FS::IFile;
-using ValuesArray = CUL::MATH::Primitives::ValuesArray;
+using TriangleData = CUL::MATH::Primitives::TriangleData;
 using TriangleColors = std::array<ColorS, 3>;
-using Point = CUL::MATH::PointF;
+using QuadData = CUL::MATH::Primitives::Quad::QuadData;
+using QuadColors = std::array<ColorS, 4>;
+using Point = CUL::MATH::Point;
 
 enum class MatrixTypes: int
 {
@@ -174,7 +176,7 @@ public:
 
     virtual unsigned int generateVertexArray( const int size = 1 ) const = 0;
 
-    virtual void bufferData( const CUL::MATH::Primitives::QuadF& data, const BufferTypes type ) const = 0;
+    virtual void bufferData( const CUL::MATH::Primitives::Quad& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const std::vector<float>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const float vertices[] ) const = 0;
@@ -210,13 +212,17 @@ public:
 
     virtual std::vector<std::string> listExtensions() = 0;
 
-    virtual void draw( const QuadF& quad, const QuadF& texQuad ) = 0;
-    virtual void draw( const QuadF& quad, const ColorS& color ) = 0;
-    virtual void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) = 0;
+    virtual void draw( const Quad& quad, const Quad& texQuad ) = 0;
 
-    virtual void draw( const TriangleF& triangle, const ColorS& color ) = 0;
-    virtual void draw( const TriangleF& quad, const std::array<ColorS, 4>& color ) = 0;
-    virtual void draw( const ValuesArray& values, const std::array<ColorS, 3>& color ) = 0;
+    virtual void draw( const Quad& quad, const ColorS& color ) = 0;
+    virtual void draw( const Quad& quad, const std::array<ColorS, 4>& color ) = 0;
+
+    virtual void draw( const QuadData& quad, const ColorS& color ) = 0;
+    virtual void draw( const QuadData& quad, const std::array<ColorS, 4>& color ) = 0;
+
+    virtual void draw( const Triangle& triangle, const ColorS& color ) = 0;
+    virtual void draw( const Triangle& quad, const std::array<ColorS, 4>& color ) = 0;
+    virtual void draw( const TriangleData& values, const std::array<ColorS, 3>& color ) = 0;
 
     virtual void translate( const Point& point ) = 0;
     virtual void translate( const float x, const float y, const float z ) = 0;

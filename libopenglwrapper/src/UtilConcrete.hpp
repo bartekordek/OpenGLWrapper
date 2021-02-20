@@ -55,7 +55,7 @@ private:
     void setVertexArrayClientState( const bool enable ) const override;
     unsigned int generateVertexArray( const int size = 1 ) const override;
 
-    void bufferData( const CUL::MATH::Primitives::QuadF& data, const BufferTypes type ) const override;
+    void bufferData( const CUL::MATH::Primitives::Quad& data, const BufferTypes type ) const override;
     void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const override;
     void bufferData( const std::vector<float>& data, const BufferTypes type ) const override;
     void bufferData( const float vertices[] ) const override;
@@ -99,13 +99,21 @@ private:
     virtual void scale( const CUL::MATH::Vector3Df& scale ) const override;
     virtual void scale( const float scale ) const override;
 
-    void draw( const QuadF& quad, const QuadF& texQuad ) override;
-    void draw( const QuadF& quad, const ColorS& color ) override;
-    void draw( const QuadF& quad, const std::array<ColorS, 4>& color ) override;
 
-    void draw( const TriangleF& triangle, const ColorS& color ) override;
-    void draw( const TriangleF& quad, const std::array<ColorS, 4>& color ) override;
-    void draw( const ValuesArray& values, const std::array<ColorS, 3>& color ) override;
+
+
+
+    void draw( const Triangle& triangle, const ColorS& color ) override;
+    void draw( const Triangle& quad, const std::array<ColorS, 4>& color ) override;
+    void draw( const TriangleData& values, const std::array<ColorS, 3>& color ) override;
+
+    void draw( const Quad& quad, const Quad& texQuad ) override;
+
+    void draw( const Quad& quad, const ColorS& color ) override;
+    void draw( const Quad& quad, const std::array<ColorS, 4>& color ) override;
+
+    void draw( const QuadData& quad, const ColorS& color ) override;
+    void draw( const QuadData& quad, const std::array<ColorS, 4>& color ) override;
 
     void assertOnProgramError( Cunt programId, Cunt val ) const;
     void log( const String& text,
