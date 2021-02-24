@@ -115,6 +115,8 @@ private:
     void draw( const QuadData& quad, const ColorS& color ) override;
     void draw( const QuadData& quad, const std::array<ColorS, 4>& color ) override;
 
+    void draw( const LineData& values, const std::array<ColorS, 3>& color ) override;
+
     void assertOnProgramError( Cunt programId, Cunt val ) const;
     void log( const String& text,
             const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;

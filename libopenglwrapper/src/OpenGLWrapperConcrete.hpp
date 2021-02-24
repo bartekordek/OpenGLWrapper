@@ -94,8 +94,11 @@ private:
     IObject* createTriangle( CUL::JSON::INode* jNode );
     ITriangle* createTriangle( const TriangleData& data, const ColorS& color = ColorE::WHITE ) override;
     IQuad* createQuad( const QuadData& data, const ColorS& color = ColorE::WHITE ) override;
+    ILine* createLine( const LineData& data, const ColorS& color = ColorE::WHITE ) override;
 
     ISprite* createSprite( const String& path );
+
+    void removeObject( IObject* object ) override;
 
     void setBackgroundColor( const ColorS& color ) override;
     void startRenderingLoop() override;
@@ -104,6 +107,7 @@ private:
     void beforeFrame( const EmptyFunctionCallback& callback ) override;
 
     void addObjectToRender( IRenderable* renderable ) override;
+    void removeObjectToRender( IRenderable* renderable );
 
     IShaderFactory* getShaderFactory() override;
     IObjectFactory* getObjectFactory() override;
@@ -140,6 +144,7 @@ private:
     CUL::GUTILS::IConfigFile* getConfig() override;
 
     void drawDebugInfo( const bool enable ) override;
+    void drawOrigin( bool enable ) override;
 
     IDebugOverlay* getDebugOverlay() override;
     void handleEvent( const SDL_Event& event ) override;
@@ -227,6 +232,9 @@ private:
 
     bool m_hasBeenInitialized = false;
     SafeBool m_drawQuad = false;
+    SafeBool m_drawOrigin = false;
+
+    std::array<IObject*, 3> m_axis;
 
 private: // Deleted
     OpenGLWrapperConcrete() = delete;

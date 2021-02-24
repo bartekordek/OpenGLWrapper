@@ -91,6 +91,7 @@ public:
     virtual const ContextInfo& getContext() const = 0;
 
     virtual void drawDebugInfo( const bool enable ) = 0;
+    virtual void drawOrigin( bool enable ) = 0;
 
     virtual IDebugOverlay* getDebugOverlay() = 0;
 

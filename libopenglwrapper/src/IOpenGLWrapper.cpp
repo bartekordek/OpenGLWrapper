@@ -28,7 +28,7 @@ IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper(
     SDL2W::WindowData windowData;
     windowData.name = winName;
     windowData.pos = pos;
-    windowData.size = winSize;
+    windowData.currentRes = winSize;
     windowData.rendererName = renderername;
 
     auto sdlWrap = SDL2W::ISDL2Wrapper::createSDL2Wrapper();

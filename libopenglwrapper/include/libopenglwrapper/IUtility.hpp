@@ -14,6 +14,7 @@
 #include "CUL/Math/Primitives/Triangle3D.hpp"
 #include "CUL/Math/Primitives/Quad.hpp"
 #include "CUL/Math/Primitives/Triangle.hpp"
+#include "CUL/Math/Primitives/Line.hpp"
 
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
@@ -40,10 +41,16 @@ using Quad = CUL::MATH::Primitives::Quad;
 using Triangle = CUL::MATH::Primitives::Triangle;
 using Triangle3D = CUL::MATH::Primitives::Triangle3D;
 using IFile = CUL::FS::IFile;
+
 using TriangleData = CUL::MATH::Primitives::TriangleData;
 using TriangleColors = std::array<ColorS, 3>;
+
 using QuadData = CUL::MATH::Primitives::Quad::QuadData;
 using QuadColors = std::array<ColorS, 4>;
+
+using LineData = CUL::MATH::Primitives::Line::LineData;
+using LineColors = std::array<ColorS, 2>;
+
 using Point = CUL::MATH::Point;
 
 enum class MatrixTypes: int
@@ -223,6 +230,8 @@ public:
     virtual void draw( const Triangle& triangle, const ColorS& color ) = 0;
     virtual void draw( const Triangle& quad, const std::array<ColorS, 4>& color ) = 0;
     virtual void draw( const TriangleData& values, const std::array<ColorS, 3>& color ) = 0;
+
+    virtual void draw( const LineData& values, const std::array<ColorS, 3>& color ) = 0;
 
     virtual void translate( const Point& point ) = 0;
     virtual void translate( const float x, const float y, const float z ) = 0;

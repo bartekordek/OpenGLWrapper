@@ -7,6 +7,7 @@
 
 #include "Primitives/TriangleImpl.hpp"
 #include "Primitives/QuadImpl.hpp"
+#include "Primitives/LineImpl.hpp"
 
 #include "SDL2Wrapper/IWindow.hpp"
 
@@ -76,6 +77,12 @@ void OpenGLWrapperConcrete::addObjectToRender( IRenderable* renderable )
 {
     std::lock_guard<std::mutex> lockGuard( m_objectsToRenderMtx );
     m_objectsToRender.insert( renderable );
+}
+
+void OpenGLWrapperConcrete::removeObjectToRender( IRenderable* renderable )
+{
+    std::lock_guard<std::mutex> lockGuard( m_objectsToRenderMtx );
+    m_objectsToRender.erase( renderable );
 }
 
 IShaderFactory* OpenGLWrapperConcrete::getShaderFactory()
@@ -214,6 +221,16 @@ IQuad* OpenGLWrapperConcrete::createQuad( const QuadData& data, const ColorS& co
     return quad;
 }
 
+ILine* OpenGLWrapperConcrete::createLine(const LineData& data, const ColorS& color)
+{
+    ILine* line = new LineImpl();
+    line->setValues( data );
+    line->setColor( color );
+    addSliderValue( line );
+
+    return line;
+}
+
 ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
 {
     auto sprite = new Sprite();
@@ -238,6 +255,14 @@ ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
     addObjectToRender( sprite );
 
     return sprite;
+}
+
+void OpenGLWrapperConcrete::removeObject(IObject* object)
+{
+    if( object )
+    {
+        removeObjectToRender( object );
+    }
 }
 
 void OpenGLWrapperConcrete::mainThread()
@@ -743,6 +768,43 @@ CUL::GUTILS::IConfigFile* OpenGLWrapperConcrete::getConfig()
 void OpenGLWrapperConcrete::drawDebugInfo( const bool enable )
 {
     m_enableDebugDraw = enable;
+}
+
+void OpenGLWrapperConcrete::drawOrigin(bool enable)
+{
+    if( enable )
+    {
+        if( m_axis[0] == nullptr )
+        {
+            const float length = 100.f;
+            LineData lineData;
+            lineData[0] = { -length / 2.f, 0.f, 0.f };
+            lineData[1] = {  length / 2.f, 0.f, 0.f };
+
+            // X
+            m_axis[0] = createLine( lineData, ColorE::RED );
+
+            // Y
+            lineData[0] = { 0.f, -length / 2.f, 0.f };
+            lineData[1] = { 0.f,  length / 2.f, 0.f };
+            m_axis[1] = createLine( lineData, ColorE::GREEN );
+
+            // Z
+            lineData[0] = { 0.f, 0.f, -length / 2.f };
+            lineData[1] = { 0.f, 0.f,  length / 2.f };
+            m_axis[2] = createLine( lineData, ColorE::BLUE );
+        }
+    }
+    else
+    {
+        if( m_axis[0] == nullptr )
+        {
+            for( const auto& axis: m_axis )
+            {
+                removeObject( axis );
+            }
+        }
+    }
 }
 
 IDebugOverlay* OpenGLWrapperConcrete::getDebugOverlay()

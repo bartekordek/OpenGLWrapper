@@ -566,6 +566,14 @@ void UtilConcrete::draw( const TriangleData& values, const std::array<ColorS, 3>
     glEnd();
 }
 
+void UtilConcrete::draw(const LineData& values, const std::array<ColorS, 3>& color)
+{
+    glBegin( GL_LINE );
+        glColor4f( color[ 0 ].getRF(), color[ 0 ].getGF(), color[ 0 ].getBF(), color[ 0 ].getAF() ); glVertex3f( values[0][0], values[0][1], values[0][2] );
+        glColor4f( color[ 1 ].getRF(), color[ 1 ].getGF(), color[ 1 ].getBF(), color[ 1 ].getAF() ); glVertex3f( values[1][0], values[1][1], values[1][2] );
+    glEnd();
+}
+
 void UtilConcrete::clearColorAndDepthBuffer() const
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

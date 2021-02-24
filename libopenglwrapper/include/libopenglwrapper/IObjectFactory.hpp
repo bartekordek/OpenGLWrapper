@@ -3,6 +3,7 @@
 #include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/Primitives/ITriangle.hpp"
 #include "libopenglwrapper/Primitives/IQuad.hpp"
+#include "libopenglwrapper/Primitives/ILine.hpp"
 
 #include "CUL/Filesystem/IFile.hpp"
 
@@ -25,7 +26,11 @@ public:
 
     virtual IQuad* createQuad( const QuadData& data, const ColorS& color = ColorE::WHITE ) = 0;
 
+    virtual ILine* createLine( const LineData& data, const ColorS& color = ColorE::WHITE ) = 0;
+
     virtual ISprite* createSprite( const String& path ) = 0;
+
+    virtual void removeObject( IObject* object ) = 0;
 
 protected:
 private:
