@@ -9,7 +9,7 @@ class LineImpl final:
     public IUtilityUser
 {
 public:
-    QuadData m_data;
+    LineData m_data;
 
     LineImpl();
 

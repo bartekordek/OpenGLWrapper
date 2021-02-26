@@ -234,7 +234,7 @@ private:
     SafeBool m_drawQuad = false;
     SafeBool m_drawOrigin = false;
 
-    std::array<IObject*, 3> m_axis;
+    std::array<IObject*, 3> m_axis = { nullptr, nullptr, nullptr };
 
 private: // Deleted
     OpenGLWrapperConcrete() = delete;

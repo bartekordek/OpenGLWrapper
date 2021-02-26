@@ -158,9 +158,9 @@ void afterInit()
 
     const float size = 32.f;
     LOGLW::TriangleData values;
-    values[ 0 ] = { size, -size, 0.0f };
-    values[ 1 ] = { -size, -size, 0.0f };
-    values[ 2 ] = { -size,  size, 0.0f };
+    values[ 0 ] = LOGLW::PointType(  size, -size, 0.0f );
+    values[ 1 ] = LOGLW::PointType{ -size, -size, 0.0f };
+    values[ 2 ] = LOGLW::PointType{ -size,  size, 0.0f };
 
     g_blueTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::BLUE );
     g_whiteTriangle = g_oglw->getObjectFactory()->createTriangle( values, LOGLW::ColorE::WHITE );

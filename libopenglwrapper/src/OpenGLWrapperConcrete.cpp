@@ -226,7 +226,7 @@ ILine* OpenGLWrapperConcrete::createLine(const LineData& data, const ColorS& col
     ILine* line = new LineImpl();
     line->setValues( data );
     line->setColor( color );
-    addSliderValue( line );
+    addObjectToRender( line );
 
     return line;
 }
@@ -649,7 +649,6 @@ void OpenGLWrapperConcrete::changeProjectionType()
     m_oglUtility->resetMatrixToIdentity( MatrixTypes::PROJECTION );
     if( ProjectionType::ORTO == m_projectionData.m_projectionType )
     {
-
         m_oglUtility->setOrthogonalPerspective( m_projectionData );
     }
     else if( ProjectionType::PERSPECTIVE == m_projectionData.m_projectionType )
@@ -776,7 +775,7 @@ void OpenGLWrapperConcrete::drawOrigin(bool enable)
     {
         if( m_axis[0] == nullptr )
         {
-            const float length = 100.f;
+            const float length = 1024.f;
             LineData lineData;
             lineData[0] = { -length / 2.f, 0.f, 0.f };
             lineData[1] = {  length / 2.f, 0.f, 0.f };

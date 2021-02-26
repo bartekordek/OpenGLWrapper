@@ -42,6 +42,7 @@ using Triangle = CUL::MATH::Primitives::Triangle;
 using Triangle3D = CUL::MATH::Primitives::Triangle3D;
 using IFile = CUL::FS::IFile;
 
+using PointType = CUL::MATH::Point;
 using TriangleData = CUL::MATH::Primitives::TriangleData;
 using TriangleColors = std::array<ColorS, 3>;
 
@@ -222,7 +223,7 @@ public:
     virtual void draw( const Quad& quad, const Quad& texQuad ) = 0;
 
     virtual void draw( const Quad& quad, const ColorS& color ) = 0;
-    virtual void draw( const Quad& quad, const std::array<ColorS, 4>& color ) = 0;
+    virtual void draw( const Quad& quad, const QuadColors& color ) = 0;
 
     virtual void draw( const QuadData& quad, const ColorS& color ) = 0;
     virtual void draw( const QuadData& quad, const std::array<ColorS, 4>& color ) = 0;
@@ -231,7 +232,8 @@ public:
     virtual void draw( const Triangle& quad, const std::array<ColorS, 4>& color ) = 0;
     virtual void draw( const TriangleData& values, const std::array<ColorS, 3>& color ) = 0;
 
-    virtual void draw( const LineData& values, const std::array<ColorS, 3>& color ) = 0;
+    virtual void draw( const LineData& values, const ColorS& color ) = 0;
+    virtual void draw( const LineData& values, const LineColors& color ) = 0;
 
     virtual void translate( const Point& point ) = 0;
     virtual void translate( const float x, const float y, const float z ) = 0;

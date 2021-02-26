@@ -3,7 +3,7 @@
 using namespace LOGLW;
 
 ITransformable::ITransformable():
-    m_worldPos( { 0.0f, 0.0f, 0.0f } )
+    m_worldPos( 0.0f, 0.0f, 0.0f )
 {
 }
 
