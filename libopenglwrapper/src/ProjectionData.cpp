@@ -1,6 +1,5 @@
 #include "libopenglwrapper/ProjectionData.hpp"
 #include "CUL/STL_IMPORTS/STD_utility.hpp"
-#include "libopenglwrapper/ProjectionData.hpp"
 
 using namespace LOGLW;
 
@@ -86,9 +85,9 @@ ProjectionData& ProjectionData::operator=( ProjectionData&& rhv )
     return *this;
 }
 
-void ProjectionData::setSize( const Size2Di& sizeArg )
+void ProjectionData::setSize( const SDL2W::WindowSize& winSize )
 {
-    m_size = sizeArg;
+    m_size = winSize;
 
     m_left = m_center.x - 0.5f * (float) m_size.getWidth();
     m_right = m_center.x + 0.5f * (float) m_size.getWidth();
@@ -140,7 +139,7 @@ void ProjectionData::setFov( const float val )
     onChange();
 }
 
-const Size2Di& ProjectionData::getSize() const
+const SDL2W::WindowSize& ProjectionData::getSize() const
 {
     return m_size;
 }

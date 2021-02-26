@@ -19,8 +19,8 @@ IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w 
 }
 
 IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper(
-    const Vector3Di& pos,
-    const WindowSize& winSize,
+    const CUL::Graphics::Pos2Di& pos,
+    const SDL2W::WindowSize& winSize,
     const String& configPath,
     const String& winName,
     const String& renderername )

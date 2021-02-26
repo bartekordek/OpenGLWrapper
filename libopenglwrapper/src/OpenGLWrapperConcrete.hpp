@@ -28,7 +28,6 @@ union SDL_Event;
 NAMESPACE_BEGIN( SDL2W )
 class IKey;
 class IKeyboardObserver;
-using WindowSize = CUL::Graphics::Size2Di;
 NAMESPACE_END( SDL2W )
 
 NAMESPACE_BEGIN( LOGLW )

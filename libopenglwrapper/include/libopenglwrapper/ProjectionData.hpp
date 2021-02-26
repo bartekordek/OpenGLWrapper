@@ -1,6 +1,8 @@
 #pragma once
 
-#include "libopenglwrapper//Import.hpp"
+#include "libopenglwrapper/Import.hpp"
+
+#include "SDL2Wrapper/IWindow.hpp"
 
 #include "CUL/GenericUtils/IOnChange.hpp"
 #include "CUL/GenericUtils/ValueChangeHook.hpp"
@@ -21,8 +23,7 @@ enum class ProjectionType: char
 using Pos3Di = CUL::Graphics::Pos3Di;
 using Pos3Df = CUL::Graphics::Pos3Df;
 using Pos2Di = CUL::Graphics::Pos2Di;
-using Size2Du = CUL::Graphics::Size2Du;
-using Size2Di = CUL::Graphics::Size2Di;
+using WindowSize = SDL2W::WindowSize;
 using Cunt = const unsigned int;
 
 class LIBOPENGLWRAPPER_API ProjectionData final:
@@ -36,7 +37,7 @@ public:
     ProjectionData& operator=( const ProjectionData& rhv );
     ProjectionData& operator=( ProjectionData&& rhv );
 
-    void setSize( const Size2Di& size );
+    void setSize( const WindowSize& winSize );
     void setCenter( const Pos3Df& pos );
     void setEyePos( const Pos3Df& pos );
     void setUp( const Pos3Df& pos );
@@ -44,7 +45,7 @@ public:
     void setZfar( const float val );
     void setFov( const float val );
 
-    const Size2Di& getSize() const;
+    const WindowSize& getSize() const;
     float getLeft() const;
     float getRight() const;
     float getTop() const;
@@ -64,7 +65,7 @@ public:
     Pos3Df m_center = { 0.0, 0.0, 32.0 };
     Pos3Df m_eye;
     Pos3Df m_up = { 0.0, 1.0, 0.0 };
-    Size2Di m_size;
+    WindowSize m_size;
     float m_fov = 90.0f;
     float m_zNear = 64.0f;
     float m_zFar = -64.0f;

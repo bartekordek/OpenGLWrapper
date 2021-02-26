@@ -9,21 +9,19 @@
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
 #include "SDL2Wrapper/Input/IMouseObservable.hpp"
 #include "SDL2Wrapper/IWindowEventObservable.hpp"
+#include "SDL2Wrapper/IWindow.hpp"
 
 #include "CUL/String.hpp"
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
+#include "CUL/Math/Vector3D.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
 class IConfigFile;
 NAMESPACE_END( GUTILS )
 NAMESPACE_END( CUL )
-
-NAMESPACE_BEGIN( SDL2W )
-class IWindow;
-NAMESPACE_END( SDL2W )
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -36,10 +34,7 @@ using String = CUL::String;
 using ColorS = CUL::Graphics::ColorS;
 using ColorE = CUL::Graphics::ColorE;
 
-using CSize2Du = const Size2Du;
-using CPos2Di = const Pos2Di;
 using Vector3Di = CUL::MATH::Vector3Di;
-using WindowSize = Size2Di;
 using CMString = const String;
 using IImageLoader = CUL::Graphics::IImageLoader;
 using EmptyFunctionCallback = std::function<void()>;
@@ -102,8 +97,8 @@ public:
 
     static IOpenGLWrapper* createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w );
     static IOpenGLWrapper* createOpenGLWrapper(
-        const Vector3Di& pos,
-        const WindowSize& winSize,
+        const CUL::Graphics::Pos2Di& pos,
+        const SDL2W::WindowSize& winSize,
         const String& configPath,
         const String& winName = "",
         const String& renderername = "opengl" );
