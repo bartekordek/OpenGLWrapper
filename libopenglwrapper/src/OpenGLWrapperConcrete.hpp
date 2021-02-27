@@ -79,6 +79,7 @@ public:
 protected:
 private:
     void initialize() override;
+    void loadFromConfig();
     void showExtensions();
     void setupProjectionData( const SDL2W::WindowSize& winSize );
     CUL::CULInterface* getCul() override;

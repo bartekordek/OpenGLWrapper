@@ -98,7 +98,7 @@ int main( int argc, char** argv )
         height = std::stoi( valH );
     }
 
-    Vector3Di winPos = { 200, 200, 0 };
+    CUL::Graphics::Pos2Di winPos = { 200, 200 };
     WindowSize winSize = { width, height };
     g_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper(
         winPos,
