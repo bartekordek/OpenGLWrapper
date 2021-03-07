@@ -5,6 +5,7 @@ project(openglwrapper_main)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set( OGLW_ROOT ${CMAKE_CURRENT_SOURCE_DIR} )
+set( OGLW_BUILD_ROOT ${CMAKE_SOURCE_DIR} )
 
 if( MSVC )
     set( BUILD_ROOT_POSTFIX Build-Windows )
@@ -12,7 +13,7 @@ else()
     set( BUILD_ROOT_POSTFIX Build-Linux )
 endif()
 
-set( OGLW_OUTPUT_DIR ${OGLW_ROOT}/${BUILD_ROOT_POSTFIX} )
+set( OGLW_OUTPUT_DIR ${OGLW_BUILD_ROOT}/${BUILD_ROOT_POSTFIX} )
 
 set( OGLW_TESTS_RUN_DIR ${OGLW_ROOT}/runDir )
 set( OGLW_DEPS_ROOT ${OGLW_ROOT}/deps )
