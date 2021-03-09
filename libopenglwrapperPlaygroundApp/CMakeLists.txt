@@ -70,16 +70,4 @@ target_include_directories(${EXEC} PRIVATE src)
 
 if( MSVC )
     set_property(TARGET ${EXEC} PROPERTY "VS_DEBUGGER_WORKING_DIRECTORY" "${OGLW_TESTS_RUN_DIR}")
-
-    CmakeToWindow( ${OGLW_OUTPUT_DIR} OGLW_OUTPUT_DIR_WINDOWS )
-    CmakeToWindow( ${OGLW_DEPS_ROOT} OGLW_DEPS_ROOT_WINDOWS )
-    CmakeToWindow( ${OGLW_TESTS_RUN_DIR} OGLW_TESTS_RUN_DIR_WINDOWS )
-    CmakeToWindow( ${CMAKE_SOURCE_DIR}/${BUILD_ROOT_POSTFIX} OUTER_BUILD_ROOT )
-
-    set( CopyCommand ${OGLW_DEPS_ROOT}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat )
-    add_custom_command(TARGET ${EXEC} POST_BUILD
-        COMMAND ${CopyCommand} ${OGLW_OUTPUT_DIR_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
-        COMMAND ${CopyCommand} ${OGLW_DEPS_ROOT_WINDOWS} ${OGLW_TESTS_RUN_DIR_WINDOWS}
-        COMMAND ${CopyCommand} ${OUTER_BUILD_ROOT} ${OGLW_TESTS_RUN_DIR_WINDOWS}
-    )
 endif()
