@@ -16,11 +16,6 @@ else()
     add_definitions(-Wfatal-errors)
 endif()
 
-message( "[PlaygroundApp] Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
-
 file( GLOB SOURCES *.cpp )
 
 add_executable(${EXEC} ${SOURCES})

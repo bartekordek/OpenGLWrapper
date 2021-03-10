@@ -19,9 +19,6 @@ get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTO
 foreach(dir ${dirs})
     message(STATUS "${dir}")
 endforeach()
-message( "[openglwrapper lib] DONE" )
-
-message( "[openglwrapper lib] 00 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
 find_package( OpenGL REQUIRED )
 find_package( GLEW REQUIRED )
 find_package( freeglut REQUIRED )
@@ -37,15 +34,9 @@ else()
     add_definitions( -Wfatal-errors )
 endif()
 
-message( "[openglwrapper lib] Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OGLW_OUTPUT_DIR}" )
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OGLW_OUTPUT_DIR} )
-
 file( GLOB_RECURSE SOURCES include/*.hpp src/*.hpp src/*.cpp )
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 add_library( ${EXEC} SHARED ${SOURCES} )
-
 
 set( DEPENDENCIES
 LOGLW-AdditionalDeps
