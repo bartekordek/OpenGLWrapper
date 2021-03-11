@@ -29,6 +29,7 @@ public:
     virtual ILine* createLine( const LineData& data, const ColorS& color = ColorE::WHITE ) = 0;
 
     virtual ISprite* createSprite( const String& path ) = 0;
+    virtual ISprite* createSprite( unsigned* data, unsigned width, unsigned height ) = 0;
 
     virtual void removeObject( IObject* object ) = 0;
 

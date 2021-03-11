@@ -97,6 +97,7 @@ private:
     ILine* createLine( const LineData& data, const ColorS& color = ColorE::WHITE ) override;
 
     ISprite* createSprite( const String& path );
+    ISprite* createSprite(unsigned* data, unsigned width, unsigned height);
 
     void removeObject( IObject* object ) override;
 

@@ -1,4 +1,4 @@
-#include "IProgram.hpp"
+#include "libopenglwrapper/IProgram.hpp"
 
 using namespace LOGLW;
 

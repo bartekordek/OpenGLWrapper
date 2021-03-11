@@ -47,6 +47,8 @@ void OpenGLWrapperConcrete::registerObjectForUtility()
 
 void OpenGLWrapperConcrete::loadFromConfig()
 {
+    auto config = m_sdlW->getConfig();
+    CUL::Assert::simple( config != nullptr, "Problem loading config." );
     const auto& drawDebug = m_sdlW->getConfig()->getValue( "DRAW_DEBUG" );
     drawDebugInfo( drawDebug == "true" );
 }
@@ -243,6 +245,33 @@ ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
     auto sprite = new Sprite();
 
     sprite->m_image = m_imageLoader->loadImage( path );
+    sprite->m_textureId = m_oglUtility->generateTexture();
+    m_oglUtility->bindTexture( sprite->m_textureId );
+
+    const auto& ii = sprite->m_image->getImageInfo();
+
+    TextureInfo td;
+    td.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
+    td.size = ii.size;
+    td.data = sprite->m_image->getData();
+    m_oglUtility->setTextureData( td );
+
+    m_oglUtility->setTextureParameter( TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
+    m_oglUtility->setTextureParameter( TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
+
+    m_oglUtility->bindTexture( 0 );
+
+    addObjectToRender( sprite );
+
+    return sprite;
+}
+
+
+ISprite* OpenGLWrapperConcrete::createSprite( unsigned* data, unsigned width, unsigned height )
+{
+    auto sprite = new Sprite();
+
+    sprite->m_image = m_imageLoader->loadImage( (unsigned char*)data, width, height );
     sprite->m_textureId = m_oglUtility->generateTexture();
     m_oglUtility->bindTexture( sprite->m_textureId );
 
@@ -765,13 +794,13 @@ void OpenGLWrapperConcrete::calculateFrameWait()
 CUL::GUTILS::IConfigFile* OpenGLWrapperConcrete::getConfig()
 {
     CUL::Assert::simple( m_sdlW != nullptr, "No proper SDL2 pointer initialized." );
-
     return m_sdlW->getConfig();
 }
 
 void OpenGLWrapperConcrete::drawDebugInfo( const bool enable )
 {
     m_enableDebugDraw = enable;
+    m_sdlW->getMainWindow()->toggleFpsCounter( enable );
 }
 
 void OpenGLWrapperConcrete::drawOrigin(bool enable)
