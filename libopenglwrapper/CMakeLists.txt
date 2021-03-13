@@ -47,7 +47,7 @@ AdditionalDeps
 ${GLEW_LIBRARIES}
 ${GLFW3_LIBRARIES}
 ${GLFW_LIBRARIES}
-freeglut
+freeglut_static
 ${OPENGL_LIBRARIES}
 ${OPENGL_LIBRARY}
 )
