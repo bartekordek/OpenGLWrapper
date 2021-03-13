@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "[LINUX] CMake create",
+            "label": "[LINUX] CMake",
             "type": "shell",
             "command": "clear && cd Build-Linux && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug",
             "group": {
@@ -16,7 +16,7 @@
             ]
         },
         {
-            "label": "[LINUX] Make Debug",
+            "label": "[LINUX] Make",
             "type":"shell",
             "command": "clear && cd Build-Linux && time make -j12",
             "group": {
@@ -28,7 +28,7 @@
             ]
         },
         {
-            "label": "[LINUX] CMake + Make debug",
+            "label": "[LINUX] CMake + Make",
             "type":"shell",
             "command": "clear && cd Build-Linux && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug && time make -j12",
             "group": {
@@ -40,7 +40,7 @@
             ]
         },
         {
-            "label": "[LINUX] Clean CMake + Make debug",
+            "label": "[LINUX] Clean CMake + Make ",
             "type":"shell",
             "command": "clear && cd Build-Linux && rm -rfv * && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug && time make -j12",
             "group": {
@@ -52,9 +52,9 @@
             ]
         },
         {
-            "label": "[WINDOWS] CMake create",
+            "label": "[WINDOWS] CMake",
             "type": "shell",
-            "command": "CreateDebugCmake",
+            "command": "cls && cd Build-Windows && cmake -DCMAKE_BUILD_TYPE=Debug .. -G \"Visual Studio 16 2019\"",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -66,8 +66,7 @@
         {
             "label": "[WINDOWS] Build All",
             "type":"shell",
-            "command": "BuildDebug",
-            "args": [ "Build-Windows\\sdl2wrapper_main.sln" ],
+            "command": "cls & cmake --build Build-Windows --config DEBUG -j16",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -77,23 +76,9 @@
             ]
         },
         {
-            "label": "[WINDOWS] Build libsdl",
+            "label": "[WINDOWS] CMake + Build All ",
             "type":"shell",
-            "command": "BuildDebug",
-            "args": [ "Build-Windows\\libsdl2wrapper\\sdl2wrapper.vcxproj" ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
-        },
-        {
-            "label": "[WINDOWS] CMake + build libsdl",
-            "type":"shell",
-            "command": "BuildDebug",
-            "args": [ "Build-Windows\\libsdl2wrapper\\sdl2wrapper.vcxproj" ],
+            "command": "cls && cmake --build Build-Windows --config DEBUG -j16",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -102,19 +87,6 @@
                 "$msCompile"
             ],
             "dependsOn": "[WINDOWS] CMake create"
-        },
-        {
-            "label": "[WINDOWS] Build libsdl test app",
-            "type":"shell",
-            "command": "BuildDebug",
-            "args": [ "Build-Windows\\libsdl2wrapperTestApp\\sdl2wrapperTestApp.vcxproj" ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
         }
     ]
 }
