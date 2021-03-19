@@ -25,16 +25,16 @@ set( OGLW_DEPS_ROOT ${OGLW_ROOT}/deps )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps/SDL2Wrapper/deps/CUL/cmake_modules" )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps" )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules" )
-message( "[openglwarpper] CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
+
 
 # Add sub directories
 add_subdirectory( deps/SDL2Wrapper )
 add_subdirectory( deps )
-set( FREEGLUT_HOME ${OGLW_ROOT}/deps/freeglut-3.2.1 )
-set( ENV{FREEGLUT_HOME} ${FREEGLUT_HOME} )
-set( FREEGLUT_INCLUDE_DIR ${FREEGLUT_HOME}/include )
-set( FREEGLUT_BUILD_DEMOS "Build demos." OFF )
-add_subdirectory( ${FREEGLUT_HOME} )
+
+find_package( GLUT REQUIRED )
+find_package( OpenGL REQUIRED )
+find_package( GLEW REQUIRED )
+find_package( GLFW REQUIRED )
 
 set( GLM_INCLUDE_DIR $ENV{GLM_INCLUDE_DIR} )
 set( GLM_INCLUDE_DIRS $ENV{GLM_INCLUDE_DIRS} )

@@ -52,9 +52,9 @@
             ]
         },
         {
-            "label": "[WINDOWS] CMake",
+            "label": "[WINDOWS] Clear console",
             "type": "shell",
-            "command": "cls && cd Build-Windows && cmake -DCMAKE_BUILD_TYPE=Debug .. -G \"Visual Studio 16 2019\"",
+            "command": "cls ",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -64,21 +64,22 @@
             ]
         },
         {
-            "label": "[WINDOWS] Build All",
-            "type":"shell",
-            "command": "cls & cmake --build Build-Windows --config DEBUG -j16",
+            "label": "[WINDOWS] CMake",
+            "type": "shell",
+            "command": "cd Build-Windows && cmake -DCMAKE_BUILD_TYPE=Debug .. ",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "problemMatcher": [
-                "$msCompile"
-            ]
+                "$gradle"
+            ],
+            "dependsOn": "[WINDOWS] Clear console"
         },
         {
-            "label": "[WINDOWS] CMake + Build All ",
+            "label": "[WINDOWS] Build All",
             "type":"shell",
-            "command": "cls && cmake --build Build-Windows --config DEBUG -j16",
+            "command": "cmake --build Build-Windows --config DEBUG -j16",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -86,7 +87,20 @@
             "problemMatcher": [
                 "$msCompile"
             ],
-            "dependsOn": "[WINDOWS] CMake create"
+            "dependsOn": "[WINDOWS] Clear console"
+        },
+        {
+            "label": "[WINDOWS] CMake + Build All ",
+            "type":"shell",
+            "command": "cmake --build Build-Windows --config DEBUG -j16",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "dependsOn": "[WINDOWS] CMake"
         }
     ]
 }

@@ -45,13 +45,8 @@ find_package(OpenGL REQUIRED)
 set( DEPENDENCIES
 openglWrapper
 LOGLW-AdditionalDeps
-cul
-AdditionalDeps
-${GLEW_LIBRARIES}
-${GLFW3_LIBRARIES}
-freeglut
-${OPENGL_LIBRARIES}
-${OPENGL_LIBRARY}
+IL
+ILU
 )
 
 if( MSVC )
