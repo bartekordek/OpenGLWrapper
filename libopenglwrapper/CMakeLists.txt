@@ -24,6 +24,8 @@ else()
     add_definitions( -Wfatal-errors )
 endif()
 
+find_package( GLEW REQUIRED )
+
 file( GLOB_RECURSE SOURCES include/*.hpp src/*.hpp src/*.cpp )
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 add_library( ${EXEC} SHARED ${SOURCES} )
@@ -31,7 +33,7 @@ add_library( ${EXEC} SHARED ${SOURCES} )
 set( DEPENDENCIES
 LOGLW-AdditionalDeps
 sdl2wrapper
-glew_s
+glew
 ${GLFW3_LIBRARIES}
 ${GLFW_LIBRARIES}
 freeglut_static
@@ -43,6 +45,19 @@ if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs  )
+endif()
+
+if( MSVC )
+
+#copy glew
+    if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+        set( GLEW_BIN glew32d.dll )
+    else()
+        set( GLEW_BIN glew32.dll )
+    endif()
+    add_custom_command( TARGET ${EXEC}
+        POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/bin/${CMAKE_BUILD_TYPE}/${GLEW_BIN} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
 endif()
 
 target_include_directories(${EXEC} PUBLIC include)
