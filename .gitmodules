@@ -13,3 +13,6 @@
 [submodule "deps/helpers"]
 	path = deps/helpers
 	url = git@github.com:bartekordek/helpers.git
+[submodule "deps/tinyobjloader"]
+	path = deps/tinyobjloader
+	url = git@github.com:tinyobjloader/tinyobjloader.git

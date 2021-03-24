@@ -50,6 +50,9 @@ list(APPEND CMAKE_MODULE_PATH ${GLEW_HOME} )
 add_subdirectory( ${GLEW_HOME}/build/cmake )
 add_subdirectory( ${GLFW_HOME} )
 
+set( TINYOBJLOADER_BUILD_TEST_LOADER OFF )
+add_subdirectory( deps/tinyobjloader )
+
 option(RENDER_OPENGL_CORE "Enable Opengl" ON)
 
 add_subdirectory( libopenglwrapper )

@@ -17,7 +17,7 @@ foreach(dir ${dirs})
 endforeach()
 
 if( MSVC )
-    add_compile_options( /W4 /WX )
+    add_compile_options( /W4 )
     add_compile_options( /MP )
 else()
     add_compile_options( -Wall -Wextra -pedantic -Werror )
@@ -39,6 +39,7 @@ ${GLFW_LIBRARIES}
 freeglut_static
 ${OPENGL_LIBRARIES}
 ${OPENGL_LIBRARY}
+tinyobjloader
 )
 
 if( MSVC )
