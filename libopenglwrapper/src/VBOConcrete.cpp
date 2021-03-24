@@ -24,7 +24,7 @@ void VBOConcrete::setData( const FloatData& data )
 
 void VBOConcrete::setDataFromObject( IObject* object )
 {
-    m_data = std::move( object->getData() );
+    m_data = std::move( object->getVertices() );
     getUtility()->bufferData( m_data, LOGLW::BufferTypes::ARRAY_BUFFER );
 
     const auto dataTypeSize = static_cast<int>( sizeof( float ) );

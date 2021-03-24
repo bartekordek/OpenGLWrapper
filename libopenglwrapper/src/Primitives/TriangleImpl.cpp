@@ -29,7 +29,7 @@ void TriangleImpl::addShader(const CUL::FS::Path&, IShaderFactory* )
 
 }
 
-const std::vector<float> TriangleImpl::getData() const
+const std::vector<float> TriangleImpl::getVertices() const
 {
     std::vector<float> result;
     return result;

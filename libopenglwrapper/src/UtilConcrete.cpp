@@ -363,6 +363,8 @@ ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window, Cunt major
         }
 
     }
+
+    //glPointSize( 10.f );
     return result;
 }
 
@@ -580,6 +582,14 @@ void UtilConcrete::draw( const LineData& values, const ColorS& color )
         glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
         glVertex3f( values[ 0 ][ 0 ], values[ 0 ][ 1 ], values[ 0 ][ 2 ] );
         glVertex3f( values[ 1 ][ 0 ], values[ 1 ][ 1 ], values[ 1 ][ 2 ] );
+    glEnd();
+}
+
+void UtilConcrete::draw( const Point& position, const ColorS& color )
+{
+    glBegin( GL_POINTS );
+        glColor4f( color.getRF(), color.getGF(), color.getBF(), color.getAF() );
+        glVertex3f( position.x(), position.y(), position.z() );
     glEnd();
 }
 

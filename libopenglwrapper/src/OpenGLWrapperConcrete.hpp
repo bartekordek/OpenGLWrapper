@@ -96,6 +96,8 @@ private:
     IQuad* createQuad( const QuadData& data, const ColorS& color = ColorE::WHITE ) override;
     ILine* createLine( const LineData& data, const ColorS& color = ColorE::WHITE ) override;
 
+    IPoint* createPoint(const Point& position, const ColorS& color = ColorE::WHITE) override;
+
     ISprite* createSprite( const String& path );
     ISprite* createSprite(unsigned* data, unsigned width, unsigned height);
 

@@ -100,9 +100,6 @@ private:
     virtual void scale( const float scale ) const override;
 
 
-
-
-
     void draw( const Triangle& triangle, const ColorS& color ) override;
     void draw( const Triangle& quad, const std::array<ColorS, 4>& color ) override;
     void draw( const TriangleData& values, const std::array<ColorS, 3>& color ) override;
@@ -117,6 +114,8 @@ private:
 
     void draw( const LineData& values, const LineColors& color ) override;
     void draw( const LineData& values, const ColorS& color ) override;
+
+    void draw( const Point& position, const ColorS& color ) override;
 
     void assertOnProgramError( Cunt programId, Cunt val ) const;
     void log( const String& text,

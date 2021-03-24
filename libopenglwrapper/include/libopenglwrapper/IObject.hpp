@@ -19,7 +19,7 @@ public:
 
     virtual void addShader( const CUL::FS::Path& filePath, IShaderFactory* sf );
 
-    virtual const std::vector<float> getData() const;
+    virtual const std::vector<float> getVertices() const;
 
     virtual ~IObject();
 protected:

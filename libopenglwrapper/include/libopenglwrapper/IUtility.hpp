@@ -216,8 +216,6 @@ public:
     virtual void enableVertexAttribArray( Cunt attributeId ) const = 0;
     virtual void setVertexPointer( int coordinatesPerVertex, DataType dataType, int stride, const void* data ) const = 0;
 
-
-
     virtual std::vector<std::string> listExtensions() = 0;
 
     virtual void draw( const Quad& quad, const Quad& texQuad ) = 0;
@@ -234,6 +232,8 @@ public:
 
     virtual void draw( const LineData& values, const ColorS& color ) = 0;
     virtual void draw( const LineData& values, const LineColors& color ) = 0;
+
+    virtual void draw( const Point& position, const ColorS& color ) = 0;
 
     virtual void translate( const Point& point ) = 0;
     virtual void translate( const float x, const float y, const float z ) = 0;

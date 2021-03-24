@@ -4,6 +4,7 @@
 #include "libopenglwrapper/Primitives/ITriangle.hpp"
 #include "libopenglwrapper/Primitives/IQuad.hpp"
 #include "libopenglwrapper/Primitives/ILine.hpp"
+#include "libopenglwrapper/Primitives/IPoint.hpp"
 
 #include "CUL/Filesystem/IFile.hpp"
 
@@ -26,7 +27,9 @@ public:
 
     virtual IQuad* createQuad( const QuadData& data, const ColorS& color = ColorE::WHITE ) = 0;
 
-    virtual ILine* createLine( const LineData& data, const ColorS& color = ColorE::WHITE ) = 0;
+    virtual ILine* createLine( const LineData& data,  const ColorS& color = ColorE::WHITE) = 0;
+
+    virtual IPoint* createPoint(const Point& position, const ColorS& color = ColorE::WHITE) = 0;
 
     virtual ISprite* createSprite( const String& path ) = 0;
     virtual ISprite* createSprite( unsigned* data, unsigned width, unsigned height ) = 0;

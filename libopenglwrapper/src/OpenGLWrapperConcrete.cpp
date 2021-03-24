@@ -1,13 +1,17 @@
 #include "OpenGLWrapperConcrete.hpp"
+#include "libopenglwrapper/Model.hpp"
 
 #include "TextureConcrete.hpp"
 #include "Sprite.hpp"
 #include "UtilConcrete.hpp"
 #include "ImportImgui.hpp"
 
+#include "ObjLoader.hpp"
+
 #include "Primitives/TriangleImpl.hpp"
 #include "Primitives/QuadImpl.hpp"
 #include "Primitives/LineImpl.hpp"
+#include "Primitives/PointImpl.hpp"
 
 #include "SDL2Wrapper/IWindow.hpp"
 
@@ -39,18 +43,17 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete(
 
 void OpenGLWrapperConcrete::registerObjectForUtility()
 {
-    TriangleImpl::useUtility( m_oglUtility );
-    QuadImpl::useUtility( m_oglUtility );
-    OpenGLShaderFactory::useUtility( m_oglUtility );
-    Sprite::useUtility( m_oglUtility );
+    IUtilityUser::useUtility( m_oglUtility );
 }
 
 void OpenGLWrapperConcrete::loadFromConfig()
 {
     auto config = m_sdlW->getConfig();
-    CUL::Assert::simple( config != nullptr, "Problem loading config." );
-    const auto& drawDebug = m_sdlW->getConfig()->getValue( "DRAW_DEBUG" );
-    drawDebugInfo( drawDebug == "true" );
+    if( config )
+    {
+        const auto& drawDebug = m_sdlW->getConfig()->getValue( "DRAW_DEBUG" );
+        drawDebugInfo( drawDebug == "true" );
+    }
 }
 
 void OpenGLWrapperConcrete::startRenderingLoop()
@@ -148,6 +151,20 @@ IObject* OpenGLWrapperConcrete::createFromFile( const String& path )
         file->load();
         return createFromFile( file );
     }
+    else if ( ".obj" == filePath.getExtension() )
+    {
+        auto objData = ObjLoader::loadObj( path );
+
+        const auto verticesSize = objData->attrib.vertices.size();
+        float val = 0.f;
+        for( size_t i = 0; i < verticesSize; ++i )
+        {
+            val = objData->attrib.vertices[i];
+            auto dsadas = 0;
+        }
+
+        auto model = new Model();
+    }
     return nullptr;
 }
 
@@ -238,6 +255,16 @@ ILine* OpenGLWrapperConcrete::createLine(const LineData& data, const ColorS& col
     addObjectToRender( line );
 
     return line;
+}
+
+IPoint* OpenGLWrapperConcrete::createPoint(const Point& position, const ColorS& color)
+{
+    auto result = new PointImpl();
+    result->setColor( color );
+    result->setWorldPosition( position );
+    addObjectToRender( result );
+
+    return result;
 }
 
 ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
