@@ -363,8 +363,6 @@ ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window, Cunt major
         }
 
     }
-
-    //glPointSize( 10.f );
     return result;
 }
 
@@ -637,6 +635,23 @@ void UtilConcrete::setVertexArrayClientState( const bool enable ) const
     else
     {
         glEnableClientState( GL_VERTEX_ARRAY );
+    }
+}
+//
+
+void UtilConcrete::setColorClientState( bool enable ) const
+{
+// If enabled, the vertex array is enabled for writing and used during
+// rendering when glArrayElement,
+// glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays,
+// or glMultiDrawElements is called. See glVertexPointer.
+    if( enable )
+    {
+        glEnableClientState( GL_COLOR_ARRAY );
+    }
+    else
+    {
+        glEnableClientState( GL_COLOR_ARRAY );
     }
 }
 

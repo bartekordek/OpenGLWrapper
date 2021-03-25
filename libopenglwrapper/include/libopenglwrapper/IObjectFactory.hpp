@@ -25,7 +25,7 @@ public:
 
     virtual ITriangle* createTriangle( const TriangleData& data, const ColorS& color = ColorE::WHITE ) = 0;
 
-    virtual IQuad* createQuad( const QuadData& data, const ColorS& color = ColorE::WHITE ) = 0;
+    virtual IQuad* createQuad( const QuadData& data, bool legacy = false, const ColorS& color = ColorE::WHITE ) = 0;
 
     virtual ILine* createLine( const LineData& data,  const ColorS& color = ColorE::WHITE) = 0;
 

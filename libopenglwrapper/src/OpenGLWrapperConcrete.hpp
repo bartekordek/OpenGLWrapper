@@ -93,7 +93,7 @@ private:
     IObject* createFromFile( IFile* file ) override;
     IObject* createTriangle( CUL::JSON::INode* jNode );
     ITriangle* createTriangle( const TriangleData& data, const ColorS& color = ColorE::WHITE ) override;
-    IQuad* createQuad( const QuadData& data, const ColorS& color = ColorE::WHITE ) override;
+    IQuad* createQuad( const QuadData& data, bool legacy = false, const ColorS& color = ColorE::WHITE ) override;
     ILine* createLine( const LineData& data, const ColorS& color = ColorE::WHITE ) override;
 
     IPoint* createPoint(const Point& position, const ColorS& color = ColorE::WHITE) override;
@@ -224,7 +224,7 @@ private:
     EmptyFunctionCallback m_onBeforeFrame;
 
     DumbPtr<CUL::ITimer> m_frameTimer;
-    Safe<float> m_fpsLimit = 144.f;
+    Safe<float> m_fpsLimit = 1024.f;
     Safe<int> m_targetFrameLengthUs = 0u;
     Safe<int> m_currentFrameLengthUs = 0u;
     Safe<int> m_frameSleepUs = 64;

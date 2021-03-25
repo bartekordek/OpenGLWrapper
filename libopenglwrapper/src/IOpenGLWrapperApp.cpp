@@ -21,6 +21,7 @@ IOpenGLWrapperApp::IOpenGLWrapperApp( bool fullscreen, unsigned width, unsigned 
 
     m_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper( m_sdlw.get() );
     m_logger = m_oglw->getLoger();
+    m_gutil = m_oglw->getUtility();
 
     m_oglw->onInitialize( [this](){ onInit(); } );
     m_oglw->beforeFrame( [this](){ customFrame(); } );

@@ -191,6 +191,7 @@ public:
 
 // VAO, VBO
     virtual void setVertexArrayClientState( const bool enable ) const = 0;
+    virtual void setColorClientState( bool enable ) const = 0;
     virtual unsigned int generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const = 0;
     virtual unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const = 0;
 

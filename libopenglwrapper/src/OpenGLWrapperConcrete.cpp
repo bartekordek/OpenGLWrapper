@@ -9,6 +9,7 @@
 #include "ObjLoader.hpp"
 
 #include "Primitives/TriangleImpl.hpp"
+#include "Primitives/QuadImplLegacy.hpp"
 #include "Primitives/QuadImpl.hpp"
 #include "Primitives/LineImpl.hpp"
 #include "Primitives/PointImpl.hpp"
@@ -238,9 +239,17 @@ ITriangle* OpenGLWrapperConcrete::createTriangle( const TriangleData& data, cons
     return triangle;
 }
 
-IQuad* OpenGLWrapperConcrete::createQuad( const QuadData& data, const ColorS& color )
+IQuad* OpenGLWrapperConcrete::createQuad( const QuadData& data, bool legacy, const ColorS& color )
 {
-    IQuad* quad = new QuadImpl();
+    IQuad* quad = nullptr;
+    if( legacy )
+    {
+        quad = new QuadImplLegacy();
+    }
+    else
+    {
+        quad = new QuadImpl();
+    }
     quad->setValues( data );
     quad->setColor( color );
     addObjectToRender( quad );

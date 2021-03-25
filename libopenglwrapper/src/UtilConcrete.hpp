@@ -53,6 +53,7 @@ private:
 
 // VBO, VAO
     void setVertexArrayClientState( const bool enable ) const override;
+    void setColorClientState( bool enable ) const override;
     unsigned int generateVertexArray( const int size = 1 ) const override;
 
     void bufferData( const CUL::MATH::Primitives::Quad& data, const BufferTypes type ) const override;
