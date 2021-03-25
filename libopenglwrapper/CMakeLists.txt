@@ -34,13 +34,11 @@ set( DEPENDENCIES
 LOGLW-AdditionalDeps
 sdl2wrapper
 glew
-${GLFW3_LIBRARIES}
-${GLFW_LIBRARIES}
+glfw
 freeglut_static
-${OPENGL_LIBRARIES}
-${OPENGL_LIBRARY}
 tinyobjloader
 )
+add_dependencies( ${EXEC} sdl2wrapperTestApp )
 
 if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )

@@ -157,14 +157,13 @@ IObject* OpenGLWrapperConcrete::createFromFile( const String& path )
         auto objData = ObjLoader::loadObj( path );
 
         const auto verticesSize = objData->attrib.vertices.size();
-        float val = 0.f;
         for( size_t i = 0; i < verticesSize; ++i )
         {
-            val = objData->attrib.vertices[i];
-            auto dsadas = 0;
+            //val = objData->attrib.vertices[i];
+            //auto dsadas = 0;
         }
 
-        auto model = new Model();
+        //auto model = new Model();
     }
     return nullptr;
 }
