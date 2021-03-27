@@ -366,19 +366,17 @@ ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window, Cunt major
     return result;
 }
 
-void APIENTRY glDebugOutput( GLenum source
-                             , GLenum type
-                             , unsigned int id
-                             , GLenum severity
-                             , GLsizei //length
-                             , const char* //message
-                             , const void* //userParam
+void APIENTRY glDebugOutput(
+    GLenum source
+    , GLenum type
+    , unsigned int id
+    , GLenum severity
+    , GLsizei //length
+    , const char* //message
+    , const void* //userParam
 )
 {
     if( id == 131169 || id == 131185 || id == 131218 || id == 131204 ) return;
-
-    //logger->log( "---------------" );
-    //logger->log( "Debug message " + String( id ) + "): " + message );
 
     switch( source )
     {
