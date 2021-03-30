@@ -15,8 +15,9 @@ ProgramConcrete::ProgramConcrete( IUtility* utility, IShaderFactory& sf ):
 
 IVAO* ProgramConcrete::createVao()
 {
-    auto vao = IVAO::createVAO();
-    m_vaoList.push_back( vao );
+    IVAO* vao = nullptr;
+    //auto vao = IVAO::createVAO();
+    //m_vaoList.push_back( vao );
     return vao;
 }
 

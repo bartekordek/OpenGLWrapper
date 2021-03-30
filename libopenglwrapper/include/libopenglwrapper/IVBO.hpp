@@ -41,7 +41,6 @@ class LIBOPENGLWRAPPER_API IVBO:
 {
 public:
     IVBO() = default;
-    virtual ~IVBO() = default;
 
     virtual void setId( Cunt id ) = 0;
     virtual unsigned int getId() const = 0;
@@ -49,8 +48,7 @@ public:
     virtual void setData( const FloatData& data ) = 0;
     virtual void setDataFromObject( IObject* object ) = 0;
 
-    static IVBO* createVBO();
-
+    virtual ~IVBO() = default;
 protected:
 private:
     IVBO( const IVBO& value ) = delete;
