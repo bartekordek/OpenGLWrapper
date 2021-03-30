@@ -20,15 +20,12 @@ void QuadImpl::render()
         getUtility()->rotate( getWorldAngle( CUL::MATH::EulerAngles::YAW ).getValueF( type ),   0.f, 0.f, 1.f );
         getUtility()->rotate( getWorldAngle( CUL::MATH::EulerAngles::PITCH ).getValueF( type ), 0.f, 1.f, 0.f );
         getUtility()->rotate( getWorldAngle( CUL::MATH::EulerAngles::ROLL ).getValueF( type ),  1.f, 0.f, 0.f );
+
         getUtility()->setVertexArrayClientState( true );
+
         getUtility()->setVertexPointer( 3, LOGLW::DataType::FLOAT, 0, &m_data[0] );
-
-        getUtility()->setColorClientState( true );
-        getUtility()->setVertexPointer( 3, LOGLW::DataType::FLOAT, 0, &m_colors[0] );
-
         getUtility()->drawArrays( LOGLW::PrimitiveType::QUADS, 0, 4 );
 
-        getUtility()->setColorClientState( false );
         getUtility()->setVertexArrayClientState( false );
     getUtility()->matrixStackPop();
 }
