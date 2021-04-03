@@ -38,7 +38,6 @@ glfw
 freeglut_static
 tinyobjloader
 )
-add_dependencies( ${EXEC} sdl2wrapperTestApp )
 
 if( MSVC )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )

@@ -11,14 +11,13 @@ class VAOOpengl final:
 public:
     VAOOpengl();
 
+    void setId( Cunt id ) override;
+
     ~VAOOpengl();
 protected:
 private:
-
-    void setId( Cunt id ) override;
     unsigned int getId() const override;
     void addVBO( IVBO* vbo ) override;
-    IVBO* createVBO() override;
 
     unsigned m_id = 0;
     std::map<Cunt, IVBO*> m_vbos;

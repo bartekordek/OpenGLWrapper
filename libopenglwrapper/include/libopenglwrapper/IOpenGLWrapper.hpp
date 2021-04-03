@@ -3,6 +3,7 @@
 #include "libopenglwrapper/IObjectFactory.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IProgramFactory.hpp"
+#include "libopenglwrapper/IBufferFactory.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/Viewport.hpp"
 
@@ -62,6 +63,7 @@ public:
     virtual IShaderFactory* getShaderFactory() = 0;
     virtual IObjectFactory* getObjectFactory() = 0;
     virtual IProgramFactory* getProgramFactory() = 0;
+    virtual IBufferFactory* getBufferFactory() = 0;
     virtual IImageLoader* getImageLoader() = 0;
     virtual IUtility* getUtility() = 0;
     virtual const Viewport& getViewport() const = 0;

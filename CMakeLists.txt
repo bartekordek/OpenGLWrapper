@@ -56,4 +56,5 @@ add_subdirectory( deps/tinyobjloader )
 option(RENDER_OPENGL_CORE "Enable Opengl" ON)
 
 add_subdirectory( libopenglwrapper )
-add_subdirectory( libopenglwrapperPlaygroundApp )
+add_subdirectory( sample/playgroundApp )
+add_subdirectory( sample/snake )

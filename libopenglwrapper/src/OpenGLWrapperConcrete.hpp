@@ -22,6 +22,7 @@
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_variant.hpp"
 #include "CUL/STL_IMPORTS/STD_atomic.hpp"
+#include "CUL/STL_IMPORTS/STD_stack.hpp"
 
 union SDL_Event;
 
@@ -69,7 +70,8 @@ class OpenGLWrapperConcrete final:
     private IObjectFactory,
     private IDebugOverlay,
     private SDL2W::ISDLEventObserver,
-    private ITextureFactory
+    private ITextureFactory,
+    private IBufferFactory
 {
 public:
     OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w );
@@ -116,10 +118,14 @@ private:
     IObjectFactory* getObjectFactory() override;
     IProgramFactory* getProgramFactory() override;
     IImageLoader* getImageLoader() override;
+    IBufferFactory* getBufferFactory() override;
     CUL::LOG::ILogger* getLoger() override;
     IUtility* getUtility() override;
     const Viewport& getViewport() const override;
     ProjectionData& getProjectionData() override;
+
+    IVBO* createVBO() override;
+    IVAO* createVAO() override;
 
     const ContextInfo& getContext() const override;
 
@@ -182,6 +188,8 @@ private:
 // SDL2W::IWindowEventOBservable
     void registerWindowEventCallback( const SDL2W::WindowCallback& callback ) override;
 
+    void addTask( const std::function<void( void )>& task );
+
     std::map<unsigned, DebugValueRow> m_debugValues;
 
     std::atomic<bool> m_enableDebugDraw = false;
@@ -216,6 +224,8 @@ private:
     ColorS m_backgroundColor = ColorS( ColorE::BLACK );
 
     std::queue<ITask*> m_preRenderTasks;
+    std::mutex m_taskMutex;
+    std::stack< std::function<void( void )>> m_tasks;
 
     std::mutex m_objectsToRenderMtx;
     std::set<IRenderable*> m_objectsToRender;

@@ -6,6 +6,10 @@
 #include "UtilConcrete.hpp"
 #include "ImportImgui.hpp"
 
+#include "VAOConcrete.hpp"
+#include "VAOOpengl.hpp"
+#include "VBOConcrete.hpp"
+
 #include "ObjLoader.hpp"
 
 #include "Primitives/TriangleImpl.hpp"
@@ -118,6 +122,11 @@ IImageLoader* OpenGLWrapperConcrete::getImageLoader()
     return m_imageLoader;
 }
 
+IBufferFactory* OpenGLWrapperConcrete::getBufferFactory()
+{
+    return this;
+}
+
 CUL::LOG::ILogger* OpenGLWrapperConcrete::getLoger()
 {
     return m_logger;
@@ -136,6 +145,48 @@ const Viewport& OpenGLWrapperConcrete::getViewport() const
 ProjectionData& OpenGLWrapperConcrete::getProjectionData()
 {
     return m_projectionData;
+}
+
+IVBO* OpenGLWrapperConcrete::createVBO()
+{
+    IVBO* result = nullptr;
+    std::atomic<bool> taskDone = false;
+
+    addTask( [this, &result, &taskDone](){
+        VBOConcrete* vbo = new VBOConcrete();
+        auto vboId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
+        vbo->setId( vboId );
+        result = vbo;
+        taskDone = true;
+    } );
+
+    while( !taskDone )
+    {
+        CUL::ITimer::sleepMiliSeconds( 16 );
+    }
+
+    return result;
+}
+
+IVAO* OpenGLWrapperConcrete::createVAO()
+{
+    IVAO* result = nullptr;
+    std::atomic<bool> taskDone = false;
+
+    addTask( [this, &result,&taskDone](){
+        auto vao = new VAOOpengl();
+        const auto vaoId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::VERTEX_ARRAY );
+        vao->setId( vaoId );
+        result = vao;
+        taskDone = true;
+    } );
+
+    while( !taskDone )
+    {
+        CUL::ITimer::sleepMiliSeconds( 16 );
+    }
+
+    return result;
 }
 
 const ContextInfo& OpenGLWrapperConcrete::getContext() const
@@ -279,6 +330,9 @@ ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
 {
     auto sprite = new Sprite();
 
+    CUL::FS::Path fsPath = path;
+    CUL::Assert::simple( fsPath.exists(), "File " + path + " does not exist." );
+
     sprite->m_image = m_imageLoader->loadImage( path );
     sprite->m_textureId = m_oglUtility->generateTexture();
     m_oglUtility->bindTexture( sprite->m_textureId );
@@ -354,6 +408,12 @@ void OpenGLWrapperConcrete::mainThread()
     release();
 }
 
+void OpenGLWrapperConcrete::addTask( const std::function<void( void )>& task )
+{
+    std::lock_guard<std::mutex> lock( m_taskMutex );
+    m_tasks.push( task );
+}
+
 void OpenGLWrapperConcrete::renderLoop()
 {
     while( m_runRenderLoop )
@@ -363,6 +423,16 @@ void OpenGLWrapperConcrete::renderLoop()
         if( m_enableDebugDraw && !m_debugDrawInitialized )
         {
             initDebugInfo();
+        }
+
+        {
+            std::lock_guard<std::mutex> lock( m_taskMutex );
+            while( !m_tasks.empty() )
+            {
+                auto task = m_tasks.top();
+                m_tasks.pop();
+                task();
+            }
         }
 
         renderFrame();
