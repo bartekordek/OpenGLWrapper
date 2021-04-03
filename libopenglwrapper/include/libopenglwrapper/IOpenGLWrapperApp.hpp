@@ -19,7 +19,13 @@ class LIBOPENGLWRAPPER_API IOpenGLWrapperApp:
     private SDL2W::IMouseObserver
 {
 public:
+    enum class WinPos : short
+    {
+        CENTER = 0
+    };
+
     IOpenGLWrapperApp( bool fullscreen, unsigned width, unsigned height, int x, int y, const char* winName, const char* configPath );
+    IOpenGLWrapperApp( bool fullscreen, unsigned width, unsigned height, WinPos pos, const char* winName, const char* configPath );
 
     void run();
     void close();
