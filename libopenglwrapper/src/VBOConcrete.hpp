@@ -1,15 +1,15 @@
-#include "libopenglwrapper/IVBO.hpp"
+#include "libopenglwrapper/IVertexBuffer.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
 class VBOConcrete final:
-    public IVBO
+    public IVertexBuffer
 {
 public:
     VBOConcrete();
 
-    void setId( Cunt id ) override;
-    unsigned int getId() const override;
+    void setId( BuffIDType id ) override;
+    BuffIDType getId() const override;
     void setData( const FloatData& data ) override;
     void setDataFromObject( IObject* object ) override;
 
@@ -17,7 +17,7 @@ public:
 protected:
 private:
     FloatData m_data;
-    Uint m_bufferId = 0;
+    BuffIDType m_bufferId = 0;
 
     // Deleted:
     VBOConcrete( const VBOConcrete& value ) = delete;

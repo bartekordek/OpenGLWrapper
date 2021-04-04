@@ -67,7 +67,7 @@ private:
     void disableVertexAttribiute( Cunt programId, const String& attribName ) const override;
     unsigned int getAttribLocation( Cunt programId, const String& attribName ) const override;
     void unbindBuffer( const BufferTypes bufferType ) const override;
-    void bindBuffer( IVAO* vao ) const override;
+    void bindBuffer( IVertexArray* vao ) const override;
     void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const override;
     unsigned int generateBuffer( const BufferTypes type, const int size = 1 ) const override;
 

@@ -874,7 +874,7 @@ void UtilConcrete::unbindBuffer( const BufferTypes bufferType ) const
     bindBuffer( bufferType, 0 );
 }
 
-void UtilConcrete::bindBuffer( IVAO* vao ) const
+void UtilConcrete::bindBuffer( IVertexArray* vao ) const
 {
     bindBuffer( BufferTypes::VERTEX_ARRAY, vao->getId() );
 }
@@ -936,19 +936,15 @@ unsigned int UtilConcrete::generateBuffer( const BufferTypes bufferType, const i
 void UtilConcrete::drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const
 {
 // glDrawElements — render primitives from array data
-// mode
-// Specifies what kind of primitives to render.Symbolic constants GL_POINTS, GL_LINE_STRIP, // GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, // GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCYand // GL_PATCHES are accepted.
-//
-// count
-// Specifies the number of elements to be rendered.
-//
-// type
-// Specifies the type of the values in indices.Must be one of GL_UNSIGNED_BYTE, / GL_UNSIGNED_SHORT,/ or GL_UNSIGNED_INT.
-//
-// indices
-// Specifies a pointer to the location where the indices are stored.
-
-// Description
+    // mode
+        // Specifies what kind of primitives to render.Symbolic constants GL_POINTS, GL_LINE_STRIP, // GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, // GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCYand // GL_PATCHES are accepted.
+    // count
+        // Specifies the number of elements to be rendered.
+    // type
+        // Specifies the type of the values in indices.Must be one of GL_UNSIGNED_BYTE, / GL_UNSIGNED_SHORT,/ or GL_UNSIGNED_INT.
+    // indices
+        // Specifies a pointer to the location where the indices are stored.
+    // Description
 // glDrawElements specifies multiple geometric primitives with very few subroutine calls.
 // Instead of calling a GL function to pass each individual vertex, normal,
 // texture coordinate, edge flag, or color, you can prespecify separate arrays of vertices,

@@ -49,7 +49,7 @@ private:
 
     unsigned int getProgramId() override;
 
-    IVAO* createVao() override;
+    IVertexArray* createVao() override;
 
     IUtility* m_utility = nullptr;
 
@@ -57,7 +57,7 @@ private:
     unsigned int m_id = 0;
 
     IShaderFactory& m_sf;
-    std::vector<IVAO*> m_vaoList;
+    std::vector<IVertexArray*> m_vaoList;
 
     AttribMap m_attribMap;
     ShaderList m_attachedShaders;

@@ -1,4 +1,4 @@
-#include "libopenglwrapper/IVAO.hpp"
+#include "libopenglwrapper/IVertexArray.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 

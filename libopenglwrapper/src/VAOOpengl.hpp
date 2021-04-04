@@ -1,26 +1,26 @@
 #pragma once
 
-#include "libopenglwrapper/IVAO.hpp"
+#include "libopenglwrapper/IVertexArray.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
 class VAOOpengl final:
-    public IVAO
+    public IVertexArray
 {
 public:
     VAOOpengl();
 
-    void setId( Cunt id ) override;
+    void setId( BuffIDType id ) override;
 
     ~VAOOpengl();
 protected:
 private:
-    unsigned int getId() const override;
-    void addVBO( IVBO* vbo ) override;
+    BuffIDType getId() const override;
+    void addVBO( IVertexBuffer* vbo ) override;
 
-    unsigned m_id = 0;
-    std::map<Cunt, IVBO*> m_vbos;
+    BuffIDType m_id = 0;
+    std::map<BuffIDType, IVertexBuffer*> m_vbos;
 
     VAOOpengl( const VAOOpengl& value ) = delete;
     VAOOpengl( VAOOpengl&& value ) = delete;

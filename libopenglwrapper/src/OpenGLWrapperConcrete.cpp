@@ -147,9 +147,9 @@ ProjectionData& OpenGLWrapperConcrete::getProjectionData()
     return m_projectionData;
 }
 
-IVBO* OpenGLWrapperConcrete::createVBO()
+IVertexBuffer* OpenGLWrapperConcrete::createVBO()
 {
-    IVBO* result = nullptr;
+    IVertexBuffer* result = nullptr;
     std::atomic<bool> taskDone = false;
 
     addTask( [this, &result, &taskDone](){
@@ -168,9 +168,9 @@ IVBO* OpenGLWrapperConcrete::createVBO()
     return result;
 }
 
-IVAO* OpenGLWrapperConcrete::createVAO()
+IVertexArray* OpenGLWrapperConcrete::createVAO()
 {
-    IVAO* result = nullptr;
+    IVertexArray* result = nullptr;
     std::atomic<bool> taskDone = false;
 
     addTask( [this, &result,&taskDone](){

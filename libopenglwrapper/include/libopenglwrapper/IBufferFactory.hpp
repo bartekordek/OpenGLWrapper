@@ -1,7 +1,7 @@
 #pragma once
 
-#include "libopenglwrapper/IVAO.hpp"
-#include "libopenglwrapper/IVBO.hpp"
+#include "libopenglwrapper/IVertexArray.hpp"
+#include "libopenglwrapper/IVertexBuffer.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -10,8 +10,8 @@ class LIBOPENGLWRAPPER_API IBufferFactory
 public:
     IBufferFactory() = default;
 
-    virtual IVBO* createVBO() = 0;
-    virtual IVAO* createVAO() = 0;
+    virtual IVertexBuffer* createVBO() = 0;
+    virtual IVertexArray* createVAO() = 0;
 
     ~IBufferFactory() = default;
 protected:

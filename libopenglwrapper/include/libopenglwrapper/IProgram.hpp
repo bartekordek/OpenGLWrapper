@@ -2,7 +2,7 @@
 
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/IShader.hpp"
-#include "libopenglwrapper/IVAO.hpp"
+#include "libopenglwrapper/IVertexArray.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 #include "CUL/Filesystem/Path.hpp"
 
@@ -41,7 +41,7 @@ public:
     virtual unsigned int getProgramId() = 0;
     virtual const ShaderList& getShaderList() const = 0;
 
-    virtual IVAO* createVao() = 0;
+    virtual IVertexArray* createVao() = 0;
 
     virtual void render() = 0;
 

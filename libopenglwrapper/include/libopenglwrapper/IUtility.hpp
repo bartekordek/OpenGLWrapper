@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libopenglwrapper/Import.hpp"
-#include "libopenglwrapper/IVAO.hpp"
+#include "libopenglwrapper/IVertexArray.hpp"
 #include "libopenglwrapper/ProjectionData.hpp"
 
 #include "CUL/CULInterface.hpp"
@@ -200,7 +200,7 @@ public:
     virtual unsigned int getAttribLocation( Cunt programId, const String& attribName ) const = 0;
     virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
     virtual void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const = 0;
-    virtual void bindBuffer( IVAO* vao ) const = 0;
+    virtual void bindBuffer( IVertexArray* vao ) const = 0;
     virtual unsigned int generateBuffer( const BufferTypes type, const int size = 1 ) const = 0;
 
     virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;

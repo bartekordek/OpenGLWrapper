@@ -7,12 +7,12 @@ VBOConcrete::VBOConcrete()
 {
 }
 
-void VBOConcrete::setId( Cunt id )
+void VBOConcrete::setId( BuffIDType id )
 {
     m_bufferId = id;
 }
 
-unsigned int VBOConcrete::getId() const
+BuffIDType VBOConcrete::getId() const
 {
     return m_bufferId;
 }
