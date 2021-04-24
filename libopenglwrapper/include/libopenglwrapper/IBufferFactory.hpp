@@ -10,8 +10,8 @@ class LIBOPENGLWRAPPER_API IBufferFactory
 public:
     IBufferFactory() = default;
 
-    virtual VertexBuffer* createVBO() = 0;
-    virtual VertexArray* createVAO() = 0;
+    virtual void createVAO( const std::function<void( VertexArray* vao )>& function ) = 0;
+    virtual void createVBO( const std::function<void(VertexBuffer* vbo)>& function ) = 0;
 
     ~IBufferFactory() = default;
 protected:

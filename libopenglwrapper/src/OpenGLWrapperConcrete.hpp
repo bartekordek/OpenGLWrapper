@@ -124,8 +124,10 @@ private:
     const Viewport& getViewport() const override;
     ProjectionData& getProjectionData() override;
 
-    VertexBuffer* createVBO() override;
-    VertexArray* createVAO() override;
+    //VertexBuffer* createVBO() override;
+    void createVAO( const std::function<void( VertexArray* vao )>& function ) override;
+    void createVBO(
+        const std::function<void( VertexBuffer* vbo )>& function ) override;
 
     const ContextInfo& getContext() const override;
 

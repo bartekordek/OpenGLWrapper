@@ -14,7 +14,8 @@ void IndexBuffer::loadData(std::vector<unsigned>& data)
 
     m_id = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
 
-    auto indicesSize = sizeof( m_data[0] ) * m_data.size();
+    //TODO: find if size is matching.
+    //auto indicesSize = sizeof( m_data[0] ) * m_data.size();
 
     getUtility()->bufferData( m_data,BufferTypes::ELEMENT_ARRAY_BUFFER );
 

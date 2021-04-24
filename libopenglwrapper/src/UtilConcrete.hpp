@@ -62,7 +62,7 @@ private:
     void bufferData( const float vertices[] ) const override;
 
     unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const override;
-    void deleteBuffer( unsigned& id ) const override;
+    void deleteBuffer( BufferTypes bufferType, unsigned& id ) const override;
     unsigned int generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const override;
     void enableVertexAttribiute( Cunt programId, const String& attribName ) const override;
     void disableVertexAttribiute( Cunt programId, const String& attribName ) const override;

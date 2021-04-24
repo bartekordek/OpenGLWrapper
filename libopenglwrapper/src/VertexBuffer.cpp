@@ -33,5 +33,5 @@ VertexBuffer::~VertexBuffer()
 
 void VertexBuffer::release()
 {
-    getUtility()->deleteBuffer( m_bufferId );
+    getUtility()->deleteBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_bufferId );
 }

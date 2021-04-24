@@ -60,5 +60,5 @@ VertexArray::~VertexArray()
 
 void VertexArray::release()
 {
-
+    getUtility()->deleteBuffer( LOGLW::BufferTypes::VERTEX_ARRAY, m_bufferId );
 }

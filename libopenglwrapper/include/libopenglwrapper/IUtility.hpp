@@ -75,9 +75,9 @@ enum class ClearMasks: unsigned
 enum class BufferTypes: unsigned
 {
     NONE = 0,
-    VERTEX_ARRAY = 1,
-    ARRAY_BUFFER = 0x8892,
-    ELEMENT_ARRAY_BUFFER = 0x8893
+    VERTEX_ARRAY = 1, // VAO
+    ARRAY_BUFFER = 0x8892, // VBO
+    ELEMENT_ARRAY_BUFFER = 0x8893 // Index buffer
 };
 
 enum class PrimitiveType: unsigned
@@ -192,7 +192,7 @@ public:
     virtual void setColorClientState( bool enable ) const = 0;
     virtual unsigned int generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const = 0;
     virtual unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const = 0;
-    virtual void deleteBuffer( unsigned& id ) const = 0;
+    virtual void deleteBuffer( BufferTypes bufferType, unsigned& id ) const = 0;
 
     virtual void enableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
     virtual void disableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;

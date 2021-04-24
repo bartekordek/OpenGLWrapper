@@ -147,48 +147,22 @@ ProjectionData& OpenGLWrapperConcrete::getProjectionData()
     return m_projectionData;
 }
 
-VertexBuffer* OpenGLWrapperConcrete::createVBO()
+void OpenGLWrapperConcrete::createVAO(
+    const std::function<void( VertexArray* vao )>& vaoCallback )
 {
-    VertexBuffer* result = nullptr;
-    std::atomic<bool> taskDone = false;
-
-    addTask( [this, &result, &taskDone](){
-        VertexBuffer* vbo = new VertexBuffer();
-        //auto vboId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
-        //TODO:
-        //vbo->setId( vboId );
-        result = vbo;
-        taskDone = true;
+    addTask( [this, &vaoCallback]() {
+        VertexArray* vao = new VertexArray();
+        vaoCallback( vao );
     } );
-
-    while( !taskDone )
-    {
-        CUL::ITimer::sleepMiliSeconds( 16 );
-    }
-
-    return result;
 }
 
-VertexArray* OpenGLWrapperConcrete::createVAO()
+void OpenGLWrapperConcrete::createVBO(
+    std::function<void( const VertexBuffer* vbo )>& vboCallback )
 {
-    VertexArray* result = nullptr;
-    std::atomic<bool> taskDone = false;
-
-    addTask( [this, &result,&taskDone](){
-        auto vao = new VertexArray();
-        const auto vaoId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::VERTEX_ARRAY );
-        //TODO:
-        //vao->setId( vaoId );
-        result = vao;
-        taskDone = true;
+    addTask( [this, &vboCallback](){
+        VertexBuffer* vbo = new VertexBuffer();
+        vboCallback( vbo );
     } );
-
-    while( !taskDone )
-    {
-        CUL::ITimer::sleepMiliSeconds( 16 );
-    }
-
-    return result;
 }
 
 const ContextInfo& OpenGLWrapperConcrete::getContext() const
