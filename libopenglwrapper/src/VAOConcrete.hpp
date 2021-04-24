@@ -1,4 +1,4 @@
-#include "libopenglwrapper/IVertexArray.hpp"
+#include "libopenglwrapper/VertexArray.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 

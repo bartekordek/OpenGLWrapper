@@ -33,6 +33,8 @@ public:
     virtual ~IOpenGLWrapperApp();
 protected:
     LOGLW::IObjectFactory* m_objFactory = nullptr;
+    LOGLW::IProgramFactory* m_programFactory = nullptr;
+    LOGLW::IShaderFactory* m_shaderfactory = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     LOGLW::IUtility* m_gutil = nullptr;
     LOGLW::ProjectionData m_projectionData;
@@ -41,6 +43,8 @@ protected:
     Ptr<SDL2W::ISDL2Wrapper> m_sdlw;
     Ptr<LOGLW::IOpenGLWrapper> m_oglw;
 private:
+    void init( const SDL2W::WindowData& windowData, bool fullscreen,const char* configPath );
+
     // Override these to add own events handling.
     virtual void onWindowEvent(const SDL2W::WindowEvent::Type e) override;
     virtual void onKeyBoardEvent(const SDL2W::IKey& key) override;
@@ -50,4 +54,5 @@ private:
 
 
 };
+
 NAMESPACE_END( LOGLW )

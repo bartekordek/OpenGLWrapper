@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libopenglwrapper/Primitives/ITriangle.hpp"
-#include "libopenglwrapper/IShader.hpp"
+#include "libopenglwrapper/Shader.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"

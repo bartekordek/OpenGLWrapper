@@ -1,7 +1,7 @@
 #pragma once
 
-#include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/IObject.hpp"
+#include "libopenglwrapper/IUtilityUser.hpp"
 
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/Graphics/Pos3D.hpp"

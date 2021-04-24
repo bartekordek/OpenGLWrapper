@@ -2,7 +2,7 @@
 
 #include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
-#include "libopenglwrapper/IShader.hpp"
+#include "libopenglwrapper/Shader.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
 
@@ -13,8 +13,8 @@ public:
     IShaderFactory() = default;
     virtual ~IShaderFactory() = default;
 
-    virtual IShader* createShader( const CUL::FS::Path& filePath ) = 0;
-    virtual IShader* getShader( const CUL::FS::Path& filePath ) = 0;
+    virtual Shader* createShader( const CUL::FS::Path& filePath ) = 0;
+    virtual Shader* getShader( const CUL::FS::Path& filePath ) = 0;
 
 protected:
 private:

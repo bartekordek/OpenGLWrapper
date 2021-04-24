@@ -38,25 +38,26 @@ NAMESPACE_BEGIN( LOGLW )
 using FloatData = std::vector<float>;
 using BuffIDType = uint8_t;
 
-class LIBOPENGLWRAPPER_API IVertexBuffer:
+class LIBOPENGLWRAPPER_API VertexBuffer final:
     public IUtilityUser
 {
 public:
-    IVertexBuffer() = default;
+    VertexBuffer();
 
-    virtual void setId( BuffIDType id ) = 0;
-    virtual BuffIDType getId() const = 0;
+    void loadData( std::vector<float>& data );
 
-    virtual void setData( const FloatData& data ) = 0;
-    virtual void setDataFromObject( IObject* object ) = 0;
-
-    virtual ~IVertexBuffer() = default;
+    ~VertexBuffer();
 protected:
 private:
-    IVertexBuffer( const IVertexBuffer& value ) = delete;
-    IVertexBuffer( IVertexBuffer&& value ) = delete;
-    IVertexBuffer& operator=( const IVertexBuffer& value ) = delete;
-    IVertexBuffer& operator=( IVertexBuffer&& value ) = delete;
+    void release();
+
+    unsigned m_bufferId = 0;
+    std::vector<float> m_vertices;
+
+    VertexBuffer( const VertexBuffer& value ) = delete;
+    VertexBuffer( VertexBuffer&& value ) = delete;
+    VertexBuffer& operator=( const VertexBuffer& value ) = delete;
+    VertexBuffer& operator=( VertexBuffer&& value ) = delete;
 };
 
 NAMESPACE_END( LOGLW )

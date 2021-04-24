@@ -42,7 +42,7 @@ GLenum glCheckError_( const char* file, int line )
 
     return errorCode;
 }
-#define glCheckError() glCheckError_(__FILE__, __LINE__) 
+#define glCheckError() glCheckError_(__FILE__, __LINE__)
 
 void APIENTRY glDebugOutput(GLenum source,
                             GLenum type,
@@ -888,6 +888,15 @@ void UtilConcrete::disableVertexAttribiute(
     glDisableVertexAttribArray( attributeLocation );
 }
 
+void UtilConcrete::deleteBuffer( unsigned& id ) const
+{
+    if( id )
+    {
+        glDeleteBuffers( 1, &id );
+        id = 0;
+    }
+}
+
 unsigned int UtilConcrete::getAttribLocation(
     Cunt programId,
     const String& attribName ) const
@@ -905,10 +914,10 @@ void UtilConcrete::unbindBuffer( const BufferTypes bufferType ) const
     bindBuffer( bufferType, 0 );
 }
 
-void UtilConcrete::bindBuffer( IVertexArray* vao ) const
-{
-    bindBuffer( BufferTypes::VERTEX_ARRAY, vao->getId() );
-}
+//void UtilConcrete::bindBuffer( VertexArray* vao ) const
+//{
+//    bindBuffer( BufferTypes::VERTEX_ARRAY, vao->getId() );
+//}
 
 void UtilConcrete::bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const
 {

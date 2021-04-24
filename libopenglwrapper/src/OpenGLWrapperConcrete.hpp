@@ -124,8 +124,8 @@ private:
     const Viewport& getViewport() const override;
     ProjectionData& getProjectionData() override;
 
-    IVertexBuffer* createVBO() override;
-    IVertexArray* createVAO() override;
+    VertexBuffer* createVBO() override;
+    VertexArray* createVAO() override;
 
     const ContextInfo& getContext() const override;
 

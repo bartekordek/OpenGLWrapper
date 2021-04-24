@@ -1,46 +1,46 @@
-#include "VBOConcrete.hpp"
-#include "libopenglwrapper/IUtility.hpp"
+// #include "VBOConcrete.hpp"
+// #include "libopenglwrapper/IUtility.hpp"
 
-using namespace LOGLW;
+// using namespace LOGLW;
 
-VBOConcrete::VBOConcrete()
-{
-}
+// VBOConcrete::VBOConcrete()
+// {
+// }
 
-void VBOConcrete::setId( BuffIDType id )
-{
-    m_bufferId = id;
-}
+// void VBOConcrete::setId( BuffIDType id )
+// {
+//     m_bufferId = id;
+// }
 
-BuffIDType VBOConcrete::getId() const
-{
-    return m_bufferId;
-}
+// BuffIDType VBOConcrete::getId() const
+// {
+//     return m_bufferId;
+// }
 
-void VBOConcrete::setData( const FloatData& data )
-{
-    m_data = data;
-}
+// void VBOConcrete::setData( const FloatData& data )
+// {
+//     m_data = data;
+// }
 
-void VBOConcrete::setDataFromObject( IObject* object )
-{
-    m_data = std::move( object->getVertices() );
-    getUtility()->bufferData( m_data, LOGLW::BufferTypes::ARRAY_BUFFER );
+// void VBOConcrete::setDataFromObject( IObject* object )
+// {
+//     m_data = std::move( object->getVertices() );
+//     getUtility()->bufferData( m_data, LOGLW::BufferTypes::ARRAY_BUFFER );
 
-    const auto dataTypeSize = static_cast<int>( sizeof( float ) );
-    const auto dataSize = static_cast<int>( m_data.size() ) / 3; // xyz = 3.
+//     const auto dataTypeSize = static_cast<int>( sizeof( float ) );
+//     const auto dataSize = static_cast<int>( m_data.size() ) / 3; // xyz = 3.
 
-    getUtility()->vertexAttribPointer(
-        0,
-        3,
-        LOGLW::DataType::FLOAT,
-        false,
-        dataSize * dataTypeSize
+//     getUtility()->vertexAttribPointer(
+//         0,
+//         3,
+//         LOGLW::DataType::FLOAT,
+//         false,
+//         dataSize * dataTypeSize
 
-    );
-    getUtility()->enableVertexAttribArray( 0 );
-}
+//     );
+//     getUtility()->enableVertexAttribArray( 0 );
+// }
 
-VBOConcrete::~VBOConcrete()
-{
-}
+// VBOConcrete::~VBOConcrete()
+// {
+// }

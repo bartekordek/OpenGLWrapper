@@ -1,29 +1,29 @@
-#include "libopenglwrapper/IVertexBuffer.hpp"
+#include "libopenglwrapper/VertexBuffer.hpp"
 
-NAMESPACE_BEGIN( LOGLW )
+// NAMESPACE_BEGIN( LOGLW )
 
-class VBOConcrete final:
-    public IVertexBuffer
-{
-public:
-    VBOConcrete();
+// class VBOConcrete final:
+//     public VertexBuffer
+// {
+// public:
+//     VBOConcrete();
 
-    void setId( BuffIDType id ) override;
-    BuffIDType getId() const override;
-    void setData( const FloatData& data ) override;
-    void setDataFromObject( IObject* object ) override;
+//     void setId( BuffIDType id ) override;
+//     BuffIDType getId() const override;
+//     void setData( const FloatData& data ) override;
+//     void setDataFromObject( IObject* object ) override;
 
-    ~VBOConcrete();
-protected:
-private:
-    FloatData m_data;
-    BuffIDType m_bufferId = 0;
+//     ~VBOConcrete();
+// protected:
+// private:
+//     FloatData m_data;
+//     BuffIDType m_bufferId = 0;
 
-    // Deleted:
-    VBOConcrete( const VBOConcrete& value ) = delete;
-    VBOConcrete( VBOConcrete&& value ) = delete;
-    VBOConcrete& operator=( const VBOConcrete& value ) = delete;
-    VBOConcrete& operator=( VBOConcrete&& value ) = delete;
-};
+//     // Deleted:
+//     VBOConcrete( const VBOConcrete& value ) = delete;
+//     VBOConcrete( VBOConcrete&& value ) = delete;
+//     VBOConcrete& operator=( const VBOConcrete& value ) = delete;
+//     VBOConcrete& operator=( VBOConcrete&& value ) = delete;
+// };
 
-NAMESPACE_END( LOGLW )
+// NAMESPACE_END( LOGLW )

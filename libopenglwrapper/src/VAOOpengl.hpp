@@ -1,31 +1,31 @@
 #pragma once
 
-#include "libopenglwrapper/IVertexArray.hpp"
-#include "CUL/STL_IMPORTS/STD_map.hpp"
+// #include "libopenglwrapper/VertexArray.hpp"
+// #include "CUL/STL_IMPORTS/STD_map.hpp"
 
-NAMESPACE_BEGIN( LOGLW )
+// NAMESPACE_BEGIN( LOGLW )
 
-class VAOOpengl final:
-    public IVertexArray
-{
-public:
-    VAOOpengl();
+// class VAOOpengl final:
+//     public VertexArray
+// {
+// public:
+//     VAOOpengl();
 
-    void setId( BuffIDType id ) override;
+//     void setId( BuffIDType id ) override;
 
-    ~VAOOpengl();
-protected:
-private:
-    BuffIDType getId() const override;
-    void addVBO( IVertexBuffer* vbo ) override;
+//     ~VAOOpengl();
+// protected:
+// private:
+//     BuffIDType getId() const override;
+//     void addVBO( VertexBuffer* vbo ) override;
 
-    BuffIDType m_id = 0;
-    std::map<BuffIDType, IVertexBuffer*> m_vbos;
+//     BuffIDType m_id = 0;
+//     std::map<BuffIDType, VertexBuffer*> m_vbos;
 
-    VAOOpengl( const VAOOpengl& value ) = delete;
-    VAOOpengl( VAOOpengl&& value ) = delete;
-    VAOOpengl& operator=( const VAOOpengl& value ) = delete;
-    VAOOpengl& operator=( VAOOpengl&& value ) = delete;
-};
+//     VAOOpengl( const VAOOpengl& value ) = delete;
+//     VAOOpengl( VAOOpengl&& value ) = delete;
+//     VAOOpengl& operator=( const VAOOpengl& value ) = delete;
+//     VAOOpengl& operator=( VAOOpengl&& value ) = delete;
+// };
 
-NAMESPACE_END( LOGLW )
+// NAMESPACE_END( LOGLW )

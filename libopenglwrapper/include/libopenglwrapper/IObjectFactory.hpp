@@ -1,6 +1,5 @@
 #pragma once
 
-#include "libopenglwrapper/Import.hpp"
 #include "libopenglwrapper/Primitives/ITriangle.hpp"
 #include "libopenglwrapper/Primitives/IQuad.hpp"
 #include "libopenglwrapper/Primitives/ILine.hpp"

@@ -147,15 +147,16 @@ ProjectionData& OpenGLWrapperConcrete::getProjectionData()
     return m_projectionData;
 }
 
-IVertexBuffer* OpenGLWrapperConcrete::createVBO()
+VertexBuffer* OpenGLWrapperConcrete::createVBO()
 {
-    IVertexBuffer* result = nullptr;
+    VertexBuffer* result = nullptr;
     std::atomic<bool> taskDone = false;
 
     addTask( [this, &result, &taskDone](){
-        VBOConcrete* vbo = new VBOConcrete();
-        auto vboId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
-        vbo->setId( vboId );
+        VertexBuffer* vbo = new VertexBuffer();
+        //auto vboId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
+        //TODO:
+        //vbo->setId( vboId );
         result = vbo;
         taskDone = true;
     } );
@@ -168,15 +169,16 @@ IVertexBuffer* OpenGLWrapperConcrete::createVBO()
     return result;
 }
 
-IVertexArray* OpenGLWrapperConcrete::createVAO()
+VertexArray* OpenGLWrapperConcrete::createVAO()
 {
-    IVertexArray* result = nullptr;
+    VertexArray* result = nullptr;
     std::atomic<bool> taskDone = false;
 
     addTask( [this, &result,&taskDone](){
-        auto vao = new VAOOpengl();
+        auto vao = new VertexArray();
         const auto vaoId = getUtility()->generateAndBindBuffer( LOGLW::BufferTypes::VERTEX_ARRAY );
-        vao->setId( vaoId );
+        //TODO:
+        //vao->setId( vaoId );
         result = vao;
         taskDone = true;
     } );

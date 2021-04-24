@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libopenglwrapper/IProgram.hpp"
+#include "libopenglwrapper/Program.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
 #include "libopenglwrapper/IShaderFactory.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
@@ -10,7 +10,7 @@
 NAMESPACE_BEGIN( LOGLW )
 
 class ProgramConcrete final:
-    public IProgram
+    public Program
 {
 public:
     ProgramConcrete( IUtility* utility, IShaderFactory& sf );
@@ -31,25 +31,23 @@ private:
     unsigned int getAttributeUi( const String& name ) override;
     int getAttributeI( const String& name ) override;
 
-    void attachShader( IShader* shader ) override;
-    void dettachShader( IShader* shader = nullptr ) override;
+    void attachShader( Shader* shader ) override;
+    void dettachShader( Shader* shader = nullptr ) override;
 
     void link() override;
     void enable() override;
     void disable() override;
     void validate() override;
-    IShader* createShader( const CUL::FS::Path& path ) override;
+    Shader* createShader( const CUL::FS::Path& path ) override;
 
     void render() override;
 
     AttribKey getAttribLocation( const String& name ) const;
     const ShaderList& getShaderList() const override;
 
-    void bufferData( const std::vector<float>& data, const BufferTypes type ) override;
+    void bufferData( std::vector<float>& data, const BufferTypes type ) override;
 
     unsigned int getProgramId() override;
-
-    IVertexArray* createVao() override;
 
     IUtility* m_utility = nullptr;
 
@@ -57,7 +55,7 @@ private:
     unsigned int m_id = 0;
 
     IShaderFactory& m_sf;
-    std::vector<IVertexArray*> m_vaoList;
+    std::vector<VertexArray*> m_vaoList;
 
     AttribMap m_attribMap;
     ShaderList m_attachedShaders;

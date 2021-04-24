@@ -107,7 +107,7 @@ private:
     LOGLW::IObjectFactory* of = nullptr;
     CUL::FS::Path vertexShaderFile;
     CUL::FS::Path fragmentShaderFile;
-    LOGLW::IProgram* program = nullptr;
+    LOGLW::Program* program = nullptr;
     float blueTriangleZ = -1.0f;
     float redTriangleZ = 1.0f;
     LOGLW::ProjectionData m_projectionData;

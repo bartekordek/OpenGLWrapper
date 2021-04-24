@@ -108,8 +108,8 @@ void Game::afterInit()
     const float backgroundW = rowsCount * size + (rowsCount - 1) * offset;
     const float backgroundH = colsCount * size + (colsCount - 1) * offset;
 
-    const float xOffset = -backgroundW / 2;
-    const float yOffset = -backgroundH / 2;
+    const float xOffset = size / 2 - backgroundW / 2;
+    const float yOffset = size / 2 - backgroundH / 2;
 
     for( size_t row = 0; row < rowsCount; ++row )
     {

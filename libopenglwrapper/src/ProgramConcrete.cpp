@@ -13,13 +13,13 @@ ProgramConcrete::ProgramConcrete( IUtility* utility, IShaderFactory& sf ):
 }
 
 
-IVertexArray* ProgramConcrete::createVao()
-{
-    IVertexArray* vao = nullptr;
-    //auto vao = IVAO::createVAO();
-    //m_vaoList.push_back( vao );
-    return vao;
-}
+// VertexArray* ProgramConcrete::createVao()
+// {
+//     VertexArray* vao = nullptr;
+//     //auto vao = IVAO::createVAO();
+//     //m_vaoList.push_back( vao );
+//     return vao;
+// }
 
 
 void ProgramConcrete::setAttrib( const String&, const char* )
@@ -59,7 +59,7 @@ int ProgramConcrete::getAttributeI( const String&  )
     return Cint();
 }
 
-void ProgramConcrete::attachShader( IShader* shader )
+void ProgramConcrete::attachShader( Shader* shader )
 {
     std::lock_guard<std::mutex> lock( m_operationMutex );
     auto shaderId = shader->getId();
@@ -67,7 +67,7 @@ void ProgramConcrete::attachShader( IShader* shader )
     m_attachedShaders[shader->getPath()] = shader;
 }
 
-void ProgramConcrete::dettachShader( IShader* shader )
+void ProgramConcrete::dettachShader( Shader* shader )
 {
     std::lock_guard<std::mutex> lock( m_operationMutex );
     auto shaderId = shader->getId();
@@ -98,7 +98,7 @@ void ProgramConcrete::validate()
     m_utility->validateProgram( m_id );
 }
 
-IShader* ProgramConcrete::createShader( const CUL::FS::Path& path )
+Shader* ProgramConcrete::createShader( const CUL::FS::Path& path )
 {
     auto result = m_sf.createShader( path );
     attachShader( result );
@@ -137,7 +137,7 @@ const ShaderList& ProgramConcrete::getShaderList() const
 }
 
 // TODO
-void ProgramConcrete::bufferData( const std::vector<float>&, const BufferTypes )
+void ProgramConcrete::bufferData( std::vector<float>&, const BufferTypes )
 {
 }
 

@@ -1,11 +1,11 @@
-#include "libopenglwrapper/IProgram.hpp"
+#include "libopenglwrapper/Program.hpp"
 
 using namespace LOGLW;
 
-IProgram::IProgram()
+Program::Program()
 {
 }
 
-IProgram::~IProgram()
+Program::~Program()
 {
 }
