@@ -12,7 +12,7 @@ class LIBOPENGLWRAPPER_API IDebugOverlay
 public:
     IDebugOverlay() = default;
 
-    virtual unsigned addSliderValue( const CUL::String& text, float* value, float min, float max, const std::function<void( void )> onUpdate = nullptr ) = 0;
+    virtual unsigned addSliderValue( const CUL::String& text, float* value, float min, float max, const std::function<void( void )>& onUpdate = nullptr ) = 0;
     virtual unsigned addText( const CUL::String& text, float* value ) = 0;
 
     virtual ~IDebugOverlay() = default;

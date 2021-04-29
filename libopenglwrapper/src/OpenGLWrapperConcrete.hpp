@@ -124,10 +124,9 @@ private:
     const Viewport& getViewport() const override;
     ProjectionData& getProjectionData() override;
 
-    //VertexBuffer* createVBO() override;
-    void createVAO( const std::function<void( VertexArray* vao )>& function ) override;
-    void createVBO(
-        const std::function<void( VertexBuffer* vbo )>& function ) override;
+    // VBO HANDLE:
+    VertexArray* createVAO() override;
+    VertexBuffer* createVBO( std::vector<float>& data ) override;
 
     const ContextInfo& getContext() const override;
 
@@ -160,7 +159,7 @@ private:
     IDebugOverlay* getDebugOverlay() override;
     void handleEvent( const SDL_Event& event ) override;
 
-    unsigned addSliderValue( const CUL::String& valName, float* value, float min, float max, const std::function<void( void )> onUpdate = nullptr ) override;
+    unsigned addSliderValue( const CUL::String& valName, float* value, float min, float max, const std::function<void( void )>& onUpdate = nullptr ) override;
     unsigned addText( const CUL::String& text, float* value ) override;
 
     void runEventLoop() override;

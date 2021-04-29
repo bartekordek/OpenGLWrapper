@@ -42,7 +42,7 @@ class LIBOPENGLWRAPPER_API VertexBuffer final:
     public IUtilityUser
 {
 public:
-    VertexBuffer();
+    VertexBuffer( std::vector<float>& data );
 
     void loadData( std::vector<float>& data );
 

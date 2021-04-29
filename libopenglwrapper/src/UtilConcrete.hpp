@@ -122,7 +122,7 @@ private:
     void assertOnProgramError( Cunt programId, Cunt val ) const;
     void log( const String& text,
             const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;
-    void assert( const bool value, const CUL::String& message ) const;
+    void customAssert( const bool value, const CUL::String& message ) const;
     void setDepthTest( const bool enabled ) const override;
     void setBackfaceCUll( const bool enabled ) const override;
 

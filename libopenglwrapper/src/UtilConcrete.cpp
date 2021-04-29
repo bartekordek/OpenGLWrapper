@@ -196,7 +196,8 @@ unsigned int UtilConcrete::createProgram()
     if ( 0 == programId )
     {
         const GLenum err = glGetError();
-        assert( GL_NO_ERROR == programId,
+        customAssert(
+            GL_NO_ERROR == programId,
                 "Error creating program, error numer: " + CUL::String( err ) );
         return 0;
     }
@@ -251,7 +252,7 @@ unsigned int UtilConcrete::createShader( const IFile& shaderCode )
             "Error compiling shader: " + errorAsString + "\n";
         shaderCompilationErrorMessage +=
             "Shader Path: " + shaderCode.getPath().getPath() + "\n";
-        assert( false, shaderCompilationErrorMessage );
+        customAssert( false, shaderCompilationErrorMessage );
     }
 
     return id;
@@ -267,7 +268,7 @@ void UtilConcrete::assertOnProgramError( Cunt programId, Cunt val ) const
         glGetProgramInfoLog( programId, sizeof( eLog ), nullptr, eLog );
         CUL::String message =
             "Error on " + enumToString( val ) + std::string( eLog );
-        assert( false, message );
+        customAssert( false, message );
     }
 }
 
@@ -322,7 +323,7 @@ void UtilConcrete::attachShader( Cunt programId, Cunt shaderId ) const
     glAttachShader( toGluint( programId ), toGluint( shaderId ) );
 
     const GLenum err = glGetError();
-    assert( GL_NO_ERROR == err,
+    customAssert( GL_NO_ERROR == err,
             "Error creating program, error numer: " + CUL::String( err ) );
 }
 
@@ -1280,15 +1281,16 @@ std::vector<std::string> UtilConcrete::listExtensions()
 void UtilConcrete::log( const String& text,
                         const CUL::LOG::Severity severity ) const
 {
-    assert( m_logger != nullptr,
+    customAssert( m_logger != nullptr,
             "Logger utility is unninitialized inside of UtilConcrete." );
     m_logger->log( text, severity );
 }
 
-void UtilConcrete::assert( const bool value, const CUL::String& message ) const
-{
-    CUL::Assert::simple( value, message );
-}
+ void UtilConcrete::customAssert( const bool value,
+                                 const CUL::String& message ) const
+ {
+     CUL::Assert::simple( value, message );
+ }
 
 void UtilConcrete::setDepthTest( const bool enabled ) const
 {

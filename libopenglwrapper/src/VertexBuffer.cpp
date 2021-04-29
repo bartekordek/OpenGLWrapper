@@ -3,8 +3,9 @@
 using namespace LOGLW;
 #include "libopenglwrapper/IUtility.hpp"
 
-VertexBuffer::VertexBuffer()
+VertexBuffer::VertexBuffer( std::vector<float>& data )
 {
+    loadData( data );
 }
 
 void VertexBuffer::loadData( std::vector<float>& data )

@@ -47,12 +47,14 @@ public:
     BuffIDType getId() const;
     void addVBO( VertexBuffer* vbo );
 
-    VertexBuffer* const addVertexBuffer(std::vector<float>& vertices);
-    IndexBuffer* const addIndexBuffer( std::vector<unsigned>& indices );
+    void addVertexBuffer(std::vector<float>& vertices, const std::function<void( VertexBuffer* vbo )>& callback);
+    void addIndexBuffer( std::vector<unsigned>& indices, const std::function<void( IndexBuffer* ibo )>& callback );
 
     void render() override;
 
     ~VertexArray();
+
+    static void registerBufferFactory( class IBufferFactory* bf );
 protected:
 private:
     void bind();
@@ -64,6 +66,9 @@ private:
     std::vector<Ptr<VertexBuffer>> m_vbos;
     std::vector<unsigned> m_indices;
     std::vector<float> m_vertices;
+
+
+    static IBufferFactory* s_bufferFactory;
 
     VertexArray( const VertexArray& value ) = delete;
     VertexArray( VertexArray&& value ) = delete;

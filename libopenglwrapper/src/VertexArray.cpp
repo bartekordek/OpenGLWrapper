@@ -1,8 +1,16 @@
 #include "libopenglwrapper/VertexArray.hpp"
-
 #include "libopenglwrapper/IUtility.hpp"
+#include "libopenglwrapper/IBufferFactory.hpp"
 
 using namespace LOGLW;
+
+IBufferFactory* VertexArray::s_bufferFactory = nullptr;
+
+
+void VertexArray::registerBufferFactory(IBufferFactory* bf)
+{
+    s_bufferFactory = bf;
+}
 
 VertexArray::VertexArray():
     m_bufferId( IUtilityUser::getUtility()->generateBuffer(LOGLW::BufferTypes::VERTEX_ARRAY) )
@@ -19,16 +27,17 @@ void VertexArray::addVBO(VertexBuffer* )
 
 }
 
-IndexBuffer* const VertexArray::addIndexBuffer(std::vector<unsigned>& )
+void VertexArray::addIndexBuffer(std::vector<unsigned>&, const std::function<void( IndexBuffer* ibo )>&  ) //IndexBuffer*
 {
-    return nullptr;
 }
 
-VertexBuffer* const VertexArray::addVertexBuffer(std::vector<float>& vertices)
+void VertexArray::addVertexBuffer(std::vector<float>&, const std::function<void( VertexBuffer* vbo )>&) // VertexBuffer* const
 {
-    auto vb = m_vbos.emplace_back( new VertexBuffer() ).get();
-    vb->loadData( vertices );
-    return vb;
+    // auto vb = m_vbos.emplace_back( new VertexBuffer() ).get();
+    // vb->loadData( vertices );
+    // return vb;
+
+    //s_bufferFactory->createVBO( callback, vertices );
 }
 
 void VertexArray::render()
