@@ -97,6 +97,12 @@ public:
     virtual ITextureFactory* getTextureFactory() = 0;
 
 
+    // VBO HANDLE:
+    virtual void createVAO(
+        std::function<void( VertexArray* )> callback ) = 0;
+    virtual VertexBuffer* createVBO( std::vector<float>& data ) = 0;
+
+
     static IOpenGLWrapper* createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w );
     static IOpenGLWrapper* createOpenGLWrapper(
         const CUL::Graphics::Pos2Di& pos,

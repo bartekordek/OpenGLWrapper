@@ -125,7 +125,7 @@ private:
     ProjectionData& getProjectionData() override;
 
     // VBO HANDLE:
-    VertexArray* createVAO() override;
+    void createVAO( std::function<void( VertexArray* )> callback ) override;
     VertexBuffer* createVBO( std::vector<float>& data ) override;
 
     const ContextInfo& getContext() const override;

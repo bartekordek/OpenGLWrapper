@@ -145,27 +145,13 @@ ProjectionData& OpenGLWrapperConcrete::getProjectionData()
     return m_projectionData;
 }
 
-VertexArray* OpenGLWrapperConcrete::createVAO()
+void OpenGLWrapperConcrete::createVAO(
+    std::function<void( VertexArray* vao )> callback )
 {
-    VertexArray* result = nullptr;
-
-    std::mutex mtx;
-    std::condition_variable cv;
-
-    {
-        addTask( [&result, &cv]() {
-            VertexArray* vao = new VertexArray();
-            result = vao;
-            cv.notify_one();
-        } );
-
-        std::unique_lock<std::mutex> lck(mtx);
-        cv.wait(lck);
-    }
-
-
-
-    return result;
+    addTask( [callback]() {
+        VertexArray* vao = new VertexArray();
+        callback( vao );
+    } );
 }
 
 VertexBuffer* OpenGLWrapperConcrete::createVBO( std::vector<float>& data )
