@@ -146,7 +146,7 @@ public:
     virtual void resetMatrixToIdentity( const MatrixTypes matrix ) const = 0;
     virtual void setProjection( const ProjectionData& rect ) const = 0;
     virtual void setViewport( const Viewport& viewport ) const = 0;
-    virtual void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble m_zNear, CDouble m_zFar ) const = 0;
+    virtual void setPerspective( const Angle& angle, double widthToHeightRatio, double m_zNear, double m_zFar ) const = 0;
     virtual void setOrthogonalPerspective( const ProjectionData& vp ) const = 0;
     virtual void setPerspectiveProjection( const ProjectionData& vp ) const = 0;
     virtual void lookAt( const ProjectionData& vp ) const = 0;
@@ -156,27 +156,27 @@ public:
     virtual ShaderTypes getShaderType( const CUL::String& fileExtension ) const = 0;
 
     virtual unsigned int createProgram()  = 0;
-    virtual void removeProgram( Cunt programId ) const = 0;
-    virtual void useProgram( Cunt programId ) const = 0;
-    virtual void linkProgram( Cunt programId ) const = 0;
-    virtual void validateProgram( Cunt programId ) const = 0;
+    virtual void removeProgram( unsigned programId ) const = 0;
+    virtual void useProgram( unsigned programId ) const = 0;
+    virtual void linkProgram( unsigned programId ) const = 0;
+    virtual void validateProgram( unsigned programId ) const = 0;
 
     virtual unsigned int createShader(
         const IFile& shaderCode ) = 0;
-    virtual void attachShader( Cunt programId, Cunt shaderId ) const = 0;
-    virtual void dettachShader( Cunt programId, Cunt shaderId ) const = 0;
-    virtual void removeShader( Cunt shaderId ) const = 0;
+    virtual void attachShader( unsigned programId, unsigned shaderId ) const = 0;
+    virtual void dettachShader( unsigned programId, unsigned shaderId ) const = 0;
+    virtual void removeShader( unsigned shaderId ) const = 0;
 
-    virtual ContextInfo initContextVersion( SDL2W::IWindow* window, Cunt major, Cunt minor ) const = 0;
+    virtual ContextInfo initContextVersion( SDL2W::IWindow* window, unsigned major, unsigned minor ) const = 0;
     virtual void destroyContext( ContextInfo& context ) = 0;
 
-    virtual void setAttribValue( Cint attributeLocation, Cfloat value ) const = 0;
-    virtual void setAttribValue( Cint attributeLocation, Cint value ) const = 0;
-    virtual void setAttribValue( Cint attributeLocation, Cunt value ) const = 0;
+    virtual void setAttribValue( int attributeLocation, float value ) const = 0;
+    virtual void setAttribValue( int attributeLocation, int value ) const = 0;
+    virtual void setAttribValue( int attributeLocation, unsigned value ) const = 0;
 
     virtual void setProjectionAndModelToIdentity() const = 0;
     virtual void clearColorAndDepthBuffer() const = 0;
-    virtual void createQuad( Cfloat scale = 1.0f ) const = 0;
+    virtual void createQuad( float scale = 1.0f ) const = 0;
     virtual void clearColorTo( const ColorS color ) const = 0;
     virtual void clearBuffer( const ClearMasks mask ) const = 0;
 
@@ -194,26 +194,26 @@ public:
     virtual unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const = 0;
     virtual void deleteBuffer( BufferTypes bufferType, unsigned& id ) const = 0;
 
-    virtual void enableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
-    virtual void disableVertexAttribiute( Cunt programId, const String& attribName ) const = 0;
-    virtual unsigned int getAttribLocation( Cunt programId, const String& attribName ) const = 0;
+    virtual void enableVertexAttribiute( unsigned programId, const String& attribName ) const = 0;
+    virtual void disableVertexAttribiute( unsigned programId, const String& attribName ) const = 0;
+    virtual unsigned int getAttribLocation( unsigned programId, const String& attribName ) const = 0;
     virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
-    virtual void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const = 0;
+    virtual void bindBuffer( const BufferTypes bufferType, unsigned bufferId ) const = 0;
     //virtual void bindBuffer( VertexArray* vao ) const = 0;
     virtual unsigned int generateBuffer( const BufferTypes type, const int size = 1 ) const = 0;
 
     virtual void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const = 0;
     virtual void drawElements( const PrimitiveType type, const std::vector<float>& data ) const = 0;
-    virtual void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const = 0;
-    virtual void drawArrays( const PrimitiveType primitiveType, Cunt first, Cunt count ) const = 0;
+    virtual void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, unsigned count ) const = 0;
+    virtual void drawArrays( const PrimitiveType primitiveType, unsigned first, unsigned count ) const = 0;
     virtual void vertexAttribPointer(
-        Cunt vertexAttributeId,
-        Cint componentsPerVertexAttribute,
+        unsigned vertexAttributeId,
+        int componentsPerVertexAttribute,
         const DataType dataType,
-        Cbool normalized,
-        Cint stride,
+        bool normalized,
+        int stride,
         const void* offset = nullptr ) const = 0;
-    virtual void enableVertexAttribArray( Cunt attributeId ) const = 0;
+    virtual void enableVertexAttribArray( unsigned attributeId ) const = 0;
     virtual void setVertexPointer( int coordinatesPerVertex, DataType dataType, int stride, const void* data ) const = 0;
 
     virtual std::vector<std::string> listExtensions() = 0;

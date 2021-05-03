@@ -22,9 +22,9 @@ private:
     using AttribMap = std::map<CUL::String, AttribKey>;
 
     void setAttrib( const String& name, const char* value ) override;
-    void setAttrib( const String& name, Cfloat value ) override;
-    void setAttrib( const String& name, Cunt value ) override;
-    void setAttrib( const String& name, Cint value ) override;
+    void setAttrib( const String& name, float value ) override;
+    void setAttrib( const String& name, unsigned value ) override;
+    void setAttrib( const String& name, int value ) override;
 
     String getAttributeStr( const String& name ) override;
     float getAttributeF( const String& name ) override;

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "libopenglwrapper/Import.hpp"
+#include "libopenglwrapper/IRenderable.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
-#include "libopenglwrapper/IObject.hpp"
 
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_atomic.hpp"
 
 /*
 A Vertex Buffer Object (VBO) is the common term for
@@ -38,21 +38,23 @@ NAMESPACE_BEGIN( LOGLW )
 using FloatData = std::vector<float>;
 using BuffIDType = uint8_t;
 
-class LIBOPENGLWRAPPER_API VertexBuffer final:
-    public IUtilityUser
+class LIBOPENGLWRAPPER_API VertexBuffer final : public IUtilityUser,
+                                                public IRenderable
 {
 public:
-    VertexBuffer( std::vector<float>& data );
-
-    void loadData( std::vector<float>& data );
-
+    VertexBuffer( std::vector<float>& data, bool instantLoad = true );
+    void render() override;
+    unsigned getId()const;
     ~VertexBuffer();
+
 protected:
 private:
+    void loadData( std::vector<float>& data );
     void release();
 
     unsigned m_bufferId = 0;
     std::vector<float> m_vertices;
+    std::atomic<bool> m_load = true;
 
     VertexBuffer( const VertexBuffer& value ) = delete;
     VertexBuffer( VertexBuffer&& value ) = delete;

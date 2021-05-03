@@ -8,6 +8,7 @@
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_mutex.hpp"
 
 /*
 A Vertex Array Object (VAO) is an OpenGL Object
@@ -47,28 +48,33 @@ public:
     BuffIDType getId() const;
     void addVBO( VertexBuffer* vbo );
 
-    void addVertexBuffer(std::vector<float>& vertices, const std::function<void( VertexBuffer* vbo )>& callback);
-    void addIndexBuffer( std::vector<unsigned>& indices, const std::function<void( IndexBuffer* ibo )>& callback );
+    void addVertexBuffer(std::vector<float>& vertices);
+    void addIndexBuffer( std::vector<unsigned>& indices );
 
     void render() override;
 
     ~VertexArray();
-
-    static void registerBufferFactory( class IBufferFactory* bf );
 protected:
 private:
+    std::mutex m_vbosMtx;
+    enum class TaskType: short
+    {
+        NONE = 0,
+        CREATE_VAO,
+        ADD_VBO,
+        RENDER
+    };
+
     void bind();
     void unbind();
     void release();
 
+    TaskType m_currentTask = TaskType::CREATE_VAO;
     unsigned m_bufferId = 0;
     std::vector<Ptr<Program>> m_shaderPrograms;
+    std::vector<std::vector<float>> m_vboDataToPrepare;
     std::vector<Ptr<VertexBuffer>> m_vbos;
     std::vector<unsigned> m_indices;
-    std::vector<float> m_vertices;
-
-
-    static IBufferFactory* s_bufferFactory;
 
     VertexArray( const VertexArray& value ) = delete;
     VertexArray( VertexArray&& value ) = delete;

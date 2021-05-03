@@ -19,7 +19,7 @@ protected:
 private:
     void setProjection( const ProjectionData& rect ) const override;
     void setViewport( const Viewport& viewport ) const override;
-    void setPerspective( const Angle& angle, CDouble widthToHeightRatio, CDouble m_zNear, CDouble m_zFar ) const override;
+    void setPerspective( const Angle& angle, double widthToHeightRatio, double m_zNear, double m_zFar ) const override;
     void setOrthogonalPerspective( const ProjectionData& vp ) const override;
     void setPerspectiveProjection( const ProjectionData& vp ) const override;
     void lookAt( const ProjectionData& vp ) const override;
@@ -29,25 +29,25 @@ private:
     ShaderTypes getShaderType( const CUL::String& fileExtension ) const override;
 
     unsigned int createProgram()  override;
-    void removeProgram( Cunt programId ) const override;
-    void useProgram( Cunt programId ) const override;
-    void linkProgram( Cunt programId ) const override;
-    void validateProgram( Cunt programId ) const override;
+    void removeProgram( unsigned programId ) const override;
+    void useProgram( unsigned programId ) const override;
+    void linkProgram( unsigned programId ) const override;
+    void validateProgram( unsigned programId ) const override;
 
     unsigned int createShader( const IFile& shaderCode ) override;
-    void attachShader( Cunt programId, Cunt shaderId ) const override;
-    void dettachShader( Cunt programId, Cunt shaderId ) const override;
-    void removeShader( Cunt shaderId ) const override;
+    void attachShader( unsigned programId, unsigned shaderId ) const override;
+    void dettachShader( unsigned programId, unsigned shaderId ) const override;
+    void removeShader( unsigned shaderId ) const override;
 
-    ContextInfo initContextVersion( SDL2W::IWindow* window, Cunt major, Cunt minor ) const override;
+    ContextInfo initContextVersion( SDL2W::IWindow* window, unsigned major, unsigned minor ) const override;
     void destroyContext( ContextInfo& context ) override;
-    void setAttribValue( Cint attributeLocation, Cfloat value ) const override;
-    void setAttribValue( Cint attributeLocation, Cint value ) const override;
-    void setAttribValue( Cint attributeLocation, Cunt value ) const override;
+    void setAttribValue( int attributeLocation, float value ) const override;
+    void setAttribValue( int attributeLocation, int value ) const override;
+    void setAttribValue( int attributeLocation, unsigned value ) const override;
 
     void setProjectionAndModelToIdentity() const override;
     void clearColorAndDepthBuffer() const override;
-    void createQuad( Cfloat scale = 1.0f ) const override;
+    void createQuad( float scale = 1.0f ) const override;
     void clearColorTo( const ColorS color ) const override;
     void clearBuffer( const ClearMasks mask ) const override;
 
@@ -64,26 +64,26 @@ private:
     unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const override;
     void deleteBuffer( BufferTypes bufferType, unsigned& id ) const override;
     unsigned int generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const override;
-    void enableVertexAttribiute( Cunt programId, const String& attribName ) const override;
-    void disableVertexAttribiute( Cunt programId, const String& attribName ) const override;
-    unsigned int getAttribLocation( Cunt programId, const String& attribName ) const override;
+    void enableVertexAttribiute( unsigned programId, const String& attribName ) const override;
+    void disableVertexAttribiute( unsigned programId, const String& attribName ) const override;
+    unsigned int getAttribLocation( unsigned programId, const String& attribName ) const override;
     void unbindBuffer( const BufferTypes bufferType ) const override;
     //void bindBuffer( VertexArray* vao ) const override;
-    void bindBuffer( const BufferTypes bufferType, Cunt bufferId ) const override;
+    void bindBuffer( const BufferTypes bufferType, unsigned bufferId ) const override;
     unsigned int generateBuffer( const BufferTypes type, const int size = 1 ) const override;
 
     void drawElements( const PrimitiveType type, const std::vector<unsigned int>& data ) const override;
     void drawElements( const PrimitiveType type, const std::vector<float>& data ) const override;
-    void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, Cunt count ) const override;
-    void drawArrays( const PrimitiveType primitiveType, Cunt first, Cunt count ) const override;
+    void drawElementsFromLastBuffer( const PrimitiveType primitiveType, const DataType dataType, unsigned count ) const override;
+    void drawArrays( const PrimitiveType primitiveType, unsigned first, unsigned count ) const override;
     void vertexAttribPointer(
-        Cunt vertexAttributeId,
-        Cint componentsPerVertexAttribute,
+        unsigned vertexAttributeId,
+        int componentsPerVertexAttribute,
         const DataType dataType,
-        Cbool normalized,
-        Cint stride,
+        bool normalized,
+        int stride,
         const void* offset = nullptr ) const override;
-    void enableVertexAttribArray( Cunt attributeId ) const override;
+    void enableVertexAttribArray( unsigned attributeId ) const override;
     void setVertexPointer( int coordinatesPerVertex, DataType dataType, int stride, const void* data ) const override;
 
     std::vector<std::string> listExtensions() override;
@@ -119,7 +119,7 @@ private:
 
     void draw( const Point& position, const ColorS& color ) override;
 
-    void assertOnProgramError( Cunt programId, Cunt val ) const;
+    void assertOnProgramError( unsigned programId, unsigned val ) const;
     void log( const String& text,
             const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) const;
     void customAssert( const bool value, const CUL::String& message ) const;

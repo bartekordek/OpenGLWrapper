@@ -1,26 +1,31 @@
 #include "OpenGLWrapperConcrete.hpp"
 
-#include "CUL/Filesystem/FileFactory.hpp"
-#include "CUL/GenericUtils/ConsoleUtilities.hpp"
-#include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "CUL/ITimer.hpp"
-#include "CUL/JSON/INode.hpp"
-#include "CUL/STL_IMPORTS/STD_iostream.hpp"
-#include "ImportImgui.hpp"
-#include "ObjLoader.hpp"
+#include "libopenglwrapper/Model.hpp"
+
 #include "Primitives/LineImpl.hpp"
 #include "Primitives/PointImpl.hpp"
 #include "Primitives/QuadImpl.hpp"
 #include "Primitives/QuadImplLegacy.hpp"
 #include "Primitives/TriangleImpl.hpp"
-#include "SDL2Wrapper/IWindow.hpp"
+#include "ImportImgui.hpp"
+#include "ObjLoader.hpp"
 #include "Sprite.hpp"
 #include "TextureConcrete.hpp"
 #include "UtilConcrete.hpp"
 #include "VAOConcrete.hpp"
 #include "VAOOpengl.hpp"
 #include "VBOConcrete.hpp"
-#include "libopenglwrapper/Model.hpp"
+
+#include "SDL2Wrapper/IWindow.hpp"
+
+#include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/GenericUtils/ConsoleUtilities.hpp"
+#include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/ITimer.hpp"
+#include "CUL/JSON/INode.hpp"
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_condition_variable.hpp"
+
 
 using namespace LOGLW;
 
@@ -43,7 +48,6 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w )
 void OpenGLWrapperConcrete::registerObjectForUtility()
 {
     IUtilityUser::useUtility( m_oglUtility );
-    VertexArray::registerBufferFactory( this );
 }
 
 void OpenGLWrapperConcrete::loadFromConfig()
@@ -68,6 +72,12 @@ void OpenGLWrapperConcrete::stopRenderingLoop()
 {
     m_logger->log( "OpenGLWrapperConcrete::stopRenderingLoop()..." );
     m_runRenderLoop = false;
+
+    if( m_taskLoopThread.joinable() )
+    {
+        m_taskLoopThread.join();
+    }
+
     if ( m_renderingLoopThread.joinable() )
     {
         m_renderingLoopThread.join();
@@ -120,11 +130,6 @@ IImageLoader* OpenGLWrapperConcrete::getImageLoader()
     return m_imageLoader;
 }
 
-IBufferFactory* OpenGLWrapperConcrete::getBufferFactory()
-{
-    return this;
-}
-
 CUL::LOG::ILogger* OpenGLWrapperConcrete::getLoger()
 {
     return m_logger;
@@ -145,16 +150,13 @@ ProjectionData& OpenGLWrapperConcrete::getProjectionData()
     return m_projectionData;
 }
 
-void OpenGLWrapperConcrete::createVAO(
-    std::function<void( VertexArray* vao )> callback )
+VertexArray* OpenGLWrapperConcrete::createVAO()
 {
-    addTask( [callback]() {
-        VertexArray* vao = new VertexArray();
-        callback( vao );
-    } );
+    auto result = new VertexArray();
+    return result;
 }
 
-VertexBuffer* OpenGLWrapperConcrete::createVBO( std::vector<float>& data )
+VertexBuffer* OpenGLWrapperConcrete::createVBO( std::vector<float>& )
 {
     VertexBuffer* result = nullptr;
     // addTask( [this, &data, &vboCallback]() {
@@ -383,6 +385,11 @@ void OpenGLWrapperConcrete::mainThread()
 
     initialize();
 
+    m_logger->log( "OpenGLWrapperConcrete::start task thread()..." );
+    m_taskLoopThread =
+        std::thread( &OpenGLWrapperConcrete::taskThread, this );
+    m_logger->log( "OpenGLWrapperConcrete::start task thread()... Done." );
+
     renderLoop();
 
     if ( m_debugDrawInitialized )
@@ -399,6 +406,14 @@ void OpenGLWrapperConcrete::addTask( const std::function<void( void )>& task )
 {
     std::lock_guard<std::mutex> lock( m_taskMutex );
     m_tasks.push( task );
+}
+
+void OpenGLWrapperConcrete::taskThread()
+{
+    while( m_runRenderLoop )
+    {
+        /* code */
+    }
 }
 
 void OpenGLWrapperConcrete::renderLoop()
@@ -503,11 +518,6 @@ void OpenGLWrapperConcrete::initialize()
     // m_oglUtility->setBackfaceCUll(  );
     // m_oglUtility->setDepthTest( true );
 
-    if ( m_onInitializeCallback )
-    {
-        m_onInitializeCallback();
-    }
-
     m_hasBeenInitialized = true;
     m_logger->log( "OpenGLWrapperConcrete::initialize() Done." );
 }
@@ -539,6 +549,15 @@ void OpenGLWrapperConcrete::setupProjectionData(
 
 void OpenGLWrapperConcrete::renderFrame()
 {
+    if ( m_userInitialized == false )
+    {
+        if ( m_onInitializeCallback )
+        {
+            m_onInitializeCallback();
+            m_userInitialized = true;
+        }
+    }
+
     // setBackgroundColor( m_backgroundColor );
     if ( m_clearEveryFrame )
     {

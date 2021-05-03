@@ -3,6 +3,7 @@
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "libopenglwrapper/IDebugOverlay.hpp"
 #include "libopenglwrapper/ITextureFactory.hpp"
+#include "libopenglwrapper/IObjectFactory.hpp"
 
 #include "OpenGLShaderFactory.hpp"
 
@@ -66,12 +67,11 @@ struct DebugValueRow
 };
 
 class OpenGLWrapperConcrete final:
-    public IOpenGLWrapper,
-    private IObjectFactory,
-    private IDebugOverlay,
-    private SDL2W::ISDLEventObserver,
-    private ITextureFactory,
-    private IBufferFactory
+      public IOpenGLWrapper
+    , private IObjectFactory
+    , private IDebugOverlay
+    , private SDL2W::ISDLEventObserver
+    , private ITextureFactory
 {
 public:
     OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w );
@@ -118,20 +118,20 @@ private:
     IObjectFactory* getObjectFactory() override;
     IProgramFactory* getProgramFactory() override;
     IImageLoader* getImageLoader() override;
-    IBufferFactory* getBufferFactory() override;
     CUL::LOG::ILogger* getLoger() override;
     IUtility* getUtility() override;
     const Viewport& getViewport() const override;
     ProjectionData& getProjectionData() override;
 
     // VBO HANDLE:
-    void createVAO( std::function<void( VertexArray* )> callback ) override;
+    VertexArray*  createVAO() override;
     VertexBuffer* createVBO( std::vector<float>& data ) override;
 
     const ContextInfo& getContext() const override;
 
     void mainThread();
     void renderLoop();
+    void taskThread();
     void calculateNextFrameLengths();
     void initDebugInfo();
     void renderFrame() override;
@@ -208,6 +208,7 @@ private:
     DumbPtr<IImageLoader> m_imageLoader;
 
     std::thread m_renderingLoopThread;
+    std::thread m_taskLoopThread;
 
     CUL::GUTILS::ValueChangeHook<bool> m_isPerspective = true;
     SafeBool m_runRenderLoop = true;
@@ -245,6 +246,7 @@ private:
     Safe<int> m_waitTimeUs = 0.0f;
 
     bool m_hasBeenInitialized = false;
+    bool m_userInitialized = false;
     SafeBool m_drawQuad = false;
     SafeBool m_drawOrigin = false;
 

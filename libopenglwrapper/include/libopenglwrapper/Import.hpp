@@ -29,12 +29,3 @@
 #pragma warning( disable: 4820 )
 #endif
 #endif
-
-using Uint = unsigned int;
-using Cunt = const Uint;
-using Cbool = const bool;
-using CDouble = const double;
-using Unt = unsigned int;
-using Cunt = const Unt;
-using Cint = const int;
-using Cfloat = const float;

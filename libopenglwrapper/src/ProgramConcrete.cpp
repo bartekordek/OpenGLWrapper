@@ -27,15 +27,15 @@ void ProgramConcrete::setAttrib( const String&, const char* )
     //TODO
 }
 
-void ProgramConcrete::setAttrib( const String& , Cfloat  )
+void ProgramConcrete::setAttrib( const String& , float  )
 {
 }
 
-void ProgramConcrete::setAttrib( const String& , Cunt  )
+void ProgramConcrete::setAttrib( const String& , unsigned  )
 {
 }
 
-void ProgramConcrete::setAttrib( const String& , Cint  )
+void ProgramConcrete::setAttrib( const String& , int  )
 {
 }
 
@@ -46,17 +46,17 @@ String ProgramConcrete::getAttributeStr( const String&  )
 
 float ProgramConcrete::getAttributeF( const String&  )
 {
-    return Cfloat();
+    return float();
 }
 
 unsigned int ProgramConcrete::getAttributeUi( const String&  )
 {
-    return Cunt();
+    return unsigned();
 }
 
 int ProgramConcrete::getAttributeI( const String&  )
 {
-    return Cint();
+    return int();
 }
 
 void ProgramConcrete::attachShader( Shader* shader )

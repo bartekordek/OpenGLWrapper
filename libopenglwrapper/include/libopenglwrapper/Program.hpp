@@ -21,9 +21,9 @@ public:
     Program();
 
     virtual void setAttrib( const String& name, const char* value ) = 0;
-    virtual void setAttrib( const String& name, Cfloat value ) = 0;
-    virtual void setAttrib( const String& name, Cunt value ) = 0;
-    virtual void setAttrib( const String& name, Cint value ) = 0;
+    virtual void setAttrib( const String& name, float value ) = 0;
+    virtual void setAttrib( const String& name, unsigned value ) = 0;
+    virtual void setAttrib( const String& name, int value ) = 0;
 
     virtual String getAttributeStr( const String& name ) = 0;
     virtual float getAttributeF( const String& name ) = 0;

@@ -24,7 +24,6 @@ using Pos3Di = CUL::Graphics::Pos3Di;
 using Pos3Df = CUL::Graphics::Pos3Df;
 using Pos2Di = CUL::Graphics::Pos2Di;
 using WindowSize = SDL2W::WindowSize;
-using Cunt = const unsigned int;
 
 class LIBOPENGLWRAPPER_API ProjectionData final:
     public CUL::GUTILS::IOnChange

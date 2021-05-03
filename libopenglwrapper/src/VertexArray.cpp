@@ -1,19 +1,10 @@
 #include "libopenglwrapper/VertexArray.hpp"
+
 #include "libopenglwrapper/IUtility.hpp"
-#include "libopenglwrapper/IBufferFactory.hpp"
 
 using namespace LOGLW;
 
-IBufferFactory* VertexArray::s_bufferFactory = nullptr;
-
-
-void VertexArray::registerBufferFactory(IBufferFactory* bf)
-{
-    s_bufferFactory = bf;
-}
-
-VertexArray::VertexArray():
-    m_bufferId( IUtilityUser::getUtility()->generateBuffer(LOGLW::BufferTypes::VERTEX_ARRAY) )
+VertexArray::VertexArray()
 {
 }
 
@@ -22,34 +13,61 @@ BuffIDType VertexArray::getId() const
     return m_bufferId;
 }
 
-void VertexArray::addVBO(VertexBuffer* )
-{
-
-}
-
-void VertexArray::addIndexBuffer(std::vector<unsigned>&, const std::function<void( IndexBuffer* ibo )>&  ) //IndexBuffer*
+void VertexArray::addVBO( VertexBuffer* )
 {
 }
 
-void VertexArray::addVertexBuffer(std::vector<float>&, const std::function<void( VertexBuffer* vbo )>&) // VertexBuffer* const
+void VertexArray::addIndexBuffer( std::vector<unsigned>& )  // IndexBuffer*
 {
-    // auto vb = m_vbos.emplace_back( new VertexBuffer() ).get();
-    // vb->loadData( vertices );
-    // return vb;
+}
 
-    //s_bufferFactory->createVBO( callback, vertices );
+void VertexArray::addVertexBuffer( std::vector<float>& vertices )
+{
+    std::lock_guard<std::mutex> guard( m_vbosMtx );
+    m_vboDataToPrepare.emplace_back( std::move( vertices ) );
 }
 
 void VertexArray::render()
 {
-    bind();
-
-    for ( size_t i = 0; i < m_shaderPrograms.size(); ++i )
+    if ( m_currentTask == TaskType::CREATE_VAO )
     {
-        m_shaderPrograms[i]->enable();
+        m_bufferId = IUtilityUser::getUtility()->generateBuffer(
+            LOGLW::BufferTypes::VERTEX_ARRAY );
+        m_currentTask = TaskType::NONE;
+    }
+    else if ( m_currentTask == TaskType::ADD_VBO )
+    {
+        bind();
+        std::lock_guard<std::mutex> guard( m_vbosMtx );
+        while( !m_vboDataToPrepare.empty() )
+        {
+            auto vboData = m_vboDataToPrepare.back();
+
+            auto vbo = new VertexBuffer( vboData );
+
+            m_vbos.emplace_back( vbo );
+
+            getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, vbo->getId() );
+            //getUtility()->vertexAttribPointer( 0, 3, LOGLW::DataType::FLOAT, false, 3 * sizeof( float ), nullptr );
+
+            m_vboDataToPrepare.pop_back();
+        }
+
+        unbind();
+        m_currentTask = TaskType::RENDER;
     }
 
-    unbind();
+    if ( m_currentTask == TaskType::RENDER )
+    {
+        bind();
+
+        for ( size_t i = 0; i < m_shaderPrograms.size(); ++i )
+        {
+            m_shaderPrograms[i]->enable();
+        }
+
+        unbind();
+    }
 }
 
 void VertexArray::bind()

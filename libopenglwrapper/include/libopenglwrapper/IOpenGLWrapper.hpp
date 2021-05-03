@@ -1,22 +1,23 @@
 #pragma once
 
 #include "libopenglwrapper/IObjectFactory.hpp"
-#include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IProgramFactory.hpp"
-#include "libopenglwrapper/IBufferFactory.hpp"
+#include "libopenglwrapper/IShaderFactory.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/Viewport.hpp"
+#include "libopenglwrapper/VertexArray.hpp"
+
 
 #include "SDL2Wrapper/ISDL2Wrapper.hpp"
-#include "SDL2Wrapper/Input/IMouseObservable.hpp"
-#include "SDL2Wrapper/IWindowEventObservable.hpp"
 #include "SDL2Wrapper/IWindow.hpp"
+#include "SDL2Wrapper/IWindowEventObservable.hpp"
+#include "SDL2Wrapper/Input/IMouseObservable.hpp"
 
-#include "CUL/String.hpp"
 #include "CUL/Graphics/Color.hpp"
-#include "CUL/Log/ILogContainer.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
+#include "CUL/Log/ILogContainer.hpp"
 #include "CUL/Math/Vector3D.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
@@ -40,10 +41,9 @@ using CMString = const String;
 using IImageLoader = CUL::Graphics::IImageLoader;
 using EmptyFunctionCallback = std::function<void()>;
 
-class LIBOPENGLWRAPPER_API IOpenGLWrapper:
-    public SDL2W::IMouseObservable,
-    public SDL2W::IKeyboardObservable,
-    public SDL2W::IWindowEventObservable
+class LIBOPENGLWRAPPER_API IOpenGLWrapper : public SDL2W::IMouseObservable,
+                                            public SDL2W::IKeyboardObservable,
+                                            public SDL2W::IWindowEventObservable
 {
 public:
     IOpenGLWrapper();
@@ -63,7 +63,6 @@ public:
     virtual IShaderFactory* getShaderFactory() = 0;
     virtual IObjectFactory* getObjectFactory() = 0;
     virtual IProgramFactory* getProgramFactory() = 0;
-    virtual IBufferFactory* getBufferFactory() = 0;
     virtual IImageLoader* getImageLoader() = 0;
     virtual IUtility* getUtility() = 0;
     virtual const Viewport& getViewport() const = 0;
@@ -79,7 +78,8 @@ public:
     virtual void setProjection( const ProjectionData& rect ) = 0;
     virtual void setEyePos( const Pos3Df& pos ) = 0;
     virtual void setProjectionType( const ProjectionType type ) = 0;
-    virtual void setViewport( const Viewport& viewport, const bool instant = false ) = 0;
+    virtual void setViewport( const Viewport& viewport,
+                              const bool instant = false ) = 0;
 
     virtual void drawQuad( const bool draw = true ) = 0;
 
@@ -96,23 +96,17 @@ public:
 
     virtual ITextureFactory* getTextureFactory() = 0;
 
-
     // VBO HANDLE:
-    virtual void createVAO(
-        std::function<void( VertexArray* )> callback ) = 0;
+    virtual VertexArray* createVAO() = 0;
     virtual VertexBuffer* createVBO( std::vector<float>& data ) = 0;
-
 
     static IOpenGLWrapper* createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w );
     static IOpenGLWrapper* createOpenGLWrapper(
-        const CUL::Graphics::Pos2Di& pos,
-        const SDL2W::WindowSize& winSize,
-        const String& configPath,
-        const String& winName = "",
+        const CUL::Graphics::Pos2Di& pos, const SDL2W::WindowSize& winSize,
+        const String& configPath, const String& winName = "",
         const String& renderername = "opengl" );
 
     static IOpenGLWrapper* getInstance();
-
 
     virtual ~IOpenGLWrapper();
 
@@ -123,9 +117,7 @@ private:
     IOpenGLWrapper& operator=( const IOpenGLWrapper& rhv ) = delete;
     IOpenGLWrapper& operator=( IOpenGLWrapper&& rhv ) = delete;
 
-
     static IOpenGLWrapper* s_instance;
 };
-
 
 NAMESPACE_END( LOGLW )
