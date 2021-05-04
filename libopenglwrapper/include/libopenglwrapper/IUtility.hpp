@@ -254,6 +254,8 @@ public:
     virtual void matrixStackPush() = 0;
     virtual void matrixStackPop() = 0;
 
+    virtual CUL::CULInterface* getCUl() = 0;
+
 
     virtual ~IUtility();
 

@@ -1,7 +1,6 @@
 #include "OpenGLShaderFactory.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/Log/ILogContainer.hpp"
-#include "ProgramConcrete.hpp"
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 
 using OpenGLShaderFactory = LOGLW::OpenGLShaderFactory;
@@ -35,9 +34,11 @@ Program* OpenGLShaderFactory::createProgram()
 {
     logger->log( "OpenGLShaderFactory::createProgram()" );
 
-    Program* result = new ProgramConcrete( IUtilityUser::getUtility(), *this );
-    m_programs[result->getProgramId()] = result;
-    return result;
+    //Program* result = new ProgramConcrete( IUtilityUser::getUtility(), *this );
+    //m_programs[result->getProgramId()] = result;
+    //return result;
+    CUL::Assert::simple( false, "TODO: IMPLEMENT!" );
+    return nullptr;
 }
 
 bool OpenGLShaderFactory::shaderExist( const CUL::FS::Path& filePath ) const

@@ -153,6 +153,7 @@ ProjectionData& OpenGLWrapperConcrete::getProjectionData()
 VertexArray* OpenGLWrapperConcrete::createVAO()
 {
     auto result = new VertexArray();
+    addObjectToRender( result );
     return result;
 }
 

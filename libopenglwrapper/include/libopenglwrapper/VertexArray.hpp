@@ -4,11 +4,14 @@
 #include "libopenglwrapper/IRenderable.hpp"
 #include "libopenglwrapper/VertexBuffer.hpp"
 #include "libopenglwrapper/IndexBuffer.hpp"
+#include "libopenglwrapper/Shader.hpp"
 
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
+#include "CUL/STL_IMPORTS/STD_queue.hpp"
+#include "CUL/STL_IMPORTS/STD_deque.hpp"
 
 /*
 A Vertex Array Object (VAO) is an OpenGL Object
@@ -51,30 +54,56 @@ public:
     void addVertexBuffer(std::vector<float>& vertices);
     void addIndexBuffer( std::vector<unsigned>& indices );
 
+    void createShader( const CUL::FS::Path& path );
+
     void render() override;
 
     ~VertexArray();
 protected:
 private:
-    std::mutex m_vbosMtx;
-    enum class TaskType: short
+    enum class TaskType : short
     {
         NONE = 0,
         CREATE_VAO,
         ADD_VBO,
+        ADD_IBO,
+        CREATE_PROGRAM,
+        ADD_SHADER,
         RENDER
     };
+
+    bool taskIsAlreadyPlaced( TaskType tt ) const;
+
+    void runTasks();
+    void registerTask( TaskType taskType );
+
+    std::mutex m_vbosMtx;
+
+
+    void createVao();
+    void createVBOs();
 
     void bind();
     void unbind();
     void release();
 
-    TaskType m_currentTask = TaskType::CREATE_VAO;
+    
     unsigned m_bufferId = 0;
-    std::vector<Ptr<Program>> m_shaderPrograms;
+
+    std::mutex m_tasksMtx;
+    std::deque<TaskType> m_tasks;
+
+    Ptr<Program> m_shaderProgram;
+    std::vector<Ptr<Shader>> m_shaders;
+    std::mutex m_shadersMtx;
+    std::queue<CUL::FS::Path> m_shadersPaths;
+
     std::vector<std::vector<float>> m_vboDataToPrepare;
     std::vector<Ptr<VertexBuffer>> m_vbos;
-    std::vector<unsigned> m_indices;
+
+    std::vector<Ptr<IndexBuffer>> m_indexBuffers;
+
+    std::vector < std::vector<unsigned>> m_indicesToPrepare;
 
     VertexArray( const VertexArray& value ) = delete;
     VertexArray( VertexArray&& value ) = delete;

@@ -1386,6 +1386,11 @@ void UtilConcrete::matrixStackPop()
     --m_currentMatrix;
 }
 
+CUL::CULInterface* UtilConcrete::getCUl()
+{
+    return m_culInterface;
+}
+
 UtilConcrete::~UtilConcrete()
 {
     CUL::Assert::simple( 0 == m_currentMatrix,

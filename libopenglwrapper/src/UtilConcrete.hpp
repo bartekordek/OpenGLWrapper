@@ -139,6 +139,8 @@ private:
     void matrixStackPush() override;
     void matrixStackPop() override;
 
+    CUL::CULInterface* getCUl() override;
+
     CUL::CULInterface* m_culInterface = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     unsigned int m_currentMatrix = 0;
