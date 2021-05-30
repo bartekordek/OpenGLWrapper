@@ -2,6 +2,10 @@
 
 #include "libopenglwrapper/IUtility.hpp"
 
+#include "IMPORT_glew.hpp"
+#include "ImportFreeglut.hpp"
+#include "SDL2Wrapper/IMPORT_SDL_opengl.hpp"
+
 #include "CUL/Log/ILogger.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
@@ -60,6 +64,8 @@ private:
     void bufferData( const std::vector<unsigned int>& data, const BufferTypes type ) const override;
     void bufferData( const std::vector<float>& data, const BufferTypes type ) const override;
     void bufferData( const float vertices[] ) const override;
+    void bufferDataImpl( const void* data, const GLenum target,
+                         const GLsizeiptr dataSize ) const;
 
     unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const override;
     void deleteBuffer( BufferTypes bufferType, unsigned& id ) const override;

@@ -44,7 +44,9 @@ class LIBOPENGLWRAPPER_API VertexBuffer final : public IUtilityUser,
 public:
     VertexBuffer( std::vector<float>& data, bool instantLoad = true );
     void render() override;
+    void bufferData();
     unsigned getId()const;
+    int getSize() const;
     ~VertexBuffer();
 
 protected:

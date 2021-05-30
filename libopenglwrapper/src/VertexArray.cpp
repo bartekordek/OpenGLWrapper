@@ -7,6 +7,7 @@ using namespace LOGLW;
 
 VertexArray::VertexArray()
 {
+    registerTask( TaskType::CREATE_VAO );
 }
 
 BuffIDType VertexArray::getId() const
@@ -38,38 +39,24 @@ void VertexArray::createShader( const CUL::FS::Path& path )
 void VertexArray::addVertexBuffer( std::vector<float>& vertices )
 {
     std::lock_guard<std::mutex> guard( m_vbosMtx );
-    registerTask( TaskType::CREATE_VAO );
+    registerTask( TaskType::ADD_VBO );
     m_vboDataToPrepare.emplace_back( std::move( vertices ) );
 }
 
 void VertexArray::render()
 {
     runTasks();
-
-
     bind();
-
-    //for ( size_t i = 0; i < m_shaderPrograms.size(); ++i )
-    //{
-    //    m_shaderPrograms[i]->enable();
-    //}
-
-    //m_shaderProgram->enable();
     m_shaderProgram->render();
-
     if( !m_indexBuffers.empty() )
     {
-        getUtility()->drawElements( LOGLW::PrimitiveType::TRIANGLES, LOGLW::FloatData() );
-       // glDrawElements( GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0 );
+        getUtility()->drawElements( LOGLW::PrimitiveType::TRIANGLES,
+                                    m_indexBuffers.front()->getData() );
     }
     else
     {
         getUtility()->drawArrays( LOGLW::PrimitiveType::TRIANGLES, 0, 3 );
-        //glDrawArrays( GL_TRIANGLES, 0, 3 );
     }
-
-    unbind();
-
 }
 
 bool VertexArray::taskIsAlreadyPlaced( TaskType tt ) const
@@ -85,7 +72,7 @@ void VertexArray::runTasks()
         auto task = m_tasks.front();
         if( task == TaskType::CREATE_VAO )
         {
-            createVao();
+            createVAO();
         }
         else if( task == TaskType::ADD_VBO )
         {
@@ -98,7 +85,9 @@ void VertexArray::runTasks()
                 auto indices = m_indicesToPrepare.front();
 
                 auto ib = new IndexBuffer();
+                bind();
                 ib->loadData( indices );
+                unbind();
                 m_indexBuffers.emplace_back( ib );
 
                 m_indicesToPrepare.pop_back();
@@ -128,10 +117,11 @@ void VertexArray::runTasks()
                     auto shaderFile = getUtility()->getCUl()->getFF()->createFileFromPath(
                             shaderPath );
                     auto shader = new Shader( shaderFile );
-                    //m_shaders.emplace_back( shader );
                     m_shaderProgram->attachShader( shader );
+                    
                     m_shadersPaths.pop();
                 }
+                m_shaderProgram->link();
             }
         }
 
@@ -159,23 +149,14 @@ void VertexArray::createVBOs()
     while( !m_vboDataToPrepare.empty() )
     {
         auto vboData = m_vboDataToPrepare.back();
-
         auto vbo = new VertexBuffer( vboData );
-
         m_vbos.emplace_back( vbo );
-
-        getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER,
-                                  vbo->getId() );
-        // getUtility()->vertexAttribPointer( 0, 3, LOGLW::DataType::FLOAT,
-        // false, 3 * sizeof( float ), nullptr );
-
         m_vboDataToPrepare.pop_back();
     }
-
     unbind();
 }
 
-void VertexArray::createVao()
+void VertexArray::createVAO()
 {
     m_bufferId = IUtilityUser::getUtility()->generateBuffer(
         LOGLW::BufferTypes::VERTEX_ARRAY );

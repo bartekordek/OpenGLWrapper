@@ -80,7 +80,7 @@ private:
     std::mutex m_vbosMtx;
 
 
-    void createVao();
+    void createVAO();
     void createVBOs();
 
     void bind();

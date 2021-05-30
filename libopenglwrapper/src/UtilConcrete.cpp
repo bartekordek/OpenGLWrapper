@@ -4,9 +4,7 @@
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "IMPORT_glew.hpp"
-#include "ImportFreeglut.hpp"
-#include "SDL2Wrapper/IMPORT_SDL_opengl.hpp"
+
 #include "SDL2Wrapper/IWindow.hpp"
 #include "libopenglwrapper/Viewport.hpp"
 
@@ -215,6 +213,7 @@ void UtilConcrete::removeProgram( unsigned programId ) const
 
 void UtilConcrete::useProgram( unsigned programId ) const
 {
+    log( "glUseProgram(" + String( programId ) + ")" );
     glUseProgram( static_cast<GLuint>( programId ) );
 }
 
@@ -774,12 +773,10 @@ void UtilConcrete::setColorClientState( bool enable ) const
 unsigned int UtilConcrete::generateVertexArray( const int size ) const
 {
     GLuint vao = 0;
+    log( "glGenVertexArrays( size, &vao )" );
     glGenVertexArrays( size, &vao );
     return vao;
 }
-
-void bufferDataImpl( const void* data, const GLenum type,
-                     const GLsizeiptr dataSize );
 
 void UtilConcrete::bufferData( const CUL::MATH::Primitives::Quad& data,
                                const BufferTypes type ) const
@@ -804,12 +801,13 @@ void UtilConcrete::bufferData( const std::vector<float>& data,
                     static_cast<GLsizeiptr>( data.size() * sizeof( float ) ) );
 }
 
-void bufferDataImpl( const void* data, const GLenum target,
-                     const GLsizeiptr dataSize )
+void UtilConcrete::bufferDataImpl( const void* data, const GLenum target,
+                     const GLsizeiptr dataSize ) const
 {
     /*
     Creates and initializes a buffer object's data store
     */
+    log( "glBufferData" );
     glBufferData(
         target,  // Specifies the target to which the buffer object is bound for
                  // glBufferData.
@@ -937,6 +935,7 @@ unsigned int UtilConcrete::generateElementArrayBuffer(
 {
     const auto ebo = generateBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, size );
     bindBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, ebo );
+    log( "glBufferData" );
     glBufferData(
         GL_ELEMENT_ARRAY_BUFFER,
         static_cast<GLsizeiptr>( data.size() * sizeof( unsigned int ) ),
@@ -973,6 +972,7 @@ GL_ARRAY_BUFFER target. The initial value is 0.
 
 void UtilConcrete::bufferData( const float vertices[] ) const
 {
+    log( "glBufferData" );
     glBufferData( GL_ARRAY_BUFFER, sizeof( *vertices ), vertices,
                   GL_STATIC_DRAW );
 }
@@ -1083,6 +1083,7 @@ void UtilConcrete::bindBuffer( const BufferTypes bufferType,
         state of the vertex array object, and any previous vertex array object
         binding is broken.
         */
+        log( "glBindVertexArray" );
         glBindVertexArray( static_cast<GLuint>( bufferId ) );
     }
     else
@@ -1106,6 +1107,7 @@ void UtilConcrete::bindBuffer( const BufferTypes bufferType,
         buffer object names only if they explicitly enable sharing between
         contexts through the appropriate GL windows interfaces functions.
         */
+        log( "glBindBuffer" );
         glBindBuffer( static_cast<GLenum>( bufferType ), bufferId );
     }
 }
@@ -1117,10 +1119,12 @@ unsigned int UtilConcrete::generateBuffer( const BufferTypes bufferType,
     GLuint bufferId = 0;
     if ( BufferTypes::VERTEX_ARRAY == bufferType )
     {
+        log( "glGenVertexArrays" );
         glGenVertexArrays( size, &bufferId );
     }
     else
     {
+        log( "glGenBuffers" );
         glGenBuffers( size, &bufferId );
     }
 
@@ -1164,7 +1168,7 @@ void UtilConcrete::drawElements( const PrimitiveType type,
 
     glDrawElements( static_cast<GLenum>( type ),
                     static_cast<GLsizei>( data.size() ), GL_UNSIGNED_INT,
-                    data.data() );
+                    0 );
 }
 
 void UtilConcrete::drawElements( const PrimitiveType type,
@@ -1196,6 +1200,7 @@ void UtilConcrete::drawArrays( const PrimitiveType primitiveType, unsigned first
     accepted. first - Specifies the starting index in the enabled arrays. count
     - Specifies the number of indices to be rendered.
     */
+    log( "glDrawArrays" );
     glDrawArrays( static_cast<GLenum>( primitiveType ),
                   static_cast<GLint>( first ), static_cast<GLsizei>( count ) );
 }
@@ -1230,6 +1235,7 @@ void UtilConcrete::vertexAttribPointer( unsigned vertexAttributeId,
     attribute in the array in the data store of the buffer currently bound to
     the GL_ARRAY_BUFFER target. The initial value is 0.
     */
+    log( "glVertexAttribPointer" );
     glVertexAttribPointer( static_cast<GLuint>( vertexAttributeId ),
                            static_cast<GLint>( componentsPerVertexAttribute ),
                            static_cast<GLenum>( dataType ),
@@ -1247,6 +1253,7 @@ void UtilConcrete::enableVertexAttribArray( unsigned attributeId ) const
     glEnableVertexArrayAttrib updates state of the vertex array object with ID
     vaobj.
     */
+    log( "glEnableVertexAttribArray" );
     glEnableVertexAttribArray( static_cast<GLuint>( attributeId ) );
 }
 

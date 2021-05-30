@@ -8,13 +8,15 @@ NAMESPACE_BEGIN( LOGLW )
 class LIBOPENGLWRAPPER_API IndexBuffer final : private IUtilityUser
 {
 private:
+    using DataType = std::vector<unsigned>;
     unsigned m_id = 0;
 
-    std::vector<unsigned> m_data;
+    DataType m_data;
 
 public:
     IndexBuffer();
-    void loadData( std::vector<unsigned>& data );
+    void loadData( DataType& data );
+    const DataType& getData() const;
     ~IndexBuffer();
 
 private:

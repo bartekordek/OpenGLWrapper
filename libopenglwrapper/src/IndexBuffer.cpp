@@ -8,7 +8,7 @@ IndexBuffer::IndexBuffer()
 
 }
 
-void IndexBuffer::loadData(std::vector<unsigned>& data)
+void IndexBuffer::loadData( DataType& data )
 {
     m_data = std::move( data );
 
@@ -19,6 +19,11 @@ void IndexBuffer::loadData(std::vector<unsigned>& data)
 
     getUtility()->bufferData( m_data,BufferTypes::ELEMENT_ARRAY_BUFFER );
 
+}
+
+const IndexBuffer::DataType& IndexBuffer::getData() const
+{
+    return m_data;
 }
 
 IndexBuffer::~IndexBuffer()

@@ -12,6 +12,11 @@ VertexBuffer::VertexBuffer( std::vector<float>& data, bool instantLoad )
     }
 }
 
+void VertexBuffer::bufferData()
+{
+    loadData( m_vertices );
+}
+
 void VertexBuffer::render()
 {
     if( m_load )
@@ -30,7 +35,8 @@ void VertexBuffer::loadData( std::vector<float>& data )
 
     unsigned attribIndex = 0;
     unsigned numberOfComponents = 3;
-    int stride = 3 * sizeof( m_vertices.at( 0 ) );
+    int stride = 0;  // 3 * sizeof( m_vertices.at( 0 ) );
+    //getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_bufferId );
     getUtility()->vertexAttribPointer( attribIndex, numberOfComponents,
                                        LOGLW::DataType::FLOAT, false, stride,
                                        nullptr );
@@ -42,6 +48,11 @@ void VertexBuffer::loadData( std::vector<float>& data )
 unsigned VertexBuffer::getId() const
 {
     return m_bufferId;
+}
+
+int VertexBuffer::getSize() const
+{
+    return 0;
 }
 
 VertexBuffer::~VertexBuffer()
