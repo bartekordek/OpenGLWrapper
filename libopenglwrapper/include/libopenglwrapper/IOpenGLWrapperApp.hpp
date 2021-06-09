@@ -24,8 +24,8 @@ public:
         CENTER = 0
     };
 
-    IOpenGLWrapperApp( bool fullscreen, unsigned width, unsigned height, int x, int y, const char* winName, const char* configPath );
-    IOpenGLWrapperApp( bool fullscreen, unsigned width, unsigned height, WinPos pos, const char* winName, const char* configPath );
+    IOpenGLWrapperApp( bool fullscreen, unsigned width, unsigned height, int x, int y, const char* winName, const char* configPath, bool legacy );
+    IOpenGLWrapperApp( bool fullscreen, unsigned width, unsigned height, WinPos pos, const char* winName, const char* configPath, bool legacy );
 
     void run();
     void close();
@@ -43,7 +43,8 @@ protected:
     Ptr<SDL2W::ISDL2Wrapper> m_sdlw;
     Ptr<LOGLW::IOpenGLWrapper> m_oglw;
 private:
-    void init( const SDL2W::WindowData& windowData, bool fullscreen,const char* configPath );
+    void init( const SDL2W::WindowData& windowData, bool fullscreen, const char* configPath, bool legacy );
+    void logicThread();
 
     // Override these to add own events handling.
     virtual void onWindowEvent(const SDL2W::WindowEvent::Type e) override;
@@ -51,7 +52,10 @@ private:
     virtual void onMouseEvent(const SDL2W::MouseData& md) override;
     virtual void onInit() {};
     virtual void customFrame() {};
+    virtual void customLogicThreadFrame(){};
 
+    std::atomic<bool> m_runLogicThread = true;
+    std::thread m_logicThread;
 
 };
 

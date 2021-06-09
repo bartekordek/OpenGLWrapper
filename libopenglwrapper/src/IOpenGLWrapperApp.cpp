@@ -7,7 +7,7 @@ using namespace LOGLW;
 IOpenGLWrapperApp::IOpenGLWrapperApp( bool fullscreen, unsigned width,
                                       unsigned height, int x, int y,
                                       const char* winName,
-                                      const char* configPath )
+                                      const char* configPath, bool legacy )
 {
     SDL2W::WindowData windowData;
     windowData.name = "Test";
@@ -16,13 +16,13 @@ IOpenGLWrapperApp::IOpenGLWrapperApp( bool fullscreen, unsigned width,
     windowData.rendererName = "opengl";
     windowData.name = winName;
 
-    init( windowData, fullscreen, configPath );
+    init( windowData, fullscreen, configPath, legacy );
 }
 
 IOpenGLWrapperApp::IOpenGLWrapperApp( bool fullscreen, unsigned width,
                                       unsigned height, WinPos pos,
                                       const char* winName,
-                                      const char* configPath )
+                                      const char* configPath, bool legacy )
 {
     SDL2W::WindowData windowData;
     windowData.name = "Test";
@@ -30,7 +30,7 @@ IOpenGLWrapperApp::IOpenGLWrapperApp( bool fullscreen, unsigned width,
     windowData.rendererName = "opengl";
     windowData.name = winName;
 
-    init( windowData, fullscreen, configPath );
+    init( windowData, fullscreen, configPath, legacy );
 
     if ( pos == LOGLW::IOpenGLWrapperApp::WinPos::CENTER )
     {
@@ -44,7 +44,7 @@ IOpenGLWrapperApp::IOpenGLWrapperApp( bool fullscreen, unsigned width,
 }
 
 void IOpenGLWrapperApp::init( const SDL2W::WindowData& windowData,
-                              bool fullscreen, const char* configPath )
+                              bool fullscreen, const char* configPath, bool legacy )
 {
     m_sdlw = SDL2W::ISDL2Wrapper::createSDL2Wrapper();
     m_sdlw->init( windowData, configPath );
@@ -52,7 +52,7 @@ void IOpenGLWrapperApp::init( const SDL2W::WindowData& windowData,
     m_sdlw->registerKeyboardEventListener( this );
     m_sdlw->registerMouseEventListener( this );
 
-    m_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper( m_sdlw.get() );
+    m_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper( m_sdlw.get(), legacy);
     m_logger = m_oglw->getLoger();
     m_gutil = m_oglw->getUtility();
 
@@ -77,12 +77,22 @@ void IOpenGLWrapperApp::init( const SDL2W::WindowData& windowData,
     g_projectionData.setEyePos( { 0.f, 0.f, 128.f } );
     g_projectionData.m_projectionType = LOGLW::ProjectionType::PERSPECTIVE;
     m_oglw->setProjection( g_projectionData );
+
+    m_logicThread = std::thread( &IOpenGLWrapperApp::logicThread, this );
 }
 
 void IOpenGLWrapperApp::run()
 {
     m_oglw->startRenderingLoop();
     m_sdlw->runEventLoop();
+}
+
+void IOpenGLWrapperApp::logicThread()
+{
+    while( m_runLogicThread )
+    {
+        customLogicThreadFrame();
+    }
 }
 
 void IOpenGLWrapperApp::onWindowEvent( const SDL2W::WindowEvent::Type )
@@ -99,6 +109,8 @@ void IOpenGLWrapperApp::onMouseEvent( const SDL2W::MouseData& )
 
 void IOpenGLWrapperApp::close()
 {
+    m_runLogicThread = false;
+    m_logicThread.join();
     m_oglw->stopRenderingLoop();
     m_sdlw->stopEventLoop();
 }

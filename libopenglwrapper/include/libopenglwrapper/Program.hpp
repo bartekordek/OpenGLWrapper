@@ -6,6 +6,8 @@
 
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_variant.hpp"
+#include "CUL/STL_IMPORTS/STD_deque.hpp"
 
 #include "CUL/Filesystem/Path.hpp"
 
@@ -19,12 +21,20 @@ class VertexArray;
 class LIBOPENGLWRAPPER_API Program final: private IUtilityUser
 {
 public:
-    Program( IUtility* utility );
+    struct Pair
+    {
+        String name;
+        std::variant<float, unsigned, int> value;
+    };
+    using ValueToSet = Pair;
+
+    Program();
 
     void setAttrib( const String& name, const char* value );
     void setAttrib( const String& name, float value );
     void setAttrib( const String& name, unsigned value );
     void setAttrib( const String& name, int value );
+    void setAttrib( const String& name, bool value );
 
     String getAttributeStr( const String& name );
     float getAttributeF( const String& name );
@@ -37,7 +47,6 @@ public:
     void enable();
     void disable();
     void validate();
-    Shader* createShader( const CUL::FS::Path& path );
 
     void bufferData(
         std::vector<float>& data,
@@ -46,23 +55,26 @@ public:
     unsigned int getProgramId();
     const ShaderList& getShaderList() const;
 
+    bool initialized() const;
+    void initialize();
+
     void render();
 
     ~Program();
 protected:
 
 private:
-    using AttribKey = unsigned int;
-    using AttribMap = std::map<CUL::String, AttribKey>;
+    void pushTask( ValueToSet& task );
+    void goThroughTasks();
+    void processTask( const ValueToSet& task );
 
     unsigned int m_dataBufferId = 0;
     unsigned int m_id = 0;
 
-    std::vector<VertexArray*> m_vaoList;
-
-    AttribMap m_attribMap;
     ShaderList m_attachedShaders;
     std::mutex m_operationMutex;
+
+    std::deque<ValueToSet> m_tasks;
 
 private:
     Program( const Program& arg ) = delete;

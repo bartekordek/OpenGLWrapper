@@ -5,34 +5,50 @@
 
 using namespace LOGLW;
 
-Program::Program( IUtility* utility ):
-    m_id( utility->createProgram() )
+Program::Program()
 {
 }
 
-// VertexArray* Program::createVao()
-// {
-//     VertexArray* vao = nullptr;
-//     //auto vao = IVAO::createVAO();
-//     //m_vaoList.push_back( vao );
-//     return vao;
-// }
+bool Program::initialized() const
+{
+    return m_id != 0;
+}
+
+void Program::initialize()
+{
+    m_id = getUtility()->createProgram();
+}
+
 
 void Program::setAttrib( const String&, const char* )
 {
     // TODO
 }
 
-void Program::setAttrib( const String&, float )
+void Program::setAttrib( const String& name, float value )
 {
+    ValueToSet task;
+    task.name = name;
+    task.value = value;
+    pushTask( task );
 }
 
-void Program::setAttrib( const String&, unsigned )
+void Program::setAttrib( const String& name, unsigned value )
 {
+    auto location = getUtility()->getUniformLocation( m_id, name );
+    getUtility()->setAttribValue( location, value );
 }
 
-void Program::setAttrib( const String&, int )
+void Program::setAttrib( const String& name, int value )
 {
+    auto location = getUtility()->getUniformLocation( m_id, name );
+    getUtility()->setAttribValue( location, value );
+}
+
+void Program::setAttrib( const String& name, bool value )
+{
+    auto location = getUtility()->getUniformLocation( m_id, name );
+    getUtility()->setAttribValue(location,value);
 }
 
 String Program::getAttributeStr( const String& )
@@ -94,42 +110,59 @@ void Program::validate()
     getUtility()->validateProgram( m_id );
 }
 
-Shader* Program::createShader( const CUL::FS::Path& )
-{
-    //auto result = m_sf.createShader( path );
-    //attachShader( result );
-    //link();
-    //return result;
-    CUL::Assert::simple( false, "TODO: IMPLEMENT!" );
-    return nullptr;
-}
-
 void Program::render()
 {
+    goThroughTasks();
     enable();
-    // for( const auto& vao: m_vaoList )
-    //{
-    //    //vao->
-    //}
 }
 
-//Program::AttribKey Program::getAttribLocation(
-//    const String& name ) const
-//{
-//    Program::AttribKey result;
-//
-//    auto it = m_attribMap.find( name );
-//    if( it == m_attribMap.end() )
-//    {
-//        result = getUtility()->getAttribLocation( m_id, name );
-//    }
-//    else
-//    {
-//        result = it->second;
-//    }
-//
-//    return result;
-//}
+void Program::goThroughTasks()
+{
+    std::lock_guard<std::mutex> tasksGuard( m_operationMutex );
+    while( !m_tasks.empty() )
+    {
+        processTask( m_tasks.front() );
+        m_tasks.pop_front();
+    }
+}
+
+void Program::pushTask( ValueToSet& task )
+{
+    std::lock_guard<std::mutex> tasksGuard( m_operationMutex );
+    m_tasks.push_back( task );
+}
+
+void Program::processTask( const ValueToSet& task )
+{
+    {
+        auto floatValue = std::get_if<float>( &task.value );
+        if( floatValue )
+        {
+            auto location = getUtility()->getUniformLocation( m_id, task.name );
+            getUtility()->setAttribValue( location, *floatValue );
+            return;
+        }
+    }
+
+    {
+        auto unsignedValue = std::get_if<unsigned>( &task.value );
+        if( unsignedValue )
+        {
+            auto location = getUtility()->getUniformLocation( m_id, task.name );
+            getUtility()->setAttribValue( location, *unsignedValue );
+            return;
+        }
+    }
+
+    {
+        auto intValue = std::get_if<unsigned>( &task.value );
+        if( intValue )
+        {
+            auto location = getUtility()->getUniformLocation( m_id, task.name );
+            getUtility()->setAttribValue( location, *intValue );
+        }
+    }
+}
 
 const ShaderList& Program::getShaderList() const
 {

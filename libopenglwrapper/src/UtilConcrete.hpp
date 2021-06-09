@@ -1,6 +1,7 @@
 #pragma once
 
 #include "libopenglwrapper/IUtility.hpp"
+#include "libopenglwrapper/IndexBuffer.hpp"
 
 #include "IMPORT_glew.hpp"
 #include "ImportFreeglut.hpp"
@@ -14,13 +15,15 @@ class UtilConcrete final:
     public IUtility
 {
 public:
-    UtilConcrete( CUL::CULInterface* culInterface );
+    UtilConcrete( CUL::CULInterface* culInterface, bool legacy );
 
 
     ~UtilConcrete();
 
 protected:
 private:
+    bool isLegacy() const override;
+
     void setProjection( const ProjectionData& rect ) const override;
     void setViewport( const Viewport& viewport ) const override;
     void setPerspective( const Angle& angle, double widthToHeightRatio, double m_zNear, double m_zFar ) const override;
@@ -48,12 +51,16 @@ private:
     void setAttribValue( int attributeLocation, float value ) const override;
     void setAttribValue( int attributeLocation, int value ) const override;
     void setAttribValue( int attributeLocation, unsigned value ) const override;
+    void setAttribValue( int attributeLocation, bool value ) const override;
+    void setAttribValue( int attributeLocation, const CUL::String& value ) const override;
 
     void setProjectionAndModelToIdentity() const override;
     void clearColorAndDepthBuffer() const override;
     void createQuad( float scale = 1.0f ) const override;
     void clearColorTo( const ColorS color ) const override;
     void clearBuffer( const ClearMasks mask ) const override;
+
+    void setClientState( ClientStateTypes cs, bool enabled ) const override;
 
 // VBO, VAO
     void setVertexArrayClientState( const bool enable ) const override;
@@ -67,12 +74,17 @@ private:
     void bufferDataImpl( const void* data, const GLenum target,
                          const GLsizeiptr dataSize ) const;
 
+    void setUniformValue( int uniformLocation, float value ) const override;
+    void setUniformValue( int uniformLocation, int value ) const override;
+    void setUniformValue( int uniformLocation, unsigned value ) const override;
+
     unsigned int generateAndBindBuffer( const BufferTypes bufferType, const int size = 1 ) const override;
     void deleteBuffer( BufferTypes bufferType, unsigned& id ) const override;
     unsigned int generateElementArrayBuffer( const std::vector<unsigned int>& data, const int size = 1 ) const override;
     void enableVertexAttribiute( unsigned programId, const String& attribName ) const override;
     void disableVertexAttribiute( unsigned programId, const String& attribName ) const override;
     unsigned int getAttribLocation( unsigned programId, const String& attribName ) const override;
+    unsigned int getUniformLocation( unsigned programId, const String& attribName ) const override;
     void unbindBuffer( const BufferTypes bufferType ) const override;
     //void bindBuffer( VertexArray* vao ) const override;
     void bindBuffer( const BufferTypes bufferType, unsigned bufferId ) const override;
@@ -147,6 +159,8 @@ private:
 
     CUL::CULInterface* getCUl() override;
 
+    bool m_legacy = false;
+
     CUL::CULInterface* m_culInterface = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     unsigned int m_currentMatrix = 0;
@@ -156,5 +170,6 @@ private:
     UtilConcrete& operator=( const UtilConcrete& rhv ) = delete;
     UtilConcrete& operator=( UtilConcrete&& rhv ) = delete;
 };
+
 
 NAMESPACE_END( LOGLW )

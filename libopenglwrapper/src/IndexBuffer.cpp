@@ -17,8 +17,7 @@ void IndexBuffer::loadData( DataType& data )
     //TODO: find if size is matching.
     //auto indicesSize = sizeof( m_data[0] ) * m_data.size();
 
-    getUtility()->bufferData( m_data,BufferTypes::ELEMENT_ARRAY_BUFFER );
-
+    getUtility()->bufferData( m_data, BufferTypes::ELEMENT_ARRAY_BUFFER );
 }
 
 const IndexBuffer::DataType& IndexBuffer::getData() const

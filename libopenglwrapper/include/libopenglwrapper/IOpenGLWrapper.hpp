@@ -100,8 +100,8 @@ public:
     virtual VertexArray* createVAO() = 0;
     virtual VertexBuffer* createVBO( std::vector<float>& data ) = 0;
 
-    static IOpenGLWrapper* createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w );
-    static IOpenGLWrapper* createOpenGLWrapper(
+    static IOpenGLWrapper* createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w, bool legacy = false );
+    static IOpenGLWrapper* createOpenGLWrapper( bool legacy,
         const CUL::Graphics::Pos2Di& pos, const SDL2W::WindowSize& winSize,
         const String& configPath, const String& winName = "",
         const String& renderername = "opengl" );

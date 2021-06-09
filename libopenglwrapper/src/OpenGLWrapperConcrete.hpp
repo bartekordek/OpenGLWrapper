@@ -4,6 +4,7 @@
 #include "libopenglwrapper/IDebugOverlay.hpp"
 #include "libopenglwrapper/ITextureFactory.hpp"
 #include "libopenglwrapper/IObjectFactory.hpp"
+#include "libopenglwrapper/Sprite.hpp"
 
 #include "OpenGLShaderFactory.hpp"
 
@@ -74,7 +75,7 @@ class OpenGLWrapperConcrete final:
     , private ITextureFactory
 {
 public:
-    OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w );
+    OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w, bool legacy );
     void registerObjectForUtility();
     ~OpenGLWrapperConcrete();
 
@@ -100,8 +101,8 @@ private:
 
     IPoint* createPoint(const Point& position, const ColorS& color = ColorE::WHITE) override;
 
-    ISprite* createSprite( const String& path );
-    ISprite* createSprite(unsigned* data, unsigned width, unsigned height);
+    Sprite* createSprite( const String& path );
+    Sprite* createSprite(unsigned* data, unsigned width, unsigned height);
 
     void removeObject( IObject* object ) override;
 
