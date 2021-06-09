@@ -2,6 +2,8 @@
 
 #include "libopenglwrapper/IRenderable.hpp"
 #include "libopenglwrapper/IUtilityUser.hpp"
+#include "libopenglwrapper/IndexBuffer.hpp"
+#include "CUL/GenericUtils/DumbPtr.hpp"
 
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
@@ -37,25 +39,37 @@ NAMESPACE_BEGIN( LOGLW )
 
 using FloatData = std::vector<float>;
 using BuffIDType = uint8_t;
+template<typename Type>
+using Ptr = CUL::GUTILS::DumbPtr<Type>;
+
+struct LIBOPENGLWRAPPER_API VertexBufferData
+{
+    std::vector<float> vertices;
+    IndexBuffer::DataType indices;
+    bool containsColorData = false;
+    LOGLW::PrimitiveType primitiveType = LOGLW::PrimitiveType::NONE;
+    bool containsTextureCoords = false;
+};
 
 class LIBOPENGLWRAPPER_API VertexBuffer final : public IUtilityUser,
                                                 public IRenderable
 {
 public:
-    VertexBuffer( std::vector<float>& data, bool instantLoad = true );
+    VertexBuffer( VertexBufferData& VertexData );
     void render() override;
-    void bufferData();
     unsigned getId()const;
     int getSize() const;
+    void bind();
     ~VertexBuffer();
 
 protected:
 private:
-    void loadData( std::vector<float>& data );
+    void loadData();
     void release();
 
     unsigned m_bufferId = 0;
-    std::vector<float> m_vertices;
+    VertexBufferData m_vertexData;
+    Ptr<IndexBuffer> m_indexBuffer;
     std::atomic<bool> m_load = true;
 
     VertexBuffer( const VertexBuffer& value ) = delete;

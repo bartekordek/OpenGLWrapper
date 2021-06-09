@@ -7,8 +7,9 @@ NAMESPACE_BEGIN( LOGLW )
 
 class LIBOPENGLWRAPPER_API IndexBuffer final : private IUtilityUser
 {
-private:
+public:
     using DataType = std::vector<unsigned>;
+private:
     unsigned m_id = 0;
 
     DataType m_data;

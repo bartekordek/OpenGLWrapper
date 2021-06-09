@@ -9,7 +9,7 @@
 #include "Primitives/TriangleImpl.hpp"
 #include "ImportImgui.hpp"
 #include "ObjLoader.hpp"
-#include "Sprite.hpp"
+#include "libopenglwrapper/Sprite.hpp"
 #include "TextureConcrete.hpp"
 #include "UtilConcrete.hpp"
 #include "VAOConcrete.hpp"
@@ -29,13 +29,13 @@
 
 using namespace LOGLW;
 
-OpenGLWrapperConcrete::OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w )
-    : m_sdlW( sdl2w ),
-      m_activeWindow( sdl2w->getMainWindow() ),
-      m_cul( sdl2w->getCul() ),
-      m_logger( sdl2w->getCul()->getLogger() ),
-      m_oglUtility( new UtilConcrete( sdl2w->getCul() ) ),
-      m_frameTimer( CUL::TimerFactory::getChronoTimer() )
+OpenGLWrapperConcrete::OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w, bool legacy ):
+    m_sdlW( sdl2w ),
+    m_activeWindow( sdl2w->getMainWindow() ),
+    m_cul( sdl2w->getCul() ),
+    m_logger( sdl2w->getCul()->getLogger() ),
+    m_oglUtility( new UtilConcrete( sdl2w->getCul(), legacy ) ),
+    m_frameTimer( CUL::TimerFactory::getChronoTimer() )
 {
     CUL::Assert::simple( nullptr != sdl2w, "NO SDL WRAPPER." );
     CUL::Assert::simple( nullptr != m_activeWindow, "NO WINDOW." );
@@ -311,7 +311,7 @@ IPoint* OpenGLWrapperConcrete::createPoint( const Point& position,
     return result;
 }
 
-ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
+Sprite* OpenGLWrapperConcrete::createSprite( const String& path )
 {
     auto sprite = new Sprite();
 
@@ -342,7 +342,7 @@ ISprite* OpenGLWrapperConcrete::createSprite( const String& path )
     return sprite;
 }
 
-ISprite* OpenGLWrapperConcrete::createSprite( unsigned* data, unsigned width,
+Sprite* OpenGLWrapperConcrete::createSprite( unsigned* data, unsigned width,
                                               unsigned height )
 {
     auto sprite = new Sprite();

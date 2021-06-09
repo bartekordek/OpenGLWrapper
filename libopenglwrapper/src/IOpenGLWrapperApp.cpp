@@ -52,7 +52,7 @@ void IOpenGLWrapperApp::init( const SDL2W::WindowData& windowData,
     m_sdlw->registerKeyboardEventListener( this );
     m_sdlw->registerMouseEventListener( this );
 
-    m_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper( m_sdlw.get() );
+    m_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper( m_sdlw.get(), false);
     m_logger = m_oglw->getLoger();
     m_gutil = m_oglw->getUtility();
 
@@ -77,12 +77,22 @@ void IOpenGLWrapperApp::init( const SDL2W::WindowData& windowData,
     g_projectionData.setEyePos( { 0.f, 0.f, 128.f } );
     g_projectionData.m_projectionType = LOGLW::ProjectionType::PERSPECTIVE;
     m_oglw->setProjection( g_projectionData );
+
+    m_logicThread = std::thread( &IOpenGLWrapperApp::logicThread, this );
 }
 
 void IOpenGLWrapperApp::run()
 {
     m_oglw->startRenderingLoop();
     m_sdlw->runEventLoop();
+}
+
+void IOpenGLWrapperApp::logicThread()
+{
+    while( m_runLogicThread )
+    {
+        customLogicThreadFrame();
+    }
 }
 
 void IOpenGLWrapperApp::onWindowEvent( const SDL2W::WindowEvent::Type )
@@ -99,6 +109,8 @@ void IOpenGLWrapperApp::onMouseEvent( const SDL2W::MouseData& )
 
 void IOpenGLWrapperApp::close()
 {
+    m_runLogicThread = false;
+    m_logicThread.join();
     m_oglw->stopRenderingLoop();
     m_sdlw->stopEventLoop();
 }

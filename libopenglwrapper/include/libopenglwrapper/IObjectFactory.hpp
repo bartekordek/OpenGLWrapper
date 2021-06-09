@@ -1,5 +1,6 @@
 #pragma once
 
+#include "libopenglwrapper/Sprite.hpp"
 #include "libopenglwrapper/Primitives/ITriangle.hpp"
 #include "libopenglwrapper/Primitives/IQuad.hpp"
 #include "libopenglwrapper/Primitives/ILine.hpp"
@@ -11,7 +12,6 @@ NAMESPACE_BEGIN( LOGLW )
 
 using String = CUL::String;
 
-class ISprite;
 
 class LIBOPENGLWRAPPER_API IObjectFactory
 {
@@ -30,8 +30,8 @@ public:
 
     virtual IPoint* createPoint(const Point& position, const ColorS& color = ColorE::WHITE) = 0;
 
-    virtual ISprite* createSprite( const String& path ) = 0;
-    virtual ISprite* createSprite( unsigned* data, unsigned width, unsigned height ) = 0;
+    virtual Sprite* createSprite( const String& path ) = 0;
+    virtual Sprite* createSprite( unsigned* data, unsigned width, unsigned height ) = 0;
 
     virtual void removeObject( IObject* object ) = 0;
 

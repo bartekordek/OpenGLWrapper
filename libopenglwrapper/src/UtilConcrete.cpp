@@ -62,10 +62,19 @@ void APIENTRY glDebugOutput( GLenum source, GLenum type, unsigned int id,
 CUL::String enumToString( const GLenum val );
 GLuint toGluint( unsigned value );
 
-UtilConcrete::UtilConcrete( CUL::CULInterface* culInterface )
-    : m_culInterface( culInterface ), m_logger( culInterface->getLogger() )
+UtilConcrete::UtilConcrete(
+    CUL::CULInterface* culInterface,
+    bool legacy ):
+    m_legacy( legacy ),
+    m_culInterface( culInterface ),
+    m_logger( culInterface->getLogger() )
 {
     g_interface = m_culInterface;
+}
+
+bool UtilConcrete::isLegacy() const
+{
+    return m_legacy;
 }
 
 // TODO: Remove:
@@ -498,7 +507,8 @@ void UtilConcrete::destroyContext( ContextInfo& context )
 
 void UtilConcrete::setAttribValue( int attributeLocation, float value ) const
 {
-    glUniform1f( static_cast<GLint>( attributeLocation ), value );
+    log( "UtilConcrete::setAttribValue, value = " + String( value ) );
+    glUniform1f( static_cast<GLfloat>( attributeLocation ), value );
 }
 
 void UtilConcrete::setAttribValue( int attributeLocation, int value ) const
@@ -510,6 +520,30 @@ void UtilConcrete::setAttribValue( int attributeLocation, unsigned value ) const
 {
     glUniform1i( static_cast<GLint>( attributeLocation ),
                  static_cast<int>( value ) );
+}
+
+void UtilConcrete::setAttribValue( int attributeLocation, bool value ) const
+{
+    glUniform1i( static_cast<GLint>( attributeLocation ),
+                 static_cast<int>( value ) );
+}
+
+void UtilConcrete::setAttribValue( int ,
+                     const CUL::String&  ) const
+{
+}
+
+void UtilConcrete::setUniformValue( int uniformLocation, float value ) const
+{
+    glUniform1f( static_cast<GLfloat>( uniformLocation ), value );
+}
+void UtilConcrete::setUniformValue( int uniformLocation, int value ) const
+{
+    glUniform1i( static_cast<GLint>( uniformLocation ), value );
+}
+void UtilConcrete::setUniformValue( int uniformLocation, unsigned value ) const
+{
+    glUniform1i( static_cast<GLuint>( uniformLocation ), value );
 }
 
 void UtilConcrete::setProjectionAndModelToIdentity() const
@@ -737,6 +771,18 @@ void UtilConcrete::clearBuffer( const ClearMasks mask ) const
     glClear( static_cast<GLbitfield>( mask ) );
 }
 
+void UtilConcrete::setClientState(ClientStateTypes cs, bool enabled) const
+{
+    if ( enabled )
+    {
+        glEnableClientState( (GLenum )cs );
+    }
+    else
+    {
+        glDisableClientState( (GLenum )cs );
+    }
+}
+
 void UtilConcrete::setVertexArrayClientState( const bool enable ) const
 {
     // If enabled, the vertex array is enabled for writing and used during
@@ -749,7 +795,7 @@ void UtilConcrete::setVertexArrayClientState( const bool enable ) const
     }
     else
     {
-        glEnableClientState( GL_VERTEX_ARRAY );
+        glDisableClientState( GL_VERTEX_ARRAY );
     }
 }
 //
@@ -1051,10 +1097,14 @@ void UtilConcrete::deleteBuffer( BufferTypes bufferType, unsigned& id ) const
 unsigned int UtilConcrete::getAttribLocation( unsigned programId,
                                               const String& attribName ) const
 {
-    auto attribLocation = static_cast<unsigned int>(
-        glGetAttribLocation( programId, attribName.cStr() ) );
+    auto attribLocation = glGetAttribLocation( programId, attribName.cStr() );
+    return static_cast<unsigned int>( attribLocation );
+}
 
-    return attribLocation;
+unsigned int UtilConcrete::getUniformLocation( unsigned programId, const String& attribName ) const
+{
+    auto attribLocation = glGetUniformLocation( programId, attribName.cStr() );
+    return static_cast<unsigned int>( attribLocation );
 }
 
 void UtilConcrete::unbindBuffer( const BufferTypes bufferType ) const
@@ -1197,8 +1247,9 @@ void UtilConcrete::drawArrays( const PrimitiveType primitiveType, unsigned first
     GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY,
     GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES,
     GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY and GL_PATCHES are
-    accepted. first - Specifies the starting index in the enabled arrays. count
-    - Specifies the number of indices to be rendered.
+    accepted.
+    first - Specifies the starting index in the enabled arrays.
+    count - Specifies the number of indices to be rendered.
     */
     log( "glDrawArrays" );
     glDrawArrays( static_cast<GLenum>( primitiveType ),

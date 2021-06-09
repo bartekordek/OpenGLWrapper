@@ -12,13 +12,14 @@ IOpenGLWrapper::IOpenGLWrapper()
 {
 }
 
-IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w )
+IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper( SDL2W::ISDL2Wrapper* sdl2w, bool legacy )
 {
-    s_instance = new OpenGLWrapperConcrete( sdl2w );
+    s_instance = new OpenGLWrapperConcrete( sdl2w, legacy );
     return s_instance;
 }
 
 IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper(
+    bool legacy,
     const CUL::Graphics::Pos2Di& pos,
     const SDL2W::WindowSize& winSize,
     const String& configPath,
@@ -34,7 +35,7 @@ IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper(
     auto sdlWrap = SDL2W::ISDL2Wrapper::createSDL2Wrapper();
     sdlWrap->init( windowData, configPath );
 
-    s_instance = new OpenGLWrapperConcrete( sdlWrap );
+    s_instance = new OpenGLWrapperConcrete( sdlWrap, legacy );
     return s_instance;
 }
 

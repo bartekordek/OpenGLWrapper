@@ -10,7 +10,7 @@
 #include "SDL2Wrapper/IWindow.hpp"
 #include "libopenglwrapper/IDebugOverlay.hpp"
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
-#include "libopenglwrapper/ISprite.hpp"
+#include "libopenglwrapper/Sprite.hpp"
 
 using Vector3Di = LOGLW::Vector3Di;
 using WindowSize = LOGLW::WindowSize;
@@ -56,7 +56,7 @@ LOGLW::ITriangle* g_whiteTriangle = nullptr;
 LOGLW::ITriangle* g_redTriangle = nullptr;
 LOGLW::ITriangle* g_yellowTriangle = nullptr;
 
-LOGLW::ISprite* g_sprite = nullptr;
+LOGLW::Sprite* g_sprite = nullptr;
 
 const CUL::String wrapperDir = "../libopenglwrapper";
 const CUL::FS::Path shadersDir( wrapperDir + "/shaders/" );
@@ -98,7 +98,7 @@ int main( int argc, char** argv )
 
     CUL::Graphics::Pos2Di winPos = { 200, 200 };
     WindowSize winSize = { width, height };
-    g_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper(
+    g_oglw = LOGLW::IOpenGLWrapper::createOpenGLWrapper( false,
         winPos, winSize, "../media/Config.txt", "libopenglwrapperPlaygroundApp",
         "opengl" );
     g_oglw->addMouseEventCallback( onMouseEvent );

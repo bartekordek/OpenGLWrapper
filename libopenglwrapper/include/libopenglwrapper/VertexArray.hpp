@@ -3,15 +3,12 @@
 #include "libopenglwrapper/Program.hpp"
 #include "libopenglwrapper/IRenderable.hpp"
 #include "libopenglwrapper/VertexBuffer.hpp"
-#include "libopenglwrapper/IndexBuffer.hpp"
 #include "libopenglwrapper/Shader.hpp"
 
-#include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_queue.hpp"
-#include "CUL/STL_IMPORTS/STD_deque.hpp"
 
 /*
 A Vertex Array Object (VAO) is an OpenGL Object
@@ -36,9 +33,6 @@ vertices as well as a color for each vertex.
 
 NAMESPACE_BEGIN( LOGLW )
 
-template<typename Type>
-using Ptr = CUL::GUTILS::DumbPtr<Type>;
-
 using BuffIDType = uint8_t;
 
 class LIBOPENGLWRAPPER_API VertexArray final:
@@ -46,17 +40,20 @@ class LIBOPENGLWRAPPER_API VertexArray final:
     public IRenderable
 {
 public:
-    explicit VertexArray();
+    explicit VertexArray(bool createOnRender = true);
 
     BuffIDType getId() const;
     void addVBO( VertexBuffer* vbo );
 
-    void addVertexBuffer(std::vector<float>& vertices);
-    void addIndexBuffer( std::vector<unsigned>& indices );
+    void addVertexBuffer( VertexBufferData& data, bool instant = false );
 
     void createShader( const CUL::FS::Path& path );
 
+    Program* getProgram();
+
     void render() override;
+
+    VertexBuffer* getVertexBuffer();
 
     ~VertexArray();
 protected:
@@ -66,7 +63,6 @@ private:
         NONE = 0,
         CREATE_VAO,
         ADD_VBO,
-        ADD_IBO,
         CREATE_PROGRAM,
         ADD_SHADER,
         RENDER
@@ -87,19 +83,19 @@ private:
     void unbind();
     void release();
 
-    
     unsigned m_bufferId = 0;
 
     std::mutex m_tasksMtx;
     std::deque<TaskType> m_tasks;
 
-    Ptr<Program> m_shaderProgram;
+    Program m_shaderProgram;
     std::vector<Ptr<Shader>> m_shaders;
     std::mutex m_shadersMtx;
     std::queue<CUL::FS::Path> m_shadersPaths;
 
-    std::vector<std::vector<float>> m_vboDataToPrepare;
+    std::vector<VertexBufferData> m_vboDataToPrepare;
     std::vector<Ptr<VertexBuffer>> m_vbos;
+    size_t m_vbosCount = 0;
 
     std::vector<Ptr<IndexBuffer>> m_indexBuffers;
 

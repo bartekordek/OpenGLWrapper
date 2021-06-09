@@ -5,9 +5,16 @@
 
 using namespace LOGLW;
 
-VertexArray::VertexArray()
+VertexArray::VertexArray( bool createOnRender )
 {
-    registerTask( TaskType::CREATE_VAO );
+    if( createOnRender )
+    {
+        registerTask( TaskType::CREATE_VAO );
+    }
+    else
+    {
+        createVAO();
+    }
 }
 
 BuffIDType VertexArray::getId() const
@@ -19,16 +26,15 @@ void VertexArray::addVBO( VertexBuffer* )
 {
 }
 
-void VertexArray::addIndexBuffer( std::vector<unsigned>& indices )
+Program* VertexArray::getProgram()
 {
-    m_indicesToPrepare.emplace_back( std::move( indices ) );
-    registerTask( TaskType::ADD_IBO );
+    return &m_shaderProgram;
 }
 
 void VertexArray::createShader( const CUL::FS::Path& path )
 {
     std::lock_guard<std::mutex> guard( m_shadersMtx );
-    if( m_shaderProgram.get() == nullptr )
+    if( m_shaderProgram.initialized() == false )
     {
         registerTask( TaskType::CREATE_PROGRAM );
     }
@@ -36,27 +42,36 @@ void VertexArray::createShader( const CUL::FS::Path& path )
     registerTask( TaskType::ADD_SHADER );
 }
 
-void VertexArray::addVertexBuffer( std::vector<float>& vertices )
+void VertexArray::addVertexBuffer( VertexBufferData& data, bool instant )
 {
-    std::lock_guard<std::mutex> guard( m_vbosMtx );
-    registerTask( TaskType::ADD_VBO );
-    m_vboDataToPrepare.emplace_back( std::move( vertices ) );
+    if( instant )
+    {
+        m_vboDataToPrepare.emplace_back( std::move( data ) );
+        createVBOs();
+    }
+    else
+    {
+        std::lock_guard<std::mutex> guard( m_vbosMtx );
+        m_vboDataToPrepare.emplace_back( std::move( data ) );
+        registerTask( TaskType::ADD_VBO );
+    }
 }
 
 void VertexArray::render()
 {
     runTasks();
     bind();
-    m_shaderProgram->render();
-    if( !m_indexBuffers.empty() )
+    m_shaderProgram.render();
+
+    for( auto i = 0; i < m_vbosCount; ++i )
     {
-        getUtility()->drawElements( LOGLW::PrimitiveType::TRIANGLES,
-                                    m_indexBuffers.front()->getData() );
+        m_vbos[i]->render();
     }
-    else
-    {
-        getUtility()->drawArrays( LOGLW::PrimitiveType::TRIANGLES, 0, 3 );
-    }
+}
+
+VertexBuffer* VertexArray::getVertexBuffer()
+{
+    return m_vbos.front();
 }
 
 bool VertexArray::taskIsAlreadyPlaced( TaskType tt ) const
@@ -78,28 +93,16 @@ void VertexArray::runTasks()
         {
             createVBOs();
         }
-        else if( task == TaskType::ADD_IBO )
-        {
-            while( !m_indicesToPrepare.empty() )
-            {
-                auto indices = m_indicesToPrepare.front();
-
-                auto ib = new IndexBuffer();
-                bind();
-                ib->loadData( indices );
-                unbind();
-                m_indexBuffers.emplace_back( ib );
-
-                m_indicesToPrepare.pop_back();
-            }
-        }
         else if( task == TaskType::CREATE_PROGRAM )
         {
-            m_shaderProgram = new Program( getUtility() );
+            if( m_shaderProgram.initialized() == false )
+            {
+                m_shaderProgram.initialize();
+            }
         }
         else if( task == TaskType::ADD_SHADER )
         {
-            if( m_shaderProgram.get() == nullptr )
+            if( m_shaderProgram.initialized() == false)
             {
                 if( !taskIsAlreadyPlaced( TaskType::CREATE_PROGRAM ) )
                 {
@@ -117,11 +120,11 @@ void VertexArray::runTasks()
                     auto shaderFile = getUtility()->getCUl()->getFF()->createFileFromPath(
                             shaderPath );
                     auto shader = new Shader( shaderFile );
-                    m_shaderProgram->attachShader( shader );
-                    
+                    m_shaderProgram.attachShader( shader );
+
                     m_shadersPaths.pop();
                 }
-                m_shaderProgram->link();
+                m_shaderProgram.link();
             }
         }
 
@@ -152,6 +155,7 @@ void VertexArray::createVBOs()
         auto vbo = new VertexBuffer( vboData );
         m_vbos.emplace_back( vbo );
         m_vboDataToPrepare.pop_back();
+        ++m_vbosCount;
     }
     unbind();
 }

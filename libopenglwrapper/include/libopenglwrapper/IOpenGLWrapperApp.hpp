@@ -44,6 +44,7 @@ protected:
     Ptr<LOGLW::IOpenGLWrapper> m_oglw;
 private:
     void init( const SDL2W::WindowData& windowData, bool fullscreen,const char* configPath );
+    void logicThread();
 
     // Override these to add own events handling.
     virtual void onWindowEvent(const SDL2W::WindowEvent::Type e) override;
@@ -51,7 +52,10 @@ private:
     virtual void onMouseEvent(const SDL2W::MouseData& md) override;
     virtual void onInit() {};
     virtual void customFrame() {};
+    virtual void customLogicThreadFrame(){};
 
+    std::atomic<bool> m_runLogicThread = true;
+    std::thread m_logicThread;
 
 };
 

@@ -80,8 +80,9 @@ enum class BufferTypes: unsigned
     ELEMENT_ARRAY_BUFFER = 0x8893 // Index buffer
 };
 
-enum class PrimitiveType: unsigned
+enum class PrimitiveType : unsigned
 {
+    NONE = 0,
     LINE_STRIP = 0x0003,
     TRIANGLES  = 0x0004,
     TRIANGLE_STRIP = 0x0005,
@@ -125,6 +126,13 @@ enum class TextureParameters: short
     WRAP_T = 0x2803
 };
 
+enum class ClientStateTypes: unsigned
+{
+    VERTEX_ARRAY = 0x8074,
+    COLOR_ARRAY = 0x8076,
+    TEXTURE_COORD_ARRAY = 0x8078
+};
+
 struct LIBOPENGLWRAPPER_API TextureInfo
 {
     unsigned int textureId = 0;
@@ -142,6 +150,8 @@ class LIBOPENGLWRAPPER_API IUtility
 {
 public:
     IUtility();
+
+    virtual bool isLegacy() const = 0;
 
     virtual void resetMatrixToIdentity( const MatrixTypes matrix ) const = 0;
     virtual void setProjection( const ProjectionData& rect ) const = 0;
@@ -173,6 +183,16 @@ public:
     virtual void setAttribValue( int attributeLocation, float value ) const = 0;
     virtual void setAttribValue( int attributeLocation, int value ) const = 0;
     virtual void setAttribValue( int attributeLocation, unsigned value ) const = 0;
+    virtual void setAttribValue( int attributeLocation, bool value ) const = 0;
+    virtual void setAttribValue( int attributeLocation,
+                         const CUL::String& value ) const = 0;
+
+    virtual void setUniformValue( int uniformLocation,
+                                  float value ) const = 0;
+    virtual void setUniformValue( int uniformLocation, int value ) const = 0;
+    virtual void setUniformValue( int uniformLocation,
+                                 unsigned value ) const = 0;
+
 
     virtual void setProjectionAndModelToIdentity() const = 0;
     virtual void clearColorAndDepthBuffer() const = 0;
@@ -187,6 +207,8 @@ public:
     virtual void bufferData( const std::vector<float>& data, const BufferTypes type ) const = 0;
     virtual void bufferData( const float vertices[] ) const = 0;
 
+    virtual void setClientState( ClientStateTypes cs, bool enabled ) const = 0;
+
 // VAO, VBO
     virtual void setVertexArrayClientState( const bool enable ) const = 0;
     virtual void setColorClientState( bool enable ) const = 0;
@@ -197,6 +219,7 @@ public:
     virtual void enableVertexAttribiute( unsigned programId, const String& attribName ) const = 0;
     virtual void disableVertexAttribiute( unsigned programId, const String& attribName ) const = 0;
     virtual unsigned int getAttribLocation( unsigned programId, const String& attribName ) const = 0;
+    virtual unsigned int getUniformLocation( unsigned programId, const String& attribName ) const = 0;
     virtual void unbindBuffer( const BufferTypes bufferType ) const = 0;
     virtual void bindBuffer( const BufferTypes bufferType, unsigned bufferId ) const = 0;
     //virtual void bindBuffer( VertexArray* vao ) const = 0;
