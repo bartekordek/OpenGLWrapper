@@ -101,8 +101,9 @@ private:
 
     IPoint* createPoint(const Point& position, const ColorS& color = ColorE::WHITE) override;
 
-    Sprite* createSprite( const String& path );
-    Sprite* createSprite(unsigned* data, unsigned width, unsigned height);
+    Sprite* createSprite( const String& path, bool withVBO = false ) override;
+    Sprite* createSprite( unsigned* data, unsigned width, unsigned height,
+                          bool withVBO = false ) override;
 
     void removeObject( IObject* object ) override;
 
@@ -190,7 +191,7 @@ private:
 // SDL2W::IWindowEventOBservable
     void registerWindowEventCallback( const SDL2W::WindowCallback& callback ) override;
 
-    void addTask( const std::function<void( void )>& task );
+    void addRenderThreadTask( const std::function<void( void )>& task );
 
     std::map<unsigned, DebugValueRow> m_debugValues;
 

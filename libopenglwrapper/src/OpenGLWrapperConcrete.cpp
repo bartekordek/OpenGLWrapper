@@ -26,7 +26,7 @@
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_condition_variable.hpp"
 
-
+#undef LoadImage
 using namespace LOGLW;
 
 OpenGLWrapperConcrete::OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w, bool legacy ):
@@ -311,29 +311,33 @@ IPoint* OpenGLWrapperConcrete::createPoint( const Point& position,
     return result;
 }
 
-Sprite* OpenGLWrapperConcrete::createSprite( const String& path )
+Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
+                                             bool withVBO )
 {
     auto sprite = new Sprite();
 
     CUL::FS::Path fsPath = path;
     CUL::Assert::simple( fsPath.exists(), "File " + path + " does not exist." );
-
-    sprite->m_image = m_imageLoader->loadImage( path );
-    sprite->m_textureId = m_oglUtility->generateTexture();
-    m_oglUtility->bindTexture( sprite->m_textureId );
-
-    const auto& ii = sprite->m_image->getImageInfo();
+    auto textureId = m_oglUtility->generateTexture();
+    sprite->LoadImage( path, m_imageLoader, textureId );
+    m_oglUtility->bindTexture( textureId );
+    const auto& ii = sprite->getImageInfo();
 
     TextureInfo td;
     td.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
     td.size = ii.size;
-    td.data = sprite->m_image->getData();
+    td.data = sprite->getData();
     m_oglUtility->setTextureData( td );
 
     m_oglUtility->setTextureParameter( TextureParameters::MAG_FILTER,
                                        TextureFilterType::LINEAR );
     m_oglUtility->setTextureParameter( TextureParameters::MIN_FILTER,
                                        TextureFilterType::LINEAR );
+
+    if( withVBO )
+    {
+
+    }
 
     m_oglUtility->bindTexture( 0 );
 
@@ -343,21 +347,20 @@ Sprite* OpenGLWrapperConcrete::createSprite( const String& path )
 }
 
 Sprite* OpenGLWrapperConcrete::createSprite( unsigned* data, unsigned width,
-                                              unsigned height )
+                                             unsigned height, bool withVBO )
 {
     auto sprite = new Sprite();
+    auto textureId = m_oglUtility->generateTexture();
+    sprite->LoadImage( (CUL::Graphics::DataType*)data, width, height,
+                       m_imageLoader, textureId );
+    m_oglUtility->bindTexture( textureId );
 
-    sprite->m_image =
-        m_imageLoader->loadImage( (unsigned char*)data, width, height );
-    sprite->m_textureId = m_oglUtility->generateTexture();
-    m_oglUtility->bindTexture( sprite->m_textureId );
-
-    const auto& ii = sprite->m_image->getImageInfo();
+    const auto& ii = sprite->getImageInfo();
 
     TextureInfo td;
     td.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
     td.size = ii.size;
-    td.data = sprite->m_image->getData();
+    td.data = sprite->getData();
     m_oglUtility->setTextureData( td );
 
     m_oglUtility->setTextureParameter( TextureParameters::MAG_FILTER,
@@ -382,7 +385,7 @@ void OpenGLWrapperConcrete::removeObject( IObject* object )
 
 void OpenGLWrapperConcrete::mainThread()
 {
-    CUL::ThreadUtils::setCurrentThreadName( "OpenGL render thread." );
+    getCul()->getThreadUtil()->setCurrentThreadName( "RenderThread" );
 
     initialize();
 
@@ -403,7 +406,7 @@ void OpenGLWrapperConcrete::mainThread()
     release();
 }
 
-void OpenGLWrapperConcrete::addTask( const std::function<void( void )>& task )
+void OpenGLWrapperConcrete::addRenderThreadTask( const std::function<void( void )>& task )
 {
     std::lock_guard<std::mutex> lock( m_taskMutex );
     m_tasks.push( task );
@@ -422,11 +425,6 @@ void OpenGLWrapperConcrete::renderLoop()
     while ( m_runRenderLoop )
     {
         m_frameTimer->start();
-
-        if ( m_enableDebugDraw && !m_debugDrawInitialized )
-        {
-            initDebugInfo();
-        }
 
         {
             std::lock_guard<std::mutex> lock( m_taskMutex );
@@ -596,7 +594,7 @@ void OpenGLWrapperConcrete::renderFrame()
     executeTasks();
     renderObjects();
 
-    if ( m_enableDebugDraw )
+    if( m_debugDrawInitialized && m_enableDebugDraw )
     {
         renderInfo();
     }
@@ -933,6 +931,20 @@ CUL::GUTILS::IConfigFile* OpenGLWrapperConcrete::getConfig()
 void OpenGLWrapperConcrete::drawDebugInfo( const bool enable )
 {
     m_enableDebugDraw = enable;
+
+    auto currentThreadName = getCul()->getThreadUtil()->getCurrentThreadName();
+
+    if( currentThreadName.has_value() && currentThreadName.value() == "RenderThread" )
+    {
+        initDebugInfo();
+    }
+    else
+    {
+        addRenderThreadTask( [this]() {
+            initDebugInfo();
+        } );
+    }
+
     m_sdlW->getMainWindow()->toggleFpsCounter( enable );
 }
 

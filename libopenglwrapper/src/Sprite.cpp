@@ -1,6 +1,7 @@
 #include "libopenglwrapper/Sprite.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/VertexArray.hpp"
+#include "CUL/Graphics/IImageLoader.hpp"
 
 #include "CUL/Graphics/IImage.hpp"
 
@@ -8,6 +9,23 @@ using namespace LOGLW;
 
 Sprite::Sprite()
 {
+}
+
+void Sprite::LoadImage( const CUL::FS::Path& imagePath,
+                        CUL::Graphics::IImageLoader* imageLoader,
+                        unsigned textureId )
+{
+    m_image = imageLoader->loadImage( imagePath );
+    m_textureId = textureId;
+}
+
+void Sprite::LoadImage( CUL::Graphics::DataType* data, unsigned width,
+                        unsigned height,
+                        CUL::Graphics::IImageLoader* imageLoader,
+                        unsigned textureId )
+{
+    m_image = imageLoader->loadImage( (unsigned char*)data, width, height );
+
 }
 
 void Sprite::render()
@@ -22,13 +40,24 @@ void Sprite::render()
     }
 }
 
+const CUL::Graphics::ImageInfo& Sprite::getImageInfo() const
+{
+    return m_image->getImageInfo();
+}
+
+CUL::Graphics::DataType* Sprite::getData() const
+{
+    return m_image->getData();
+}
+
 void Sprite::renderModern()
 {
     runTasks();
 
     if( m_vao.get() == nullptr )
     {
-        registerTask( TaskType::CREATE_VAO );
+        m_vao = new VertexArray( false );
+        //m_vao->bin
     }
     else
     {

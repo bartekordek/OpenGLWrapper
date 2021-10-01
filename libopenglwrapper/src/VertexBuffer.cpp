@@ -29,18 +29,31 @@ void VertexBuffer::loadData()
             stride = 8 * sizeof( float );
             size_t ptr = 0;
             // position attribute
-            getUtility()->vertexAttribPointer( attribIndex, numberOfComponents,
+            getUtility()->vertexAttribPointer( attribIndex, 3,
                                                LOGLW::DataType::FLOAT, false,
                                                stride, ( void* ) ptr );
             getUtility()->enableVertexAttribArray( attribIndex );
             ++attribIndex;
 
             // color attribute
-            getUtility()->vertexAttribPointer( attribIndex, numberOfComponents,
+            ptr = 3 * sizeof( float );
+            getUtility()->vertexAttribPointer( attribIndex, 3,
                                                LOGLW::DataType::FLOAT, false,
                                                stride, ( void* ) ptr );
             getUtility()->enableVertexAttribArray( attribIndex );
             ++attribIndex;
+
+            // texture coord attribute
+            ptr = 6 * sizeof( float );
+            getUtility()->vertexAttribPointer( attribIndex, 2,
+                                               LOGLW::DataType::FLOAT, false,
+                                               stride, ( void* ) ptr );
+            getUtility()->enableVertexAttribArray( attribIndex );
+
+            //// position attribute
+            //glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof( float ), ( void* ) 0 );
+            //glEnableVertexAttribArray( 0 );
+            //// color attribute
             //glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof( float ), ( void* ) ( 3 * sizeof( float ) ) );
             //glEnableVertexAttribArray( 1 );
             //// texture coord attribute

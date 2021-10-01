@@ -30,8 +30,9 @@ public:
 
     virtual IPoint* createPoint(const Point& position, const ColorS& color = ColorE::WHITE) = 0;
 
-    virtual Sprite* createSprite( const String& path ) = 0;
-    virtual Sprite* createSprite( unsigned* data, unsigned width, unsigned height ) = 0;
+    virtual Sprite* createSprite( const String& path, bool withVBO = false ) = 0;
+    virtual Sprite* createSprite( unsigned* data, unsigned width,
+                                  unsigned height, bool withVBO = false ) = 0;
 
     virtual void removeObject( IObject* object ) = 0;
 

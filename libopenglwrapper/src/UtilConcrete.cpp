@@ -4,7 +4,6 @@
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-
 #include "SDL2Wrapper/IWindow.hpp"
 #include "libopenglwrapper/Viewport.hpp"
 
@@ -16,10 +15,10 @@ GLenum glCheckError_( const char* file, int line )
 {
     GLenum errorCode;
     bool hasError = false;
-    while ( ( errorCode = glGetError() ) != GL_NO_ERROR )
+    while( ( errorCode = glGetError() ) != GL_NO_ERROR )
     {
         std::string error;
-        switch ( errorCode )
+        switch( errorCode )
         {
             case GL_INVALID_ENUM:
                 error = "INVALID_ENUM";
@@ -62,12 +61,10 @@ void APIENTRY glDebugOutput( GLenum source, GLenum type, unsigned int id,
 CUL::String enumToString( const GLenum val );
 GLuint toGluint( unsigned value );
 
-UtilConcrete::UtilConcrete(
-    CUL::CULInterface* culInterface,
-    bool legacy ):
-    m_legacy( legacy ),
-    m_culInterface( culInterface ),
-    m_logger( culInterface->getLogger() )
+UtilConcrete::UtilConcrete( CUL::CULInterface* culInterface, bool legacy )
+    : m_legacy( legacy ),
+      m_culInterface( culInterface ),
+      m_logger( culInterface->getLogger() )
 {
     g_interface = m_culInterface;
 }
@@ -200,12 +197,12 @@ unsigned int UtilConcrete::createProgram()
     const auto programId = static_cast<unsigned int>( glCreateProgram() );
     log( "UtilConcrete::createProgram, programId = " + String( programId ) );
 
-    if ( 0 == programId )
+    if( 0 == programId )
     {
         const GLenum err = glGetError();
         customAssert(
             GL_NO_ERROR == programId,
-                "Error creating program, error numer: " + CUL::String( err ) );
+            "Error creating program, error numer: " + CUL::String( err ) );
         return 0;
     }
 
@@ -251,7 +248,7 @@ unsigned int UtilConcrete::createShader( const IFile& shaderCode )
 
     GLint compilationResult = 0;
     glGetShaderiv( id, GL_COMPILE_STATUS, &compilationResult );
-    if ( GL_FALSE == compilationResult )
+    if( GL_FALSE == compilationResult )
     {
         GLchar eLog[1024] = { 0 };
         glGetShaderInfoLog( id, sizeof( eLog ), nullptr, eLog );
@@ -266,11 +263,12 @@ unsigned int UtilConcrete::createShader( const IFile& shaderCode )
     return id;
 }
 
-void UtilConcrete::assertOnProgramError( unsigned programId, unsigned val ) const
+void UtilConcrete::assertOnProgramError( unsigned programId,
+                                         unsigned val ) const
 {
     GLint result = 0;
     glGetProgramiv( programId, val, &result );
-    if ( GL_FALSE == result )
+    if( GL_FALSE == result )
     {
         GLchar eLog[1024] = { 0 };
         glGetProgramInfoLog( programId, sizeof( eLog ), nullptr, eLog );
@@ -282,7 +280,7 @@ void UtilConcrete::assertOnProgramError( unsigned programId, unsigned val ) cons
 
 CUL::String enumToString( const GLenum val )
 {
-    switch ( val )
+    switch( val )
     {
         case GL_COMPILE_STATUS:
             return "compile";
@@ -308,17 +306,15 @@ ShaderTypes UtilConcrete::getShaderType(
     .frag - a fragment shader
     .comp - a compute shader
     */
-    if ( fileExtension.equals( "frag" ) || fileExtension.equals( ".frag" ) )
+    if( fileExtension.equals( "frag" ) || fileExtension.equals( ".frag" ) )
     {
         return static_cast<ShaderTypes>( GL_FRAGMENT_SHADER );
     }
-    else if ( fileExtension.equals( "vert" ) ||
-              fileExtension.equals( ".vert" ) )
+    else if( fileExtension.equals( "vert" ) || fileExtension.equals( ".vert" ) )
     {
         return static_cast<ShaderTypes>( GL_VERTEX_SHADER );
     }
-    else if ( fileExtension.equals( "geom" ) ||
-              fileExtension.equals( ".geom" ) )
+    else if( fileExtension.equals( "geom" ) || fileExtension.equals( ".geom" ) )
     {
         return static_cast<ShaderTypes>( GL_GEOMETRY_SHADER );
     }
@@ -331,8 +327,8 @@ void UtilConcrete::attachShader( unsigned programId, unsigned shaderId ) const
     glAttachShader( toGluint( programId ), toGluint( shaderId ) );
 
     const GLenum err = glGetError();
-    customAssert( GL_NO_ERROR == err,
-            "Error creating program, error numer: " + CUL::String( err ) );
+    customAssert( GL_NO_ERROR == err, "Error creating program, error numer: " +
+                                          CUL::String( err ) );
 }
 
 void UtilConcrete::dettachShader( unsigned programId, unsigned shaderId ) const
@@ -358,7 +354,8 @@ void APIENTRY glDebugOutput( GLenum source, GLenum type, unsigned int id,
 );
 
 ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window,
-                                              unsigned major, unsigned minor ) const
+                                              unsigned major,
+                                              unsigned minor ) const
 {
     ContextInfo result;
 
@@ -395,7 +392,7 @@ ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window,
     const auto glStringVersion = glGetString( GL_VERSION );
     result.glVersion = glStringVersion;
 
-    if ( major >= 3 )
+    if( major >= 3 )
     {
         auto error = glewInit();
         CUL::Assert::simple(
@@ -404,7 +401,7 @@ ContextInfo UtilConcrete::initContextVersion( SDL2W::IWindow* window,
                                               glewGetErrorString( error ) ) +
                                           result.glVersion ) );
 
-        if ( glDebugMessageCallbackARB )
+        if( glDebugMessageCallbackARB )
         {
             glDebugMessageCallbackARB( glDebugOutput, nullptr );
 
@@ -422,10 +419,10 @@ void APIENTRY glDebugOutput( GLenum source, GLenum type, unsigned int id,
                              const void*  // userParam
 )
 {
-    if ( id == 131169 || id == 131185 || id == 131218 || id == 131204 )
+    if( id == 131169 || id == 131185 || id == 131218 || id == 131204 )
         return;
 
-    switch ( source )
+    switch( source )
     {
         case GL_DEBUG_SOURCE_API:
             std::cout << "Source: API";
@@ -448,7 +445,7 @@ void APIENTRY glDebugOutput( GLenum source, GLenum type, unsigned int id,
     }
     std::cout << std::endl;
 
-    switch ( type )
+    switch( type )
     {
         case GL_DEBUG_TYPE_ERROR:
             std::cout << "Type: Error";
@@ -480,7 +477,7 @@ void APIENTRY glDebugOutput( GLenum source, GLenum type, unsigned int id,
     }
     std::cout << std::endl;
 
-    switch ( severity )
+    switch( severity )
     {
         case GL_DEBUG_SEVERITY_HIGH:
             std::cout << "Severity: high";
@@ -528,8 +525,7 @@ void UtilConcrete::setAttribValue( int attributeLocation, bool value ) const
                  static_cast<int>( value ) );
 }
 
-void UtilConcrete::setAttribValue( int ,
-                     const CUL::String&  ) const
+void UtilConcrete::setAttribValue( int, const CUL::String& ) const
 {
 }
 
@@ -771,15 +767,15 @@ void UtilConcrete::clearBuffer( const ClearMasks mask ) const
     glClear( static_cast<GLbitfield>( mask ) );
 }
 
-void UtilConcrete::setClientState(ClientStateTypes cs, bool enabled) const
+void UtilConcrete::setClientState( ClientStateTypes cs, bool enabled ) const
 {
-    if ( enabled )
+    if( enabled )
     {
-        glEnableClientState( (GLenum )cs );
+        glEnableClientState( (GLenum)cs );
     }
     else
     {
-        glDisableClientState( (GLenum )cs );
+        glDisableClientState( (GLenum)cs );
     }
 }
 
@@ -789,7 +785,7 @@ void UtilConcrete::setVertexArrayClientState( const bool enable ) const
     // rendering when glArrayElement,
     // glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays,
     // or glMultiDrawElements is called. See glVertexPointer.
-    if ( enable )
+    if( enable )
     {
         glEnableClientState( GL_VERTEX_ARRAY );
     }
@@ -806,7 +802,7 @@ void UtilConcrete::setColorClientState( bool enable ) const
     // rendering when glArrayElement,
     // glDrawArrays, glDrawElements, glDrawRangeElements glMultiDrawArrays,
     // or glMultiDrawElements is called. See glVertexPointer.
-    if ( enable )
+    if( enable )
     {
         glEnableClientState( GL_COLOR_ARRAY );
     }
@@ -848,7 +844,7 @@ void UtilConcrete::bufferData( const std::vector<float>& data,
 }
 
 void UtilConcrete::bufferDataImpl( const void* data, const GLenum target,
-                     const GLsizeiptr dataSize ) const
+                                   const GLsizeiptr dataSize ) const
 {
     /*
     Creates and initializes a buffer object's data store
@@ -968,6 +964,10 @@ void UtilConcrete::bufferDataImpl( const void* data, const GLenum target,
     */
 }
 
+void UtilConcrete::bufferSubdata() const
+{
+}
+
 unsigned int UtilConcrete::generateAndBindBuffer( const BufferTypes bufferType,
                                                   const int size ) const
 {
@@ -1051,8 +1051,8 @@ void UtilConcrete::setVertexPointer( int coordinatesPerVertex,
     //  client-side state (GL_VERTEX_ARRAY_BUFFER_BINDING).
 
     // When a vertex array is specified, size, type, stride, and pointer are
-    // saved as client-side state, in addition to the current vertex array buffer
-    // object binding.
+    // saved as client-side state, in addition to the current vertex array
+    // buffer object binding.
 
     // To enable and disable the vertex array, call glEnableClientState and
     // glDisableClientState with the argument GL_VERTEX_ARRAY. If enabled, the
@@ -1074,22 +1074,23 @@ void UtilConcrete::disableVertexAttribiute( unsigned programId,
 
 void UtilConcrete::deleteBuffer( BufferTypes bufferType, unsigned& id ) const
 {
-    if ( id )
+    if( id )
     {
-        if ( bufferType == BufferTypes::ARRAY_BUFFER )
+        if( bufferType == BufferTypes::ARRAY_BUFFER )
         {
             glDeleteBuffers( 1, &id );
             id = 0;
         }
-        else if ( bufferType == BufferTypes::VERTEX_ARRAY )
+        else if( bufferType == BufferTypes::VERTEX_ARRAY )
         {
             glDeleteVertexArrays( 1, &id );
             id = 0;
         }
         else
         {
-            CUL::Assert::simple( false, "Type " + CUL::String( (unsigned)bufferType ) +
-                                    " is not implemented." );
+            CUL::Assert::simple( false,
+                                 "Type " + CUL::String( (unsigned)bufferType ) +
+                                     " is not implemented." );
         }
     }
 }
@@ -1101,7 +1102,8 @@ unsigned int UtilConcrete::getAttribLocation( unsigned programId,
     return static_cast<unsigned int>( attribLocation );
 }
 
-unsigned int UtilConcrete::getUniformLocation( unsigned programId, const String& attribName ) const
+unsigned int UtilConcrete::getUniformLocation( unsigned programId,
+                                               const String& attribName ) const
 {
     auto attribLocation = glGetUniformLocation( programId, attribName.cStr() );
     return static_cast<unsigned int>( attribLocation );
@@ -1120,7 +1122,7 @@ void UtilConcrete::unbindBuffer( const BufferTypes bufferType ) const
 void UtilConcrete::bindBuffer( const BufferTypes bufferType,
                                unsigned bufferId ) const
 {
-    if ( BufferTypes::VERTEX_ARRAY == bufferType )
+    if( BufferTypes::VERTEX_ARRAY == bufferType )
     {
         /*
         glBindVertexArray binds the vertex array object with name array. array
@@ -1167,7 +1169,7 @@ unsigned int UtilConcrete::generateBuffer( const BufferTypes bufferType,
                                            const int size ) const
 {
     GLuint bufferId = 0;
-    if ( BufferTypes::VERTEX_ARRAY == bufferType )
+    if( BufferTypes::VERTEX_ARRAY == bufferType )
     {
         log( "glGenVertexArrays" );
         glGenVertexArrays( size, &bufferId );
@@ -1217,8 +1219,7 @@ void UtilConcrete::drawElements( const PrimitiveType type,
     // maintain their previous values.
 
     glDrawElements( static_cast<GLenum>( type ),
-                    static_cast<GLsizei>( data.size() ), GL_UNSIGNED_INT,
-                    0 );
+                    static_cast<GLsizei>( data.size() ), GL_UNSIGNED_INT, 0 );
 }
 
 void UtilConcrete::drawElements( const PrimitiveType type,
@@ -1238,8 +1239,8 @@ void UtilConcrete::drawElementsFromLastBuffer(
                     static_cast<GLenum>( dataType ), nullptr );
 }
 
-void UtilConcrete::drawArrays( const PrimitiveType primitiveType, unsigned first,
-                               unsigned count ) const
+void UtilConcrete::drawArrays( const PrimitiveType primitiveType,
+                               unsigned first, unsigned count ) const
 {
     /*
     glDrawArrays - render primitives from array data.
@@ -1313,7 +1314,7 @@ void split( const std::string& s, char delim, Out result )
 {
     std::istringstream iss( s );
     std::string item;
-    while ( std::getline( iss, item, delim ) )
+    while( std::getline( iss, item, delim ) )
     {
         *result++ = item;
     }
@@ -1340,19 +1341,19 @@ void UtilConcrete::log( const String& text,
                         const CUL::LOG::Severity severity ) const
 {
     customAssert( m_logger != nullptr,
-            "Logger utility is unninitialized inside of UtilConcrete." );
+                  "Logger utility is unninitialized inside of UtilConcrete." );
     m_logger->log( text, severity );
 }
 
- void UtilConcrete::customAssert( const bool value,
+void UtilConcrete::customAssert( const bool value,
                                  const CUL::String& message ) const
- {
-     CUL::Assert::simple( value, message );
- }
+{
+    CUL::Assert::simple( value, message );
+}
 
 void UtilConcrete::setDepthTest( const bool enabled ) const
 {
-    if ( enabled )
+    if( enabled )
     {
         glEnable( GL_DEPTH_TEST );
         // glDepthMask( GL_TRUE );
@@ -1369,7 +1370,7 @@ void UtilConcrete::setDepthTest( const bool enabled ) const
 
 void UtilConcrete::setBackfaceCUll( const bool enabled ) const
 {
-    if ( enabled )
+    if( enabled )
     {
         glEnable( GL_CULL_FACE );
         glCullFace( GL_BACK );
@@ -1383,7 +1384,7 @@ void UtilConcrete::setBackfaceCUll( const bool enabled ) const
 
 void UtilConcrete::setTexuring( const bool enabled ) const
 {
-    if ( enabled )
+    if( enabled )
     {
         glEnable( GL_TEXTURE_2D );
     }
@@ -1425,7 +1426,7 @@ void UtilConcrete::setTextureData( const TextureInfo& ti ) const
 
 void UtilConcrete::freeTexture( unsigned int& textureId ) const
 {
-    if ( textureId != 0 )
+    if( textureId != 0 )
     {
         glDeleteTextures( 1, &textureId );
         textureId = 0;
