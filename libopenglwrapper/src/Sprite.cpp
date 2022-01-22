@@ -1,9 +1,15 @@
 #include "libopenglwrapper/Sprite.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/VertexArray.hpp"
+
+#include "IMPORT_glew.hpp"
+#include "ImportFreeglut.hpp"
+
 #include "CUL/Graphics/IImageLoader.hpp"
 
 #include "CUL/Graphics/IImage.hpp"
+
+#undef LoadImage
 
 using namespace LOGLW;
 
@@ -52,17 +58,117 @@ CUL::Graphics::DataType* Sprite::getData() const
 
 void Sprite::renderModern()
 {
-    runTasks();
+    if( !m_initialized )
+    {
+        init();
+    }
+   
+    std::vector<TextureData2D> vData(4);
 
-    if( m_vao.get() == nullptr )
+    auto powerOfTwo = [](unsigned num) {
+        if( num != 0 )
+        {
+            num--;
+            num |= ( num >> 1 );   // Or first 2 bits
+            num |= ( num >> 2 );   // Or next 2 bits
+            num |= ( num >> 4 );   // Or next 4 bits
+            num |= ( num >> 8 );   // Or next 8 bits
+            num |= ( num >> 16 );  // Or next 16 bits
+            num++;
+        }
+        return num;
+    };
+
+
+    auto imgSize = m_image->getImageInfo().size;
+
+    QuadSimple tex;
+    auto textureWidth = (float)powerOfTwo( imgSize.width );
+    auto textureHeight = (float)powerOfTwo( imgSize.height );
+    tex.bottom = (float)imgSize.height / textureHeight;
+    tex.topRight = (float)imgSize.width / textureWidth;
+
+    auto quadWidth = static_cast<float>( imgSize.width );
+    auto quadHeight = static_cast<float>( imgSize.height );
+
+    vData[0].s = tex.topLeft;
+    vData[0].t = tex.top;
+    vData[1].s = tex.topRight;
+    vData[1].t = tex.top;
+    vData[2].s = tex.topRight;
+    vData[2].t = tex.bottom;
+    vData[3].s = tex.topLeft;
+    vData[3].t = tex.bottom;
+
+    // Vertex positions
+    vData[0].x = 0.f;
+    vData[0].y = 0.f;
+    vData[1].x = quadWidth;
+    vData[1].y = 0.f;
+    vData[2].x = quadWidth;
+    vData[2].y = quadHeight;
+    vData[3].x = 0.f;
+    vData[3].y = quadHeight;
+
+    glBindTexture( GL_TEXTURE_2D, m_textureId );
+
+        // Enable vertex and texture coordinate arrays
+    glEnableClientState( GL_VERTEX_ARRAY );
+    glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glBindBuffer( GL_ARRAY_BUFFER, m_arrayBufferId );
+    // Update vertex buffer data
+    glBufferSubData( GL_ARRAY_BUFFER, 0, 4 * sizeof( TextureData2D ), vData.data() );
+
+
+   // Set texture coordinate data
+    const int dataSize = 2;
+    GLenum dataType = GL_FLOAT;
+    GLsizei stride = sizeof( TextureData2D );
+    auto texCoordOffset = offsetof( TextureData2D, s );
+    const void* pointerCoord = (GLvoid*)texCoordOffset;
+    glTexCoordPointer( dataSize, dataType, stride, pointerCoord );
+
+    // Set vertex data
+    auto positionOffset = offsetof( TextureData2D, x );
+    auto pointerPosition = (GLvoid*)positionOffset;
+    glVertexPointer( dataSize, dataType, stride, pointerPosition );
+
+    // Draw quad using vertex data and index data
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementBufferId );
+    glDrawElements( GL_QUADS, 4, GL_UNSIGNED_INT, NULL );
+
+    // Disable vertex and texture coordinate arrays
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+    glDisableClientState( GL_VERTEX_ARRAY );
+}
+
+void Sprite::init()
+{
     {
-        m_vao = new VertexArray( false );
-        //m_vao->bin
+        auto buffType = LOGLW::BufferTypes::ARRAY_BUFFER;
+        std::vector<TextureData2D> data( 4 );
+        m_arrayBufferId = getUtility()->generateBuffer( buffType );
+        getUtility()->bindBuffer( buffType, m_arrayBufferId );
+        getUtility()->bufferData( data, buffType );
     }
-    else
+
     {
-        // TODO:
+        auto buffType = LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER;
+        m_elementBufferId = getUtility()->generateBuffer( buffType );
+        getUtility()->bindBuffer( buffType, m_elementBufferId );
+        std::vector<unsigned> iData( 4 );
+        iData[0] = 0;
+        iData[1] = 1;
+        iData[2] = 2;
+        iData[3] = 3;
+        getUtility()->bufferData( iData, buffType );
     }
+
+    getUtility()->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
+    getUtility()->unbindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
+
+    m_initialized = true;
 }
 
 void Sprite::registerTask( TaskType taskType )

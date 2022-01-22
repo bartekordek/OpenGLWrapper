@@ -140,6 +140,23 @@ struct LIBOPENGLWRAPPER_API TextureInfo
     CUL::Graphics::SSize2Di size;
 };
 
+struct TextureData2D
+{
+    float x = 0.f;
+    float y = 0.f;
+
+    float s = 0.f;
+    float t = 0.f;
+};
+
+struct QuadSimple
+{
+    float top = 0.f;
+    float bottom = 0.f;
+    float topLeft = 0.f;
+    float topRight = 0.f;
+};
+
 class Viewport;
 
 class LIBOPENGLWRAPPER_API IUtility
@@ -205,11 +222,17 @@ public:
 
     virtual void bufferData( const CUL::MATH::Primitives::Quad& data,
                              const BufferTypes type ) const = 0;
+
     virtual void bufferData( const std::vector<unsigned int>& data,
                              const BufferTypes type ) const = 0;
+
     virtual void bufferData( const std::vector<float>& data,
                              const BufferTypes type ) const = 0;
+
     virtual void bufferData( const float vertices[] ) const = 0;
+
+    virtual void bufferData( const std::vector<TextureData2D>& data, const BufferTypes type ) const = 0;
+
     virtual void bufferSubdata() const = 0;
 
     virtual void setClientState( ClientStateTypes cs, bool enabled ) const = 0;

@@ -43,6 +43,7 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w, bool l
 
     registerObjectForUtility();
     loadFromConfig();
+    m_imageLoader = m_cul->getImageLoader();
 }
 
 void OpenGLWrapperConcrete::registerObjectForUtility()
@@ -312,7 +313,7 @@ IPoint* OpenGLWrapperConcrete::createPoint( const Point& position,
 }
 
 Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
-                                             bool withVBO )
+                                             bool  )
 {
     auto sprite = new Sprite();
 
@@ -334,9 +335,32 @@ Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
     m_oglUtility->setTextureParameter( TextureParameters::MIN_FILTER,
                                        TextureFilterType::LINEAR );
 
-    if( withVBO )
+    if( !m_oglUtility->isLegacy() )
     {
+        unsigned arrayBufferId = 0;
+        unsigned elementBufferId = 0;
+        {
+            auto buffType = LOGLW::BufferTypes::ARRAY_BUFFER;
+            std::vector<TextureData2D> data( 4 );
+            arrayBufferId = m_oglUtility->generateBuffer( buffType );
+            m_oglUtility->bindBuffer( buffType, arrayBufferId );
+            m_oglUtility->bufferData( data, buffType );
+        }
+        
+        {
+            auto buffType = LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER;
+            elementBufferId = m_oglUtility->generateBuffer( buffType );
+            m_oglUtility->bindBuffer( buffType, elementBufferId );
+            std::vector<unsigned> iData( 4 );
+            iData[0] = 0;
+            iData[1] = 1;
+            iData[2] = 2;
+            iData[3] = 3;
+            m_oglUtility->bufferData( iData, buffType );
+        }
 
+        m_oglUtility->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
+        m_oglUtility->unbindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
     }
 
     m_oglUtility->bindTexture( 0 );
@@ -488,8 +512,6 @@ void OpenGLWrapperConcrete::initialize()
     setBackgroundColor( m_backgroundColor );
 
     showExtensions();
-
-    m_imageLoader = IImageLoader::createConcrete( nullptr );
 
     calculateFrameWait();
 

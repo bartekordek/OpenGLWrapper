@@ -70,11 +70,17 @@ private:
 
     void bufferData( const CUL::MATH::Primitives::Quad& data,
                      const BufferTypes type ) const override;
+
     void bufferData( const std::vector<unsigned int>& data,
                      const BufferTypes type ) const override;
+
     void bufferData( const std::vector<float>& data,
                      const BufferTypes type ) const override;
+
+    void bufferData( const std::vector<TextureData2D>& data, const BufferTypes type ) const override;
+
     void bufferData( const float vertices[] ) const override;
+
     void bufferDataImpl( const void* data, const GLenum target,
                          const GLsizeiptr dataSize ) const;
     void bufferSubdata() const override;

@@ -843,6 +843,11 @@ void UtilConcrete::bufferData( const std::vector<float>& data,
                     static_cast<GLsizeiptr>( data.size() * sizeof( float ) ) );
 }
 
+void UtilConcrete::bufferData( const std::vector<TextureData2D>& data, const BufferTypes type ) const
+{
+    glBufferData( static_cast<GLenum>( type ), data.size() * sizeof( TextureData2D ), data.data(), GL_DYNAMIC_DRAW );
+}
+
 void UtilConcrete::bufferDataImpl( const void* data, const GLenum target,
                                    const GLsizeiptr dataSize ) const
 {

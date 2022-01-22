@@ -30,6 +30,8 @@ public:
     ~Sprite();
 protected:
 private:
+    void init();
+    bool m_initialized = false;
     enum class TaskType : short
     {
         CREATE_VAO = 1,
@@ -48,6 +50,9 @@ private:
 
     std::mutex m_tasksMtx;
     std::deque<TaskType> m_tasks;
+
+    unsigned m_arrayBufferId = 0u;
+    unsigned m_elementBufferId = 0u;
 
 // Deleted:
     Sprite( const Sprite& arg ) = delete;
