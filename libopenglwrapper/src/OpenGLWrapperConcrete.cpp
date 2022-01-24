@@ -319,51 +319,8 @@ Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
 
     CUL::FS::Path fsPath = path;
     CUL::Assert::simple( fsPath.exists(), "File " + path + " does not exist." );
-    auto textureId = m_oglUtility->generateTexture();
-    sprite->LoadImage( path, m_imageLoader, textureId );
-    m_oglUtility->bindTexture( textureId );
-    const auto& ii = sprite->getImageInfo();
-
-    TextureInfo td;
-    td.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
-    td.size = ii.size;
-    td.data = sprite->getData();
-    m_oglUtility->setTextureData( td );
-
-    m_oglUtility->setTextureParameter( TextureParameters::MAG_FILTER,
-                                       TextureFilterType::LINEAR );
-    m_oglUtility->setTextureParameter( TextureParameters::MIN_FILTER,
-                                       TextureFilterType::LINEAR );
-
-    if( !m_oglUtility->isLegacy() )
-    {
-        unsigned arrayBufferId = 0;
-        unsigned elementBufferId = 0;
-        {
-            auto buffType = LOGLW::BufferTypes::ARRAY_BUFFER;
-            std::vector<TextureData2D> data( 4 );
-            arrayBufferId = m_oglUtility->generateBuffer( buffType );
-            m_oglUtility->bindBuffer( buffType, arrayBufferId );
-            m_oglUtility->bufferData( data, buffType );
-        }
-        
-        {
-            auto buffType = LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER;
-            elementBufferId = m_oglUtility->generateBuffer( buffType );
-            m_oglUtility->bindBuffer( buffType, elementBufferId );
-            std::vector<unsigned> iData( 4 );
-            iData[0] = 0;
-            iData[1] = 1;
-            iData[2] = 2;
-            iData[3] = 3;
-            m_oglUtility->bufferData( iData, buffType );
-        }
-
-        m_oglUtility->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
-        m_oglUtility->unbindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
-    }
-
-    m_oglUtility->bindTexture( 0 );
+    
+    sprite->LoadImage( path, m_imageLoader );
 
     addObjectToRender( sprite );
 
@@ -473,14 +430,17 @@ void OpenGLWrapperConcrete::renderLoop()
 
 void OpenGLWrapperConcrete::initDebugInfo()
 {
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGui::StyleColorsDark();
+    if( !m_debugDrawInitialized )
+    {
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGui::StyleColorsDark();
 
-    ImGui_ImplSDL2_InitForOpenGL( *m_activeWindow, getContext().glContext );
-    ImGui_ImplOpenGL2_Init();
+        ImGui_ImplSDL2_InitForOpenGL( *m_activeWindow, getContext().glContext );
+        ImGui_ImplOpenGL2_Init();
 
-    m_debugDrawInitialized = true;
+        m_debugDrawInitialized = true;
+    }
 }
 
 void OpenGLWrapperConcrete::initialize()

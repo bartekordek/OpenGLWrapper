@@ -138,6 +138,22 @@ struct LIBOPENGLWRAPPER_API TextureInfo
     DataType dataType = DataType::UNSIGNED_BYTE;
     void* data = nullptr;
     CUL::Graphics::SSize2Di size;
+
+    const String toString() const
+    {
+        String result;
+
+        result = "textureId: " + String( textureId );
+        result += ", level: " + String( level );
+        result += ", pixelFormat = " + String( (unsigned)pixelFormat );
+        result += ", border = " + String( border );
+        result += ", dataType = " + String( (int)dataType );
+        result += ", data = " + String( (void*)data );
+        result += ", size = " + size.toString();
+
+        return result;
+    }
+
 };
 
 struct TextureData2D

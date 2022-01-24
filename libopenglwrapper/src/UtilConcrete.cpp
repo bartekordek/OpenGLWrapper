@@ -211,7 +211,7 @@ unsigned int UtilConcrete::createProgram()
 
 void UtilConcrete::removeProgram( unsigned programId ) const
 {
-    log( "UtilConcrete::removeProgram, programId = " + String( programId ) );
+    log( "glDeleteProgram( " + String( programId ) + ");" );
     glDeleteProgram( toGluint( programId ) );
     // TODO: find a correct way to check whether program was deleted.
     // assertOnProgramError( programId, GL_DELETE_STATUS );
@@ -231,6 +231,7 @@ void UtilConcrete::linkProgram( unsigned programId ) const
 
 void UtilConcrete::validateProgram( unsigned programId ) const
 {
+    log( "validateProgram( " + String( programId ) + ");" );
     glValidateProgram( programId );
     assertOnProgramError( programId, GL_VALIDATE_STATUS );
 }
@@ -1401,6 +1402,7 @@ void UtilConcrete::setTexuring( const bool enabled ) const
 
 unsigned UtilConcrete::generateTexture() const
 {
+    log( "generateTexture" );
     // glGenTextures generate texture names.
     // n - Specifies the number of texture names to be generated.
     // textures - Specifies an array in which the generated texture names are
@@ -1413,17 +1415,20 @@ unsigned UtilConcrete::generateTexture() const
 
 void UtilConcrete::bindTexture( const unsigned int textureId ) const
 {
+    log( "bindTexture" );
     glBindTexture( GL_TEXTURE_2D, textureId );
 }
 
 void UtilConcrete::setTextureParameter( const TextureParameters type,
                                         const TextureFilterType val ) const
 {
+    log( "setTextureParameter" );
     glTexParameteri( GL_TEXTURE_2D, (GLenum)type, (GLint)val );
 }
 
 void UtilConcrete::setTextureData( const TextureInfo& ti ) const
 {
+    log( "glUseProgram(" + ti.toString() + ")" );
     glTexImage2D( GL_TEXTURE_2D, ti.level, (GLint)ti.pixelFormat, ti.size.width,
                   ti.size.height, ti.border, (GLenum)ti.pixelFormat,
                   (GLenum)GL_UNSIGNED_BYTE, ti.data );
@@ -1433,6 +1438,7 @@ void UtilConcrete::freeTexture( unsigned int& textureId ) const
 {
     if( textureId != 0 )
     {
+        log( "glDeleteTextures();" );
         glDeleteTextures( 1, &textureId );
         textureId = 0;
     }
@@ -1440,12 +1446,14 @@ void UtilConcrete::freeTexture( unsigned int& textureId ) const
 
 void UtilConcrete::matrixStackPush()
 {
+    log( "glPopMatrix();" );
     glPushMatrix();
     ++m_currentMatrix;
 }
 
 void UtilConcrete::matrixStackPop()
 {
+    log( "glPopMatrix();" );
     glPopMatrix();
     --m_currentMatrix;
 }
