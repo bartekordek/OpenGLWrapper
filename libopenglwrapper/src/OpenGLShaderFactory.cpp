@@ -9,8 +9,6 @@ using IFile = LOGLW::IFile;
 using Shader = LOGLW::Shader;
 using Program = LOGLW::Program;
 
-auto logger = CUL::LOG::LOG_CONTAINER::getLogger();
-
 OpenGLShaderFactory::OpenGLShaderFactory( LOGLW::IOpenGLWrapper* wrapper ):
     m_openglWrapper( *wrapper ),
     m_culInterface( wrapper->getCul() )
@@ -32,7 +30,7 @@ Shader* OpenGLShaderFactory::createShader( const CUL::FS::Path& filePath )
 
 Program* OpenGLShaderFactory::createProgram()
 {
-    logger->log( "OpenGLShaderFactory::createProgram()" );
+    log( "OpenGLShaderFactory::createProgram()" );
 
     //Program* result = new ProgramConcrete( IUtilityUser::getUtility(), *this );
     //m_programs[result->getProgramId()] = result;
@@ -54,7 +52,7 @@ Shader* OpenGLShaderFactory::getShader( const CUL::FS::Path& filePath )
 
 Shader* OpenGLShaderFactory::addShader( const CUL::FS::Path& filePath )
 {
-    logger->log( "OpenGLShaderFactory::addShader: creating: " + filePath );
+    log( "OpenGLShaderFactory::addShader: creating: " + filePath );
     auto shaderFile = m_culInterface->getFF()->createFileFromPath( filePath );
     auto shader = new Shader( shaderFile );
     m_shaders[ filePath ] = shader;
@@ -65,4 +63,9 @@ OpenGLShaderFactory::~OpenGLShaderFactory()
 {
     m_shaders.clear();
     m_programs.clear();
+}
+
+void OpenGLShaderFactory::log( const String& text )
+{
+    m_culInterface->getLogger()->log(text);
 }

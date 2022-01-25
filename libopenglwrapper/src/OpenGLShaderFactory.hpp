@@ -36,6 +36,8 @@ private:
 
     Shader* addShader( const CUL::FS::Path& filePath );
 
+    void log( const String& text );
+
     mutable ShaderMap m_shaders;
     ProgramMap m_programs;
     IOpenGLWrapper& m_openglWrapper;

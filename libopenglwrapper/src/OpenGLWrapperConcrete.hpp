@@ -207,7 +207,7 @@ private:
     CUL::LOG::ILogger* m_logger = nullptr;
     IUtility* m_oglUtility = nullptr;
 
-    DumbPtr<IImageLoader> m_imageLoader;
+    IImageLoader* m_imageLoader = nullptr;
 
     std::thread m_renderingLoopThread;
     std::thread m_taskLoopThread;
