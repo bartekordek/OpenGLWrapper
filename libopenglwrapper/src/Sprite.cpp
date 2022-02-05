@@ -2,11 +2,8 @@
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/VertexArray.hpp"
 
-#include "IMPORT_glew.hpp"
-#include "ImportFreeglut.hpp"
-
 #include "CUL/Graphics/IImageLoader.hpp"
-
+#include "CUL/Math/Algorithms.hpp"
 #include "CUL/Graphics/IImage.hpp"
 
 #undef LoadImage
@@ -23,7 +20,7 @@ void Sprite::LoadImage( const CUL::FS::Path& imagePath, CUL::Graphics::IImageLoa
 }
 
 void Sprite::LoadImage( CUL::Graphics::DataType* data, unsigned width, unsigned height, CUL::Graphics::IImageLoader* imageLoader,
-                        unsigned textureId )
+                        unsigned )
 {
     m_image = imageLoader->loadImage( (unsigned char*)data, width, height );
 }
@@ -62,21 +59,6 @@ void Sprite::renderModern()
 
     std::vector<TextureData2D> vData( 4 );
 
-    auto powerOfTwo = []( unsigned num )
-    {
-        if( num != 0 )
-        {
-            num--;
-            num |= ( num >> 1 );   // Or first 2 bits
-            num |= ( num >> 2 );   // Or next 2 bits
-            num |= ( num >> 4 );   // Or next 4 bits
-            num |= ( num >> 8 );   // Or next 8 bits
-            num |= ( num >> 16 );  // Or next 16 bits
-            num++;
-        }
-        return num;
-    };
-
     auto imgSize = m_image->getImageInfo().size;
     auto canvasSize = m_image->getImageInfo().canvasSize;
 
@@ -101,7 +83,6 @@ void Sprite::renderModern()
     vData[3].s = texLeft;
     vData[3].t = texBottom;
 
-    // Vertex positions
     vData[0].x = 0.f;
     vData[0].y = quadHeight;
 
@@ -114,37 +95,27 @@ void Sprite::renderModern()
     vData[3].x = 0.f;
     vData[3].y = 0.f;
 
-    glBindTexture( GL_TEXTURE_2D, m_textureId );
+    getUtility()->bindTexture( m_textureId );
 
-    // Enable vertex and texture coordinate arrays
-    glEnableClientState( GL_VERTEX_ARRAY );
-    glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+    getUtility()->setClientState( ClientStateTypes::VERTEX_ARRAY, true );
+    getUtility()->setClientState( ClientStateTypes::TEXTURE_COORD_ARRAY, true );
 
-    glBindBuffer( GL_ARRAY_BUFFER, m_arrayBufferId );
-    // Update vertex buffer data
-    size_t dataSize = 4 * sizeof( TextureData2D );
-    glBufferSubData( GL_ARRAY_BUFFER, 0, dataSize, vData.data() );
+    getUtility()->bindBuffer( BufferTypes::ARRAY_BUFFER, m_arrayBufferId );
+    getUtility()->bufferSubdata( BufferTypes::ARRAY_BUFFER, vData );
 
-    // Set texture coordinate data
-    const int coordDataSize = 2;
-    GLenum dataType = GL_FLOAT;
-    GLsizei stride = sizeof( TextureData2D );
     auto texCoordOffset = offsetof( TextureData2D, s );
-    const void* pointerCoord = (GLvoid*)texCoordOffset;
-    glTexCoordPointer( coordDataSize, dataType, stride, pointerCoord );
+    getUtility()->texCoordPointer( 2, DataType::FLOAT, sizeof( TextureData2D ), (void*)texCoordOffset );
 
-    // Set vertex data
     auto positionOffset = offsetof( TextureData2D, x );
-    auto pointerPosition = (GLvoid*)positionOffset;
-    glVertexPointer( coordDataSize, dataType, stride, pointerPosition );
+    const size_t stride = sizeof( TextureData2D );
+    getUtility()->vertexPointer( 2, DataType::FLOAT, stride, (void*)positionOffset );
 
-    // Draw quad using vertex data and index data
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementBufferId );
-    glDrawElements( GL_QUADS, 4, GL_UNSIGNED_INT, NULL );
+    getUtility()->bindBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, m_elementBufferId );
 
-    // Disable vertex and texture coordinate arrays
-    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-    glDisableClientState( GL_VERTEX_ARRAY );
+    getUtility()->drawElementsFromLastBuffer(PrimitiveType::QUADS, DataType::UNSIGNED_INT,4);
+
+    getUtility()->setClientState( ClientStateTypes::TEXTURE_COORD_ARRAY, false );
+    getUtility()->setClientState( ClientStateTypes::VERTEX_ARRAY, false );
 
     getUtility()->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
     getUtility()->unbindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
@@ -254,14 +225,6 @@ void Sprite::runTasks()
             ti.size = ii.size;
             ti.textureId = 2137;
             getUtility()->setTextureData( ti );
-
-            /*getUtility()->setTextureParameter( TextureParameters::WRAP_S, TextureFilterType:: );*/
-            // glBindTexture(GL_TEXTURE_2D, texture1);
-            // GLuint
-
-            /*m_vao0->addVertexBuffer( VBO_Data );
-            m_vao0->createShader( "vertexShader.vert" );
-            m_vao0->createShader( "fragmentShader.frag" );*/
         }
 
         m_tasks.pop_front();

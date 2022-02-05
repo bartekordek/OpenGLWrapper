@@ -63,6 +63,9 @@ private:
 
     void setClientState( ClientStateTypes cs, bool enabled ) const override;
 
+    void texCoordPointer( int coordinatesPerElement, DataType dataType, int stride, void* pointer ) const override;
+    void vertexPointer( int coordinatesPerElement, DataType dataType, int stride, void* pointer ) const override;
+
     // VBO, VAO
     void setVertexArrayClientState( const bool enable ) const override;
     void setColorClientState( bool enable ) const override;
@@ -83,7 +86,7 @@ private:
 
     void bufferDataImpl( const void* data, const GLenum target,
                          const GLsizeiptr dataSize ) const;
-    void bufferSubdata() const override;
+    void bufferSubdata( const BufferTypes type, std::vector<TextureData2D>& data ) const override;
 
     void setUniformValue( int uniformLocation, float value ) const override;
     void setUniformValue( int uniformLocation, int value ) const override;

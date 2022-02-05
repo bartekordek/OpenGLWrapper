@@ -44,6 +44,7 @@ OpenGLWrapperConcrete::OpenGLWrapperConcrete( SDL2W::ISDL2Wrapper* sdl2w, bool l
     registerObjectForUtility();
     loadFromConfig();
     m_imageLoader = m_cul->getImageLoader();
+
 }
 
 void OpenGLWrapperConcrete::registerObjectForUtility()

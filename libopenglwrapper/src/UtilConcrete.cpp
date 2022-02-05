@@ -780,6 +780,47 @@ void UtilConcrete::setClientState( ClientStateTypes cs, bool enabled ) const
     }
 }
 
+void UtilConcrete::texCoordPointer(int coordinatesPerElement, DataType dataType, int stride, void* pointer) const
+{
+    glTexCoordPointer( coordinatesPerElement, (GLenum)dataType, stride, pointer );
+
+    /*
+    size - Specifies the number of coordinates per array element.
+    Must be 1, 2, 3, or 4. The initial value is 4.
+
+    type -  Specifies the data type of each texture coordinate.Symbolic constants GL_SHORT,
+    GL_INT, GL_FLOAT, or GL_DOUBLE are accepted.
+    The initial value is GL_FLOAT.
+
+    stride - Specifies the byte offset between consecutive texture coordinate sets.
+    If stride is 0, the array elements are understood to be tightly packed.
+    The initial value is 0.
+
+    pointer - Specifies a pointer to the first coordinate of the first texture
+    coordinate set in the array.The initial value is 0.
+    */
+}
+
+void UtilConcrete::vertexPointer( int coordinatesPerElement, DataType dataType, int stride, void* pointer ) const
+{
+    /*
+    size - Specifies the number of coordinates per array element.
+    Must be 1, 2, 3, or 4. The initial value is 4.
+
+    type -  Specifies the data type of each texture coordinate.Symbolic constants GL_SHORT,
+    GL_INT, GL_FLOAT, or GL_DOUBLE are accepted.
+    The initial value is GL_FLOAT.
+
+    stride - Specifies the byte offset between consecutive texture coordinate sets.
+    If stride is 0, the array elements are understood to be tightly packed.
+    The initial value is 0.
+
+    pointer - Specifies a pointer to the first coordinate of the first texture
+    coordinate set in the array.The initial value is 0.
+    */
+    glVertexPointer( coordinatesPerElement, (GLenum)dataType, stride, pointer );
+}
+
 void UtilConcrete::setVertexArrayClientState( const bool enable ) const
 {
     // If enabled, the vertex array is enabled for writing and used during
@@ -970,8 +1011,11 @@ void UtilConcrete::bufferDataImpl( const void* data, const GLenum target,
     */
 }
 
-void UtilConcrete::bufferSubdata() const
+void UtilConcrete::bufferSubdata( const BufferTypes type, std::vector<TextureData2D>& data ) const
 {
+    log( "bufferSubdata" );
+    size_t dataSize = data.size() * sizeof(data.front());
+    glBufferSubData( GL_ARRAY_BUFFER, 0, dataSize, data.data() );
 }
 
 unsigned int UtilConcrete::generateAndBindBuffer( const BufferTypes bufferType,

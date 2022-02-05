@@ -249,9 +249,11 @@ public:
 
     virtual void bufferData( const std::vector<TextureData2D>& data, const BufferTypes type ) const = 0;
 
-    virtual void bufferSubdata() const = 0;
+    virtual void bufferSubdata( const BufferTypes type, std::vector<TextureData2D>& data ) const = 0;
 
     virtual void setClientState( ClientStateTypes cs, bool enabled ) const = 0;
+    virtual void texCoordPointer( int coordinatesPerElement, DataType dataType, int stride, void* pointer ) const = 0;
+    virtual void vertexPointer( int coordinatesPerElement, DataType dataType, int stride, void* pointer ) const = 0;
 
     // VAO, VBO
     virtual void setVertexArrayClientState( const bool enable ) const = 0;
