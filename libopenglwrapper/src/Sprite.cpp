@@ -54,6 +54,8 @@ void Sprite::renderModern()
         init();
     }
 
+    getUtility()->translate(ITransformable::getWorldPosition());
+
     getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_arrayBufferId );
     getUtility()->bindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER, m_elementBufferId );
 
@@ -162,78 +164,6 @@ void Sprite::init()
     getUtility()->unbindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
 
     m_initialized = true;
-}
-
-void Sprite::registerTask( TaskType taskType )
-{
-    std::lock_guard<std::mutex> guard( m_tasksMtx );
-    if( taskType == TaskType::CREATE_VAO )
-    {
-        if( taskIsAlreadyPlaced( taskType ) )
-        {
-            return;
-        }
-    }
-    m_tasks.push_back( taskType );
-}
-
-void Sprite::runTasks()
-{
-    std::lock_guard<std::mutex> tasksGuard( m_tasksMtx );
-    while( !m_tasks.empty() )
-    {
-        auto task = m_tasks.front();
-
-        if( task == TaskType::CREATE_VAO )
-        {
-            m_vao = new VertexArray( false );
-
-            VertexBufferData vboData;
-            vboData.vertices = {
-                // positions          // colors           // texture coords
-                0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,  // top right
-                0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-                -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
-            };
-
-            vboData.indices = {
-                0, 1, 3,  // first triangle
-                1, 2, 3   // second triangle
-            };
-
-            vboData.primitiveType = PrimitiveType::QUADS;
-            vboData.containsColorData = true;
-            vboData.containsTextureCoords = true;
-
-            m_vao->addVertexBuffer( vboData, true );
-
-            m_textureId = getUtility()->generateTexture();
-            getUtility()->bindTexture( m_textureId );
-            getUtility()->setClientState( ClientStateTypes::VERTEX_ARRAY, true );
-            getUtility()->setClientState( ClientStateTypes::TEXTURE_COORD_ARRAY, true );
-
-            m_vao->getVertexBuffer()->bind();
-
-            auto& ii = m_image->getImageInfo();
-
-            TextureInfo ti;
-            ti.border = 0;
-            ti.data = m_image->getData();
-            ti.dataType = DataType::UNSIGNED_SHORT;
-            ti.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
-            ti.size = ii.size;
-            ti.textureId = 2137;
-            getUtility()->setTextureData( ti );
-        }
-
-        m_tasks.pop_front();
-    }
-}
-
-bool Sprite::taskIsAlreadyPlaced( TaskType tt ) const
-{
-    return std::find( m_tasks.begin(), m_tasks.end(), tt ) != m_tasks.end();
 }
 
 void Sprite::renderLegacy()

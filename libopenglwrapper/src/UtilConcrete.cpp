@@ -1392,7 +1392,7 @@ void UtilConcrete::log( const String& text,
 {
     customAssert( m_logger != nullptr,
                   "Logger utility is unninitialized inside of UtilConcrete." );
-    m_logger->log( text, severity );
+    //m_logger->log( text, severity );
 }
 
 void UtilConcrete::customAssert( const bool value,

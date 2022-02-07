@@ -38,15 +38,9 @@ private:
 
     void renderModern();
     void renderLegacy();
-    void runTasks();
-    void registerTask( TaskType taskType );
-    bool taskIsAlreadyPlaced( TaskType tt ) const;
     CUL::Graphics::IImage* m_image = nullptr;
 
     CUL::GUTILS::DumbPtr<VertexArray> m_vao;
-
-    std::mutex m_tasksMtx;
-    std::deque<TaskType> m_tasks;
 
     unsigned m_arrayBufferId = 0u;
     unsigned m_elementBufferId = 0u;
