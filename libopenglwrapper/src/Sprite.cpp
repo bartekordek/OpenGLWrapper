@@ -54,15 +54,23 @@ void Sprite::renderModern()
         init();
     }
 
-    getUtility()->translate(ITransformable::getWorldPosition());
+    ITransformable::Pos worldPosition =  ITransformable::getWorldPosition();
+
+    auto imgSize = m_image->getImageInfo().size;
+    auto canvasSize = m_image->getImageInfo().canvasSize;
+
+    auto pivotTimesSize = ITransformable::getPivot();
+    pivotTimesSize.x() *= imgSize.width;
+    pivotTimesSize.y() *= imgSize.height;
+
+    ITransformable::Pos targetPosition = worldPosition - pivotTimesSize;
+
+    getUtility()->translate(targetPosition);
 
     getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_arrayBufferId );
     getUtility()->bindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER, m_elementBufferId );
 
     std::vector<TextureData2D> vData( 4 );
-
-    auto imgSize = m_image->getImageInfo().size;
-    auto canvasSize = m_image->getImageInfo().canvasSize;
 
     float texTop = 0.f;
     float texBottom = (float)imgSize.height / (float)canvasSize.height;

@@ -2,8 +2,7 @@
 
 using namespace LOGLW;
 
-ITransformable::ITransformable():
-    m_worldPos( 0.0f, 0.0f, 0.0f )
+ITransformable::ITransformable() : m_worldPos( 0.0f, 0.0f, 0.0f )
 {
 }
 
@@ -24,24 +23,34 @@ const ITransformable::Pos& ITransformable::getWorldPosition() const
     return m_worldPos;
 }
 
-void ITransformable::setWorldAngle(CUL::MATH::EulerAngles type, Pos::Type value)
+void ITransformable::setWorldAngle( CUL::MATH::EulerAngles type, Pos::Type value )
 {
     m_angles[(size_t)type].setValue( value, CUL::MATH::Angle::Type::RADIAN );
 }
 
 void ITransformable::setWorldAngle( CUL::MATH::EulerAngles type, const CUL::MATH::Angle& angle )
 {
-    m_angles[ (size_t) type ] = angle;
+    m_angles[(size_t)type] = angle;
 }
 
-float ITransformable::getWorldAngleF(CUL::MATH::EulerAngles type) const
+float ITransformable::getWorldAngleF( CUL::MATH::EulerAngles type ) const
 {
-    return m_angles[ (size_t) type].getValueF();
+    return m_angles[(size_t)type].getValueF();
 }
 
 const CUL::MATH::Angle& ITransformable::getWorldAngle( CUL::MATH::EulerAngles type ) const
 {
-    return m_angles[ (size_t) type ];
+    return m_angles[(size_t)type];
+}
+
+const ITransformable::Pos& ITransformable::getPivot() const
+{
+    return m_pivot;
+}
+
+void ITransformable::setPivot( const ITransformable::Pos& pivot )
+{
+    m_pivot = pivot;
 }
 
 ITransformable::~ITransformable()
