@@ -5,15 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(Windows) Launch",
+            "name": "[Windows][RUN SAMPLE]",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "enter program name, for example ${workspaceFolder}/a.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true
+            "program": "${workspaceFolder}/Build-Windows/Debug/18_textured_vertex_buffers_refactor_2.exe",
+            "cwd": "${workspaceRoot}/18_textured_vertex_buffers_refactor_2",
+            "symbolSearchPath": "${workspaceRoot}/18_textured_vertex_buffers_refactor_2",
+            "args": [
+                "-w",
+                "1680",
+                "-h",
+                "900"
+            ],
+            "externalConsole": false,
+            "logging": {
+                "moduleLoad": false,
+                "trace": true,
+            },
+            "preLaunchTask": "[WINDOWS][DEBUG][18_textured_vertex_buffers_refactor_2]"
         },
         {
             "name": "Linux Debug",

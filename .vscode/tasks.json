@@ -102,5 +102,19 @@
             ],
             "dependsOn": "[WINDOWS] CMake"
         }
+        ,
+        {
+            "label": "[WINDOWS][BUILD][SNAKE]",
+            "type":"shell",
+            "command": "cmake --build Build-Windows --target sample/snake --config DEBUG -j16",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "dependsOn": "[WINDOWS] CMake"
+        }
     ]
 }
