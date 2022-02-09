@@ -68,9 +68,7 @@ void Game::afterInit()
     m_mainWindow->setBackgroundColor( SDL2W::ColorS( 1.0f, 0.0f, 0.0f, 1.0f ) );
     const auto& winSize = m_mainWindow->getSize();
 
-    m_projectionData.setSize( {
-        winSize.getWidth(),
-        winSize.getHeight() } );
+    m_projectionData.setSize( { winSize.getWidth(), winSize.getHeight() } );
     m_projectionData.setEyePos( { 0.0f, 0.0f, 300.f } );
 
     m_oglw->setProjection( m_projectionData );
@@ -83,30 +81,32 @@ void Game::afterInit()
     m_oglw->drawDebugInfo( true );
     m_oglw->drawOrigin( true );
 
-    m_oglw->getDebugOverlay()->addSliderValue( "Blue Z", &blueTriangleZ, -64.0f, 128.f, [] ()
-    {
-    } );
+    m_oglw->getDebugOverlay()->addSliderValue( "Blue Z", &blueTriangleZ, -64.0f, 128.f,
+                                               []()
+                                               {
+                                               } );
 
-    m_oglw->getDebugOverlay()->addSliderValue( "Red Z", &redTriangleZ, -64.0f, 128.f, [] ()
-    {
-    } );
+    m_oglw->getDebugOverlay()->addSliderValue( "Red Z", &redTriangleZ, -64.0f, 128.f,
+                                               []()
+                                               {
+                                               } );
 
     m_mouseData = m_oglw->getMouseData();
 
     const float size = 32.f;
     LOGLW::QuadData quadData;
-    quadData[ 0 ] = { -size / 2.f, -size / 2.f, 0.0f };
-    quadData[ 1 ] = {  size / 2.f, -size / 2.f, 0.0f };
-    quadData[ 2 ] = {  size / 2.f,  size / 2.f, 0.0f };
-    quadData[ 3 ] = { -size / 2.f,  size / 2.f, 0.0f };
+    quadData[0] = { -size / 2.f, -size / 2.f, 0.0f };
+    quadData[1] = { size / 2.f, -size / 2.f, 0.0f };
+    quadData[2] = { size / 2.f, size / 2.f, 0.0f };
+    quadData[3] = { -size / 2.f, size / 2.f, 0.0f };
 
     const float offset = size * 0.4f;
     size_t index = 0;
     const auto rowsCount = m_background.size();
-    const auto colsCount = m_background[ 0 ].size();
+    const auto colsCount = m_background[0].size();
 
-    const float backgroundW = rowsCount * size + (rowsCount - 1) * offset;
-    const float backgroundH = colsCount * size + (colsCount - 1) * offset;
+    const float backgroundW = rowsCount * size + ( rowsCount - 1 ) * offset;
+    const float backgroundH = colsCount * size + ( colsCount - 1 ) * offset;
 
     const float xOffset = size / 2 - backgroundW / 2;
     const float yOffset = size / 2 - backgroundH / 2;
@@ -115,8 +115,8 @@ void Game::afterInit()
     {
         for( size_t col = 0; col < colsCount; ++col )
         {
-            m_background[ row ][ col ] = m_objectFactory->createQuad( quadData, true, LOGLW::ColorE::WHITE );
-            m_background[ row ][ col ]->setWorldPosition( xOffset + col * ( size + offset ), yOffset + row * (size + offset), 0.f );
+            m_background[row][col] = m_objectFactory->createQuad( quadData, true, LOGLW::ColorE::WHITE );
+            m_background[row][col]->setWorldPosition( xOffset + col * ( size + offset ), yOffset + row * ( size + offset ), 0.f );
 
             ++index;
         }
