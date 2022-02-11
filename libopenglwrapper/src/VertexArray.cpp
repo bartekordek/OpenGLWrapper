@@ -67,6 +67,8 @@ void VertexArray::render()
     {
         m_vbos[i]->render();
     }
+    m_shaderProgram.disable();
+    unbind();
 }
 
 VertexBuffer* VertexArray::getVertexBuffer()

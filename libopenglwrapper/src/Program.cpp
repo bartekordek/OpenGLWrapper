@@ -112,8 +112,8 @@ void Program::validate()
 
 void Program::render()
 {
-    goThroughTasks();
     enable();
+    goThroughTasks();
 }
 
 void Program::goThroughTasks()
