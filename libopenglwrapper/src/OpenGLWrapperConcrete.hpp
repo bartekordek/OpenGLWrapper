@@ -237,8 +237,11 @@ private:
     EmptyFunctionCallback m_onInitializeCallback;
     EmptyFunctionCallback m_onBeforeFrame;
 
+    void setFpsLimit( float maxFps ) override;
+    float getFpsLimit() const override;
+
     DumbPtr<CUL::ITimer> m_frameTimer;
-    Safe<float> m_fpsLimit = 1024.f;
+    Safe<float> m_fpsLimit = 60.f;
     Safe<int> m_targetFrameLengthUs = 0u;
     Safe<int> m_currentFrameLengthUs = 0u;
     Safe<int> m_frameSleepUs = 64;

@@ -1106,6 +1106,16 @@ CUL::CULInterface* OpenGLWrapperConcrete::getCul()
     return m_sdlW->getCul();
 }
 
+void OpenGLWrapperConcrete::setFpsLimit( float maxFps )
+{
+    m_fpsLimit = maxFps;
+}
+
+float OpenGLWrapperConcrete::getFpsLimit() const
+{
+    return m_fpsLimit.getVal();
+}
+
 OpenGLWrapperConcrete::~OpenGLWrapperConcrete()
 {
     m_logger->log( "OpenGLWrapperConcrete::~OpenGLWrapperConcrete()..." );

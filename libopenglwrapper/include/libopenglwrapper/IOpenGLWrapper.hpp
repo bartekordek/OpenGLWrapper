@@ -108,6 +108,9 @@ public:
 
     static IOpenGLWrapper* getInstance();
 
+    virtual void setFpsLimit( float maxFps ) = 0;
+    virtual float getFpsLimit() const = 0;
+
     virtual ~IOpenGLWrapper();
 
 protected:
