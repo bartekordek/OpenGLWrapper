@@ -66,7 +66,6 @@ void Sprite::renderModern()
     ITransformable::Pos targetPosition = worldPosition - pivotTimesSize;
 
     getUtility()->translate(targetPosition);
-
     getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_arrayBufferId );
     getUtility()->bindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER, m_elementBufferId );
 
@@ -110,8 +109,7 @@ void Sprite::renderModern()
     getUtility()->setClientState( ClientStateTypes::VERTEX_ARRAY, true );
     getUtility()->setClientState( ClientStateTypes::TEXTURE_COORD_ARRAY, true );
 
-    getUtility()->bindBuffer( BufferTypes::ARRAY_BUFFER, m_arrayBufferId );
-    getUtility()->bufferSubdata( BufferTypes::ARRAY_BUFFER, vData );
+    getUtility()->bufferSubdata( m_arrayBufferId, BufferTypes::ARRAY_BUFFER, vData );
 
     auto texCoordOffset = offsetof( TextureData2D, s );
     getUtility()->texCoordPointer( 2, DataType::FLOAT, sizeof( TextureData2D ), (void*)texCoordOffset );
@@ -134,7 +132,6 @@ void Sprite::renderModern()
 void Sprite::init()
 {
     m_textureId = getUtility()->generateTexture();
-    getUtility()->bindTexture( m_textureId );
 
     const auto& ii = getImageInfo();
     TextureInfo td;
@@ -143,29 +140,27 @@ void Sprite::init()
     td.data = getData();
     td.textureId = m_textureId;
 
-    getUtility()->setTextureData( td );
+    getUtility()->setTextureData( m_textureId, td );
 
-    getUtility()->setTextureParameter( TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
-    getUtility()->setTextureParameter( TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
+    getUtility()->setTextureParameter( m_textureId, TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
+    getUtility()->setTextureParameter( m_textureId, TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
 
     {
         auto buffType = LOGLW::BufferTypes::ARRAY_BUFFER;
         std::vector<TextureData2D> data( 4 );
         m_arrayBufferId = getUtility()->generateBuffer( buffType );
-        getUtility()->bindBuffer( buffType, m_arrayBufferId );
-        getUtility()->bufferData( data, buffType );
+        getUtility()->bufferData( m_arrayBufferId, data, buffType );
     }
 
     {
         auto buffType = LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER;
         m_elementBufferId = getUtility()->generateBuffer( buffType );
-        getUtility()->bindBuffer( buffType, m_elementBufferId );
         std::vector<unsigned> iData( 4 );
         iData[0] = 0;
         iData[1] = 1;
         iData[2] = 2;
         iData[3] = 3;
-        getUtility()->bufferData( iData, buffType );
+        getUtility()->bufferData( m_elementBufferId, iData, buffType );
     }
 
     getUtility()->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );

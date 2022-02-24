@@ -343,12 +343,10 @@ Sprite* OpenGLWrapperConcrete::createSprite( unsigned* data, unsigned width,
     td.pixelFormat = CUL::Graphics::PixelFormat::RGBA;
     td.size = ii.size;
     td.data = sprite->getData();
-    m_oglUtility->setTextureData( td );
+    m_oglUtility->setTextureData( textureId, td );
 
-    m_oglUtility->setTextureParameter( TextureParameters::MAG_FILTER,
-                                       TextureFilterType::LINEAR );
-    m_oglUtility->setTextureParameter( TextureParameters::MIN_FILTER,
-                                       TextureFilterType::LINEAR );
+    m_oglUtility->setTextureParameter( textureId, TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
+    m_oglUtility->setTextureParameter( textureId, TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
 
     m_oglUtility->bindTexture( 0 );
 

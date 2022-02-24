@@ -22,9 +22,9 @@ TextureConcrete::TextureConcrete(
 
     m_textureId = utility->generateTexture();
     utility->bindTexture( m_textureId );
-    utility->setTextureData( m_texInfo );
-    utility->setTextureParameter( TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
-    utility->setTextureParameter( TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
+    utility->setTextureData( m_textureId, m_texInfo );
+    utility->setTextureParameter( m_textureId, TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
+    utility->setTextureParameter( m_textureId, TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
     utility->bindTexture( 0 );
 
     calculateQuads();

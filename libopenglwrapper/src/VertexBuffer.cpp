@@ -15,8 +15,7 @@ void VertexBuffer::loadData()
     release();
     m_bufferId =
         getUtility()->generateBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
-    getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_bufferId );
-    getUtility()->bufferData( m_vertexData.vertices, LOGLW::BufferTypes::ARRAY_BUFFER );
+    getUtility()->bufferData( m_bufferId, m_vertexData.vertices, LOGLW::BufferTypes::ARRAY_BUFFER );
 
     unsigned attribIndex = 0;
     unsigned numberOfComponents = 3;
