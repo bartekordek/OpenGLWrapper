@@ -40,6 +40,8 @@ private:
     void renderLegacy();
     CUL::Graphics::IImage* m_image = nullptr;
 
+    std::unique_ptr<class Shader> m_shader;
+
     CUL::GUTILS::DumbPtr<VertexArray> m_vao;
 
     unsigned m_arrayBufferId = 0u;

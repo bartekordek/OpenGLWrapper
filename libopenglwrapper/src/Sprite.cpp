@@ -1,6 +1,7 @@
 #include "libopenglwrapper/Sprite.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/VertexArray.hpp"
+#include "libopenglwrapper/Shader.hpp"
 
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Math/Algorithms.hpp"
