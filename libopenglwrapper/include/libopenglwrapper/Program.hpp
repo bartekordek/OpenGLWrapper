@@ -9,6 +9,8 @@
 #include "CUL/STL_IMPORTS/STD_variant.hpp"
 #include "CUL/STL_IMPORTS/STD_deque.hpp"
 
+#include "CUL/IMPORT_GLM.hpp"
+
 #include "CUL/Filesystem/Path.hpp"
 
 NAMESPACE_BEGIN( LOGLW )
@@ -35,6 +37,9 @@ public:
     void setAttrib( const String& name, unsigned value );
     void setAttrib( const String& name, int value );
     void setAttrib( const String& name, bool value );
+    void setAttrib( const String& name, const glm::mat2& mat );
+    void setAttrib( const String& name, const glm::mat3& mat );
+    void setAttrib( const String& name, const glm::mat4& mat );
 
     String getAttributeStr( const String& name );
     float getAttributeF( const String& name );

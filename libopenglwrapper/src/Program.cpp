@@ -48,7 +48,25 @@ void Program::setAttrib( const String& name, int value )
 void Program::setAttrib( const String& name, bool value )
 {
     auto location = getUtility()->getUniformLocation( m_id, name );
-    getUtility()->setAttribValue(location,value);
+    getUtility()->setAttribValue( location, value );
+}
+
+void Program::setAttrib( const String& name, const glm::mat2& value )
+{
+    auto location = getUtility()->getUniformLocation( m_id, name );
+    getUtility()->setUniformValue( location, value );
+}
+
+void Program::setAttrib( const String& name, const glm::mat3& value )
+{
+    auto location = getUtility()->getUniformLocation( m_id, name );
+    getUtility()->setUniformValue( location, value );
+}
+
+void Program::setAttrib( const String& name, const glm::mat4& value )
+{
+    auto location = getUtility()->getUniformLocation( m_id, name );
+    getUtility()->setUniformValue( location, value );
 }
 
 String Program::getAttributeStr( const String& )

@@ -7,12 +7,14 @@
 
 #include "CUL/STL_IMPORTS/STD_deque.hpp"
 
+class CUL::CULInterface;
+
 NAMESPACE_BEGIN( LOGLW )
 
 class LIBOPENGLWRAPPER_API Sprite final: public IObject, public IUtilityUser
 {
 public:
-    Sprite();
+    Sprite( CUL::CULInterface* cul );
 
     void LoadImage( const CUL::FS::Path& imagePath, CUL::Graphics::IImageLoader* imageLoader );
     void LoadImage( CUL::Graphics::DataType* data, unsigned width, unsigned height, CUL::Graphics::IImageLoader*, unsigned textureId );
@@ -38,9 +40,12 @@ private:
 
     void renderModern();
     void renderLegacy();
+
+    CUL::CULInterface* m_cul = nullptr;
+
     CUL::Graphics::IImage* m_image = nullptr;
 
-    std::unique_ptr<class Shader> m_shader;
+    std::unique_ptr<class Program> m_shaderProgram;
 
     CUL::GUTILS::DumbPtr<VertexArray> m_vao;
 

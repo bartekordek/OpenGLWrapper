@@ -1,17 +1,19 @@
 #include "libopenglwrapper/Sprite.hpp"
 #include "libopenglwrapper/IUtility.hpp"
 #include "libopenglwrapper/VertexArray.hpp"
+#include "libopenglwrapper/Program.hpp"
 #include "libopenglwrapper/Shader.hpp"
 
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Math/Algorithms.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Graphics/IImage.hpp"
 
 #undef LoadImage
 
 using namespace LOGLW;
 
-Sprite::Sprite()
+Sprite::Sprite( CUL::CULInterface* cul ) : m_cul(cul)
 {
 }
 
@@ -48,90 +50,33 @@ CUL::Graphics::DataType* Sprite::getData() const
     return m_image->getData();
 }
 
-void Sprite::renderModern()
-{
-    if( !m_initialized )
-    {
-        init();
-    }
-
-    ITransformable::Pos worldPosition =  ITransformable::getWorldPosition();
-
-    auto imgSize = m_image->getImageInfo().size;
-    auto canvasSize = m_image->getImageInfo().canvasSize;
-
-    auto pivotTimesSize = ITransformable::getPivot();
-    pivotTimesSize.x() *= imgSize.width;
-    pivotTimesSize.y() *= imgSize.height;
-
-    ITransformable::Pos targetPosition = worldPosition - pivotTimesSize;
-
-    getUtility()->translate(targetPosition);
-    getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_arrayBufferId );
-    getUtility()->bindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER, m_elementBufferId );
-
-    std::vector<TextureData2D> vData( 4 );
-
-    float texTop = 0.f;
-    float texBottom = (float)imgSize.height / (float)canvasSize.height;
-    float texLeft = 0.f;
-    float texRight = (float)imgSize.width / (float)canvasSize.width;
-
-    QuadSimple tex;
-    tex.bottom = (float)imgSize.height / canvasSize.height;
-    tex.topRight = (float)imgSize.width / canvasSize.width;
-
-    auto quadWidth = static_cast<float>( imgSize.width );
-    auto quadHeight = static_cast<float>( imgSize.height );
-
-    vData[0].s = texLeft;
-    vData[0].t = texTop;
-    vData[1].s = texRight;
-    vData[1].t = texTop;
-    vData[2].s = texRight;
-    vData[2].t = texBottom;
-    vData[3].s = texLeft;
-    vData[3].t = texBottom;
-
-    vData[0].x = 0.f;
-    vData[0].y = quadHeight;
-
-    vData[1].x = quadWidth;
-    vData[1].y = quadHeight;
-
-    vData[2].x = quadWidth;
-    vData[2].y = 0.f;
-
-    vData[3].x = 0.f;
-    vData[3].y = 0.f;
-
-    getUtility()->bindTexture( m_textureId );
-
-    getUtility()->setClientState( ClientStateTypes::VERTEX_ARRAY, true );
-    getUtility()->setClientState( ClientStateTypes::TEXTURE_COORD_ARRAY, true );
-
-    getUtility()->bufferSubdata( m_arrayBufferId, BufferTypes::ARRAY_BUFFER, vData );
-
-    auto texCoordOffset = offsetof( TextureData2D, s );
-    getUtility()->texCoordPointer( 2, DataType::FLOAT, sizeof( TextureData2D ), (void*)texCoordOffset );
-
-    auto positionOffset = offsetof( TextureData2D, x );
-    const size_t stride = sizeof( TextureData2D );
-    getUtility()->vertexPointer( 2, DataType::FLOAT, stride, (void*)positionOffset );
-
-    getUtility()->bindBuffer( BufferTypes::ELEMENT_ARRAY_BUFFER, m_elementBufferId );
-
-    getUtility()->drawElementsFromLastBuffer(PrimitiveType::QUADS, DataType::UNSIGNED_INT,4);
-
-    getUtility()->setClientState( ClientStateTypes::TEXTURE_COORD_ARRAY, false );
-    getUtility()->setClientState( ClientStateTypes::VERTEX_ARRAY, false );
-
-    getUtility()->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
-    getUtility()->unbindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
-}
 
 void Sprite::init()
 {
+    m_shaderProgram = std::make_unique<Program>();
+    m_shaderProgram->initialize();
+
+    const std::string vertexShaderSource =
+#include "embedded_shaders/camera.vert"
+        ;
+
+    const std::string fragmentShaderSource =
+#include "embedded_shaders/camera.frag"
+        ;
+
+    auto fragmentShaderFile = m_cul->getFF()->createRegularFileRawPtr( "embedded_shaders/camera.frag" );
+    fragmentShaderFile->loadFromString( fragmentShaderSource );
+    auto fragmentShader = new Shader( fragmentShaderFile );
+
+    auto vertexShaderCode = m_cul->getFF()->createRegularFileRawPtr( "embedded_shaders/camera.vert" );
+    vertexShaderCode->loadFromString( vertexShaderSource );
+    auto vertexShader = new Shader( vertexShaderCode );
+
+    m_shaderProgram->attachShader( vertexShader );
+    m_shaderProgram->attachShader( fragmentShader );
+    m_shaderProgram->link();
+    m_shaderProgram->validate();
+
     m_textureId = getUtility()->generateTexture();
 
     const auto& ii = getImageInfo();
@@ -146,28 +91,78 @@ void Sprite::init()
     getUtility()->setTextureParameter( m_textureId, TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
     getUtility()->setTextureParameter( m_textureId, TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
 
-    {
-        auto buffType = LOGLW::BufferTypes::ARRAY_BUFFER;
-        std::vector<TextureData2D> data( 4 );
-        m_arrayBufferId = getUtility()->generateBuffer( buffType );
-        getUtility()->bufferData( m_arrayBufferId, data, buffType );
-    }
 
-    {
-        auto buffType = LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER;
-        m_elementBufferId = getUtility()->generateBuffer( buffType );
-        std::vector<unsigned> iData( 4 );
-        iData[0] = 0;
-        iData[1] = 1;
-        iData[2] = 2;
-        iData[3] = 3;
-        getUtility()->bufferData( m_elementBufferId, iData, buffType );
-    }
+    m_arrayBufferId = getUtility()->generateBuffer( LOGLW::BufferTypes::VERTEX_ARRAY );
+    getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, m_arrayBufferId );
+    getUtility()->enableVertexAttribArray( 0 );
+    getUtility()->enableVertexAttribArray( 1 );
+
+    auto bufferId = getUtility()->generateBuffer( BufferTypes::ARRAY_BUFFER );
+        
+
+    std::vector<float> data = {
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+        0.5f,  -0.5f, -0.5f, 1.0f, 0.0f,
+        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
+        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
+        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f };
+
+    getUtility()->bufferData( bufferId, data, BufferTypes::ARRAY_BUFFER );
+    getUtility()->vertexAttribPointer( 0, 3, DataType::FLOAT, false, 5 * sizeof( float ) );
+    getUtility()->vertexAttribPointer( 1, 2, DataType::FLOAT, false, 5 * sizeof( float ), (void*)( 3 * sizeof(float) ) );
+
 
     getUtility()->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
     getUtility()->unbindBuffer( LOGLW::BufferTypes::ELEMENT_ARRAY_BUFFER );
 
+
+    m_shaderProgram->enable();
+    m_shaderProgram->setAttrib( "texture1", 0 );
+    m_shaderProgram->disable();
+
     m_initialized = true;
+}
+
+
+void Sprite::renderModern()
+{
+    if( !m_initialized )
+    {
+        init();
+    }
+
+    getUtility()->setActiveTexture(0);
+    getUtility()->bindTexture( m_textureId );
+
+    m_shaderProgram->enable();
+
+    glm::vec3 Position = glm::vec3( 0, 0, 0 );
+    glm::vec3 Front = glm::vec3(0.0f, 0.0f, -1.0f);
+    glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
+    glm::mat4 viewMatrix = glm::lookAt( Position, Position + Front, up );
+
+
+    glm::mat4 projection = glm::perspective( glm::radians(90.f ), 16.f/9.f, 0.1f, 100.0f );
+
+    glm::mat4 model = glm::mat4( 1.0f );  // make sure to initialize matrix to identity matrix first
+
+    const Pos& position = getWorldPosition();
+    glm::vec3 m_pos = position.toGlmVec();
+    model = glm::translate( model, m_pos );
+
+    m_shaderProgram->setAttrib( "projection", projection );
+    m_shaderProgram->setAttrib( "view", viewMatrix );
+    m_shaderProgram->setAttrib( "model", model );
+
+    getUtility()->bindBuffer(BufferTypes::VERTEX_ARRAY, m_arrayBufferId);
+
+    getUtility()->drawArrays(PrimitiveType::TRIANGLES, 0, 6);
+
+    m_shaderProgram->disable();
+
+    getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, 0 );
+    getUtility()->bindTexture( 0u );
 }
 
 void Sprite::renderLegacy()

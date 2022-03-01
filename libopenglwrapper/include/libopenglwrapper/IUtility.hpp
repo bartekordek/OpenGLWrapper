@@ -12,6 +12,7 @@
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "libopenglwrapper/ProjectionData.hpp"
+#include "CUL/IMPORT_GLM.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -236,6 +237,14 @@ public:
     virtual void setUniformValue( int uniformLocation,
                                   unsigned value )  = 0;
 
+    void setUniformValue( int uniformLocation, const glm::vec2& val );
+    void setUniformValue( int uniformLocation, const glm::vec3& val );
+    void setUniformValue( int uniformLocation, const glm::vec4& val );
+
+    void setUniformValue( int uniformLocation, const glm::mat2& val );
+    void setUniformValue( int uniformLocation, const glm::mat3& val );
+    void setUniformValue( int uniformLocation, const glm::mat4& val );
+
     virtual void setProjectionAndModelToIdentity()  = 0;
     virtual void clearColorAndDepthBuffer()  = 0;
     virtual void createQuad( float scale = 1.0f )  = 0;
@@ -340,6 +349,7 @@ public:
     // Texturing
     virtual void setTexuring( const bool enabled )  = 0;
     virtual unsigned generateTexture()  = 0;
+    void setActiveTexture(unsigned id);
     virtual void bindTexture( const unsigned int textureId ) = 0;
     virtual void setTextureParameter( uint8_t textureId, const TextureParameters type,
                                       const TextureFilterType val ) = 0;
