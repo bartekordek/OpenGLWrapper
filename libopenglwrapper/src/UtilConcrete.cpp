@@ -195,7 +195,7 @@ void UtilConcrete::lookAt( const Pos3Dd& eye, const Pos3Dd& center,
 unsigned int UtilConcrete::createProgram()
 {
     const auto programId = static_cast<unsigned int>( glCreateProgram() );
-    log( "UtilConcrete::createProgram, programId = " + String( programId ) );
+    log( "[UtilConcrete] glCreateProgram: " + String( programId ) );
 
     if( 0 == programId )
     {
@@ -231,7 +231,7 @@ void UtilConcrete::linkProgram( unsigned programId )
 
 void UtilConcrete::validateProgram( unsigned programId )
 {
-    log( "validateProgram( " + String( programId ) + ");" );
+    log( "[UtilConcrete] glValidateProgram( " + String( programId ) + ");" );
     glValidateProgram( programId );
     assertOnProgramError( programId, GL_VALIDATE_STATUS );
 }
@@ -240,10 +240,12 @@ unsigned int UtilConcrete::createShader( const IFile& shaderCode )
 {
     const auto shaderType =
         UtilConcrete::getShaderType( shaderCode.getPath().getExtension() );
+    log( "[UtilConcrete] glCreateShader( " + String( static_cast<GLenum>( shaderType ) ) + ");" );
     const auto id = static_cast<unsigned int>(
         glCreateShader( static_cast<GLenum>( shaderType ) ) );
 
     auto codeLength = static_cast<GLint>( shaderCode.getLinesCount() );
+    log( "[UtilConcrete] glCreateShader( " + String( static_cast<GLenum>( shaderType ) ) + ");" );
     glShaderSource( id, codeLength, shaderCode.getContent(), nullptr );
     glCompileShader( id );
 
@@ -328,8 +330,8 @@ void UtilConcrete::attachShader( unsigned programId, unsigned shaderId )
     glAttachShader( toGluint( programId ), toGluint( shaderId ) );
 
     const GLenum err = glGetError();
-    customAssert( GL_NO_ERROR == err, "Error creating program, error numer: " +
-                                          CUL::String( err ) );
+    const GLubyte* errorAsString = gluErrorString( err );
+    customAssert( GL_NO_ERROR == err, "Error creating program, error numer: " + CUL::String( errorAsString ) );
 }
 
 void UtilConcrete::dettachShader( unsigned programId, unsigned shaderId ) 
