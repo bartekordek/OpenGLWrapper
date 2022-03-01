@@ -5,7 +5,6 @@ using namespace LOGLW;
 Shader::Shader( CUL::FS::IFile* file ):
     m_shaderCode( file )
 {
-    m_shaderCode->load( true );
     m_id = getUtility()->createShader( *m_shaderCode );
 }
 
