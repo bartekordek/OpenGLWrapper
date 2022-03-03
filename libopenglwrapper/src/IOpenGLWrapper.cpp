@@ -1,5 +1,6 @@
 #include "libopenglwrapper/IOpenGLWrapper.hpp"
 #include "OpenGLWrapperConcrete.hpp"
+#include "libopenglwrapper/Camera.hpp"
 
 #include "SDL2Wrapper/WindowData.hpp"
 
@@ -37,6 +38,16 @@ IOpenGLWrapper* IOpenGLWrapper::createOpenGLWrapper(
 
     s_instance = new OpenGLWrapperConcrete( sdlWrap, legacy );
     return s_instance;
+}
+
+void IOpenGLWrapper::initialize()
+{
+    m_camera = std::make_unique<Camera>(&getProjectionData());
+}
+
+Camera* IOpenGLWrapper::getCamera()
+{
+    return m_camera.get();
 }
 
 IOpenGLWrapper* IOpenGLWrapper::getInstance()

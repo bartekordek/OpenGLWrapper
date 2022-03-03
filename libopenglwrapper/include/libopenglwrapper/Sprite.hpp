@@ -11,10 +11,12 @@ class CUL::CULInterface;
 
 NAMESPACE_BEGIN( LOGLW )
 
+class Camera;
+
 class LIBOPENGLWRAPPER_API Sprite final: public IObject, public IUtilityUser
 {
 public:
-    Sprite( CUL::CULInterface* cul );
+    Sprite( Camera* camera, CUL::CULInterface* cul );
 
     void LoadImage( const CUL::FS::Path& imagePath, CUL::Graphics::IImageLoader* imageLoader );
     void LoadImage( CUL::Graphics::DataType* data, unsigned width, unsigned height, CUL::Graphics::IImageLoader*, unsigned textureId );
@@ -41,6 +43,7 @@ private:
     void renderModern();
     void renderLegacy();
 
+    Camera* m_camera = nullptr; 
     CUL::CULInterface* m_cul = nullptr;
 
     CUL::Graphics::IImage* m_image = nullptr;

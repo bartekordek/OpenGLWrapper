@@ -3,6 +3,7 @@
 #include "libopenglwrapper/VertexArray.hpp"
 #include "libopenglwrapper/Program.hpp"
 #include "libopenglwrapper/Shader.hpp"
+#include "libopenglwrapper/Camera.hpp"
 
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Math/Algorithms.hpp"
@@ -13,7 +14,7 @@
 
 using namespace LOGLW;
 
-Sprite::Sprite( CUL::CULInterface* cul ) : m_cul(cul)
+Sprite::Sprite( Camera* camera, CUL::CULInterface* cul ) : m_camera(camera), m_cul( cul )
 {
 }
 
@@ -124,7 +125,6 @@ void Sprite::init()
     m_initialized = true;
 }
 
-
 void Sprite::renderModern()
 {
     if( !m_initialized )
@@ -137,21 +137,15 @@ void Sprite::renderModern()
 
     m_shaderProgram->enable();
 
-    glm::vec3 Position = glm::vec3( 0, 0, 0 );
-    glm::vec3 Front = glm::vec3(0.0f, 0.0f, -1.0f);
-    glm::vec3 up = glm::vec3(0.f, -1.f, 0.f);
-    glm::mat4 viewMatrix = glm::lookAt( Position, Position + Front, up );
-
-
-    glm::mat4 projection = glm::perspective( glm::radians(90.f ), 16.f/9.f, 0.1f, 100.0f );
-
     glm::mat4 model = glm::mat4( 1.0f );  // make sure to initialize matrix to identity matrix first
-
     const Pos& position = getWorldPosition();
     glm::vec3 m_pos = position.toGlmVec();
     model = glm::translate( model, m_pos );
 
-    m_shaderProgram->setAttrib( "projection", projection );
+    auto projectionMatrix = m_camera->getProjectionMatrix();
+    auto viewMatrix = m_camera->getViewMatrix();
+
+    m_shaderProgram->setAttrib( "projection", projectionMatrix );
     m_shaderProgram->setAttrib( "view", viewMatrix );
     m_shaderProgram->setAttrib( "model", model );
 

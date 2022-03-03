@@ -33,6 +33,7 @@ Program* VertexArray::getProgram()
 
 void VertexArray::createShader( const CUL::FS::Path& path )
 {
+    CUL::Assert::simple( path.exists(), "File does not exist: " + path.getPath() );
     std::lock_guard<std::mutex> guard( m_shadersMtx );
     if( m_shaderProgram.initialized() == false )
     {
@@ -119,8 +120,8 @@ void VertexArray::runTasks()
                 {
                     auto shaderPath = m_shadersPaths.front();
 
-                    auto shaderFile = getUtility()->getCUl()->getFF()->createFileFromPath(
-                            shaderPath );
+                    auto shaderFile = getUtility()->getCUl()->getFF()->createFileFromPath( shaderPath );
+                    shaderFile->load(true);
                     auto shader = new Shader( shaderFile );
                     m_shaderProgram.attachShader( shader );
 

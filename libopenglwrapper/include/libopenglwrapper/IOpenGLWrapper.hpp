@@ -30,6 +30,7 @@ NAMESPACE_BEGIN( LOGLW )
 class IDebugOverlay;
 class ProjectionData;
 class ITextureFactory;
+class Camera;
 
 using String = CUL::String;
 
@@ -48,7 +49,7 @@ class LIBOPENGLWRAPPER_API IOpenGLWrapper : public SDL2W::IMouseObservable,
 public:
     IOpenGLWrapper();
 
-    virtual void initialize() = 0;
+    virtual void initialize();
     virtual void renderFrame() = 0;
     virtual void runEventLoop() = 0;
     virtual void stopEventLoop() = 0;
@@ -72,6 +73,8 @@ public:
 
     virtual CUL::CULInterface* getCul() = 0;
     virtual CUL::LOG::ILogger* getLoger() = 0;
+
+    Camera* getCamera();
 
     virtual void beforeFrame( const EmptyFunctionCallback& callback ) = 0;
 
@@ -115,6 +118,8 @@ public:
 
 protected:
 private:
+    std::unique_ptr<Camera> m_camera;
+
     IOpenGLWrapper( const IOpenGLWrapper& val ) = delete;
     IOpenGLWrapper( IOpenGLWrapper&& val ) = delete;
     IOpenGLWrapper& operator=( const IOpenGLWrapper& rhv ) = delete;

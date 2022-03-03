@@ -316,11 +316,11 @@ IPoint* OpenGLWrapperConcrete::createPoint( const Point& position,
 Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
                                              bool  )
 {
-    auto sprite = new Sprite(getCul());
+    auto sprite = new Sprite( getCamera(), getCul());
 
     CUL::FS::Path fsPath = path;
     CUL::Assert::simple( fsPath.exists(), "File " + path + " does not exist." );
-    
+
     sprite->LoadImage( path, m_imageLoader );
 
     addObjectToRender( sprite );
@@ -331,7 +331,7 @@ Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
 Sprite* OpenGLWrapperConcrete::createSprite( unsigned* data, unsigned width,
                                              unsigned height, bool withVBO )
 {
-    auto sprite = new Sprite( getCul() );
+    auto sprite = new Sprite( getCamera(), getCul() );
     auto textureId = m_oglUtility->generateTexture();
     sprite->LoadImage( (CUL::Graphics::DataType*)data, width, height,
                        m_imageLoader, textureId );
@@ -444,6 +444,8 @@ void OpenGLWrapperConcrete::initDebugInfo()
 
 void OpenGLWrapperConcrete::initialize()
 {
+    IOpenGLWrapper::initialize();
+
     m_logger->log( "OpenGLWrapperConcrete::initialize()..." );
 
     m_glContext = m_oglUtility->initContextVersion( m_activeWindow, 4, 3 );
