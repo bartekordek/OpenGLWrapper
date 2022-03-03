@@ -182,12 +182,24 @@ struct QuadSimple
     float topRight = 0.f;
 };
 
+struct VertexAttributePtrMeta
+{
+    unsigned vao = 0u;
+    unsigned vbo = 0u;
+    DataType dataType = DataType::NONE;
+    unsigned vertexAttributeId = 0u;
+    int componentsPerVertexAttribute = 0;
+    bool normalized = true;
+    int stride = 0;
+    const void* offset = nullptr;
+};
+
 class Viewport;
 
-class LIBOPENGLWRAPPER_API IUtility
+class IUtility
 {
 public:
-    IUtility();
+    LIBOPENGLWRAPPER_API IUtility();
 
     virtual bool isLegacy()  = 0;
 
@@ -306,11 +318,7 @@ public:
                                              unsigned count )  = 0;
     virtual void drawArrays( const PrimitiveType primitiveType, unsigned first,
                              unsigned count )  = 0;
-    virtual void vertexAttribPointer( unsigned vertexAttributeId,
-                                      int componentsPerVertexAttribute,
-                                      const DataType dataType, bool normalized,
-                                      int stride,
-                                      const void* offset = nullptr )  = 0;
+    void vertexAttribPointer( const VertexAttributePtrMeta& meta );
     virtual void enableVertexAttribArray( unsigned attributeId )  = 0;
     virtual void setVertexPointer( int coordinatesPerVertex, DataType dataType,
                                    int stride, const void* data )  = 0;
@@ -364,7 +372,10 @@ public:
     virtual ~IUtility();
 
 protected:
+    std::map<BufferTypes, uint8_t> m_currentBufferId;
+
 private:
+    virtual void log( const String& text, const CUL::LOG::Severity severity = CUL::LOG::Severity::INFO ) = 0;
 };
 
 NAMESPACE_END( LOGLW )

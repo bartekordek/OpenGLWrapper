@@ -329,7 +329,7 @@ Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
 }
 
 Sprite* OpenGLWrapperConcrete::createSprite( unsigned* data, unsigned width,
-                                             unsigned height, bool withVBO )
+                                             unsigned height, bool )
 {
     auto sprite = new Sprite( getCamera(), getCul() );
     auto textureId = m_oglUtility->generateTexture();

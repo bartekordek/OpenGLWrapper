@@ -9,6 +9,8 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
+#undef log
+
 class UtilConcrete final: public IUtility
 {
 public:
@@ -122,11 +124,6 @@ private:
                                      unsigned count )  override;
     void drawArrays( const PrimitiveType primitiveType, unsigned first,
                      unsigned count )  override;
-    void vertexAttribPointer( unsigned vertexAttributeId,
-                              int componentsPerVertexAttribute,
-                              const DataType dataType, bool normalized,
-                              int stride,
-                              const void* offset = nullptr )  override;
     void enableVertexAttribArray( unsigned attributeId )  override;
     void setVertexPointer( int coordinatesPerVertex, DataType dataType,
                            int stride, const void* data )  override;
@@ -164,7 +161,7 @@ private:
 
     void assertOnProgramError( unsigned programId, unsigned val ) ;
     void log( const String& text, const CUL::LOG::Severity severity =
-                                      CUL::LOG::Severity::INFO );
+                                      CUL::LOG::Severity::INFO ) override;
     void customAssert( const bool value, const CUL::String& message ) ;
     void setDepthTest( const bool enabled )  override;
     void setBackfaceCUll( const bool enabled )  override;
@@ -188,7 +185,6 @@ private:
     CUL::LOG::ILogger* m_logger = nullptr;
     unsigned int m_currentMatrix = 0;
     uint8_t m_lastTextureId = 0u;
-    std::map<BufferTypes, uint8_t> m_currentBufferId;
     String m_lastLog;
     CUL::LOG::Severity m_lastLogSeverity;
 
