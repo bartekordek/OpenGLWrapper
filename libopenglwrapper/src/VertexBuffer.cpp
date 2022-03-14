@@ -21,32 +21,35 @@ void VertexBuffer::loadData()
     unsigned numberOfComponents = 3;
     int stride = 0;  // 3 * sizeof( m_vertices.at( 0 ) );
 
+    VertexAttributePtrMeta meta;
     if( m_vertexData.containsColorData )
     {
         if( m_vertexData.containsTextureCoords )
         {
-            stride = 8 * sizeof( float );
-            size_t ptr = 0;
+            meta.componentsPerVertexAttribute = 3;
+            meta.dataType = DataType::FLOAT;
+            meta.normalized = false;
+            meta.stride = 8 * sizeof( float );
+            meta.vao = 0;
+            meta.vbo = m_bufferId;
+            meta.vertexAttributeId = attribIndex++;
+
             // position attribute
-            getUtility()->vertexAttribPointer( attribIndex, 3,
-                                               LOGLW::DataType::FLOAT, false,
-                                               stride, ( void* ) ptr );
+            getUtility()->vertexAttribPointer( meta );
             getUtility()->enableVertexAttribArray( attribIndex );
             ++attribIndex;
 
             // color attribute
-            ptr = 3 * sizeof( float );
-            getUtility()->vertexAttribPointer( attribIndex, 3,
-                                               LOGLW::DataType::FLOAT, false,
-                                               stride, ( void* ) ptr );
+            meta.offset = (void*) (3 * sizeof( float ));
+            meta.vertexAttributeId = attribIndex++;
+            getUtility()->vertexAttribPointer( meta );
             getUtility()->enableVertexAttribArray( attribIndex );
             ++attribIndex;
 
             // texture coord attribute
-            ptr = 6 * sizeof( float );
-            getUtility()->vertexAttribPointer( attribIndex, 2,
-                                               LOGLW::DataType::FLOAT, false,
-                                               stride, ( void* ) ptr );
+            meta.offset = (void*)( 6 * sizeof( float ) );
+            meta.vertexAttributeId = attribIndex++;
+            getUtility()->vertexAttribPointer( meta );
             getUtility()->enableVertexAttribArray( attribIndex );
 
             //// position attribute
@@ -61,27 +64,33 @@ void VertexBuffer::loadData()
         }
         else
         {
-            stride = 6 * sizeof( float );
-            size_t ptr = 0;
+            meta.componentsPerVertexAttribute = numberOfComponents;
+            meta.dataType = DataType::FLOAT;
+            meta.normalized = false;
+            meta.stride = 6 * sizeof( float );
+            meta.vao = 0;
+            meta.vbo = m_bufferId;
+            meta.vertexAttributeId = attribIndex++;
 
-            getUtility()->vertexAttribPointer( attribIndex, numberOfComponents,
-                                               LOGLW::DataType::FLOAT, false,
-                                               stride, ( void* ) ptr );
+            getUtility()->vertexAttribPointer( meta );
             getUtility()->enableVertexAttribArray( attribIndex );
 
-            ++attribIndex;
-            ptr = 3 * sizeof( float );
-            getUtility()->vertexAttribPointer( attribIndex, numberOfComponents,
-                                               LOGLW::DataType::FLOAT, false,
-                                               stride, ( void* ) ptr );
+            meta.vertexAttributeId = attribIndex++;
+            meta.offset = (void*)( 3 * sizeof( float ) );
+            getUtility()->vertexAttribPointer( meta );
             getUtility()->enableVertexAttribArray( attribIndex );
         }
     }
     else
     {
-        getUtility()->vertexAttribPointer( attribIndex, numberOfComponents,
-                                           LOGLW::DataType::FLOAT, false,
-                                           stride, nullptr );
+        meta.componentsPerVertexAttribute = numberOfComponents;
+        meta.dataType = DataType::FLOAT;
+        meta.normalized = false;
+        meta.stride = 8 * sizeof( float );
+        meta.vao = 0;
+        meta.vbo = m_bufferId;
+        meta.vertexAttributeId = attribIndex++;
+        getUtility()->vertexAttribPointer( meta );
         getUtility()->enableVertexAttribArray( attribIndex );
     }
 

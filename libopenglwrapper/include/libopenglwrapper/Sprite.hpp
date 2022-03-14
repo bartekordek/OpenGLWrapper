@@ -50,10 +50,9 @@ private:
 
     std::unique_ptr<class Program> m_shaderProgram;
 
-    CUL::GUTILS::DumbPtr<VertexArray> m_vao;
-
-    unsigned m_arrayBufferId = 0u;
     unsigned m_elementBufferId = 0u;
+    unsigned m_vao = 0u;
+    unsigned m_vbo = 0u;
 
     // Deleted:
     Sprite( const Sprite& arg ) = delete;

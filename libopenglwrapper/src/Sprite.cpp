@@ -51,7 +51,6 @@ CUL::Graphics::DataType* Sprite::getData() const
     return m_image->getData();
 }
 
-
 void Sprite::init()
 {
     m_shaderProgram = std::make_unique<Program>();
@@ -92,26 +91,37 @@ void Sprite::init()
     getUtility()->setTextureParameter( m_textureId, TextureParameters::MAG_FILTER, TextureFilterType::LINEAR );
     getUtility()->setTextureParameter( m_textureId, TextureParameters::MIN_FILTER, TextureFilterType::LINEAR );
 
-
-    m_arrayBufferId = getUtility()->generateBuffer( LOGLW::BufferTypes::VERTEX_ARRAY );
-    getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, m_arrayBufferId );
+    m_vao = getUtility()->generateBuffer( LOGLW::BufferTypes::VERTEX_ARRAY );
+    getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, m_vao );
     getUtility()->enableVertexAttribArray( 0 );
     getUtility()->enableVertexAttribArray( 1 );
 
-    auto bufferId = getUtility()->generateBuffer( BufferTypes::ARRAY_BUFFER );
-        
+    m_vbo = getUtility()->generateBuffer( BufferTypes::ARRAY_BUFFER );
 
     std::vector<float> data = {
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-        0.5f,  -0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f };
 
-    getUtility()->bufferData( bufferId, data, BufferTypes::ARRAY_BUFFER );
-    getUtility()->vertexAttribPointer( 0, 3, DataType::FLOAT, false, 5 * sizeof( float ) );
-    getUtility()->vertexAttribPointer( 1, 2, DataType::FLOAT, false, 5 * sizeof( float ), (void*)( 3 * sizeof(float) ) );
+    getUtility()->bufferData( m_vbo, data, BufferTypes::ARRAY_BUFFER );
+
+    VertexAttributePtrMeta meta;
+    meta.vertexAttributeId = 0;
+    meta.componentsPerVertexAttribute = 3;
+    meta.dataType = DataType::FLOAT;
+    meta.normalized = false;
+    meta.stride = 5 * sizeof(float);
+    meta.vao = m_vao;
+    meta.vbo = m_vbo;
+    getUtility()->vertexAttribPointer( meta );
+
+    meta.vertexAttributeId = 1;
+    meta.componentsPerVertexAttribute = 2;
+    meta.offset = (void*)( 3 * sizeof( float ) );
+    getUtility()->vertexAttribPointer( meta );
 
 
     getUtility()->unbindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
@@ -149,12 +159,14 @@ void Sprite::renderModern()
     m_shaderProgram->setAttrib( "view", viewMatrix );
     m_shaderProgram->setAttrib( "model", model );
 
-    getUtility()->bindBuffer(BufferTypes::VERTEX_ARRAY, m_arrayBufferId);
+    getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, m_vao );
+    getUtility()->bindBuffer( BufferTypes::ARRAY_BUFFER, m_vbo );
 
-    getUtility()->drawArrays(PrimitiveType::TRIANGLES, 0, 6);
+    getUtility()->drawArrays(PrimitiveType::TRIANGLES, 0, 36);
 
     m_shaderProgram->disable();
 
+    getUtility()->bindBuffer( BufferTypes::ARRAY_BUFFER, 0 );
     getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, 0 );
     getUtility()->bindTexture( 0u );
 }

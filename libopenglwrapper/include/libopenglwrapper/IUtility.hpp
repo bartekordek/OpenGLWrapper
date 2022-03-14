@@ -191,7 +191,7 @@ struct VertexAttributePtrMeta
     int componentsPerVertexAttribute = 0;
     bool normalized = true;
     int stride = 0;
-    const void* offset = nullptr;
+    void* offset = nullptr;
 };
 
 class Viewport;
