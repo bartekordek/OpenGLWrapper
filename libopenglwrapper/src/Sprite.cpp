@@ -111,11 +111,12 @@ void Sprite::init()
     VertexAttributePtrMeta meta;
     meta.vertexAttributeId = 0;
     meta.componentsPerVertexAttribute = 3;
-    meta.dataType = DataType::FLOAT;
-    meta.normalized = false;
-    meta.stride = 5 * sizeof(float);
     meta.vao = m_vao;
     meta.vbo = m_vbo;
+    meta.dataType = DataType::FLOAT;
+    meta.normalized = false;
+    meta.stride = 5 * sizeof( float );
+
     getUtility()->vertexAttribPointer( meta );
 
     meta.vertexAttributeId = 1;

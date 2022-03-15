@@ -44,6 +44,7 @@ using Ptr = CUL::GUTILS::DumbPtr<Type>;
 
 struct LIBOPENGLWRAPPER_API VertexBufferData
 {
+    class VertexArray* vao = nullptr;
     std::vector<float> vertices;
     IndexBuffer::DataType indices;
     bool containsColorData = false;

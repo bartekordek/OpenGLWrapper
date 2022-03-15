@@ -150,23 +150,22 @@ void VertexArray::registerTask( TaskType taskType )
 
 void VertexArray::createVBOs()
 {
-    bind();
     std::lock_guard<std::mutex> guard( m_vbosMtx );
     while( !m_vboDataToPrepare.empty() )
     {
         auto vboData = m_vboDataToPrepare.back();
+        vboData.vao = this;
         auto vbo = new VertexBuffer( vboData );
         m_vbos.emplace_back( vbo );
         m_vboDataToPrepare.pop_back();
         ++m_vbosCount;
     }
-    unbind();
 }
 
 void VertexArray::createVAO()
 {
     m_bufferId = IUtilityUser::getUtility()->generateBuffer(
-        LOGLW::BufferTypes::VERTEX_ARRAY );
+        BufferTypes::VERTEX_ARRAY );
 }
 
 void VertexArray::bind()

@@ -1,4 +1,5 @@
 #include "libopenglwrapper/VertexBuffer.hpp"
+#include "libopenglwrapper/VertexArray.hpp"
 
 using namespace LOGLW;
 #include "libopenglwrapper/IUtility.hpp"
@@ -64,21 +65,25 @@ void VertexBuffer::loadData()
         }
         else
         {
-            meta.componentsPerVertexAttribute = numberOfComponents;
-            meta.dataType = DataType::FLOAT;
-            meta.normalized = false;
-            meta.stride = 6 * sizeof( float );
-            meta.vao = 0;
-            meta.vbo = m_bufferId;
-            meta.vertexAttributeId = attribIndex++;
+            if( m_vertexData.vao )
+            {
+                meta.componentsPerVertexAttribute = numberOfComponents;
+                meta.dataType = DataType::FLOAT;
+                meta.normalized = false;
+                meta.stride = 6 * sizeof( float );
+                meta.vao = m_vertexData.vao->getId();
+                meta.vbo = m_bufferId;
+                meta.vertexAttributeId = attribIndex++;
 
-            getUtility()->vertexAttribPointer( meta );
-            getUtility()->enableVertexAttribArray( attribIndex );
+                getUtility()->vertexAttribPointer( meta );
+                getUtility()->enableVertexAttribArray( attribIndex );
 
-            meta.vertexAttributeId = attribIndex++;
-            meta.offset = (void*)( 3 * sizeof( float ) );
-            getUtility()->vertexAttribPointer( meta );
-            getUtility()->enableVertexAttribArray( attribIndex );
+                meta.vertexAttributeId = attribIndex++;
+                meta.offset = (void*)( 3 * sizeof( float ) );
+                getUtility()->vertexAttribPointer( meta );
+                getUtility()->enableVertexAttribArray( attribIndex );
+            }
+
         }
     }
     else
@@ -117,6 +122,8 @@ void VertexBuffer::render()
     else
     {
         // TODO! need to check if there are actual trianiangles or other types.
+        getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, m_vertexData.vao->getId() );
+        getUtility()->bindBuffer( BufferTypes::ARRAY_BUFFER, m_bufferId );
         getUtility()->drawArrays( m_vertexData.primitiveType, 0, 3 );
     }
 }
