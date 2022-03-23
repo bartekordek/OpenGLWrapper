@@ -14,9 +14,15 @@ VertexBuffer::VertexBuffer( VertexBufferData& vertexData )
 void VertexBuffer::loadData()
 {
     release();
-    m_bufferId =
+
+    if( m_vertexData.vao )
+    {
+        m_vertexData.vao->bind();
+    }
+
+    m_vboId =
         getUtility()->generateBuffer( LOGLW::BufferTypes::ARRAY_BUFFER );
-    getUtility()->bufferData( m_bufferId, m_vertexData.vertices, LOGLW::BufferTypes::ARRAY_BUFFER );
+    getUtility()->bufferData( m_vboId, m_vertexData.vertices, LOGLW::BufferTypes::ARRAY_BUFFER );
 
     unsigned attribIndex = 0;
     unsigned numberOfComponents = 3;
@@ -32,7 +38,7 @@ void VertexBuffer::loadData()
             meta.normalized = false;
             meta.stride = 8 * sizeof( float );
             meta.vao = 0;
-            meta.vbo = m_bufferId;
+            meta.vbo = m_vboId;
             meta.vertexAttributeId = attribIndex++;
 
             // position attribute
@@ -72,16 +78,16 @@ void VertexBuffer::loadData()
                 meta.normalized = false;
                 meta.stride = 6 * sizeof( float );
                 meta.vao = m_vertexData.vao->getId();
-                meta.vbo = m_bufferId;
-                meta.vertexAttributeId = attribIndex++;
+                meta.vbo = m_vboId;
+                meta.vertexAttributeId = attribIndex;
 
                 getUtility()->vertexAttribPointer( meta );
-                getUtility()->enableVertexAttribArray( attribIndex );
+                getUtility()->enableVertexAttribArray( attribIndex++ );
 
-                meta.vertexAttributeId = attribIndex++;
+                meta.vertexAttributeId = attribIndex;
                 meta.offset = (void*)( 3 * sizeof( float ) );
                 getUtility()->vertexAttribPointer( meta );
-                getUtility()->enableVertexAttribArray( attribIndex );
+                getUtility()->enableVertexAttribArray( attribIndex++ );
             }
 
         }
@@ -93,7 +99,7 @@ void VertexBuffer::loadData()
         meta.normalized = false;
         meta.stride = 8 * sizeof( float );
         meta.vao = 0;
-        meta.vbo = m_bufferId;
+        meta.vbo = m_vboId;
         meta.vertexAttributeId = attribIndex++;
         getUtility()->vertexAttribPointer( meta );
         getUtility()->enableVertexAttribArray( attribIndex );
@@ -122,15 +128,13 @@ void VertexBuffer::render()
     else
     {
         // TODO! need to check if there are actual trianiangles or other types.
-        getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, m_vertexData.vao->getId() );
-        getUtility()->bindBuffer( BufferTypes::ARRAY_BUFFER, m_bufferId );
-        getUtility()->drawArrays( m_vertexData.primitiveType, 0, 3 );
+        getUtility()->drawArrays( m_vertexData.vao->getId(), m_vertexData.primitiveType, 0, 3 );
     }
 }
 
 unsigned VertexBuffer::getId() const
 {
-    return m_bufferId;
+    return m_vboId;
 }
 
 int VertexBuffer::getSize() const
@@ -140,7 +144,7 @@ int VertexBuffer::getSize() const
 
 void VertexBuffer::bind()
 {
-    getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_bufferId );
+    getUtility()->bindBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_vboId );
 }
 
 VertexBuffer::~VertexBuffer()
@@ -150,5 +154,5 @@ VertexBuffer::~VertexBuffer()
 
 void VertexBuffer::release()
 {
-    getUtility()->deleteBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_bufferId );
+    getUtility()->deleteBuffer( LOGLW::BufferTypes::ARRAY_BUFFER, m_vboId );
 }

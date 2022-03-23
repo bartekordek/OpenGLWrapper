@@ -68,7 +68,7 @@ private:
     void loadData();
     void release();
 
-    unsigned m_bufferId = 0;
+    unsigned m_vboId = 0;
     VertexBufferData m_vertexData;
     Ptr<IndexBuffer> m_indexBuffer;
     std::atomic<bool> m_load = true;

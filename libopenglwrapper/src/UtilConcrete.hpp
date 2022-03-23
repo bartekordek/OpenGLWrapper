@@ -122,8 +122,6 @@ private:
     void drawElementsFromLastBuffer( const PrimitiveType primitiveType,
                                      const DataType dataType,
                                      unsigned count )  override;
-    void drawArrays( const PrimitiveType primitiveType, unsigned first,
-                     unsigned count )  override;
     void enableVertexAttribArray( unsigned attributeId )  override;
     void setVertexPointer( int coordinatesPerVertex, DataType dataType,
                            int stride, const void* data )  override;

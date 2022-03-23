@@ -160,10 +160,9 @@ void Sprite::renderModern()
     m_shaderProgram->setAttrib( "view", viewMatrix );
     m_shaderProgram->setAttrib( "model", model );
 
-    getUtility()->bindBuffer( BufferTypes::VERTEX_ARRAY, m_vao );
     getUtility()->bindBuffer( BufferTypes::ARRAY_BUFFER, m_vbo );
 
-    getUtility()->drawArrays(PrimitiveType::TRIANGLES, 0, 36);
+    getUtility()->drawArrays( m_vao, PrimitiveType::TRIANGLES, 0, 36 );
 
     m_shaderProgram->disable();
 

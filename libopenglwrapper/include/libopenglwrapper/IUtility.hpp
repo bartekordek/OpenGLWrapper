@@ -316,8 +316,8 @@ public:
     virtual void drawElementsFromLastBuffer( const PrimitiveType primitiveType,
                                              const DataType dataType,
                                              unsigned count )  = 0;
-    virtual void drawArrays( const PrimitiveType primitiveType, unsigned first,
-                             unsigned count )  = 0;
+    void drawArrays( unsigned vaoId, const PrimitiveType primitiveType, unsigned first,
+                             unsigned count );
     void vertexAttribPointer( const VertexAttributePtrMeta& meta );
     virtual void enableVertexAttribArray( unsigned attributeId )  = 0;
     virtual void setVertexPointer( int coordinatesPerVertex, DataType dataType,

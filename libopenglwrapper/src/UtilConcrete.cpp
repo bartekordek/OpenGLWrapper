@@ -1308,24 +1308,6 @@ void UtilConcrete::drawElementsFromLastBuffer(
                     static_cast<GLenum>( dataType ), nullptr );
 }
 
-void UtilConcrete::drawArrays( const PrimitiveType primitiveType,
-                               unsigned first, unsigned count )
-{
-    /*
-    glDrawArrays - render primitives from array data.
-    mode - Specifies what kind of primitives to render. Symbolic constants
-    GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY,
-    GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES,
-    GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY and GL_PATCHES are
-    accepted.
-    first - Specifies the starting index in the enabled arrays.
-    count - Specifies the number of indices to be rendered.
-    */
-    log( "glDrawArrays" );
-    glDrawArrays( static_cast<GLenum>( primitiveType ),
-                  static_cast<GLint>( first ), static_cast<GLsizei>( count ) );
-}
-
 void UtilConcrete::enableVertexAttribArray( unsigned attributeId )
 {
     /*

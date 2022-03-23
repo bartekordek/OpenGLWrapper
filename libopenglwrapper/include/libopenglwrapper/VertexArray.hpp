@@ -55,6 +55,10 @@ public:
 
     VertexBuffer* getVertexBuffer();
 
+    void bind();
+    void unbind();
+    void release();
+
     ~VertexArray();
 protected:
 private:
@@ -79,11 +83,9 @@ private:
     void createVAO();
     void createVBOs();
 
-    void bind();
-    void unbind();
-    void release();
 
-    unsigned m_bufferId = 0;
+
+    unsigned m_vaoId = 0;
 
     std::mutex m_tasksMtx;
     std::deque<TaskType> m_tasks;

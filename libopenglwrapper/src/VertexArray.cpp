@@ -19,7 +19,7 @@ VertexArray::VertexArray( bool createOnRender )
 
 BuffIDType VertexArray::getId() const
 {
-    return m_bufferId;
+    return m_vaoId;
 }
 
 void VertexArray::addVBO( VertexBuffer* )
@@ -164,13 +164,13 @@ void VertexArray::createVBOs()
 
 void VertexArray::createVAO()
 {
-    m_bufferId = IUtilityUser::getUtility()->generateBuffer(
+    m_vaoId = IUtilityUser::getUtility()->generateBuffer(
         BufferTypes::VERTEX_ARRAY );
 }
 
 void VertexArray::bind()
 {
-    getUtility()->bindBuffer( LOGLW::BufferTypes::VERTEX_ARRAY, m_bufferId );
+    getUtility()->bindBuffer( LOGLW::BufferTypes::VERTEX_ARRAY, m_vaoId );
 }
 
 void VertexArray::unbind()
@@ -185,5 +185,5 @@ VertexArray::~VertexArray()
 
 void VertexArray::release()
 {
-    getUtility()->deleteBuffer( LOGLW::BufferTypes::VERTEX_ARRAY, m_bufferId );
+    getUtility()->deleteBuffer( LOGLW::BufferTypes::VERTEX_ARRAY, m_vaoId );
 }
