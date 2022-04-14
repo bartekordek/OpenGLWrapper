@@ -14,6 +14,7 @@
 #include "SDL2Wrapper/Input/IMouseObservable.hpp"
 
 #include "CUL/Graphics/Color.hpp"
+#include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 #include "CUL/Math/Vector3D.hpp"

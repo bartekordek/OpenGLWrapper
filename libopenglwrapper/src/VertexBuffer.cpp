@@ -26,7 +26,7 @@ void VertexBuffer::loadData()
 
     unsigned attribIndex = 0;
     unsigned numberOfComponents = 3;
-    int stride = 0;  // 3 * sizeof( m_vertices.at( 0 ) );
+    //int stride = 0;  // 3 * sizeof( m_vertices.at( 0 ) );
 
     VertexAttributePtrMeta meta;
     if( m_vertexData.containsColorData )

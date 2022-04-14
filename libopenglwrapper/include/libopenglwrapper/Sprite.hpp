@@ -7,7 +7,9 @@
 
 #include "CUL/STL_IMPORTS/STD_deque.hpp"
 
-class CUL::CULInterface;
+NAMESPACE_BEGIN( CUL )
+class CULInterface;
+NAMESPACE_END( CUL )
 
 NAMESPACE_BEGIN( LOGLW )
 

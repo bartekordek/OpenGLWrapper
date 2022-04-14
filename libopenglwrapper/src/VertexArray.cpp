@@ -64,7 +64,8 @@ void VertexArray::render()
     bind();
     m_shaderProgram.render();
 
-    for( auto i = 0; i < m_vbosCount; ++i )
+    size_t vbosCount = (size_t) m_vbosCount; 
+    for( size_t i = 0; i < vbosCount; ++i )
     {
         m_vbos[i]->render();
     }
