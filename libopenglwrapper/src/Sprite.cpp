@@ -14,7 +14,7 @@
 
 using namespace LOGLW;
 
-Sprite::Sprite( Camera* camera, CUL::CULInterface* cul ) : m_camera(camera), m_cul( cul )
+Sprite::Sprite( Camera* camera, CUL::CULInterface* cul ): m_camera(camera), m_cul( cul )
 {
 }
 

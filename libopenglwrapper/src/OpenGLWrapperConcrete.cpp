@@ -319,7 +319,7 @@ Sprite* OpenGLWrapperConcrete::createSprite( const String& path,
     auto sprite = new Sprite( getCamera(), getCul());
 
     CUL::FS::Path fsPath = path;
-    CUL::Assert::simple( fsPath.exists(), "File " + path + " does not exist." );
+    CUL::Assert::simple( fsPath.exists(), "File " + path + " does not exist.", m_logger );
 
     sprite->LoadImage( path, m_imageLoader );
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "libopenglwrapper/Sprite.hpp"
 #include "libopenglwrapper/Primitives/ITriangle.hpp"
 #include "libopenglwrapper/Primitives/IQuad.hpp"
 #include "libopenglwrapper/Primitives/ILine.hpp"
@@ -10,8 +9,9 @@
 
 NAMESPACE_BEGIN( LOGLW )
 
-using String = CUL::String;
+class Sprite;
 
+using String = CUL::String;
 
 class LIBOPENGLWRAPPER_API IObjectFactory
 {
